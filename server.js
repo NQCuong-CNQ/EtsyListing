@@ -34,4 +34,4 @@ io.on("connection", function (client) {
     client.broadcast.emit("thread", data);
   });
 });
-server.listen(80, 443);
+server.listen(80, '154.27.90.80');
