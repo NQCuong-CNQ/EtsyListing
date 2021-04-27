@@ -12,6 +12,7 @@ require("greenlock-express")
   .serve(app);
 
 var server = require("https").createServer(app);
+server.listen(80);
 var io = require("socket.io")(server);
 
 
@@ -34,4 +35,3 @@ io.on("connection", function (client) {
     client.broadcast.emit("thread", data);
   });
 });
-// server.listen(443);
