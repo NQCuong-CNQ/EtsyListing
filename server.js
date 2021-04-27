@@ -1,23 +1,29 @@
 "use strict";
 var express = require("express");
 var app = express();
-var server = require("http").createServer(app);
+// var server = require("http").createServer(app);
+
+
+// require("greenlock-express")
+//   .init({
+//     packageRoot: __dirname,
+
+//     // contact for security and critical bug notices
+//     configDir: "./greenlock.d",
+//     maintainerEmail: "jon@example.com",
+//     // whether or not to run at cloudscale
+//     cluster: false
+//   })
+//   // Serves on 80 and 443
+//   // Get's SSL certificates magically!
+//   .serve(app);
+// https = require('https');
+var fs = require('fs');
+var httpsOptions = { 
+    key: fs.readFileSync('ssl/prk.key'),
+    cert: fs.readFileSync('ssl/cert.pem')};
+var server = require('https').createServer(httpsOptions,app);
 var io = require("socket.io")(server);
-
-
-require("greenlock-express")
-  .init({
-    packageRoot: __dirname,
-
-    // contact for security and critical bug notices
-    configDir: "./greenlock.d",
-    maintainerEmail: "jon@example.com",
-    // whether or not to run at cloudscale
-    cluster: false
-  })
-  // Serves on 80 and 443
-  // Get's SSL certificates magically!
-  .serve(app);
 
 
 app.get("/", function (req, res, next) {
