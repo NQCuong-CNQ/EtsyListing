@@ -11,7 +11,7 @@ require("greenlock-express")
     maintainerEmail: "jon@example.com",
     cluster: false
   })
-  .serve(server);
+  .serve(app);
 
 var io = require("socket.io")(server);
 
