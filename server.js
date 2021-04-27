@@ -1,7 +1,7 @@
 "use strict";
 var express = require("express");
 var app = express();
-// var server = require("https").createServer(app);
+var io = require("socket.io")(server);
 
 var app1 = require("./app.js");
 require("greenlock-express")
@@ -11,9 +11,10 @@ require("greenlock-express")
     maintainerEmail: "jon@example.com",
     cluster: false
   })
-  .serve(app1);
+  .serve(app);
 
-// var io = require("socket.io")(server);
+// var server = require("https").createServer(app);
+
 
 
 // app.get("/", function (req, res, next) {
