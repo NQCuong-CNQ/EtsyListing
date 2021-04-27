@@ -12,7 +12,7 @@ require("greenlock-express")
   .serve(app);
 
 var server = require("https").createServer(app);
-var io = require("socket.io").listen(server);
+var io = require("socket.io")(server);
 
 
 app.get("/", function (req, res, next) {
