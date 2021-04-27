@@ -2,8 +2,6 @@
 var express = require("express");
 var app = express();
 
-var app1 = require("./app.js");
-
 require("greenlock-express")
   .init({
     packageRoot: __dirname,
@@ -36,4 +34,4 @@ io.on("connection", function (client) {
     client.broadcast.emit("thread", data);
   });
 });
-server.listen(80, '154.27.90.80');
+server.listen(80, 443);
