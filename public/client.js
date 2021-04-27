@@ -1,4 +1,4 @@
-var socket = io.connect("http://154.27.90.80:80");
+var socket = io.connect("https://giftsvk.com/");
 
 socket.on("connect", function (data) {
   socket.emit("join", { customId: "000CustomIdHere0000" });
