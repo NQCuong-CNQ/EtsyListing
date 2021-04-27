@@ -1,5 +1,5 @@
 // var io = require("socket.io")
-var socket = io.connect("http://localhost:80");
+var socket = io.connect("http://154.27.90.80:80");
 
 socket.on("connect", function (data) {
   socket.emit("join", { customId: "000CustomIdHere0000" });
