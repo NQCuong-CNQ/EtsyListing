@@ -34,4 +34,4 @@ io.on("connection", function (client) {
     client.broadcast.emit("thread", data);
   });
 });
-server.listen(80, 'giftsvk.com');
+server.listen(80);
