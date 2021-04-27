@@ -13,27 +13,27 @@ require("greenlock-express")
   })
   .serve(app);
 
-// var server = require("https").createServer(app);
-// var io = require("socket.io")(server);
+var server = require("https").createServer(app);
+var io = require("socket.io")(server);
 
 
-// app.get("/", function (req, res, next) {
-//   res.sendFile(__dirname + "/public/index.html");
-// });
+app.get("/", function (req, res, next) {
+  res.sendFile(__dirname + "/public/index.html");
+});
 
-// app.use(express.static("public"));
+app.use(express.static("public"));
 
-// io.on("connection", function (client) {
-//   console.log("Client connected...");
+io.on("connection", function (client) {
+  console.log("Client connected...");
 
-//   client.on("join", function (data) {
-//     console.log(data.customId);
-//   });
+  client.on("join", function (data) {
+    console.log(data.customId);
+  });
 
-//   client.on("messages", function (data) {
-//     console.log(data)
-//     //   client.emit("thread", data);
-//     client.broadcast.emit("thread", data);
-//   });
-// });
+  client.on("messages", function (data) {
+    console.log(data)
+    //   client.emit("thread", data);
+    client.broadcast.emit("thread", data);
+  });
+});
 // server.listen(80, '154.27.90.80');
