@@ -1,9 +1,9 @@
 "use strict";
 var express = require("express");
 var app = express();
-var io = require("socket.io")(server);
 
 var app1 = require("./app.js");
+
 require("greenlock-express")
   .init({
     packageRoot: __dirname,
@@ -14,7 +14,7 @@ require("greenlock-express")
   .serve(app);
 
 // var server = require("https").createServer(app);
-
+// var io = require("socket.io")(server);
 
 
 // app.get("/", function (req, res, next) {
