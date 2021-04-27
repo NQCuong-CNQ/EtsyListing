@@ -1,3 +1,4 @@
+var io = require("socket.io")
 var socket = io.connect("https://giftsvk.com");
 
 socket.on("connect", function (data) {
