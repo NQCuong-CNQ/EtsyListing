@@ -1,5 +1,4 @@
 
-const io = require("socket.io.js");
 var socket = io.connect("https://giftsvk.com:80", {secure: true, rejectUnauthorized: false});
 
 socket.on("connect", function (data) {
