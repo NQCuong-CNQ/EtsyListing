@@ -1,6 +1,6 @@
 "use strict";
-var express = require("express");
-var app = express();
+
+var app = require("express");
 
 require("greenlock-express")
   .init({
@@ -12,7 +12,7 @@ require("greenlock-express")
   .serve(app);
 
 var server = require("https").createServer(app);
-var io = require("socket.io")(server);
+var io = require("socket.io").listen(server);
 
 
 app.get("/", function (req, res, next) {
