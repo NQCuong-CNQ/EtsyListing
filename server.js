@@ -1,7 +1,8 @@
 "use strict";
 var express = require("express");
 var app = express();
-// var server = require("http").createServer(app);
+var server = require("http").createServer(app);
+var io = require("socket.io")(server);
 
 
 // require("greenlock-express")
@@ -17,13 +18,6 @@ var app = express();
 //   // Serves on 80 and 443
 //   // Get's SSL certificates magically!
 //   .serve(app);
-// https = require('https');
-var fs = require('fs');
-var httpsOptions = { 
-    key: fs.readFileSync('ssl/prk.key'),
-    cert: fs.readFileSync('ssl/cert.pem')};
-var server = require('https').createServer(httpsOptions,app);
-var io = require("socket.io")(server);
 
 
 app.get("/", function (req, res, next) {
