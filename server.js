@@ -2,6 +2,15 @@
 var express = require("express");
 var app = express();
 
+require("greenlock-express")
+  .init({
+    packageRoot: __dirname,
+    configDir: "./greenlock.d",
+    maintainerEmail: "jon@example.com",
+    cluster: false
+  })
+  .serve(app);
+  
 var server = require("http").createServer(app);
 var io = require("socket.io")(server);
 
