@@ -1,5 +1,5 @@
 // var io = require("socket.io")
-var socket = io.connect("https://giftsvk.com:80", {secure: true, transports: ['websocket']});
+var socket = io.connect("https://giftsvk.com:80");
 
 socket.on("connect", function (data) {
   socket.emit("join", { customId: "000CustomIdHere0000" });
