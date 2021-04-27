@@ -2,16 +2,7 @@
 var express = require("express");
 var app = express();
 
-require("greenlock-express")
-  .init({
-    packageRoot: __dirname,
-    configDir: "./greenlock.d",
-    maintainerEmail: "jon@example.com",
-    cluster: false
-  })
-  .serve(app);
-
-var server = require("https").createServer(app);
+var server = require("http").createServer(app);
 var io = require("socket.io")(server);
 
 
@@ -34,4 +25,4 @@ io.on("connection", function (client) {
     client.broadcast.emit("thread", data);
   });
 });
-server.listen(80, 443);
+server.listen(80);
