@@ -1,13 +1,18 @@
 "use strict";
+const fs = require('fs')
 var express = require("express");
-var app = express();
+// var app = express();
 
-app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "giftsvk.com"); 
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
-});
+// app.use(function(req, res, next) {
+//   res.header("Access-Control-Allow-Origin", "giftsvk.com"); 
+//   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+//   next();
+// });
 
+var options = {
+  key:    fs.readFileSync('ssl/prk.pem').toString(),
+  cert:   fs.readFileSync('ssl/cert.pem').toString()
+}
 // require("greenlock-express")
 //   .init({
 //     packageRoot: __dirname,
@@ -17,7 +22,7 @@ app.use(function(req, res, next) {
 //   })
 //   .serve(app);
 
-var server = require("http").createServer(app);
+var server = require("http").createServer(options);
 var io = require("socket.io")(server);
 
 app.get("/", function (req, res, next) {
