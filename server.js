@@ -17,7 +17,7 @@ app.use(function(req, res, next) {
 //   })
 //   .serve(app);
 
-var server = require("https").createServer(app);
+var server = require("http").createServer(app);
 var io = require("socket.io")(server);
 
 app.get("/", function (req, res, next) {
