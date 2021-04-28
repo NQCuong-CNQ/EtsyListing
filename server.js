@@ -8,14 +8,14 @@ app.use(function(req, res, next) {
   next();
 });
 
-require("greenlock-express")
-  .init({
-    packageRoot: __dirname,
-    configDir: "./greenlock.d",
-    maintainerEmail: "jon@example.com",
-    cluster: false
-  })
-  .serve(app);
+// require("greenlock-express")
+//   .init({
+//     packageRoot: __dirname,
+//     configDir: "./greenlock.d",
+//     maintainerEmail: "jon@example.com",
+//     cluster: false
+//   })
+//   .serve(app);
 
 var server = require("https").createServer(app);
 var io = require("socket.io")(server);
@@ -39,4 +39,4 @@ io.on("connection", function (client) {
     client.broadcast.emit("thread", data);
   });
 });
-server.listen(443);
+server.listen(80);
