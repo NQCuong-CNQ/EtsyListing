@@ -1,12 +1,12 @@
 "use strict";
 var express = require("express");
 var app = express();
+
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "giftsvk.com"); 
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
 });
-
 
 require("greenlock-express")
   .init({
@@ -17,12 +17,8 @@ require("greenlock-express")
   })
   .serve(app);
 
-
 var server = require("https").createServer(app);
-
 var io = require("socket.io")(server);
-
-
 
 app.get("/", function (req, res, next) {
   res.sendFile(__dirname + "/public/index.html");
