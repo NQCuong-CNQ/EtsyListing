@@ -3,24 +3,25 @@ const fs = require('fs')
 var express = require("express");
 var app = express();
 
-app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "giftsvk.com"); 
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
-});
+require("greenlock-express")
+  .init({
+    packageRoot: __dirname,
+    configDir: "./greenlock.d",
+    maintainerEmail: "jon@example.com",
+    cluster: false,
+    approveDomains: ['giftsvk.com', 'www.giftsvk.com', 'localhost'],
+  })
+  .serve(app);
 
-// require("greenlock-express")
-//   .init({
-//     packageRoot: __dirname,
-//     configDir: "./greenlock.d",
-//     maintainerEmail: "jon@example.com",
-//     cluster: false
-//   })
-//   .serve(app);
-
-var server = require("http").createServer({key:    fs.readFileSync('ssl/prk.pem').toString(),
-cert:   fs.readFileSync('ssl/cert.pem').toString()},app);
+var server = require("https").createServer(app);
 var io = require("socket.io")(server);
+
+app.use(function cors(req, res, next) {
+  res.setHeader('Access-Control-Allow-Origin', '*')
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type')
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE')
+  next()
+})
 
 app.get("/", function (req, res, next) {
   res.sendFile(__dirname + "/public/index.html");
@@ -41,4 +42,4 @@ io.on("connection", function (client) {
     client.broadcast.emit("thread", data);
   });
 });
-server.listen(80);
+server.listen(8088);
