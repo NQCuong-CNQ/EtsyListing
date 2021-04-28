@@ -13,7 +13,12 @@ require("greenlock-express")
   })
   .serve(app);
 
-var server = require("https").createServer(app);
+var server = require("https").createServer({
+  cert: fs.readFileSync('ssl/cert.pem'),
+  key: fs.readFileSync('ssl/prk.pem'),
+  requestCert: false,
+  rejectUnauthorized: false
+}, app);
 var io = require("socket.io")(server);
 
 app.use(function cors(req, res, next) {
