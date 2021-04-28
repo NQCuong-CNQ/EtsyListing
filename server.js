@@ -22,8 +22,8 @@ var options = {
 //   })
 //   .serve(app);
 
-var server = require("http").createServer(options);
-var io = require("socket.io")(server);
+var app = require("http").createServer(options);
+var io = require("socket.io")(app);
 
 app.get("/", function (req, res, next) {
   res.sendFile(__dirname + "/public/index.html");
