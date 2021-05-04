@@ -39,9 +39,9 @@ function httpsWorker(glx) {
   var io;
 
   // we need the raw https server
-  var server = glx.httpsServer();
+  var server = glx.httpsServer()
 
-  io = socketio(server);
+  io = socketio(server)
 
   io.on("connection", function (client) {
     console.log("Client connected...")
@@ -54,6 +54,7 @@ function httpsWorker(glx) {
       console.log(data)
       //   client.emit("thread", data);
       client.broadcast.emit("thread", data)
-    });
-  });
+    })
+  })
+  server.listen(80)
 }
