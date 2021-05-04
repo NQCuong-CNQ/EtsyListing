@@ -32,7 +32,7 @@ app.use(express.static("public"))
 //     client.broadcast.emit("thread", data)
 //   });
 // });
-// server.listen(80)
+server.listen(80)
 
 require("greenlock-express")
   .init({
