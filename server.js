@@ -19,17 +19,15 @@ function httpsWorker(glx) {
   var io
   var app = express()
   var server = require("https").createServer(app)
-  // we need the raw https server
 
   io = socketio(server);
 
   app.get("/", function (req, res, next) {
-    res.sendFile(__dirname + "/public/index.html");
+    res.sendFile(__dirname + "/public/index.html")
   });
 
   app.use(express.static("public"))
 
-  // Then you do your socket.io stuff
   io.on("connection", function(socket) {
       console.log("a user connected")
       socket.emit("Welcome")
@@ -44,7 +42,7 @@ function httpsWorker(glx) {
   //     res.setHeader("Content-Type", "text/html; charset=utf-8")
   //     res.end("Hello, World!\n\n💚 🔒.js")
   // })
-  server.listen(80)
+  // server.listen(80)
 }
 
 
