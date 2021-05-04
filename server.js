@@ -32,7 +32,7 @@ app.use(express.static("public"))
 //     client.broadcast.emit("thread", data)
 //   });
 // });
-server.listen(80)
+server.listen(3000)
 
 require("greenlock-express")
   .init({
@@ -40,6 +40,6 @@ require("greenlock-express")
     configDir: "./greenlock.d",
     maintainerEmail: "jon@example.com",
     cluster: false,
-    approveDomains: ['giftsvk.com', 'www.giftsvk.com', 'localhost'],
+    approveDomains: ['giftsvk.com', 'www.giftsvk.com'],
   })
   .serve(app)
