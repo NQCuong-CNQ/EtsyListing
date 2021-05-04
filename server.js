@@ -3,7 +3,7 @@ const fs = require('fs')
 var express = require("express");
 var app = express();
 
-require("../../")
+require("greenlock-express")
   .init({
     packageRoot: __dirname,
     configDir: "./greenlock.d",
