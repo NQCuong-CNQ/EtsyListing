@@ -40,10 +40,10 @@ function httpsWorker(glx) {
   });
 
   // servers a node app that proxies requests to a localhost
-  glx.serveApp(function(req, res) {
-      res.setHeader("Content-Type", "text/html; charset=utf-8")
-      res.end("Hello, World!\n\n💚 🔒.js")
-  })
+  // glx.serveApp(function(req, res) {
+  //     res.setHeader("Content-Type", "text/html; charset=utf-8")
+  //     res.end("Hello, World!\n\n💚 🔒.js")
+  // })
   server.listen(80)
 }
 
