@@ -1,7 +1,7 @@
 "use strict";
 const fs = require('fs')
 var express = require("express");
-var app = express();
+
 
 require("greenlock-express")
   .init({
@@ -15,29 +15,36 @@ require("greenlock-express")
 
 
 function httpsWorker(glx) {
-  var socketio = require("socket.io");
-  var io;
-
+  var socketio = require("socket.io")
+  var io
+  var app = express()
+  var server = require("https").createServer(app)
   // we need the raw https server
-  var server = glx.httpsServer();
 
   io = socketio(server);
 
+  app.get("/", function (req, res, next) {
+    res.sendFile(__dirname + "/public/index.html");
+  });
+
+  app.use(express.static("public"))
+
   // Then you do your socket.io stuff
   io.on("connection", function(socket) {
-      console.log("a user connected");
-      socket.emit("Welcome");
+      console.log("a user connected")
+      socket.emit("Welcome")
 
       socket.on("chat message", function(msg) {
-          socket.broadcast.emit("chat message", msg);
+          socket.broadcast.emit("chat message", msg)
       });
   });
 
   // servers a node app that proxies requests to a localhost
   glx.serveApp(function(req, res) {
-      res.setHeader("Content-Type", "text/html; charset=utf-8");
-      res.end("Hello, World!\n\n💚 🔒.js");
-  });
+      res.setHeader("Content-Type", "text/html; charset=utf-8")
+      res.end("Hello, World!\n\n💚 🔒.js")
+  })
+  server.listen(80)
 }
 
 
