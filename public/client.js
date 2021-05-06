@@ -41,11 +41,13 @@ $('#search-shop-button').on('click', function () {
         response = JSON.parse(response).results
         $('#table_id').DataTable().clear().destroy();
         // for (var i = 0; i < 20; i++) {
+          var d = new Date(0);
+          d.setUTCSeconds(response[i].creation_tsz);
         $('#table').append(`<tr onclick="getShopDetail(${response[i].shop_id}, '${response[i].shop_name}', ${response[i].listing_active_count})">
             <td>${response[0].shop_name}</td>
             <td>${response[0].shop_id}</td>
             <td><a href='${response[0].url}' target="_blank">${response[0].url}</a></td>
-            <td>${response[0].creation_tsz}</td>
+            <td>${d}</td>
             <td>${response[0].currency_code}</td>
             <td>${response[0].listing_active_count}</td>
             <td>${response[0].digital_listing_count}</td>
@@ -107,11 +109,13 @@ function getListingOption(shop_id, count) {
         console.log(listing)
         $('#table_id-list').DataTable().clear().destroy()
         for (var i = 0; i < count; i++) {
+          var d = new Date(0);
+          d.setUTCSeconds(listing[i].creation_tsz);
           $('#table-list').append(`<tr>
             <td>${listing[i].listing_id}</td>
             <td>${listing[i].state}</td>
             <td>${listing[i].title}</td>
-            <td>${listing[i].creation_tsz}</td>
+            <td>${d}</td>
             <td>${listing[i].price}</td>
             <td>${listing[i].quantity}</td>
             <td>${listing[i].taxonomy_id}</td>
@@ -163,11 +167,13 @@ function updateData() {
         response = JSON.parse(response).results
         $('#table_id').DataTable().clear().destroy();
         for (var i = 0; i < limit; i++) {
+          var d = new Date(0);
+          d.setUTCSeconds(response[i].creation_tsz);
           $('#table').append(`<tr onclick="getShopDetail(${response[i].shop_id}, '${response[i].shop_name}', ${response[i].listing_active_count})">
               <td>${response[i].shop_name}</td>
               <td>${response[i].shop_id}</td>
               <td><a href='${response[i].url}' target="_blank">${response[i].url}</a></td>
-              <td>${response[i].creation_tsz}</td>
+              <td>${d}</td>
               <td>${response[i].currency_code}</td>
               <td>${response[i].listing_active_count}</td>
               <td>${response[i].digital_listing_count}</td>
