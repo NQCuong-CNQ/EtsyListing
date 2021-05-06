@@ -25,9 +25,13 @@ var response
 
 updateData()
 
-$('#search-shop-button').on('click',function(){
+$('#search-shop-button').on('click', function () {
   let shop_name = $('#search-shop-input').val()
-  
+  if (shop_name == "") {
+    updateData()
+    return
+  }
+
   xhr.open("GET", `https://openapi.etsy.com/v2/shops/${shop_name}?api_key=${API_KEY}`, true)
   xhr.onreadystatechange = function () {
     if (xhr.readyState === XMLHttpRequest.DONE) {
@@ -38,15 +42,24 @@ $('#search-shop-button').on('click',function(){
         response = JSON.parse(response).results
         $('#table_id').DataTable().clear().destroy();
         // for (var i = 1; i < 20; i++) {
-          $('#table').append(`<tr onclick="getShopDetail(${response[0].shop_id})">
-              <td>${response[0].shop_name}</td>
-              <td>${response[0].shop_id}</td>
-              <td>${response[0].url}</td>
+        $('#table').append(`<tr onclick="getShopDetail(${response[0].shop_id})">
+            <td>${response[0].shop_name}</td>
+            <td>${response[0].shop_id}</td>
+            <td>${response[0].url}</td>
+            <td>${response[0].creation_tsz}</td>
+            <td>${response[0].currency_code}</td>
+            <td>${response[0].listing_active_count}</td>
+            <td>${response[0].digital_listing_count}</td>
+            <td>${response[0].num_favorers}</td>
+            <td>${response[0].languages}</td>
           </tr>`)
         // }
-        
+
         $('#table_id').DataTable({
           paging: false,
+          searching: false,
+          ordering: false,
+          scrollX: 400
         });
       } else {
       }
@@ -55,7 +68,7 @@ $('#search-shop-button').on('click',function(){
   xhr.send();
 })
 
-function getShopDetail(id){
+function getShopDetail(id) {
   alert(id)
 }
 
@@ -84,11 +97,20 @@ function updateData() {
               <td>${response[i].shop_name}</td>
               <td>${response[i].shop_id}</td>
               <td>${response[i].url}</td>
+              <td>${response[i].creation_tsz}</td>
+              <td>${response[i].currency_code}</td>
+              <td>${response[i].listing_active_count}</td>
+              <td>${response[i].digital_listing_count}</td>
+              <td>${response[i].num_favorers}</td>
+              <td>${response[i].languages}</td>
           </tr>`)
         }
-        
+
         $('#table_id').DataTable({
           paging: false,
+          searching: false,
+          ordering: false,
+          scrollX: 400
         });
       } else {
       }
