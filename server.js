@@ -4,7 +4,7 @@ var express = require("express")
 var app = express()
 
 var server = require("https").createServer(app)
-var io = require("socket.io")(server)
+// var io = require("socket.io")(server)
 
 // app.use(function cors(req, res, next) {
 //   res.setHeader('Access-Control-Allow-Origin', '*')
@@ -32,7 +32,7 @@ app.use(express.static("public"))
 //     client.broadcast.emit("thread", data)
 //   });
 // });
-server.listen(3000)
+server.listen(80)
 
 require("greenlock-express")
   .init({
