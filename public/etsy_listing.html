@@ -11,11 +11,12 @@
         content="adminkit, bootstrap, bootstrap 5, admin, dashboard, template, responsive, css, sass, html, theme, front-end, ui kit, web">
 
     <link rel="shortcut icon" href="img/icons/icon-48x48.png" />
-    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 
     <title>Etsy Listing</title>
 
     <link href="css/app.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
 </head>
 
 <body>
@@ -117,8 +118,8 @@
             <main class="content">
                 <div class="container-fluid p-0">
                     <h1>Etsy Listing</h1>
-                    
-                    <h4>Product type</h4>
+
+                    <!-- <h4>Product type</h4>
                     <h4>Add img</h4>
 
                     <form>
@@ -126,7 +127,36 @@
                         <input type="submit" value="Send">
                     </form>
 
-                    <ul id="thread"></ul>
+                    <ul id="thread"></ul> -->
+                    <input id="search-shop-input" type="text" placeholder="search shop" >
+                    <button id="search-shop-button">search</button>
+                    <div>
+
+                        <table id="table_id">
+                            <thead>
+                                <tr>
+                                    <th>Shop Name</th>
+                                    <th>Lastname</th>
+                                    <th>Email</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table">
+                                
+                            </tbody>
+                        </table>
+                        <!-- <div class="pagination">
+                            <a href="#">&laquo;</a>
+                            <a href="#">1</a>
+                            <a href="#" class="active">2</a>
+                            <a href="#">3</a>
+                            <a href="#">4</a>
+                            <a href="#">5</a>
+                            <a href="#">6</a>
+                            <a href="#">&raquo;</a>
+                          </div> -->
+                    </div>
+                    <button type="button" onclick="onNextPage()">next</button>
+                    <button type="button" onclick="onPrevPage()">prev</button>
                 </div>
             </main>
         </div>
@@ -136,8 +166,9 @@
 </body>
 <script src="js/app.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js"></script>
 
-<script src="/js/socket.io.js"></script>
+<!-- <script src="/js/socket.io.js"></script> -->
 
 <script src="client.js"></script>
 

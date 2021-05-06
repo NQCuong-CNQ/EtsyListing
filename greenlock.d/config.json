@@ -16,9 +16,9 @@
   },
   "sites": [
     {
-      "subject": "giftsvk.com",
+      "subject": "localhost",
       "altnames": [
-        "giftsvk.com"
+        "localhost"
       ],
       "renewAt": 1
     }

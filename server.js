@@ -3,7 +3,7 @@ const fs = require('fs')
 var express = require("express")
 var app = express()
 
-var server = require("https").createServer(app)
+var server = require("http").createServer(app)
 // var io = require("socket.io")(server)
 
 app.use(function cors(req, res, next) {
@@ -36,12 +36,12 @@ app.use(express.static("public"))
 // });
 server.listen(80)
 
-require("greenlock-express")
-  .init({
-    packageRoot: __dirname,
-    configDir: "./greenlock.d",
-    maintainerEmail: "jon@example.com",
-    cluster: false,
-    approveDomains: ['giftsvk.com', 'www.giftsvk.com'],
-  })
-  .serve(app)
+// require("greenlock-express")
+//   .init({
+//     packageRoot: __dirname,
+//     configDir: "./greenlock.d",
+//     maintainerEmail: "jon@example.com",
+//     cluster: false,
+//     // approveDomains: ['giftsvk.com', 'www.giftsvk.com'],
+//   })
+//   .serve(app)
