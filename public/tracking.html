@@ -67,7 +67,8 @@
                     </li>
                     <li class="sidebar-item active">
                         <a class="sidebar-link" href="tracking.html">
-                            <i class="align-middle" data-feather="coffee"></i> <span class="align-middle">Tracking</span>
+                            <i class="align-middle" data-feather="coffee"></i> <span
+                                class="align-middle">Tracking</span>
                         </a>
                     </li>
             </div>
@@ -122,7 +123,7 @@
 
             <main class="content">
                 <div class="container-fluid p-0">
-                    <h1>Etsy Listing</h1>
+                    <h1>Tracking</h1>
 
                     <!-- <h4>Product type</h4>
                     <h4>Add img</h4>
@@ -133,41 +134,72 @@
                     </form>
 
                     <ul id="thread"></ul> -->
-                    <input id="search-shop-input" type="text" placeholder="search shop" >
-                    <button id="search-shop-button">search</button>
-                    <div>
+                    <div id="list-shop-section">
+                        <input id="search-shop-input" type="text" placeholder="search shop">
+                        <button id="search-shop-button">search</button>
+                        <div>
 
-                        <table id="table_id">
-                            <thead>
-                                <tr>
-                                    <th>Shop Name</th>
-                                    <th>shop_id</th>
-                                    <th>url</th>
-                                    <th>creation_tsz</th>
-                                    <th>currency_code</th>
-                                    <th>listing_active_count</th>
-                                    <th>digital_listing_count</th>
-                                    <th>num_favorers</th>
-                                    <th>languages</th>
-                                </tr>
-                            </thead>
-                            <tbody id="table">
-                                
-                            </tbody>
-                        </table>
-                        <!-- <div class="pagination">
-                            <a href="#">&laquo;</a>
-                            <a href="#">1</a>
-                            <a href="#" class="active">2</a>
-                            <a href="#">3</a>
-                            <a href="#">4</a>
-                            <a href="#">5</a>
-                            <a href="#">6</a>
-                            <a href="#">&raquo;</a>
-                          </div> -->
+                            <table id="table_id">
+                                <thead>
+                                    <tr>
+                                        <th>Shop Name</th>
+                                        <th>shop_id</th>
+                                        <th>url</th>
+                                        <th>creation_tsz</th>
+                                        <th>currency_code</th>
+                                        <th>listing_active_count</th>
+                                        <th>digital_listing_count</th>
+                                        <th>num_favorers</th>
+                                        <th>languages</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table">
+                                </tbody>
+                            </table>
+                        </div>
+                        <button type="button" onclick="onNextPage()">next</button>
+                        <button type="button" onclick="onPrevPage()">prev</button>
                     </div>
-                    <button type="button" onclick="onNextPage()">next</button>
-                    <button type="button" onclick="onPrevPage()">prev</button>
+
+                    <div id="option-shop-section" style="display: none">
+                        <h3 id="shop-name-option-section"></h3>
+                        <h3 id="shop-id-option-section"></h3>
+                        <button type="button" id="listing-option-button">Listing</button>
+                        <button type="button" id="user-option-button">User</button>
+                    </div>
+
+                    <div id="listing-shop-section" style="display: none">
+                        <input id="search-shop-list-input" type="text" placeholder="search list">
+                        <button id="search-shop-list-button">search</button>
+                        <div>
+
+                            <table id="table_id-list">
+                                <thead>
+                                    <tr>
+                                        <th>listing_id</th>
+                                        <th>state</th>
+                                        <th>title</th>
+                                        <th>creation_tsz</th>
+                                        <th>price</th>
+                                        <th>quantity</th>
+                                        <th>taxonomy_id</th>
+                                        <th>url</th>
+                                        <th>views</th>
+                                        <th>num_favorers</th>
+                                        <th>occasion</th>
+                                        <th>is_customizable</th>
+                                        <th>is_digital</th>
+                                        <th>has_variations</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table-list">
+                                </tbody>
+                            </table>
+                        </div>
+                        <button type="button" onclick="onNextPageList()">next</button>
+                        <button type="button" onclick="onPrevPageList()">prev</button>
+                    </div>
+
                 </div>
             </main>
         </div>

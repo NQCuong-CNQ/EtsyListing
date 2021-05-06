@@ -22,7 +22,6 @@ var API_KEY = '2mlnbmgdqv6esclz98opmmuq'
 var limit = 20
 var offset = 0
 var response
-
 updateData()
 
 $('#search-shop-button').on('click', function () {
@@ -38,14 +37,14 @@ $('#search-shop-button').on('click', function () {
       let status = xhr.status
       if (status === 0 || (status >= 200 && status < 400)) {
         response = this.responseText
-        let count = JSON.parse(response).count
+        // let count = JSON.parse(response).count
         response = JSON.parse(response).results
         $('#table_id').DataTable().clear().destroy();
-        // for (var i = 1; i < 20; i++) {
-        $('#table').append(`<tr onclick="getShopDetail(${response[0].shop_id})">
+        // for (var i = 0; i < 20; i++) {
+        $('#table').append(`<tr onclick="getShopDetail(${response[i].shop_id}, '${response[i].shop_name}', ${response[i].listing_active_count})">
             <td>${response[0].shop_name}</td>
             <td>${response[0].shop_id}</td>
-            <td>${response[0].url}</td>
+            <td><a href='${response[0].url}' target="_blank">${response[0].url}</a></td>
             <td>${response[0].creation_tsz}</td>
             <td>${response[0].currency_code}</td>
             <td>${response[0].listing_active_count}</td>
@@ -68,8 +67,79 @@ $('#search-shop-button').on('click', function () {
   xhr.send();
 })
 
-function getShopDetail(id) {
-  alert(id)
+function getShopDetail(shop_id, shop_name, count) {
+  $('#option-shop-section').css("display", "block")
+  $('#list-shop-section').css("display", "none")
+  $('#listing-shop-section').css("display", "none")
+  $('#shop-id-option-section').text(shop_id)
+  // alert(shop.name)
+  $('#shop-name-option-section').text(shop_name)
+  $('#listing-option-button').on('click', function(){
+    getListingOption(shop_id, count)
+  })
+  $('#user-option-button').on('click', function(){
+    getUserOption(shop_id)
+  })
+}
+
+
+
+function getListingOption(shop_id, count) {
+
+  $('#option-shop-section').css("display", "none")
+  $('#list-shop-section').css("display", "none")
+  $('#listing-shop-section').css("display", "block")
+  // alert("sadf")
+  // let id = shop.id
+
+  offset = 0
+  xhr.open("GET", `https://openapi.etsy.com/v2/shops/${shop_id}/listings/active?api_key=${API_KEY}&limit=${limit}&offset=${offset}`, true)
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === XMLHttpRequest.DONE) {
+      let status = xhr.status
+      if (status === 0 || (status >= 200 && status < 400)) {
+        let listing = this.responseText
+        if(count == 0){
+          return
+        }
+        // let count = JSON.parse(listing).count
+        listing = JSON.parse(listing).results
+        console.log(listing)
+        $('#table_id-list').DataTable().clear().destroy()
+        for (var i = 0; i < count; i++) {
+          $('#table-list').append(`<tr>
+            <td>${listing[i].listing_id}</td>
+            <td>${listing[i].state}</td>
+            <td>${listing[i].title}</td>
+            <td>${listing[i].creation_tsz}</td>
+            <td>${listing[i].price}</td>
+            <td>${listing[i].quantity}</td>
+            <td>${listing[i].taxonomy_id}</td>
+            <td><a href='${listing[i].url}' target="_blank">${listing[i].url}</a></td>
+            <td>${listing[i].views}</td>
+            <td>${listing[i].num_favorers}</td>
+            <td>${listing[i].occasion}</td>
+            <td>${listing[i].is_customizable}</td>
+            <td>${listing[i].is_digital}</td>
+            <td>${listing[i].has_variations}</td>
+          </tr>`)
+        }
+
+        $('#table_id-list').DataTable({
+          paging: false,
+          searching: false,
+          ordering: false,
+          scrollX: 400
+        })
+      } else {
+      }
+    }
+  }
+  xhr.send();
+}
+
+function getUserOption() {
+
 }
 
 function onNextPage() {
@@ -89,14 +159,14 @@ function updateData() {
       let status = xhr.status
       if (status === 0 || (status >= 200 && status < 400)) {
         response = this.responseText
-        let count = JSON.parse(response).count
+        // let count = JSON.parse(response).count
         response = JSON.parse(response).results
         $('#table_id').DataTable().clear().destroy();
-        for (var i = 1; i < 20; i++) {
-          $('#table').append(`<tr onclick="getShopDetail(${response[i].shop_id})">
+        for (var i = 0; i < limit; i++) {
+          $('#table').append(`<tr onclick="getShopDetail(${response[i].shop_id}, '${response[i].shop_name}', ${response[i].listing_active_count})">
               <td>${response[i].shop_name}</td>
               <td>${response[i].shop_id}</td>
-              <td>${response[i].url}</td>
+              <td><a href='${response[i].url}' target="_blank">${response[i].url}</a></td>
               <td>${response[i].creation_tsz}</td>
               <td>${response[i].currency_code}</td>
               <td>${response[i].listing_active_count}</td>
