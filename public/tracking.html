@@ -12,7 +12,7 @@
 
     <link rel="shortcut icon" href="img/icons/icon-48x48.png" />
 
-    <title>Etsy Listing</title>
+    <title>Etsy Tools</title>
 
     <link href="css/app.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
@@ -24,7 +24,7 @@
         <nav id="sidebar" class="sidebar">
             <div class="sidebar-content js-simplebar">
                 <a class="sidebar-brand" href="index.html">
-                    <span class="align-middle">AdminKit</span>
+                    <span class="align-middle">Etsy Tools</span>
                 </a>
 
                 <ul class="sidebar-nav">
@@ -135,31 +135,29 @@
 
                     <ul id="thread"></ul> -->
                     <div id="list-shop-section">
-                        <input id="search-shop-input" type="text" placeholder="search shop">
-                        <button id="search-shop-button">search</button>
+                        <!-- <input id="search-shop-input" type="text" placeholder="search shop"> -->
+                        <!-- <button id="search-shop-button">search</button> -->
                         <div>
 
                             <table id="table_id">
                                 <thead>
                                     <tr>
                                         <th>Shop Name</th>
-                                        <th>shop_id</th>
-                                        <th>url</th>
-                                        <th>creation_tsz</th>
-                                        <th>currency_code</th>
-                                        <th>listing_active_count</th>
-                                        <th>digital_listing_count</th>
-                                        <th>num_favorers</th>
-                                        <th>languages</th>
+                                        <th>Shop Id</th>
+                                        <th>Link</th>
+                                        <th>Total Sales</th>
+                                        <th>Time</th>
+                                        <th>Currency</th>
+                                        <th>Listing Active Count</th>
+                                        <th>Digital Listing Count</th>
+                                        <th>Num Favorers</th>
+                                        <th>Languages</th>
                                     </tr>
                                 </thead>
                                 <tbody id="table">
                                 </tbody>
                             </table>
                         </div>
-                        <button type="button" onclick="onPrevPage()">prev</button>
-                        <button type="button" onclick="onNextPage()">next</button>
-                        
                     </div>
 
                     <div id="option-shop-section" style="display: none">
@@ -173,7 +171,6 @@
                         <input id="search-shop-list-input" type="text" placeholder="search list">
                         <button id="search-shop-list-button">search</button>
                         <div>
-
                             <table id="table_id-list">
                                 <thead>
                                     <tr>
@@ -199,7 +196,7 @@
                         </div>
                         <button type="button" onclick="onPrevPageList()">prev</button>
                         <button type="button" onclick="onNextPageList()">next</button>
-                        
+
                     </div>
 
                 </div>
@@ -213,7 +210,7 @@
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js"></script>
 
-<!-- <script src="/js/socket.io.js"></script> -->
+<script src="/js/socket.io.js"></script>
 
 <script src="client.js"></script>
 
