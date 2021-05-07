@@ -9,9 +9,9 @@ var https_options = {
 
   // key: fs.readFileSync("/path/to/private.key"),
 
-  cert: fs.readFileSync("./ssl/certificate.crt"),
+  cert: fs.readFileSync("ssl/certificate.crt"),
 
-  ca: fs.readFileSync('./ssl/ca_bundle.crt')
+  ca: fs.readFileSync('ssl/ca_bundle.crt')
 
 };
 var server = require("https").createServer(https_options, app)
