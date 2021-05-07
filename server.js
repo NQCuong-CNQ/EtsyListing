@@ -35,7 +35,7 @@ let siteUrl
 const MongoClient = require('mongodb').MongoClient
 const url = "mongodb://localhost:27017/trackingdb"
 
-// updateData()
+updateData()
 
 async function connectDB(response) {
   let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
