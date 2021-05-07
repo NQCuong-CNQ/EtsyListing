@@ -5,16 +5,17 @@ var app = express()
 var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 var xhr = new XMLHttpRequest()
 
-var https_options = {
+// console.log(fs.readFileSync("ssl/te.txt"))
+// var https_options = {
 
-  // key: fs.readFileSync("/path/to/private.key"),
+//   // key: fs.readFileSync("/path/to/private.key"),
 
-  cert: fs.readFileSync("ssl/certificate.crt"),
+//   cert: fs.readFileSync("ssl/certificate.crt"),
 
-  ca: fs.readFileSync('ssl/ca_bundle.crt')
+//   ca: fs.readFileSync('ssl/ca_bundle.crt')
 
-};
-var server = require("https").createServer(https_options, app)
+// };
+var server = require("http").createServer(app)
 // var io = require("socket.io")(server)
 
 // app.use(function cors(req, res, next) {
@@ -28,9 +29,10 @@ var server = require("https").createServer(https_options, app)
 
 const limit = 100
 var offset = 0
+var iCountSales = 0
+var total_sales = []
 
-
-const siteUrl = "https://www.etsy.com/shop/KidStoreBoutique";
+let siteUrl
 const axios = require("axios");
 const cheerio = require('cheerio');
 
@@ -40,10 +42,10 @@ async function fetchData() {
   return cheerio.load(result.data);
 };
 
-async function getFromWeb(){
+async function getFromWeb() {
   const $ = await fetchData();
   const postJobButton = $('.shop-sales-reviews > span').text().split(' ');
-  console.log(postJobButton[0])
+  return postJobButton[0]
 }
 
 
@@ -53,9 +55,29 @@ async function getFromWeb(){
 const MongoClient = require('mongodb').MongoClient
 const url = "mongodb://localhost:27017/trackingdb"
 
+updateTotalSales()
+
+function updateTotalSales() {
+  MongoClient.connect(url,{ useUnifiedTopology: true }, async function (err, db) {
+    if (err) throw err
+    var dbo = db.db("trackingdb")
+
+    dbo.collection("shop").find().toArray()
+    .then(items => {
+      console.log(`Successfully found ${items.length} documents.`)
+      items.forEach(console.log)
+      // return items
+    })
+
+    db.close()
+    await sleep(500)
+  })
+}
+
+
 // updateData()
-async function connectDB(response){
-  MongoClient.connect(url, async function(err, db) {
+async function connectDB(response) {
+  MongoClient.connect(url, async function (err, db) {
     if (err) throw err
     var dbo = db.db("trackingdb")
     // await sleep(100)
@@ -69,60 +91,70 @@ async function connectDB(response){
     //   if (err) throw err
     //   // console.log("Collection shop created!")
     // })
-  
-    
-    
+
+
+
     // console.log(response)
     response = JSON.parse(response).results
     // response._id = response[0].shop_id
-    dbo.collection("shop").insertMany(response, function(err, res) {
+    dbo.collection("shop").insertMany(response, function (err, res) {
       if (err) throw err
-      console.log("1 document inserted")
+      console.log("100 document inserted")
     })
 
-    
-    
-    // dbo.collection("shop").updateOne({shop_name: /KidStoreBoutique/}, {$set : {"total_sales":0}},
-    // {upsert:false,
-    // multi:true})
+    await getTotalSales(response)
+    console.log('total_sales' + total_sales[i])
+    for (var i = 0; i < limit; i++) {
+      console.log(total_sales[i])
+      dbo.collection("shop").updateOne({ shop_name: response[i].shop_name }, { $set: { "total_sales": total_sales[i] } },
+        {
+          upsert: false,
+          multi: true
+        })
+    }
+    total_sales = []
 
     db.close()
     await sleep(500)
   })
 }
 
+async function getTotalSales(response) {
+  console.log(iCountSales)
+  if (iCountSales < 100) {
+    siteUrl = "https://www.etsy.com/shop/" + response[iCountSales].shop_name
+    total_sales.push(await getFromWeb())
+    iCountSales++
+    await getTotalSales(response)
+  }
+}
 
 function sleep(ms) {
   return new Promise(
-      resolve => setTimeout(resolve, ms)
+    resolve => setTimeout(resolve, ms)
   );
 }
 
 async function updateData() {
-  // let flag=false
-  for (var i = 0; i < 501; i++){
-    console.log(i)
+  if (offset < 50100) {
+    console.log(offset)
     xhr.open("GET", `https://openapi.etsy.com/v2/shops?api_key=2mlnbmgdqv6esclz98opmmuq&limit=${limit}&offset=${offset}`, true)
     xhr.onreadystatechange = async function () {
       if (xhr.readyState === xhr.DONE) {
         let status = xhr.status
         if (status === 0 || (status >= 200 && status < 400)) {
           let response = xhr.responseText
-          // console.log(response)
-          // return response
-          // flag = true
-          // myobj = response
           await connectDB(response)
-        } 
+          // await sleep(5000)
+          offset += limit
+          await updateData()
+        }
       }
     }
     xhr.send()
-    await sleep(5000)
-    offset+=limit
-    
   }
-  
 }
+
 // const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 // client.connect(err => {
 //   // const collection = client.db("test").collection("devices");
