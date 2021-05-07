@@ -42,9 +42,9 @@ $('#search-shop-button').on('click', function () {
         $('#table_id').DataTable().clear().destroy();
         // for (var i = 0; i < 20; i++) {
           var d = new Date(0);
-          d.setUTCSeconds(response[i].creation_tsz);
-        $('#table').append(`<tr onclick="getShopDetail(${response[i].shop_id}, '${response[i].shop_name}', ${response[i].listing_active_count})">
-            <td>${response[0].shop_name}</td>
+          d.setUTCSeconds(response[0].creation_tsz);
+        $('#table').append(`<tr>
+            <td onclick="getShopDetail(${response[0].shop_id}, '${response[0].shop_name}', ${response[0].listing_active_count})">${response[0].shop_name}</td>
             <td>${response[0].shop_id}</td>
             <td><a href='${response[0].url}' target="_blank">${response[0].url}</a></td>
             <td>${d}</td>
@@ -152,8 +152,10 @@ function onNextPage() {
 }
 
 function onPrevPage() {
-  offset -= limit
-  updateData()
+  if(offset>0){
+    offset -= limit
+    updateData()
+  }
 }
 
 function updateData() {
@@ -169,8 +171,8 @@ function updateData() {
         for (var i = 0; i < limit; i++) {
           var d = new Date(0);
           d.setUTCSeconds(response[i].creation_tsz);
-          $('#table').append(`<tr onclick="getShopDetail(${response[i].shop_id}, '${response[i].shop_name}', ${response[i].listing_active_count})">
-              <td>${response[i].shop_name}</td>
+          $('#table').append(`<tr>
+              <td onclick="getShopDetail(${response[i].shop_id}, '${response[i].shop_name}', ${response[i].listing_active_count})">${response[i].shop_name}</td>
               <td>${response[i].shop_id}</td>
               <td><a href='${response[i].url}' target="_blank">${response[i].url}</a></td>
               <td>${d}</td>
