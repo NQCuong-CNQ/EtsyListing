@@ -35,7 +35,51 @@ let siteUrl
 const MongoClient = require('mongodb').MongoClient
 const url = "mongodb://localhost:27017/trackingdb"
 
-updateData()
+// updateData()
+
+async function makeRequest(method, url) {
+  return new Promise(function (resolve, reject) {
+    xhr.open(method, url, true)
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState === xhr.DONE) {
+        let status = xhr.status
+        if (status === 0 || (status >= 200 && status < 400)) {
+          resolve(xhr.responseText)
+        }
+      }
+    }
+    xhr.send();
+  })
+}
+
+updateListing()
+
+async function updateListing() {
+  let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
+  var dbo = client.db("trackingdb")
+  let dataShop = await dbo.collection("shop").find().toArray()
+  // let dataListing = await dbo.collection("listing").find().toArray()
+
+  for (let i = 0; i < dataShop.length; i++) {
+    if (dataShop[i].listing_active_count > 0) {
+      console.log(dataShop[i].shop_id)
+
+      let result = await makeRequest("GET", `https://openapi.etsy.com/v2/shops/${dataShop[i].shop_id}/listings/active?api_key=${api_key}`)
+      result = JSON.parse(result)
+      console.log(result.length)
+      for (let j = 0; j < result.length; j++) {
+        console.log(result[i].listing_id)
+        await dbo.collection("listing").updateOne({ listing_id: result[j].listing_id }, { $set: result[j] }, { upsert: true })
+
+        // siteUrl = "https://www.etsy.com/shop/" + response[i].shop_name
+        // total_sales = await getTotalSalesFromWeb()
+
+        // console.log(response[i].shop_name + ":" + total_sales)
+        // await dbo.collection("shop").updateOne({ shop_name: response[i].shop_name }, { $set: { "total_sales": total_sales } }, { upsert: true })
+      }
+    }
+  }
+}
 
 async function connectDB(response) {
   let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -100,7 +144,7 @@ io.on("connection", async function (client) {
     console.log(data.customId)
     let clientMongo = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
     var dbo = clientMongo.db("trackingdb")
-    let dbData = await dbo.collection("shop").find( ).toArray()
+    let dbData = await dbo.collection("shop").find().toArray()
 
     client.emit("dataTransfer", dbData)
   });
