@@ -146,7 +146,7 @@
                                         <th>Shop Id</th>
                                         <th>Link</th>
                                         <th>Total Sales</th>
-                                        <th>Time</th>
+                                        <th>Creation Time</th>
                                         <th>Currency</th>
                                         <th>Listing Active Count</th>
                                         <th>Digital Listing Count</th>
@@ -163,42 +163,41 @@
                     <div id="option-shop-section" style="display: none">
                         <h3 id="shop-name-option-section"></h3>
                         <h3 id="shop-id-option-section"></h3>
-                        <button type="button" id="listing-option-button">Listing</button>
-                        <button type="button" id="user-option-button">User</button>
+                        <button type="button" id="listing-option-button">Listing Detail</button>
+                        <button type="button" id="user-option-button">User Detail</button>
                     </div>
 
                     <div id="listing-shop-section" style="display: none">
-                        <input id="search-shop-list-input" type="text" placeholder="search list">
-                        <button id="search-shop-list-button">search</button>
                         <div>
                             <table id="table_id-list">
                                 <thead>
                                     <tr>
-                                        <th>listing_id</th>
-                                        <th>state</th>
-                                        <th>title</th>
-                                        <th>creation_tsz</th>
-                                        <th>price</th>
-                                        <th>quantity</th>
-                                        <th>taxonomy_id</th>
-                                        <th>url</th>
-                                        <th>views</th>
-                                        <th>num_favorers</th>
-                                        <th>occasion</th>
-                                        <th>is_customizable</th>
-                                        <th>is_digital</th>
-                                        <th>has_variations</th>
+                                        <th>Listing Id</th>
+                                        <th>State</th>
+                                        <th>Title</th>
+                                        <th>Creation Time</th>
+                                        <th>Price</th>
+                                        <th>Quantity</th>
+                                        <th>Category</th>
+                                        <th>Link</th>
+                                        <th>Views</th>
+                                        <th>Num Favorers</th>
+                                        <th>Occasion</th>
+                                        <th>Customizable</th>
+                                        <th>Is Digital</th>
+                                        <th>Has Variations</th>
                                     </tr>
                                 </thead>
                                 <tbody id="table-list">
                                 </tbody>
                             </table>
                         </div>
-                        <button type="button" onclick="onPrevPageList()">prev</button>
-                        <button type="button" onclick="onNextPageList()">next</button>
 
                     </div>
 
+                    <div id="user-shop-section" style="display: none">
+                        <h3 style="color:red;">Tính năng đang được phát triển :v</h3>
+                    </div>
                 </div>
             </main>
         </div>

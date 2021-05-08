@@ -35,7 +35,7 @@ let siteUrl
 const MongoClient = require('mongodb').MongoClient
 const url = "mongodb://localhost:27017/trackingdb"
 
-// updateData()
+updateData()
 
 async function makeRequest(method, url) {
   return new Promise(function (resolve, reject) {
@@ -46,36 +46,34 @@ async function makeRequest(method, url) {
         if (status === 0 || (status >= 200 && status < 400)) {
           resolve(xhr.responseText)
         }
+        else if (status === 404) {
+          resolve(0)
+        }
       }
     }
     xhr.send();
   })
 }
 
-updateListing()
-
 async function updateListing() {
   let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
   var dbo = client.db("trackingdb")
   let dataShop = await dbo.collection("shop").find().toArray()
-  // let dataListing = await dbo.collection("listing").find().toArray()
 
   for (let i = 0; i < dataShop.length; i++) {
-    if (dataShop[i].listing_active_count > 0) {
-      console.log(dataShop[i].shop_id)
+    if (dataShop[i].listing_active_count > 5) {
+      console.log('get listing shop: ' + dataShop[i].shop_id)
 
       let result = await makeRequest("GET", `https://openapi.etsy.com/v2/shops/${dataShop[i].shop_id}/listings/active?api_key=${api_key}`)
-      result = JSON.parse(result)
-      console.log(result.length)
-      for (let j = 0; j < result.length; j++) {
-        console.log(result[i].listing_id)
+      if (result == 0) {
+        console.log('pass')
+        continue
+      }
+      result = JSON.parse(result).results
+      var count = Object.keys(result).length;
+      for (let j = 0; j < count; j++) {
         await dbo.collection("listing").updateOne({ listing_id: result[j].listing_id }, { $set: result[j] }, { upsert: true })
-
-        // siteUrl = "https://www.etsy.com/shop/" + response[i].shop_name
-        // total_sales = await getTotalSalesFromWeb()
-
-        // console.log(response[i].shop_name + ":" + total_sales)
-        // await dbo.collection("shop").updateOne({ shop_name: response[i].shop_name }, { $set: { "total_sales": total_sales } }, { upsert: true })
+        await dbo.collection("listing").updateOne({ listing_id: result[j].listing_id }, { $set: { "shop_id": dataShop[i].shop_id } }, { upsert: true })
       }
     }
   }
@@ -127,6 +125,7 @@ async function updateData() {
     }
     xhr.send()
   } else {
+    await updateListing()
     console.log("Update completed")
   }
 }
@@ -138,23 +137,20 @@ app.get("/", function (req, res, next) {
 app.use(express.static("public"))
 
 io.on("connection", async function (client) {
-  console.log("Client connected...")
+  let clientMongo = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
+  var dbo = clientMongo.db("trackingdb")
 
   client.on("join", async function (data) {
-    console.log(data.customId)
-    let clientMongo = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
-    var dbo = clientMongo.db("trackingdb")
-    let dbData = await dbo.collection("shop").find().toArray()
+    console.log('1 client connected')
+    let dbData = await dbo.collection("shop").find({ total_sales: { $gte: 10 } }).toArray()
+    await client.emit("dataTransfer", dbData)
+  })
 
-    client.emit("dataTransfer", dbData)
-  });
-
-  // client.on("messages", function (data) {
-  //   console.log(data)
-  //   //   client.emit("thread", data);
-  //   client.broadcast.emit("thread", data)
-  // });
-});
+  client.on("shop_id", async function (shop_id) {
+    let dbData = await dbo.collection("listing").find({ shop_id: shop_id }).toArray()
+    await client.emit("listingDataTransfer", dbData)
+  })
+})
 
 async function fetchData() {
   const result = await axios.get(siteUrl);
