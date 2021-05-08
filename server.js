@@ -27,7 +27,6 @@ var io = require("socket.io")(server)
 
 const limit = 100
 const api_key = '2mlnbmgdqv6esclz98opmmuq'
-var offset = 0
 var total_sales = []
 
 let siteUrl
@@ -55,16 +54,38 @@ async function makeRequest(method, url) {
   })
 }
 
+async function updateUser() {
+  let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
+  var dbo = client.db("trackingdb")
+  let dataShop = await dbo.collection("shop").find().toArray()
+
+  for (let i = 0; i < dataShop.length; i++) {
+    if (dataShop[i].total_sales >= 10) {
+      console.log('get user shop: ' + dataShop[i].shop_id)
+      let result = await makeRequest("GET", `https://openapi.etsy.com/v2/users/${dataShop[i].user_id}/profile?api_key=${api_key}`)
+      if (result == 0) {
+        console.log('pass')
+        continue
+      }
+      result = JSON.parse(result).results
+      var count = Object.keys(result).length;
+      for (let j = 0; j < count; j++) {
+        await dbo.collection("user").updateOne({ user_id: result[j].user_id }, { $set: result[j] }, { upsert: true })
+      }
+    }
+  }
+}
+
 async function updateListing() {
   let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
   var dbo = client.db("trackingdb")
   let dataShop = await dbo.collection("shop").find().toArray()
 
   for (let i = 0; i < dataShop.length; i++) {
-    if (dataShop[i].listing_active_count > 5) {
+    if (dataShop[i].total_sales >= 10) {
       console.log('get listing shop: ' + dataShop[i].shop_id)
 
-      let result = await makeRequest("GET", `https://openapi.etsy.com/v2/shops/${dataShop[i].shop_id}/listings/active?api_key=${api_key}`)
+      let result = await makeRequest("GET", `https://openapi.etsy.com/v2/shops/${dataShop[i].shop_id}/listings/active?api_key=${api_key}`) //limit 100
       if (result == 0) {
         console.log('pass')
         continue
@@ -82,9 +103,6 @@ async function updateListing() {
 async function connectDB(response) {
   let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
   var dbo = client.db("trackingdb")
-
-  // await dbo.collection("shop").drop()
-  // await dbo.createCollection("shop")
 
   response = JSON.parse(response).results
   console.log("100 document inserted")
@@ -109,25 +127,16 @@ async function sleep(ms) {
 }
 
 async function updateData() {
-  if (offset < 50100) {
-    console.log('offset: ' + offset)
-    xhr.open("GET", `https://openapi.etsy.com/v2/shops?api_key=${api_key}&limit=${limit}&offset=${offset}`, true)
-    xhr.onreadystatechange = async function () {
-      if (xhr.readyState === xhr.DONE) {
-        let status = xhr.status
-        if (status === 0 || (status >= 200 && status < 400)) {
-          let response = xhr.responseText
-          await connectDB(response)
-          offset += limit
-          await updateData()
-        }
-      }
-    }
-    xhr.send()
-  } else {
-    await updateListing()
-    console.log("Update completed")
+  for (let i = 0; i < 501; i++) {
+    console.log('offset: ' + i * 100)
+
+    let result = await makeRequest("GET", `https://openapi.etsy.com/v2/shops?api_key=${api_key}&limit=${limit}&offset=${i * 100}`)
+    await connectDB(result)
   }
+
+  await updateListing()
+  await updateUser()
+  console.log("Update completed")
 }
 
 app.get("/", function (req, res, next) {
@@ -143,6 +152,7 @@ io.on("connection", async function (client) {
   client.on("join", async function (data) {
     console.log('1 client connected')
     let dbData = await dbo.collection("shop").find({ total_sales: { $gte: 10 } }).toArray()
+    // let dbData = await dbo.collection("shop").find().toArray()
     await client.emit("dataTransfer", dbData)
   })
 
@@ -153,13 +163,24 @@ io.on("connection", async function (client) {
 })
 
 async function fetchData() {
-  const result = await axios.get(siteUrl);
-  return cheerio.load(result.data);
-};
+  let result
+  try {
+    result = await axios.get(siteUrl)
+  } catch (err) {
+    result = err.response.status
+  }
+  if (result == 404) {
+    return 0
+  }
+  return cheerio.load(result.data)
+}
 
 async function getTotalSalesFromWeb() {
-  const $ = await fetchData();
-  const postJobButton = $('.shop-sales-reviews > span').text().split(' ');
+  const $ = await fetchData()
+  if ($ == 0) {
+    return 0
+  }
+  let postJobButton = $('.shop-sales-reviews > span').text().split(' ')
   if (postJobButton == '') {
     return 0
   }
