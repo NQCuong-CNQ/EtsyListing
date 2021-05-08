@@ -1,0 +1,5 @@
+th, td { white-space: nowrap; }
+.pointer {cursor: pointer;}
+.dataTables_scrollHeadInner{
+    margin: auto;
+}

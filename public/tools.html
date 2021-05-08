@@ -7,10 +7,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <link rel="shortcut icon" href="img/icons/icon-48x48.png" />
-
     <title>Etsy Tools</title>
 
     <link href="css/app.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <!-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css"> -->
 </head>
 
 <body>
@@ -37,18 +38,19 @@
                         Tools & Components
                     </li>
 
-                    <li class="sidebar-item active">
+                    <li class="sidebar-item ">
                         <a class="sidebar-link" href="etsy_listing.html">
                             <i class="align-middle" data-feather="coffee"></i> <span class="align-middle">Etsy
                                 Listing</span>
                         </a>
                     </li>
-                    <li class="sidebar-item">
+                    <li class="sidebar-item ">
                         <a class="sidebar-link" href="tracking.html">
-                            <i class="align-middle" data-feather="pie-chart"></i> <span class="align-middle">Tracking</span>
+                            <i class="align-middle" data-feather="pie-chart"></i> <span
+                                class="align-middle">Tracking</span>
                         </a>
                     </li>
-                    <li class="sidebar-item">
+                    <li class="sidebar-item active">
                         <a class="sidebar-link" href="tools.html">
                             <i class="align-middle" data-feather="settings"></i> <span
                                 class="align-middle">Tools</span>
@@ -96,29 +98,42 @@
 
             <main class="content">
                 <div class="container-fluid p-0">
-                    <h1>Etsy Listing</h1>
-                    <h2 style="color: red;">Tính năng đang được phát triển :V</h2>
-                    <!-- <h4>Product type</h4>
-                    <h4>Add img</h4>
+                    <h1>Tools thêm shop, user bên braumstar.com</h1>
 
-                    <form>
-                        <input id="message" type="text" placeholder="message">
-                        <input type="submit" value="Send">
-                    </form>
+                    <h3>Tạo User mới</h3>
+                    <input id="input-user-name" placeholder="Tên User">
+                    <input id="input-user-pass"  placeholder="Mật khẩu">
+                    <button id="submit-user-button">Submit</button>
+                    <p></p>
+                    <h3>Cập nhật Shop cho User </h3>
+                    <input id="input-shop-name" placeholder="Tên Shop">
+                    <input id="input-user-shop-name"  placeholder="User quản lý shop">
+                    <button id="submit-shop-button">Submit</button>
 
-                    <ul id="thread"></ul> -->
+                    <p>Hành động: xóa shop nếu có sẵn và thêm shop vào vị trí user mới</p>
+
+                    <h3>Xóa shop die</h3>
+                    <input id="input-shop-die-name" placeholder="Tên Shop Die">
+                    <button id="submit-shop-die-button">Submit</button>
+
+                    <p style="color: red;">Nhớ nhập chính xác thông tin!</p>
+
+                    <h3>Xóa User</h3>
+                    <input id="input-user-name-delete" placeholder="Tên User">
+                    <button id="submit-user-delete-button">Submit</button>
+
+                    <p style="color: red;">Hành động không thể khôi phục !!! </p>
                 </div>
             </main>
         </div>
     </div>
-
-
 </body>
 
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<!-- <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js"></script> -->
 
-<!-- <script src="/js/socket.io.js"></script> -->
-
-<!-- <script src="client.js"></script> -->
+<script src="/js/socket.io.js"></script>
+<!-- <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script> -->
+<script src="tools.js"></script>
 <script src="js/app.js"></script>
 </html>

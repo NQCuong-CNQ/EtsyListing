@@ -27,14 +27,20 @@ var io = require("socket.io")(server)
 
 const limit = 100
 const api_key = '2mlnbmgdqv6esclz98opmmuq'
-var total_sales = []
-
 let siteUrl
 
 const MongoClient = require('mongodb').MongoClient
 const url = "mongodb://localhost:27017/trackingdb"
 
-updateData()
+scheduleUpdate()
+async function scheduleUpdate() {
+  let date_ob = new Date()
+  if (date_ob.getHours() == 5) {
+    await updateData()
+  }
+
+  setInterval(scheduleUpdate, 1800000) // 30p
+}
 
 async function makeRequest(method, url) {
   return new Promise(function (resolve, reject) {
@@ -106,11 +112,12 @@ async function connectDB(response) {
 
   response = JSON.parse(response).results
   console.log("100 document inserted")
+  var total_sales = []
 
   for (var i = 0; i < limit; i++) {
     await dbo.collection("shop").updateOne({ shop_name: response[i].shop_name }, { $set: response[i] }, { upsert: true })
-
     siteUrl = "https://www.etsy.com/shop/" + response[i].shop_name
+
     total_sales = await getTotalSalesFromWeb()
 
     console.log(response[i].shop_name + ":" + total_sales)
@@ -136,7 +143,25 @@ async function updateData() {
 
   await updateListing()
   await updateUser()
-  console.log("Update completed")
+  await completeUpdate()
+}
+
+async function completeUpdate() {
+  let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
+  var dbo = client.db("trackingdb")
+
+  let date_ob = new Date()
+  let date = ("0" + date_ob.getDate()).slice(-2)
+  let month = ("0" + (date_ob.getMonth() + 1)).slice(-2)
+  let year = date_ob.getFullYear()
+  let hours = ("0" + date_ob.getHours()).slice(-2)
+  let minutes = ("0" + date_ob.getMinutes()).slice(-2)
+  let seconds = ("0" + date_ob.getSeconds()).slice(-2)
+  let timeNow = year + "-" + month + "-" + date + " " + hours + ":" + minutes + ":" + seconds
+
+  dbo.collection("log").insertOne({ updateHistory: timeNow })
+  console.log("Update completed at: " + timeNow)
+  client.close()
 }
 
 app.get("/", function (req, res, next) {
@@ -146,19 +171,39 @@ app.get("/", function (req, res, next) {
 app.use(express.static("public"))
 
 io.on("connection", async function (client) {
-  let clientMongo = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
-  var dbo = clientMongo.db("trackingdb")
+  let clientDB = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
+  var dbo = clientDB.db("trackingdb")
+
+  let clientDBBraumstar = await MongoClient.connect('mongodb://zic:Mynewpassword%400@braumstar.com:27020/zicDb?authSource=zicDb', { useNewUrlParser: true, useUnifiedTopology: true })
+  var dboBraumstar = clientDBBraumstar.db("zicDb")
 
   client.on("join", async function (data) {
     console.log('1 client connected')
-    let dbData = await dbo.collection("shop").find({ total_sales: { $gte: 10 } }).toArray()
-    // let dbData = await dbo.collection("shop").find().toArray()
+    // let dbData = await dbo.collection("shop").find({ total_sales: { $gte: 10 } }).toArray()
+    let dbData = await dbo.collection("shop").find().toArray()
     await client.emit("dataTransfer", dbData)
   })
 
   client.on("shop_id", async function (shop_id) {
-    let dbData = await dbo.collection("listing").find({ shop_id: shop_id }).toArray()
+    let dbData = await dbo.collection("listing").find({ shop_id: { "$eq": shop_id } }).toArray()
     await client.emit("listingDataTransfer", dbData)
+  })
+
+  client.on("get_user_by_shop_id", async function (user_id) {
+    let dbData = await dbo.collection("shop").find({ user_id: { "$eq": user_id } })
+    await client.emit("userDataTransfer", dbData)
+  })
+
+  client.on("new-user", async function (dataUser) {
+    var data = {
+      _id: null,
+      username: dataUser.userName,
+      password: dataUser.pass,
+      createdAt: Date.now() / 1000 | 0,
+      updatedAr: Date.now() / 1000 | 0
+    }
+    await dboBraumstar.insertOne(data)
+    // await client.emit("userDataTransfer", dbData)
   })
 })
 
