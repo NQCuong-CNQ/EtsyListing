@@ -16,14 +16,14 @@ const cheerio = require('cheerio')
 var server = require("http").createServer(app)
 var io = require("socket.io")(server)
 
-// app.use(function cors(req, res, next) {
-//   res.setHeader('Access-Control-Allow-Origin', '*')
-//   res.setHeader('Access-Control-Allow-Headers', 'X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method,Access-Control-Request-Headers, Authorization, append,delete,entries,foreach,get,has,keys,set,values')
-//   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE')
-//   if (req.method === 'OPTIONS') {
-//     res.status(200);
-//   }next()
-// })
+app.use(function cors(req, res, next) {
+  res.setHeader('Access-Control-Allow-Origin', '*')
+  res.setHeader('Access-Control-Allow-Headers', 'X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method,Access-Control-Request-Headers, Authorization')
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE')
+  if (req.method === 'OPTIONS') {
+    res.status(200);
+  }next()
+})
 
 const limit = 100
 const api_key = '2mlnbmgdqv6esclz98opmmuq'
