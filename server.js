@@ -26,7 +26,8 @@ var io = require("socket.io")(server)
 
 const limit = 100
 const api_key = '2mlnbmgdqv6esclz98opmmuq'
-let siteUrl
+var siteUrl
+var category = ['']
 
 const MongoClient = require('mongodb').MongoClient
 const url = "mongodb://localhost:27017/trackingdb"
@@ -49,10 +50,10 @@ async function updateData() {
 
 async function getShopName() {
   siteUrl = 'https://www.etsy.com/c/home-and-living/home-decor/wall-decor/wall-hangings/prints?explicit=1&ref=pagination&page='
-  for (let i = 0; i < 1; i++) {
+  for (let i = 0; i < 50; i++) {
     let siteUrlPage = siteUrl + i
     let dataShopName = await getShopNameFromWeb(siteUrlPage)
-    console.log('num shop name: ' + dataShopName.length)
+    console.log('page: ' + i)
     await saveShopNameToDB(dataShopName)
   }
 }
@@ -227,7 +228,6 @@ io.on("connection", async function (client) {
 async function fetchData(siteUrl) {
   let result
   try {
-    console.log('getting web data')
     result = await axios.get(siteUrl)
   } catch (err) {
     result = err.response.status
