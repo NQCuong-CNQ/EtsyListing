@@ -3,8 +3,8 @@ var socket = io.connect("http://giftsvk.com:80")
 var shopData
 var listingData
 
-socket.on("connect", function (data) {
-  socket.emit("join")
+socket.on("connect", async function (data) {
+  await socket.emit("join")
 
   socket.on("dataTransfer", function (data) {
     shopData = data
@@ -18,15 +18,14 @@ function updateData(shopData) {
     $('#table').append(`<tr>
         <td onclick="getShopDetail(${i})"><i class="fas fa-info-circle pointer"></i></td>
         <td>${shopData[i].shop_name}</td>
-        <td>${shopData[i].shop_id}</td>
         <td><a href='${shopData[i].url}' target="_blank">www.etsy.com/shop...</a></td>
         <td>${shopData[i].total_sales}</td>
         <td>${getTime(shopData[i].creation_tsz)}</td>
         <td>${shopData[i].currency_code}</td>
         <td>${shopData[i].listing_active_count}</td>
-        <td>${shopData[i].digital_listing_count}</td>
         <td>${shopData[i].num_favorers}</td>
         <td>${shopData[i].languages}</td>
+        <td>${shopData[i].shop_id}</td>
     </tr>`)
   }
 
@@ -37,12 +36,94 @@ function updateData(shopData) {
 }
 
 async function getShopDetail(i) {
+  await socket.emit("shop-tracking", shopData[i].shop_id)
+
+  socket.on("shop-tracking-data", function (data) {
+    var ctx = document.getElementById("chart-total-sales").getContext("2d");
+    var gradient = ctx.createLinearGradient(0, 0, 0, 225);
+    gradient.addColorStop(0, "rgba(215, 227, 244, 1)");
+    gradient.addColorStop(1, "rgba(215, 227, 244, 0)");
+
+    let label = []
+    let total_sales = []
+    for (let index = 0; index < data.length; index++) {
+      let time = data[index].time_update.split('-')
+      label.push(time[2].substr(0, 2).trim() + '/' + time[1])
+      total_sales.push(data[index].total_sales)
+    }
+    new Chart(document.getElementById("chart-total-sales"), {
+      type: "line",
+      data: {
+        labels: label,
+        datasets: [{
+          label: "Total Sales",
+          fill: true,
+          backgroundColor: gradient,
+          borderColor: window.theme.primary,
+          data: total_sales,
+        }]
+      },
+      options: {
+        maintainAspectRatio: false,
+        legend: {
+          display: false
+        },
+        tooltips: {
+          intersect: false
+        },
+        hover: {
+          intersect: true
+        },
+        plugins: {
+          filler: {
+            propagate: false
+          }
+        },
+        scales: {
+          xAxes: [{
+            reverse: true,
+            gridLines: {
+              color: "rgba(0,0,0,0.0)"
+            }
+          }],
+          yAxes: [{
+            ticks: {
+              stepSize: 1000
+            },
+            display: true,
+            borderDash: [3, 3],
+            gridLines: {
+              color: "rgba(0,0,0,0.0)"
+            }
+          }]
+        }
+      }
+    });
+  })
+
   $('#option-shop-section').css("display", "block")
   $('#list-shop-section').css("display", "none")
   $('#listing-shop-section').css("display", "none")
   $('#user-shop-section').css("display", "none")
+
   $('#shop-id-option-section').text(shopData[i].shop_id)
   $('#shop-name-option-section').text(shopData[i].shop_name)
+  $('#shop-title-option-section').text(shopData[i].title)
+  $('#shop-url-option-section').text(shopData[i].url)
+  $('#shop-announcement-option-section').text(shopData[i].announcement)
+  $('#shop-creation-time-option-section').text(getTime(shopData[i].creation_tsz))
+  $('#shop-currency_code-option-section').text(shopData[i].currency_code)
+  $('#shop-digital_listing_count-option-section').text(shopData[i].digital_listing_count)
+  $('#shop-is_vacation-option-section').text(shopData[i].is_vacation)
+  $('#shop-last_updated_tsz-option-section').text(getTime(shopData[i].last_updated_tsz))
+  $('#shop-listing_active_count-option-section').text(shopData[i].listing_active_count)
+  $('#shop-num_favorers-option-section').text(shopData[i].num_favorers)
+  $('#shop-policy_payment-option-section').text(shopData[i].policy_payment)
+  $('#shop-policy_refunds-option-section').text(shopData[i].policy_refunds)
+  $('#shop-policy_shipping-option-section').text(shopData[i].policy_shipping)
+  $('#shop-sale_message-option-section').text(shopData[i].sale_message)
+  $('#shop-policy_additional-option-section').text(shopData[i].policy_additional)
+  $('#shop-user_id-option-section').text(shopData[i].user_id)
 
   $('#listing-option-button').on('click', async function () {
     await getListingOption(i)

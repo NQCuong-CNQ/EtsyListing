@@ -3,3 +3,19 @@ th, td { white-space: nowrap; }
 .dataTables_scrollHeadInner{
     margin: auto;
 }
+.dropdown button{
+    border: 1px solid;
+}
+.dropdown a{
+    font-size: 16px;
+    color: black;
+}
+.dropdown li{
+    padding: 0.5rem 1rem;
+}
+.dropdown li:hover{
+    background-color: #495057;
+}
+.dropdown li:hover a{
+    color: white
+}

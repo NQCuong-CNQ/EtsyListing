@@ -49,9 +49,10 @@ async function updateData() {
 
 async function getShopName() {
   siteUrl = 'https://www.etsy.com/c/home-and-living/home-decor/wall-decor/wall-hangings/prints?explicit=1&ref=pagination&page='
-  for (let i = 0; i < 50; i++) {
+  for (let i = 0; i < 1; i++) {
     let siteUrlPage = siteUrl + i
     let dataShopName = await getShopNameFromWeb(siteUrlPage)
+    console.log('num shop name: ' + dataShopName.length)
     await saveShopNameToDB(dataShopName)
   }
 }
@@ -60,11 +61,17 @@ async function saveShopNameToDB(dataShopName) {
   let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
   var dbo = client.db("trackingdb")
 
-  console.log(dataShopName)
   for (var i = 0; i < dataShopName.length; i++) {
-    await dbo.collection("shopName").updateOne({ shop_name: dataShopName[i] }, { $set: { shop_name: dataShopName[i] } }, { upsert: true })
+    siteUrl = "https://www.etsy.com/shop/" + dataShopName[i]
+
+    let total_sales = await getTotalSalesFromWeb(siteUrl)
+    total_sales = parseInt(total_sales)
+    console.log(dataShopName[i] + ":" + total_sales)
+
+    await dbo.collection("shopName").updateOne({ shop_name: dataShopName[i] }, { $set: { shop_name: dataShopName[i], total_sales: total_sales } }, { upsert: true })
   }
   client.close()
+  await sleep(100)
 }
 
 async function updateUser() {
@@ -121,9 +128,10 @@ async function sleep(ms) {
 }
 
 async function updateShopInfo() {
-  let clientDB = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
-  var dbo = clientDB.db("trackingdb")
-  let dbData = await dbo.collection("shopName").find().toArray()
+  let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
+  var dbo = client.db("trackingdb")
+  let dbData = await dbo.collection("shopName").find({ total_sales: { $gte: 100, $lte: 5000 } }).toArray()
+
   for (let index = 0; index < dbData.length; index++) {
     let response = await makeRequest("GET", `https://openapi.etsy.com/v2/shops/${dbData[index].shop_name}?api_key=${api_key}`)
     response = JSON.parse(response).results
@@ -131,20 +139,15 @@ async function updateShopInfo() {
     console.log(response[0].shop_id)
     await dbo.collection("shop").updateOne({ shop_id: response[0].shop_id }, { $set: response[0] }, { upsert: true })
 
-    siteUrl = "https://www.etsy.com/shop/" + dbData[index].shop_name
-
-    let total_sales = await getTotalSalesFromWeb(siteUrl)
-    total_sales = parseInt(total_sales)
-    console.log(dbData[index].shop_name + ":" + total_sales)
-
     let timeNow = getDateTimeNow()
     await dbo.collection("shopTracking").insertOne({
       'shop_id': response[0].shop_id,
-      'total_sales': total_sales,
+      'total_sales': dbData[index].total_sales,
       'time_update': timeNow
     })
-    await dbo.collection("shop").updateOne({ shop_id: response[0].shop_id }, { $set: { total_sales: total_sales } }, { upsert: true })
+    await dbo.collection("shop").updateOne({ shop_id: response[0].shop_id }, { $set: { total_sales: dbData[index].total_sales } }, { upsert: true })
   }
+  client.close()
 }
 
 function getDateTimeNow() {
@@ -165,7 +168,7 @@ async function completeUpdate() {
 
   let timeNow = getDateTimeNow()
 
-  dbo.collection("log").insertOne({ updateHistory: timeNow })
+  await dbo.collection("log").insertOne({ updateHistory: timeNow })
   console.log("Update completed at: " + timeNow)
   client.close()
 }
@@ -185,7 +188,7 @@ io.on("connection", async function (client) {
 
   client.on("join", async function (data) {
     console.log('1 client connected')
-    let dbData = await dbo.collection("shop").find({ total_sales: { $gte: 100, $lte: 5000 } }).toArray()
+    let dbData = await dbo.collection("shop").find().toArray()
     await client.emit("dataTransfer", dbData)
   })
 
@@ -197,6 +200,15 @@ io.on("connection", async function (client) {
   client.on("get_user_by_shop_id", async function (user_id) {
     let dbData = await dbo.collection("shop").find({ user_id: { "$eq": user_id } })
     await client.emit("userDataTransfer", dbData)
+  })
+
+  client.on("shop-tracking", async function (shop_id) {
+    let dbData = await dbo.collection("shopTracking").find({ shop_id: { "$eq": shop_id } }).toArray()
+    await client.emit("shop-tracking-data", dbData)
+
+
+
+    // await client.emit("shop-category-list-data", dbData)
   })
 
   // client.on("new-user", async function (dataUser) {
@@ -215,6 +227,7 @@ io.on("connection", async function (client) {
 async function fetchData(siteUrl) {
   let result
   try {
+    console.log('getting web data')
     result = await axios.get(siteUrl)
   } catch (err) {
     result = err.response.status
@@ -235,6 +248,22 @@ async function getTotalSalesFromWeb(siteUrl) {
     return 0
   }
   return postJobButton[0]
+}
+// getShopCategoryFromWeb()
+async function getShopCategoryFromWeb(siteUrl = null) {
+  const $ = await fetchData('https://www.etsy.com/shop/AfremovFamily')
+  if ($ == 0) {
+    return 0
+  }
+  let postJobButton = $('.vertical-tabs[aria-label="Sections"]').text()
+  console.log(postJobButton)
+  // postJobButton = postJobButton.split('shop ')
+  // postJobButton.splice(0, 1);
+  // for (let index = 0; index < postJobButton.length; index++) {
+  //   postJobButton[index] = postJobButton[index].split(' ')[0].trim()
+  // }
+
+  // return postJobButton
 }
 
 async function getShopNameFromWeb(siteUrl) {
