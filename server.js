@@ -181,6 +181,7 @@ io.on("connection", async function (client) {
     let dbData = await dbo.collection("shop").find().toArray()
     console.log('sdf')
     await client.emit("dataTransfer", dbData)
+    console.log('dine')
   })
 
   client.on("shop_id", async function (shop_id) {
