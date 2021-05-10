@@ -7,7 +7,7 @@ socket.on("connect", function (data) {
   socket.emit("join")
 })
 
-socet.on("dataTransfer", function (data) {
+socket.on("dataTransfer", function (data) {
   shopData = data
   console.log('asdfsda')
   updateData(shopData)
