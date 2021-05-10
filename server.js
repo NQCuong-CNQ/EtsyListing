@@ -40,7 +40,7 @@ async function scheduleUpdate() {
 }
 updateData()
 async function updateData() {
-  // await getShopName()
+  await getShopName()
   await updateShopInfo()
   // await updateListing()
   // await updateUser()
@@ -103,7 +103,7 @@ async function updateListing() {
         console.log('pass')
         continue
       }
-      
+
       result = JSON.parse(result).results
       var count = Object.keys(result).length;
       for (let j = 0; j < count; j++) {
@@ -163,7 +163,7 @@ async function completeUpdate() {
   let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
   var dbo = client.db("trackingdb")
 
-  timeNow = getDateTimeNow()
+  let timeNow = getDateTimeNow()
 
   dbo.collection("log").insertOne({ updateHistory: timeNow })
   console.log("Update completed at: " + timeNow)
@@ -187,7 +187,6 @@ io.on("connection", async function (client) {
     console.log('1 client connected')
     let dbData = await dbo.collection("shop").find({ total_sales: { $gte: 100, $lte: 5000 } }).toArray()
     await client.emit("dataTransfer", dbData)
-    console.log('dine')
   })
 
   client.on("shop_id", async function (shop_id) {
