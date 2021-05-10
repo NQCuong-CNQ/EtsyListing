@@ -93,12 +93,12 @@ async function getShopName() {
       console.log('siteUrlPage: ' + siteUrlPage)
       let dataShopName = await getShopNameFromWeb(siteUrlPage)
       console.log('page: ' + i)
-      await saveShopNameToDB(dataShopName)
+      await saveShopNameToDB(dataShopName, categoryList[index])
     }
   }
 }
 
-async function saveShopNameToDB(dataShopName) {
+async function saveShopNameToDB(dataShopName, category) {
   let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
   let dbo = client.db("trackingdb")
 
@@ -115,7 +115,7 @@ async function saveShopNameToDB(dataShopName) {
     total_sales = parseInt(total_sales)
     console.log(shopName[index].shop_name + ":" + total_sales)
 
-    await dbo.collection("shopName").updateOne({ shop_name: shopName[index] }, { $set: { total_sales: total_sales } }, { upsert: true })
+    await dbo.collection("shopName").updateOne({ shop_name: shopName[index] }, { $set: { total_sales: total_sales, category: category } }, { upsert: true })
   }
 
   client.close()
