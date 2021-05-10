@@ -5,13 +5,13 @@ var listingData
 
 socket.on("connect", function (data) {
   socket.emit("join")
-})
 
-socket.on("dataTransfer", function (data) {
-  shopData = data
-  console.log('asdfsda')
-  updateData(shopData)
-  console.log('ddd')
+  socket.on("dataTransfer", function (data) {
+    shopData = data
+    console.log('asdfsda')
+    updateData(shopData)
+    console.log('ddd')
+  })
 })
 
 function updateData(shopData) {
