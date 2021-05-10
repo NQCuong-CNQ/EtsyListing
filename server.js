@@ -31,7 +31,7 @@ let siteUrl
 
 const MongoClient = require('mongodb').MongoClient
 const url = "mongodb://localhost:27017/trackingdb"
-await updateData()
+// await updateData()
 setInterval(scheduleUpdate, 1800000) // 30p
 async function scheduleUpdate() {
   let date_ob = new Date()
@@ -177,8 +177,8 @@ io.on("connection", async function (client) {
 
   client.on("join", async function (data) {
     console.log('1 client connected')
-    let dbData = await dbo.collection("shop").find({ total_sales: { $gte: 10 } }).toArray()
-    // let dbData = await dbo.collection("shop").find().toArray()
+    // let dbData = await dbo.collection("shop").find({ total_sales: { $gte: 10 } }).toArray()
+    let dbData = await dbo.collection("shop").find().toArray()
     await client.emit("dataTransfer", dbData)
   })
 
