@@ -9,6 +9,7 @@ socket.on("connect", function (data) {
 
 socket.on("dataTransfer", function (data) {
   shopData = data
+  alert('asdfsda')
   updateData(shopData)
 })
 
