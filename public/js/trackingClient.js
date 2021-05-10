@@ -8,9 +8,7 @@ socket.on("connect", function (data) {
 
   socket.on("dataTransfer", function (data) {
     shopData = data
-    console.log('asdfsda')
     updateData(shopData)
-    console.log('ddd')
   })
 })
 

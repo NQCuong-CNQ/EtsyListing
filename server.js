@@ -7,7 +7,6 @@ var xhr = new XMLHttpRequest()
 const axios = require("axios")
 const cheerio = require('cheerio')
 
-// console.log(fs.readFileSync("ssl/te.txt"))
 // var https_options = {
 //   cert: fs.readFileSync("ssl/certificate.crt"),
 //   ca: fs.readFileSync('ssl/ca_bundle.crt')
@@ -16,14 +15,14 @@ const cheerio = require('cheerio')
 var server = require("http").createServer(app)
 var io = require("socket.io")(server)
 
-app.use(function cors(req, res, next) {
-  res.setHeader('Access-Control-Allow-Origin', '*')
-  res.setHeader('Access-Control-Allow-Headers', 'X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method,Access-Control-Request-Headers, Authorization')
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE')
-  if (req.method === 'OPTIONS') {
-    res.status(200);
-  }next()
-})
+// app.use(function cors(req, res, next) {
+//   res.setHeader('Access-Control-Allow-Origin', '*')
+//   res.setHeader('Access-Control-Allow-Headers', 'X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method,Access-Control-Request-Headers, Authorization')
+//   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE')
+//   if (req.method === 'OPTIONS') {
+//     res.status(200);
+//   }next()
+// })
 
 const limit = 100
 const api_key = '2mlnbmgdqv6esclz98opmmuq'
@@ -31,31 +30,41 @@ let siteUrl
 
 const MongoClient = require('mongodb').MongoClient
 const url = "mongodb://localhost:27017/trackingdb"
-// await updateData()
+
 setInterval(scheduleUpdate, 1800000) // 30p
 async function scheduleUpdate() {
   let date_ob = new Date()
-  if (date_ob.getHours() == 5) {
+  if (date_ob.getHours() == 7) {
     await updateData()
   }
 }
+updateData()
+async function updateData() {
+  // await getShopName()
+  await updateShopInfo()
+  // await updateListing()
+  // await updateUser()
+  await completeUpdate()
+}
 
-async function makeRequest(method, url) {
-  return new Promise(function (resolve, reject) {
-    xhr.open(method, url, true)
-    xhr.onreadystatechange = function () {
-      if (xhr.readyState === xhr.DONE) {
-        let status = xhr.status
-        if (status === 0 || (status >= 200 && status < 400)) {
-          resolve(xhr.responseText)
-        }
-        else if (status === 404) {
-          resolve(0)
-        }
-      }
-    }
-    xhr.send();
-  })
+async function getShopName() {
+  siteUrl = 'https://www.etsy.com/c/home-and-living/home-decor/wall-decor/wall-hangings/prints?explicit=1&ref=pagination&page='
+  for (let i = 0; i < 50; i++) {
+    let siteUrlPage = siteUrl + i
+    let dataShopName = await getShopNameFromWeb(siteUrlPage)
+    await saveShopNameToDB(dataShopName)
+  }
+}
+
+async function saveShopNameToDB(dataShopName) {
+  let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
+  var dbo = client.db("trackingdb")
+
+  console.log(dataShopName)
+  for (var i = 0; i < dataShopName.length; i++) {
+    await dbo.collection("shopName").updateOne({ shop_name: dataShopName[i] }, { $set: { shop_name: dataShopName[i] } }, { upsert: true })
+  }
+  client.close()
 }
 
 async function updateUser() {
@@ -86,7 +95,7 @@ async function updateListing() {
   let dataShop = await dbo.collection("shop").find().toArray()
 
   for (let i = 0; i < dataShop.length; i++) {
-    if (dataShop[i].total_sales >= 10) {
+    if (dataShop[i].total_sales >= 100) {
       console.log('get listing shop: ' + dataShop[i].shop_id)
 
       let result = await makeRequest("GET", `https://openapi.etsy.com/v2/shops/${dataShop[i].shop_id}/listings/active?api_key=${api_key}`) //limit 100
@@ -94,6 +103,7 @@ async function updateListing() {
         console.log('pass')
         continue
       }
+      
       result = JSON.parse(result).results
       var count = Object.keys(result).length;
       for (let j = 0; j < count; j++) {
@@ -104,50 +114,40 @@ async function updateListing() {
   }
 }
 
-async function connectDB(response) {
-  let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
-  var dbo = client.db("trackingdb")
-
-  response = JSON.parse(response).results
-  console.log("100 document inserted")
-  var total_sales = []
-
-  for (var i = 0; i < limit; i++) {
-    await dbo.collection("shop").updateOne({ shop_name: response[i].shop_name }, { $set: response[i] }, { upsert: true })
-    siteUrl = "https://www.etsy.com/shop/" + response[i].shop_name
-
-    total_sales = await getTotalSalesFromWeb()
-
-    console.log(response[i].shop_name + ":" + total_sales)
-    await dbo.collection("shop").updateOne({ shop_name: response[i].shop_name }, { $set: { "total_sales": total_sales } }, { upsert: true })
-  }
-
-  client.close()
-}
-
 async function sleep(ms) {
   return new Promise(
     resolve => setTimeout(resolve, ms)
   );
 }
 
-async function updateData() {
-  for (let i = 453; i < 501; i++) {
-    console.log('offset: ' + i * 100)
+async function updateShopInfo() {
+  let clientDB = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
+  var dbo = clientDB.db("trackingdb")
+  let dbData = await dbo.collection("shopName").find().toArray()
+  for (let index = 0; index < dbData.length; index++) {
+    let response = await makeRequest("GET", `https://openapi.etsy.com/v2/shops/${dbData[index].shop_name}?api_key=${api_key}`)
+    response = JSON.parse(response).results
 
-    let result = await makeRequest("GET", `https://openapi.etsy.com/v2/shops?api_key=${api_key}&limit=${limit}&offset=${i * 100}`)
-    await connectDB(result)
+    console.log(response[0].shop_id)
+    await dbo.collection("shop").updateOne({ shop_id: response[0].shop_id }, { $set: response[0] }, { upsert: true })
+
+    siteUrl = "https://www.etsy.com/shop/" + dbData[index].shop_name
+
+    let total_sales = await getTotalSalesFromWeb(siteUrl)
+    total_sales = parseInt(total_sales)
+    console.log(dbData[index].shop_name + ":" + total_sales)
+
+    let timeNow = getDateTimeNow()
+    await dbo.collection("shopTracking").insertOne({
+      'shop_id': response[0].shop_id,
+      'total_sales': total_sales,
+      'time_update': timeNow
+    })
+    await dbo.collection("shop").updateOne({ shop_id: response[0].shop_id }, { $set: { total_sales: total_sales } }, { upsert: true })
   }
-
-  await updateListing()
-  await updateUser()
-  await completeUpdate()
 }
 
-async function completeUpdate() {
-  let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
-  var dbo = client.db("trackingdb")
-
+function getDateTimeNow() {
   let date_ob = new Date()
   let date = ("0" + date_ob.getDate()).slice(-2)
   let month = ("0" + (date_ob.getMonth() + 1)).slice(-2)
@@ -156,6 +156,14 @@ async function completeUpdate() {
   let minutes = ("0" + date_ob.getMinutes()).slice(-2)
   let seconds = ("0" + date_ob.getSeconds()).slice(-2)
   let timeNow = year + "-" + month + "-" + date + " " + hours + ":" + minutes + ":" + seconds
+  return timeNow
+}
+
+async function completeUpdate() {
+  let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
+  var dbo = client.db("trackingdb")
+
+  timeNow = getDateTimeNow()
 
   dbo.collection("log").insertOne({ updateHistory: timeNow })
   console.log("Update completed at: " + timeNow)
@@ -177,9 +185,7 @@ io.on("connection", async function (client) {
 
   client.on("join", async function (data) {
     console.log('1 client connected')
-    let dbData = await dbo.collection("shop").find({ total_sales: { $gte: 10 } }).toArray()
-    // let dbData = await dbo.collection("shop").find().toArray()
-    console.log(dbData)
+    let dbData = await dbo.collection("shop").find({ total_sales: { $gte: 100, $lte: 5000 } }).toArray()
     await client.emit("dataTransfer", dbData)
     console.log('dine')
   })
@@ -203,11 +209,11 @@ io.on("connection", async function (client) {
   //     updatedAr: Date.now() / 1000 | 0
   //   }
   //   await dboBraumstar.insertOne(data)
-    // await client.emit("userDataTransfer", dbData)
+  // await client.emit("userDataTransfer", dbData)
   // })
 })
 
-async function fetchData() {
+async function fetchData(siteUrl) {
   let result
   try {
     result = await axios.get(siteUrl)
@@ -220,8 +226,8 @@ async function fetchData() {
   return cheerio.load(result.data)
 }
 
-async function getTotalSalesFromWeb() {
-  const $ = await fetchData()
+async function getTotalSalesFromWeb(siteUrl) {
+  const $ = await fetchData(siteUrl)
   if ($ == 0) {
     return 0
   }
@@ -230,6 +236,39 @@ async function getTotalSalesFromWeb() {
     return 0
   }
   return postJobButton[0]
+}
+
+async function getShopNameFromWeb(siteUrl) {
+  const $ = await fetchData(siteUrl)
+  if ($ == 0) {
+    return 0
+  }
+  let postJobButton = $('ul.tab-reorder-container').text()
+  postJobButton = postJobButton.split('shop ')
+  postJobButton.splice(0, 1);
+  for (let index = 0; index < postJobButton.length; index++) {
+    postJobButton[index] = postJobButton[index].split(' ')[0].trim()
+  }
+
+  return postJobButton
+}
+
+async function makeRequest(method, url) {
+  return new Promise(function (resolve, reject) {
+    xhr.open(method, url, true)
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState === xhr.DONE) {
+        let status = xhr.status
+        if (status === 0 || (status >= 200 && status < 400)) {
+          resolve(xhr.responseText)
+        }
+        else if (status === 404) {
+          resolve(0)
+        }
+      }
+    }
+    xhr.send();
+  })
 }
 
 server.listen(80)
