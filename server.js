@@ -174,8 +174,8 @@ io.on("connection", async function (client) {
   let clientDB = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
   var dbo = clientDB.db("trackingdb")
 
-  let clientDBBraumstar = await MongoClient.connect('mongodb://zic:Mynewpassword%400@braumstar.com:27020/zicDb?authSource=zicDb', { useNewUrlParser: true, useUnifiedTopology: true })
-  var dboBraumstar = clientDBBraumstar.db("zicDb")
+  // let clientDBBraumstar = await MongoClient.connect('mongodb://zic:Mynewpassword%400@braumstar.com:27020/zicDb?authSource=zicDb', { useNewUrlParser: true, useUnifiedTopology: true })
+  // var dboBraumstar = clientDBBraumstar.db("zicDb")
 
   client.on("join", async function (data) {
     console.log('1 client connected')
