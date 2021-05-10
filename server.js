@@ -27,7 +27,6 @@ var io = require("socket.io")(server)
 const limit = 100
 const api_key = '2mlnbmgdqv6esclz98opmmuq'
 var siteUrl
-var category = ['Canvas', 'Mug', 'Shirt', 'Blanket']
 
 const MongoClient = require('mongodb').MongoClient
 const url = "mongodb://localhost:27017/trackingdb"
@@ -39,8 +38,38 @@ async function scheduleUpdate() {
     await updateData()
   }
 }
+
+async function updateCate() {
+  let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
+  var dbo = client.db("trackingdb")
+
+  // let category = {
+  //   'Canvas': '',
+  //   'Mug': '',
+  //   'Blanket': '',
+  //   'Shirt': '',
+  //   'Tumbler': '',
+  //   'Canvas-link': 'https://www.etsy.com/c/home-and-living/home-decor/wall-decor/wall-hangings/prints?explicit=1&ref=pagination&page=',
+  //   'Mug-link': 'https://www.etsy.com/c/home-and-living/kitchen-and-dining/drink-and-barware/drinkware/mugs?explicit=1&ref=pagination&page=',
+  //   'Blanket-link': 'https://www.etsy.com/c/home-and-living/bedding/blankets-and-throws?ref=pagination&explicit=1&page=',
+  //   'Shirt-link': 'https://www.etsy.com/c/clothing/mens-clothing/shirts-and-tees?ref=pagination&page=',
+  //   'Tumbler-link': 'https://www.etsy.com/c/home-and-living/kitchen-and-dining/drink-and-barware/drinkware/tumblers-and-water-glasses?explicit=1&ref=pagination&page='
+  // }
+  let category = {
+    'CategoryList': 'Canvas,Mug,Blanket,Shirt,Tumbler',
+    'Canvas': '',
+    'Mug': '',
+    'Blanket': '',
+    'Shirt': '',
+    'Tumbler': '',
+    'CategoryLink': 'https://www.etsy.com/c/home-and-living/home-decor/wall-decor/wall-hangings/prints?explicit=1&ref=pagination&page=|https://www.etsy.com/c/home-and-living/kitchen-and-dining/drink-and-barware/drinkware/mugs?explicit=1&ref=pagination&page=|https://www.etsy.com/c/home-and-living/bedding/blankets-and-throws?ref=pagination&explicit=1&page=|https://www.etsy.com/c/clothing/mens-clothing/shirts-and-tees?ref=pagination&page=|https://www.etsy.com/c/home-and-living/kitchen-and-dining/drink-and-barware/drinkware/tumblers-and-water-glasses?explicit=1&ref=pagination&page=',
+  }
+  await dbo.collection("category").insertOne(category)
+}
+
 updateData()
 async function updateData() {
+  await updateCate()
   await getShopName()
   await updateShopInfo()
   // await updateListing()
@@ -49,31 +78,46 @@ async function updateData() {
 }
 
 async function getShopName() {
-  // for (let index = 0; index < category.length; index++){
-    let siteShopUrl = 'https://www.etsy.com/c/home-and-living/home-decor/wall-decor/wall-hangings/prints?explicit=1&ref=pagination&page='
+  let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
+  var dbo = client.db("trackingdb")
+  let category = await dbo.collection("category").find({}).toArray()
+
+  let categoryList = category[0].CategoryList.split(',')
+  let categoryLink = category[0].CategoryLink.split('|')
+  client.close()
+  
+  for (let index = 0; index < categoryList.length; index++) {
+    console.log('category: ' + categoryList[index])
     for (let i = 0; i < 50; i++) {
-     
-      let siteUrlPage = siteShopUrl + i
+      let siteUrlPage = categoryLink[index] + i
+      console.log('siteUrlPage: ' + siteUrlPage)
       let dataShopName = await getShopNameFromWeb(siteUrlPage)
       console.log('page: ' + i)
       await saveShopNameToDB(dataShopName)
     }
-  // }
+  }
 }
 
 async function saveShopNameToDB(dataShopName) {
   let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
-  var dbo = client.db("trackingdb")
+  let dbo = client.db("trackingdb")
 
-  for (var i = 0; i < dataShopName.length; i++) {
-    siteUrl = "https://www.etsy.com/shop/" + dataShopName[i]
+  for (let i = 0; i < dataShopName.length; i++) {
+    await dbo.collection("shopName").updateOne({ shop_name: dataShopName[i] }, { $set: { shop_name: dataShopName[i] } }, { upsert: true })
+  }
+
+  let shopName = await dbo.collection("shopName").find({}).toArray()
+
+  for (let index = 0; index < shopName.length; index++) {
+    siteUrl = "https://www.etsy.com/shop/" + shopName[index].shop_name
 
     let total_sales = await getTotalSalesFromWeb(siteUrl)
     total_sales = parseInt(total_sales)
-    console.log(dataShopName[i] + ":" + total_sales)
+    console.log(shopName[index].shop_name + ":" + total_sales)
 
-    await dbo.collection("shopName").updateOne({ shop_name: dataShopName[i] }, { $set: { shop_name: dataShopName[i], total_sales: total_sales } }, { upsert: true })
+    await dbo.collection("shopName").updateOne({ shop_name: shopName[index] }, { $set: { total_sales: total_sales } }, { upsert: true })
   }
+
   client.close()
   await sleep(100)
 }
