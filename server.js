@@ -27,7 +27,7 @@ var io = require("socket.io")(server)
 const limit = 100
 const api_key = '2mlnbmgdqv6esclz98opmmuq'
 var siteUrl
-var category = ['']
+var category = ['Canvas', 'Mug', 'Shirt', 'Blanket']
 
 const MongoClient = require('mongodb').MongoClient
 const url = "mongodb://localhost:27017/trackingdb"
@@ -49,13 +49,16 @@ async function updateData() {
 }
 
 async function getShopName() {
-  siteUrl = 'https://www.etsy.com/c/home-and-living/home-decor/wall-decor/wall-hangings/prints?explicit=1&ref=pagination&page='
-  for (let i = 0; i < 50; i++) {
-    let siteUrlPage = siteUrl + i
-    let dataShopName = await getShopNameFromWeb(siteUrlPage)
-    console.log('page: ' + i)
-    await saveShopNameToDB(dataShopName)
-  }
+  // for (let index = 0; index < category.length; index++){
+    let siteShopUrl = 'https://www.etsy.com/c/home-and-living/home-decor/wall-decor/wall-hangings/prints?explicit=1&ref=pagination&page='
+    for (let i = 0; i < 50; i++) {
+     
+      let siteUrlPage = siteShopUrl + i
+      let dataShopName = await getShopNameFromWeb(siteUrlPage)
+      console.log('page: ' + i)
+      await saveShopNameToDB(dataShopName)
+    }
+  // }
 }
 
 async function saveShopNameToDB(dataShopName) {
