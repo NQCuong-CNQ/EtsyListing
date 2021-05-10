@@ -179,7 +179,7 @@ io.on("connection", async function (client) {
     console.log('1 client connected')
     // let dbData = await dbo.collection("shop").find({ total_sales: { $gte: 10 } }).toArray()
     let dbData = await dbo.collection("shop").find().toArray()
-    console.log('sdf')
+    console.log(dbData)
     await client.emit("dataTransfer", dbData)
     console.log('dine')
   })
@@ -194,17 +194,17 @@ io.on("connection", async function (client) {
     await client.emit("userDataTransfer", dbData)
   })
 
-  client.on("new-user", async function (dataUser) {
-    var data = {
-      _id: null,
-      username: dataUser.userName,
-      password: dataUser.pass,
-      createdAt: Date.now() / 1000 | 0,
-      updatedAr: Date.now() / 1000 | 0
-    }
-    await dboBraumstar.insertOne(data)
+  // client.on("new-user", async function (dataUser) {
+  //   var data = {
+  //     _id: null,
+  //     username: dataUser.userName,
+  //     password: dataUser.pass,
+  //     createdAt: Date.now() / 1000 | 0,
+  //     updatedAr: Date.now() / 1000 | 0
+  //   }
+  //   await dboBraumstar.insertOne(data)
     // await client.emit("userDataTransfer", dbData)
-  })
+  // })
 })
 
 async function fetchData() {
