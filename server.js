@@ -67,7 +67,7 @@ async function updateCate() {
   await dbo.collection("category").insertOne(category)
 }
 
-updateData()
+// updateData()
 async function updateData() {
   await updateCate()
   await getShopName()
