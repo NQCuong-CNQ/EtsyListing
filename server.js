@@ -169,7 +169,7 @@ app.get("/", function (req, res, next) {
 });
 
 app.use(express.static("public"))
-
+console.log('sdf')
 io.on("connection", async function (client) {
   let clientDB = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
   var dbo = clientDB.db("trackingdb")
@@ -179,8 +179,8 @@ io.on("connection", async function (client) {
 
   client.on("join", async function (data) {
     console.log('1 client connected')
-    // let dbData = await dbo.collection("shop").find({ total_sales: { $gte: 10 } }).toArray()
-    let dbData = await dbo.collection("shop").find().toArray()
+    let dbData = await dbo.collection("shop").find({ total_sales: { $gte: 10 } }).toArray()
+    // let dbData = await dbo.collection("shop").find().toArray()
     await client.emit("dataTransfer", dbData)
   })
 
