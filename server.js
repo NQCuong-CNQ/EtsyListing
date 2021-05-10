@@ -31,15 +31,13 @@ let siteUrl
 
 const MongoClient = require('mongodb').MongoClient
 const url = "mongodb://localhost:27017/trackingdb"
-
-scheduleUpdate()
+await updateData()
+setInterval(scheduleUpdate, 1800000) // 30p
 async function scheduleUpdate() {
   let date_ob = new Date()
   if (date_ob.getHours() == 5) {
     await updateData()
   }
-
-  setInterval(scheduleUpdate, 1800000) // 30p
 }
 
 async function makeRequest(method, url) {
@@ -134,7 +132,7 @@ async function sleep(ms) {
 }
 
 async function updateData() {
-  for (let i = 0; i < 501; i++) {
+  for (let i = 453; i < 501; i++) {
     console.log('offset: ' + i * 100)
 
     let result = await makeRequest("GET", `https://openapi.etsy.com/v2/shops?api_key=${api_key}&limit=${limit}&offset=${i * 100}`)
