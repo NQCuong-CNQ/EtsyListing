@@ -25,6 +25,7 @@ var io = require("socket.io")(server)
 // })
 
 const limit = 100
+const limitPage = 1
 const api_key = '2mlnbmgdqv6esclz98opmmuq'
 var siteUrl
 
@@ -34,7 +35,7 @@ const url = "mongodb://localhost:27017/trackingdb"
 setInterval(scheduleUpdate, 1800000) // 30p
 async function scheduleUpdate() {
   let date_ob = new Date()
-  if (date_ob.getHours() == 7) {
+  if (date_ob.getHours() == 0) {
     await updateData()
   }
 }
@@ -43,25 +44,8 @@ async function updateCate() {
   let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
   var dbo = client.db("trackingdb")
 
-  // let category = {
-  //   'Canvas': '',
-  //   'Mug': '',
-  //   'Blanket': '',
-  //   'Shirt': '',
-  //   'Tumbler': '',
-  //   'Canvas-link': 'https://www.etsy.com/c/home-and-living/home-decor/wall-decor/wall-hangings/prints?explicit=1&ref=pagination&page=',
-  //   'Mug-link': 'https://www.etsy.com/c/home-and-living/kitchen-and-dining/drink-and-barware/drinkware/mugs?explicit=1&ref=pagination&page=',
-  //   'Blanket-link': 'https://www.etsy.com/c/home-and-living/bedding/blankets-and-throws?ref=pagination&explicit=1&page=',
-  //   'Shirt-link': 'https://www.etsy.com/c/clothing/mens-clothing/shirts-and-tees?ref=pagination&page=',
-  //   'Tumbler-link': 'https://www.etsy.com/c/home-and-living/kitchen-and-dining/drink-and-barware/drinkware/tumblers-and-water-glasses?explicit=1&ref=pagination&page='
-  // }
   let category = {
     'CategoryList': 'Canvas,Mug,Blanket,Shirt,Tumbler',
-    'Canvas': '',
-    'Mug': '',
-    'Blanket': '',
-    'Shirt': '',
-    'Tumbler': '',
     'CategoryLink': 'https://www.etsy.com/c/home-and-living/home-decor/wall-decor/wall-hangings/prints?explicit=1&ref=pagination&page=|https://www.etsy.com/c/home-and-living/kitchen-and-dining/drink-and-barware/drinkware/mugs?explicit=1&ref=pagination&page=|https://www.etsy.com/c/home-and-living/bedding/blankets-and-throws?ref=pagination&explicit=1&page=|https://www.etsy.com/c/clothing/mens-clothing/shirts-and-tees?ref=pagination&page=|https://www.etsy.com/c/home-and-living/kitchen-and-dining/drink-and-barware/drinkware/tumblers-and-water-glasses?explicit=1&ref=pagination&page=',
   }
   await dbo.collection("category").insertOne(category)
@@ -85,12 +69,13 @@ async function getShopName() {
   let categoryList = category[0].CategoryList.split(',')
   let categoryLink = category[0].CategoryLink.split('|')
   client.close()
-  
+
   for (let index = 0; index < categoryList.length; index++) {
     console.log('category: ' + categoryList[index])
-    for (let i = 0; i < 50; i++) {
+    for (let i = 0; i < limitPage; i++) {
       let siteUrlPage = categoryLink[index] + i
       console.log('siteUrlPage: ' + siteUrlPage)
+
       let dataShopName = await getShopNameFromWeb(siteUrlPage)
       console.log('page: ' + i)
       await saveShopNameToDB(dataShopName, categoryList[index])
@@ -98,24 +83,39 @@ async function getShopName() {
   }
 }
 
-async function saveShopNameToDB(dataShopName, category) {
+async function saveShopNameToDB(dataShopName, shopCategory) {
   let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
   let dbo = client.db("trackingdb")
 
   for (let i = 0; i < dataShopName.length; i++) {
     await dbo.collection("shopName").updateOne({ shop_name: dataShopName[i] }, { $set: { shop_name: dataShopName[i] } }, { upsert: true })
-  }
 
+    let currentVal = await dbo.collection("shopCategory").find({ shop_name: dataShopName[i] }).toArray()
+    let currCate = ''
+    let newshopCategory = shopCategory
+    if (currentVal != '') {
+      currCate = currentVal[0].category
+      if (currCate.includes(shopCategory)) {
+        newshopCategory = currCate
+      } else {
+        newshopCategory = currCate + ',' + shopCategory
+      }
+    }
+
+    console.log('shop cate: ' + newshopCategory)
+    await dbo.collection("shopCategory").updateOne({ shop_name: dataShopName[i] }, { $set: { shop_name: dataShopName[i], category: newshopCategory } }, { upsert: true })
+  }
+  console.log('save all shop name success')
   let shopName = await dbo.collection("shopName").find({}).toArray()
 
   for (let index = 0; index < shopName.length; index++) {
     siteUrl = "https://www.etsy.com/shop/" + shopName[index].shop_name
-
+    console.log("getting " + siteUrl)
     let total_sales = await getTotalSalesFromWeb(siteUrl)
+
     total_sales = parseInt(total_sales)
     console.log(shopName[index].shop_name + ":" + total_sales)
-
-    await dbo.collection("shopName").updateOne({ shop_name: shopName[index] }, { $set: { total_sales: total_sales, category: category } }, { upsert: true })
+    await dbo.collection("shopName").updateOne({ shop_name: shopName[index].shop_name }, { $set: { total_sales: total_sales } }, { upsert: true })
   }
 
   client.close()
@@ -184,13 +184,15 @@ async function updateShopInfo() {
     let response = await makeRequest("GET", `https://openapi.etsy.com/v2/shops/${dbData[index].shop_name}?api_key=${api_key}`)
     response = JSON.parse(response).results
 
-    console.log(response[0].shop_id)
+    console.log('updateShopInfo: ' + response[0].shop_id)
     await dbo.collection("shop").updateOne({ shop_id: response[0].shop_id }, { $set: response[0] }, { upsert: true })
 
     let timeNow = getDateTimeNow()
     await dbo.collection("shopTracking").insertOne({
       'shop_id': response[0].shop_id,
       'total_sales': dbData[index].total_sales,
+      'listing_active_count': response[0].listing_active_count,
+      'num_favorers': response[0].num_favorers,
       'time_update': timeNow
     })
     await dbo.collection("shop").updateOne({ shop_id: response[0].shop_id }, { $set: { total_sales: dbData[index].total_sales } }, { upsert: true })
@@ -240,14 +242,16 @@ io.on("connection", async function (client) {
     await client.emit("dataTransfer", dbData)
   })
 
-  client.on("shop_id", async function (shop_id) {
-    let dbData = await dbo.collection("listing").find({ shop_id: { "$eq": shop_id } }).toArray()
-    await client.emit("listingDataTransfer", dbData)
+  client.on("get_listing_shop_id", async function (shop_id) {
+    let result = await makeRequest("GET", `https://openapi.etsy.com/v2/shops/${shop_id}/listings/active?api_key=${api_key}`)
+    result = JSON.parse(result).results
+    await client.emit("listingDataTransfer", result)
   })
 
-  client.on("get_user_by_shop_id", async function (user_id) {
-    let dbData = await dbo.collection("shop").find({ user_id: { "$eq": user_id } })
-    await client.emit("userDataTransfer", dbData)
+  client.on("get_user_by_user_id", async function (user_id) {
+    let result = await makeRequest("GET", `https://openapi.etsy.com/v2/users/${user_id}/profile?api_key=${api_key}`)
+    result = JSON.parse(result).results
+    await client.emit("userDataTransfer", result[0])
   })
 
   client.on("shop-tracking", async function (shop_id) {
@@ -255,8 +259,12 @@ io.on("connection", async function (client) {
     await client.emit("shop-tracking-data", dbData)
 
 
-
     // await client.emit("shop-category-list-data", dbData)
+  })
+
+  client.on("get-shop-filter", async function () {
+    let dbData = await dbo.collection("shopCategory").find().toArray()
+    await client.emit("shopCategoryDataTransfer", dbData)
   })
 
   // client.on("new-user", async function (dataUser) {

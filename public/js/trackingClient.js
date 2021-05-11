@@ -1,7 +1,8 @@
-var socket = io.connect("http://giftsvk.com:80")
-// var socket = io.connect("http://localhost:80")
+// var socket = io.connect("http://giftsvk.com:80")
+var socket = io.connect("http://localhost:80")
 var shopData
 var listingData
+var category
 
 socket.on("connect", async function (data) {
   await socket.emit("join")
@@ -46,10 +47,14 @@ async function getShopDetail(i) {
 
     let label = []
     let total_sales = []
+    let num_favorers = []
+    let listing_active_count = []
     for (let index = 0; index < data.length; index++) {
       let time = data[index].time_update.split('-')
       label.push(time[2].substr(0, 2).trim() + '/' + time[1])
       total_sales.push(data[index].total_sales)
+      num_favorers.push(data[index].num_favorers)
+      listing_active_count.push(data[index].listing_active_count)
     }
     new Chart(document.getElementById("chart-total-sales"), {
       type: "line",
@@ -61,6 +66,18 @@ async function getShopDetail(i) {
           backgroundColor: gradient,
           borderColor: window.theme.primary,
           data: total_sales,
+        },{
+          label: "Num Favorers",
+          fill: true,
+          backgroundColor: gradient,
+          borderColor: 'red',
+          data: num_favorers,
+        },{
+          label: "Listing Active Count",
+          fill: true,
+          backgroundColor: gradient,
+          borderColor: 'yellow',
+          data: listing_active_count,
         }]
       },
       options: {
@@ -107,7 +124,7 @@ async function getShopDetail(i) {
   $('#user-shop-section').css("display", "none")
 
   $('#shop-id-option-section').text(shopData[i].shop_id)
-  $('#shop-name-option-section').text(shopData[i].shop_name)
+  $('#shop-name-option-section').text('Shop name: '+shopData[i].shop_name)
   $('#shop-title-option-section').text(shopData[i].title)
   $('#shop-url-option-section').text(shopData[i].url)
   $('#shop-announcement-option-section').text(shopData[i].announcement)
@@ -133,13 +150,61 @@ async function getShopDetail(i) {
   })
 }
 
+$('#all-shop-filter').on('click', async function () {
+  $('#dropdown-filter-shop').text('All')
+  updateData(shopData)
+})
+
+$('#canvas-shop-filter').on('click', async function () {
+  category = 'Canvas'
+  await shopFilterAction(category)
+}) 
+
+$('#shirt-shop-filter').on('click', async function () {
+  category = 'Shirt'
+  await shopFilterAction(category)
+})  
+
+$('#mug-shop-filter').on('click', async function () {
+  category = 'Mug'
+  await shopFilterAction(category)
+})  
+
+$('#blanket-shop-filter').on('click', async function () {
+  category = 'Blanket'
+  await shopFilterAction(category)
+})
+
+async function shopFilterAction(category) {
+  $('#dropdown-filter-shop').text(category)
+  await socket.emit("get-shop-filter")
+  await socket.on("shopCategoryDataTransfer", function (data) {
+    let listShopName = []
+    for (let i = 0; i < data.length; i++) {
+      if(data[i].category.includes(category)){
+        listShopName.push(data[i].shop_name)
+      }
+    }
+
+    var shopDataFilter = []
+    for (let index = 0; index < listShopName.length; index++) {
+      for (let j = 0; j < shopData.length; j++) {
+        if(listShopName[index] == shopData[j].shop_name){
+          shopDataFilter.push(shopData[j])
+        }
+      }
+    }
+    updateData(shopDataFilter)
+  })
+}
+
 async function getUserOption(i) {
+  await socket.emit("get_user_by_user_id", shopData[i].user_id)
+
   $('#option-shop-section').css("display", "none")
   $('#list-shop-section').css("display", "none")
   $('#listing-shop-section').css("display", "none")
   $('#user-shop-section').css("display", "block")
-
-  await socket.emit("get_user_by_user_id", shopData[i].user_id)
 
   await socket.on("userDataTransfer", function (data) {
     $('#user_id').text(data.user_id)
@@ -168,7 +233,7 @@ function getTime(input) {
 }
 
 async function getListingOption(i) {
-  await socket.emit("shop_id", shopData[i].shop_id)
+  await socket.emit("get_listing_shop_id", shopData[i].shop_id)
 
   $('#option-shop-section').css("display", "none")
   $('#list-shop-section').css("display", "none")
@@ -181,6 +246,7 @@ async function getListingOption(i) {
       let taxonomy = data[i].taxonomy_path
       taxonomy = taxonomy[taxonomy.length - 1]
       $('#table-list').append(`<tr>
+            <td>${i}</td>
             <td>${data[i].title}</td>
             <td>${taxonomy}</td>
             <td>${data[i].price}</td>
@@ -202,5 +268,19 @@ async function getListingOption(i) {
       scrollX: 400,
       pageLength: 25
     })
+  })
+}
+
+
+var coll = document.getElementsByClassName("collapsible")
+for (let i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function() {
+    this.classList.toggle("active")
+    var content = this.nextElementSibling
+    if (content.style.display === "block") {
+      content.style.display = "none";
+    } else {
+      content.style.display = "block"
+    }
   })
 }
