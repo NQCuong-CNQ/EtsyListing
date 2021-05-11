@@ -58,7 +58,6 @@ $('#submit-shop-list-button').on('click', async function () {
         for (let i = 0; i < data.length; i++) {
             shop += data[i].brandName + '\n'
         }
-        // shop = shop.substring(0, shop.length - 2);
         $('#list-shop').text(shop)
     })
 })

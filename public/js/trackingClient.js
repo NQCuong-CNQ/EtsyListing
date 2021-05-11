@@ -14,11 +14,11 @@ socket.on("connect", async function (data) {
 
   await socket.emit("get-total-shop")
   await socket.on("total-shop", function (data) {
-    $('#fun-fact').text("Bạn có biết? Tổng số shop được tạo ra trên Etsy lên đến "+data.toLocaleString()+" shop")
+    $('#fun-fact').text("Bạn có biết? Tổng số shop được tạo ra trên Etsy lên đến " + data.toLocaleString() + " shop")
   })
 
   await socket.on("last-updated", function (data) {
-    $('#last-updated').text("Last updated: "+data.updateHistory)
+    $('#last-updated').text("Last updated: " + data.updateHistory)
   })
 })
 
@@ -75,13 +75,13 @@ async function getShopDetail(i) {
           backgroundColor: gradient,
           borderColor: window.theme.primary,
           data: total_sales,
-        },{
+        }, {
           label: "Num Favorers",
           fill: true,
           backgroundColor: gradient,
           borderColor: 'red',
           data: num_favorers,
-        },{
+        }, {
           label: "Listing Active Count",
           fill: true,
           backgroundColor: gradient,
@@ -133,7 +133,7 @@ async function getShopDetail(i) {
   $('#user-shop-section').css("display", "none")
 
   $('#shop-id-option-section').text(shopData[i].shop_id)
-  $('#shop-name-option-section').text('Shop name: '+shopData[i].shop_name)
+  $('#shop-name-option-section').text('Shop name: ' + shopData[i].shop_name)
   $('#shop-title-option-section').text(shopData[i].title)
   $('#shop-url-option-section').text(shopData[i].url)
   $('#shop-announcement-option-section').text(shopData[i].announcement)
@@ -167,17 +167,17 @@ $('#all-shop-filter').on('click', async function () {
 $('#canvas-shop-filter').on('click', async function () {
   category = 'Canvas'
   await shopFilterAction(category)
-}) 
+})
 
 $('#shirt-shop-filter').on('click', async function () {
   category = 'Shirt'
   await shopFilterAction(category)
-})  
+})
 
 $('#mug-shop-filter').on('click', async function () {
   category = 'Mug'
   await shopFilterAction(category)
-})  
+})
 
 $('#blanket-shop-filter').on('click', async function () {
   category = 'Blanket'
@@ -190,7 +190,7 @@ async function shopFilterAction(category) {
   await socket.on("shopCategoryDataTransfer", function (data) {
     let listShopName = []
     for (let i = 0; i < data.length; i++) {
-      if(data[i].category.includes(category)){
+      if (data[i].category.includes(category)) {
         listShopName.push(data[i].shop_name)
       }
     }
@@ -198,7 +198,7 @@ async function shopFilterAction(category) {
     var shopDataFilter = []
     for (let index = 0; index < listShopName.length; index++) {
       for (let j = 0; j < shopData.length; j++) {
-        if(listShopName[index] == shopData[j].shop_name){
+        if (listShopName[index] == shopData[j].shop_name) {
           shopDataFilter.push(shopData[j])
         }
       }
@@ -282,7 +282,7 @@ async function getListingOption(i) {
 
 var coll = document.getElementsByClassName("collapsible")
 for (let i = 0; i < coll.length; i++) {
-  coll[i].addEventListener("click", function() {
+  coll[i].addEventListener("click", function () {
     this.classList.toggle("active")
     var content = this.nextElementSibling
     if (content.style.display === "block") {
