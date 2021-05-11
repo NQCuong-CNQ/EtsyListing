@@ -1,5 +1,5 @@
-// var socket = io.connect("http://giftsvk.com:80")
-var socket = io.connect("http://localhost:80")
+var socket = io.connect("http://giftsvk.com:80")
+// var socket = io.connect("http://localhost:80")
 var shopData
 var listingData
 var category
@@ -7,9 +7,14 @@ var category
 socket.on("connect", async function (data) {
   await socket.emit("join")
 
-  socket.on("dataTransfer", function (data) {
+  await socket.on("dataTransfer", function (data) {
     shopData = data
     updateData(shopData)
+  })
+
+  await socket.emit("get-total-shop")
+  await socket.on("total-shop", function (data) {
+    $('#fun-fact').text("Bạn có biết? Tổng số shop được tạo ra trên Etsy lên đến "+data.toLocaleString()+" shop")
   })
 })
 
@@ -20,11 +25,11 @@ function updateData(shopData) {
         <td onclick="getShopDetail(${i})"><i class="fas fa-info-circle pointer"></i></td>
         <td>${shopData[i].shop_name}</td>
         <td><a href='${shopData[i].url}' target="_blank">www.etsy.com/shop...</a></td>
-        <td>${shopData[i].total_sales}</td>
+        <td>${shopData[i].total_sales.toLocaleString()}</td>
         <td>${getTime(shopData[i].creation_tsz)}</td>
         <td>${shopData[i].currency_code}</td>
-        <td>${shopData[i].listing_active_count}</td>
-        <td>${shopData[i].num_favorers}</td>
+        <td>${shopData[i].listing_active_count.toLocaleString()}</td>
+        <td>${shopData[i].num_favorers.toLocaleString()}</td>
         <td>${shopData[i].languages}</td>
         <td>${shopData[i].shop_id}</td>
     </tr>`)
@@ -39,7 +44,7 @@ function updateData(shopData) {
 async function getShopDetail(i) {
   await socket.emit("shop-tracking", shopData[i].shop_id)
 
-  socket.on("shop-tracking-data", function (data) {
+  await socket.on("shop-tracking-data", function (data) {
     var ctx = document.getElementById("chart-total-sales").getContext("2d");
     var gradient = ctx.createLinearGradient(0, 0, 0, 225);
     gradient.addColorStop(0, "rgba(215, 227, 244, 1)");
@@ -76,7 +81,7 @@ async function getShopDetail(i) {
           label: "Listing Active Count",
           fill: true,
           backgroundColor: gradient,
-          borderColor: 'yellow',
+          borderColor: 'green',
           data: listing_active_count,
         }]
       },
@@ -130,11 +135,11 @@ async function getShopDetail(i) {
   $('#shop-announcement-option-section').text(shopData[i].announcement)
   $('#shop-creation-time-option-section').text(getTime(shopData[i].creation_tsz))
   $('#shop-currency_code-option-section').text(shopData[i].currency_code)
-  $('#shop-digital_listing_count-option-section').text(shopData[i].digital_listing_count)
+  $('#shop-digital_listing_count-option-section').text(shopData[i].digital_listing_count.toLocaleString())
   $('#shop-is_vacation-option-section').text(shopData[i].is_vacation)
   $('#shop-last_updated_tsz-option-section').text(getTime(shopData[i].last_updated_tsz))
-  $('#shop-listing_active_count-option-section').text(shopData[i].listing_active_count)
-  $('#shop-num_favorers-option-section').text(shopData[i].num_favorers)
+  $('#shop-listing_active_count-option-section').text(shopData[i].listing_active_count.toLocaleString())
+  $('#shop-num_favorers-option-section').text(shopData[i].num_favorers.toLocaleString())
   $('#shop-policy_payment-option-section').text(shopData[i].policy_payment)
   $('#shop-policy_refunds-option-section').text(shopData[i].policy_refunds)
   $('#shop-policy_shipping-option-section').text(shopData[i].policy_shipping)
@@ -219,8 +224,8 @@ async function getUserOption(i) {
     $('#user_creation_time').text(data.join_tsz)
     $('#user_location').text(data.location)
     $('#user_region').text(data.region)
-    $('#user_buy_count').text(data.transaction_buy_count)
-    $('#user_sold_count').text(data.transaction_sold_count)
+    $('#user_buy_count').text(data.transaction_buy_count.toLocaleString())
+    $('#user_sold_count').text(data.transaction_sold_count.toLocaleString())
   })
 }
 
@@ -249,11 +254,11 @@ async function getListingOption(i) {
             <td>${i}</td>
             <td>${data[i].title}</td>
             <td>${taxonomy}</td>
-            <td>${data[i].price}</td>
+            <td>${data[i].price.toLocaleString()}</td>
             <td>${getTime(data[i].creation_tsz)}</td>
-            <td>${data[i].views}</td>
-            <td>${data[i].num_favorers}</td>
-            <td>${data[i].quantity}</td>
+            <td>${data[i].views.toLocaleString()}</td>
+            <td>${data[i].num_favorers.toLocaleString()}</td>
+            <td>${data[i].quantity.toLocaleString()}</td>
             <td><a href='${data[i].url}' target="_blank">www.etsy.com/listing...</a></td>
             <td>${data[i].occasion}</td>
             <td>${data[i].is_customizable}</td>
@@ -271,7 +276,6 @@ async function getListingOption(i) {
   })
 }
 
-
 var coll = document.getElementsByClassName("collapsible")
 for (let i = 0; i < coll.length; i++) {
   coll[i].addEventListener("click", function() {
@@ -284,3 +288,7 @@ for (let i = 0; i < coll.length; i++) {
     }
   })
 }
+
+$('#tracking-analysis-option-button').on('click', async function () {
+  alert("Đang được phát triển!\nChức năng ghi lại toàn bộ số lượng listing theo ngày, vẽ biểu đồ và phân tích")
+})

@@ -101,8 +101,8 @@
                     <h1>Tracking</h1>
                     <div id="list-shop-section">
                         <h5>Show shop above 100 sales</h5>
-                        <div style="display: flex; margin-bottom: 1rem;">
-                            <h5 style=" margin-right: 1rem; align-self: flex-end;">Show shop sells:</h5>
+                        <div class="d-flex mb-3">
+                            <h5 style="margin-right: 1rem; align-self: flex-end;">Show shop sells:</h5>
                             <div class="dropdown">
                                 <button class="btn dropdown-toggle" type="button" data-toggle="dropdown"><span
                                         id="dropdown-filter-shop">All</span>
@@ -152,14 +152,15 @@
                                 </tbody>
                             </table>
                         </div>
+                        <h6 id="fun-fact"></h6>
                     </div>
 
                     <div id="option-shop-section" style="display: none">
                         <h3 id="shop-name-option-section"></h3>
 
                         <button type="button" class='button-primary' id="listing-option-button">Listing Detail</button>
-                        <button type="button" class='button-primary' id="user-option-button">User Detail</button>
-                        <button type="button" class='button-primary' id="tracking-analysis-option-button">Tracking and
+                        <button type="button" class='button-primary ml-3' id="user-option-button">User Detail</button>
+                        <button type="button" class='button-primary ml-3' id="tracking-analysis-option-button">Tracking and
                             Analysis</button>
 
                         <h3 style="margin-top: 1rem;">Total sales chart</h3>
@@ -167,7 +168,7 @@
                             <canvas id="chart-total-sales"></canvas>
                         </div>
 
-                        <button type="button" class="collapsible button-primary">More Information</button>
+                        <button type="button" class="collapsible button-primary mt-3">More Information</button>
                         <div class="content-collap-shop-info">
                             <h5>ID: <span id="shop-id-option-section"></span></h5>
                             <h5>Title: <span id="shop-title-option-section"></span></h5>

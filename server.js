@@ -25,7 +25,7 @@ var io = require("socket.io")(server)
 // })
 
 const limit = 100
-const limitPage = 50
+const limitPage = 20
 const api_key = '2mlnbmgdqv6esclz98opmmuq'
 var siteUrl
 
@@ -52,10 +52,10 @@ async function updateCate() {
   await dbo.collection("category").insertOne(category)
 }
 
-// updateData()
+updateData() 
 async function updateData() {
-  await updateCate()
-  await getShopName()
+  // await updateCate()
+  // await getShopName()
   await updateShopInfo()
   // await updateListing()
   // await updateUser()
@@ -235,35 +235,41 @@ io.on("connection", async function (client) {
   var dbo = clientDB.db("trackingdb")
 
 
-  client.on("join", async function (data) {
+  await client.on("join", async function (data) {
     console.log('1 client connected')
     let dbData = await dbo.collection("shop").find().toArray()
     await client.emit("dataTransfer", dbData)
   })
 
-  client.on("get_listing_shop_id", async function (shop_id) {
+  await client.on("get-total-shop", async function () {
+    let result = await makeRequest("GET", `https://openapi.etsy.com/v2/shops?api_key=${api_key}&limit=1&offset=1`)
+    result = JSON.parse(result).results
+    await client.emit("total-shop", result[0].shop_id)
+  })
+
+  await client.on("get_listing_shop_id", async function (shop_id) {
     let result = await makeRequest("GET", `https://openapi.etsy.com/v2/shops/${shop_id}/listings/active?api_key=${api_key}`)
     result = JSON.parse(result).results
     await client.emit("listingDataTransfer", result)
   })
 
-  client.on("get_user_by_user_id", async function (user_id) {
+  await client.on("get_user_by_user_id", async function (user_id) {
     let result = await makeRequest("GET", `https://openapi.etsy.com/v2/users/${user_id}/profile?api_key=${api_key}`)
     result = JSON.parse(result).results
     await client.emit("userDataTransfer", result[0])
   })
 
-  client.on("shop-tracking", async function (shop_id) {
+  await client.on("shop-tracking", async function (shop_id) {
     let dbData = await dbo.collection("shopTracking").find({ shop_id: { "$eq": shop_id } }).toArray()
     await client.emit("shop-tracking-data", dbData)
   })
 
-  client.on("get-shop-filter", async function () {
+  await client.on("get-shop-filter", async function () {
     let dbData = await dbo.collection("shopCategory").find().toArray()
     await client.emit("shopCategoryDataTransfer", dbData)
   })
 
-  client.on("get-list-shop-braumstar", async function (dataUser) {
+  await client.on("get-list-shop-braumstar", async function (dataUser) {
     clientDB.close()
     let clientDBBraumstar = await MongoClient.connect('mongodb://zic:Mynewpassword%400@braumstar.com:27020/zicDb?authSource=zicDb', { useNewUrlParser: true, useUnifiedTopology: true })
     var dboBraumstar = clientDBBraumstar.db("zicDb")
@@ -273,7 +279,7 @@ io.on("connection", async function (client) {
     clientDBBraumstar.close()
   })
 
-  client.on("new-user-braumstar", async function (dataUser) {
+  await client.on("new-user-braumstar", async function (dataUser) {
     clientDB.close()
     let clientDBBraumstar = await MongoClient.connect('mongodb://zic:Mynewpassword%400@braumstar.com:27020/zicDb?authSource=zicDb', { useNewUrlParser: true, useUnifiedTopology: true })
     var dboBraumstar = clientDBBraumstar.db("zicDb")
@@ -307,7 +313,7 @@ io.on("connection", async function (client) {
     clientDBBraumstar.close()
   })
 
-  client.on("add-shop-braumstar", async function (dataShop) {
+  await client.on("add-shop-braumstar", async function (dataShop) {
     clientDB.close()
     let clientDBBraumstar = await MongoClient.connect('mongodb://zic:Mynewpassword%400@braumstar.com:27020/zicDb?authSource=zicDb', { useNewUrlParser: true, useUnifiedTopology: true })
     var dboBraumstar = clientDBBraumstar.db("zicDb")
@@ -344,8 +350,8 @@ io.on("connection", async function (client) {
     await client.emit("return-add-shop-braumstar", isSuccess)
     clientDBBraumstar.close()
   })
-  
-  client.on("delete-shop-braumstar", async function (dataShop) {
+
+  await client.on("delete-shop-braumstar", async function (dataShop) {
     clientDB.close()
     let clientDBBraumstar = await MongoClient.connect('mongodb://zic:Mynewpassword%400@braumstar.com:27020/zicDb?authSource=zicDb', { useNewUrlParser: true, useUnifiedTopology: true })
     var dboBraumstar = clientDBBraumstar.db("zicDb")

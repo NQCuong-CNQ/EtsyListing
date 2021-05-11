@@ -59,3 +59,11 @@ textarea{
     font-size: 16px;
     padding: 3px;
 }
+#submit-shop-button{
+    height: min-content;
+    margin-left: 0.5rem;
+}
+#submit-shop-die-button{
+    height: min-content;
+    margin-left: 0.5rem;
+}
