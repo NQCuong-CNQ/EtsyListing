@@ -9,16 +9,20 @@ socket.on("connect", async function (data) {
 
   await socket.on("dataTransfer", function (data) {
     shopData = data
-    updateData(shopData)
+    updateData()
   })
 
   await socket.emit("get-total-shop")
   await socket.on("total-shop", function (data) {
     $('#fun-fact').text("Bạn có biết? Tổng số shop được tạo ra trên Etsy lên đến "+data.toLocaleString()+" shop")
   })
+
+  await socket.on("last-updated", function (data) {
+    $('#last-updated').text("Last updated: "+data.updateHistory)
+  })
 })
 
-function updateData(shopData) {
+function updateData() {
   $('#table_id').DataTable().clear().destroy()
   for (var i = 0; i < shopData.length; i++) {
     $('#table').append(`<tr>
@@ -157,7 +161,7 @@ async function getShopDetail(i) {
 
 $('#all-shop-filter').on('click', async function () {
   $('#dropdown-filter-shop').text('All')
-  updateData(shopData)
+  updateData()
 })
 
 $('#canvas-shop-filter').on('click', async function () {
@@ -271,7 +275,7 @@ async function getListingOption(i) {
 
     $('#table_id-list').DataTable({
       scrollX: 400,
-      pageLength: 25
+      pageLength: 10
     })
   })
 }

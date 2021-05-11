@@ -238,6 +238,9 @@ io.on("connection", async function (client) {
     console.log('1 client connected')
     let dbData = await dbo.collection("shop").find().toArray()
     await client.emit("dataTransfer", dbData)
+
+    let lastUpdated = await dbo.collection("log").find().toArray()
+    await client.emit("last-updated", lastUpdated[lastUpdated.length-1])
   })
 
   await client.on("get-total-shop", async function () {
@@ -388,27 +391,11 @@ async function getTotalSalesFromWeb(siteUrl) {
   if ($ == 0) {
     return 0
   }
-  let postJobButton = $('.shop-sales-reviews > span').text().split(' ')
-  if (postJobButton == '') {
+  let totalSales = $('.shop-sales-reviews > span').text().split(' ')
+  if (totalSales == '') {
     return 0
   }
-  return postJobButton[0]
-}
-// getShopCategoryFromWeb()
-async function getShopCategoryFromWeb(siteUrl = null) {
-  const $ = await fetchData('https://www.etsy.com/shop/AfremovFamily')
-  if ($ == 0) {
-    return 0
-  }
-  let postJobButton = $('.vertical-tabs[aria-label="Sections"]').text()
-  console.log(postJobButton)
-  // postJobButton = postJobButton.split('shop ')
-  // postJobButton.splice(0, 1);
-  // for (let index = 0; index < postJobButton.length; index++) {
-  //   postJobButton[index] = postJobButton[index].split(' ')[0].trim()
-  // }
-
-  // return postJobButton
+  return totalSales[0].replace(/,/g, '')
 }
 
 async function getShopNameFromWeb(siteUrl) {
@@ -416,14 +403,14 @@ async function getShopNameFromWeb(siteUrl) {
   if ($ == 0) {
     return 0
   }
-  let postJobButton = $('ul.tab-reorder-container').text()
-  postJobButton = postJobButton.split('shop ')
-  postJobButton.splice(0, 1);
-  for (let index = 0; index < postJobButton.length; index++) {
-    postJobButton[index] = postJobButton[index].split(' ')[0].trim()
+  let shopName = $('ul.tab-reorder-container').text()
+  shopName = shopName.split('shop ')
+  shopName.splice(0, 1);
+  for (let index = 0; index < shopName.length; index++) {
+    shopName[index] = shopName[index].split(' ')[0].trim()
   }
 
-  return postJobButton
+  return shopName
 }
 
 async function makeRequest(method, url) {
