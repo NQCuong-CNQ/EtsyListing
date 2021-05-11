@@ -67,3 +67,6 @@ textarea{
     height: min-content;
     margin-left: 0.5rem;
 }
+#list-shop{
+    white-space: pre-wrap;
+}

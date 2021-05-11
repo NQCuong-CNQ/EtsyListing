@@ -2,7 +2,7 @@ var socket = io.connect("http://giftsvk.com:80")
 // var socket = io.connect("http://localhost:80")
 
 $('#submit-user-button').on('click', async function () {
-    let data = { userName: $('#input-user-name').val(), pass: $('#input-user-pass').val() }
+    let data = { userName: $('#input-user-name').val().trim(), pass: $('#input-user-pass').val().trim() }
     socket.emit("new-user-braumstar", data)
 
     socket.on("return-new-user-braumstar", function (data) {
@@ -19,7 +19,7 @@ $('#submit-user-button').on('click', async function () {
 })
 
 $('#submit-shop-button').on('click', async function () {
-    let data = { shopname: $('#input-shop-name').val(), user: $('#input-user-shop-name').val(), country: $('#input-country-shop-name').val() }
+    let data = { shopname: $('#input-shop-name').val(), user: $('#input-user-shop-name').val().trim(), country: $('#input-country-shop-name').val().trim() }
     socket.emit("add-shop-braumstar", data)
 
     socket.on("return-add-shop-braumstar", function (data) {
@@ -47,7 +47,7 @@ $('#submit-shop-die-button').on('click', async function () {
 })
 
 $('#submit-shop-list-button').on('click', async function () {
-    let data = $('#input-user-shop-list').val()
+    let data = $('#input-user-shop-list').val().trim()
     await socket.emit("get-list-shop-braumstar", data)
 
     socket.on("list-shop-braumstar", function (data) {
@@ -56,8 +56,9 @@ $('#submit-shop-list-button').on('click', async function () {
         }
         let shop = ''
         for (let i = 0; i < data.length; i++) {
-            shop += data[i].brandName + ', '
+            shop += data[i].brandName + '\n'
         }
+        // shop = shop.substring(0, shop.length - 2);
         $('#list-shop').text(shop)
     })
 })
