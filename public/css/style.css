@@ -51,3 +51,11 @@ th, td { white-space: nowrap; }
 .dropdown-toggle:hover{
     background-color: none !important;
 }
+input{
+    font-size: 16px;
+    padding: 3px;
+}
+textarea{
+    font-size: 16px;
+    padding: 3px;
+}

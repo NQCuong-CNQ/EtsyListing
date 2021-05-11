@@ -25,17 +25,18 @@ var io = require("socket.io")(server)
 // })
 
 const limit = 100
-const limitPage = 1
+const limitPage = 50
 const api_key = '2mlnbmgdqv6esclz98opmmuq'
 var siteUrl
 
-const MongoClient = require('mongodb').MongoClient
+const MongoClient = require('mongodb').MongoClient;
+const { Console } = require('console');
 const url = "mongodb://localhost:27017/trackingdb"
 
 setInterval(scheduleUpdate, 1800000) // 30p
 async function scheduleUpdate() {
   let date_ob = new Date()
-  if (date_ob.getHours() == 0) {
+  if (date_ob.getHours() == 1) {
     await updateData()
   }
 }
@@ -51,7 +52,7 @@ async function updateCate() {
   await dbo.collection("category").insertOne(category)
 }
 
-updateData()
+// updateData()
 async function updateData() {
   await updateCate()
   await getShopName()
@@ -64,10 +65,10 @@ async function updateData() {
 async function getShopName() {
   let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
   var dbo = client.db("trackingdb")
-  let category = await dbo.collection("category").find({}).toArray()
+  let category = await dbo.collection("category").findOne()
 
-  let categoryList = category[0].CategoryList.split(',')
-  let categoryLink = category[0].CategoryLink.split('|')
+  let categoryList = category.CategoryList.split(',')
+  let categoryLink = category.CategoryLink.split('|')
   client.close()
 
   for (let index = 0; index < categoryList.length; index++) {
@@ -90,11 +91,11 @@ async function saveShopNameToDB(dataShopName, shopCategory) {
   for (let i = 0; i < dataShopName.length; i++) {
     await dbo.collection("shopName").updateOne({ shop_name: dataShopName[i] }, { $set: { shop_name: dataShopName[i] } }, { upsert: true })
 
-    let currentVal = await dbo.collection("shopCategory").find({ shop_name: dataShopName[i] }).toArray()
+    let currentVal = await dbo.collection("shopCategory").findOne({ shop_name: dataShopName[i] })
     let currCate = ''
     let newshopCategory = shopCategory
     if (currentVal != '') {
-      currCate = currentVal[0].category
+      currCate = currentVal.category
       if (currCate.includes(shopCategory)) {
         newshopCategory = currCate
       } else {
@@ -233,8 +234,6 @@ io.on("connection", async function (client) {
   let clientDB = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
   var dbo = clientDB.db("trackingdb")
 
-  // let clientDBBraumstar = await MongoClient.connect('mongodb://zic:Mynewpassword%400@braumstar.com:27020/zicDb?authSource=zicDb', { useNewUrlParser: true, useUnifiedTopology: true })
-  // var dboBraumstar = clientDBBraumstar.db("zicDb")
 
   client.on("join", async function (data) {
     console.log('1 client connected')
@@ -257,9 +256,6 @@ io.on("connection", async function (client) {
   client.on("shop-tracking", async function (shop_id) {
     let dbData = await dbo.collection("shopTracking").find({ shop_id: { "$eq": shop_id } }).toArray()
     await client.emit("shop-tracking-data", dbData)
-
-
-    // await client.emit("shop-category-list-data", dbData)
   })
 
   client.on("get-shop-filter", async function () {
@@ -267,17 +263,106 @@ io.on("connection", async function (client) {
     await client.emit("shopCategoryDataTransfer", dbData)
   })
 
-  // client.on("new-user", async function (dataUser) {
-  //   var data = {
-  //     _id: null,
-  //     username: dataUser.userName,
-  //     password: dataUser.pass,
-  //     createdAt: Date.now() / 1000 | 0,
-  //     updatedAr: Date.now() / 1000 | 0
-  //   }
-  //   await dboBraumstar.insertOne(data)
-  // await client.emit("userDataTransfer", dbData)
-  // })
+  client.on("get-list-shop-braumstar", async function (dataUser) {
+    clientDB.close()
+    let clientDBBraumstar = await MongoClient.connect('mongodb://zic:Mynewpassword%400@braumstar.com:27020/zicDb?authSource=zicDb', { useNewUrlParser: true, useUnifiedTopology: true })
+    var dboBraumstar = clientDBBraumstar.db("zicDb")
+
+    let dbData = await dboBraumstar.collection("etsyAccounts").find({ username: dataUser }).toArray()
+    await client.emit("list-shop-braumstar", dbData)
+    clientDBBraumstar.close()
+  })
+
+  client.on("new-user-braumstar", async function (dataUser) {
+    clientDB.close()
+    let clientDBBraumstar = await MongoClient.connect('mongodb://zic:Mynewpassword%400@braumstar.com:27020/zicDb?authSource=zicDb', { useNewUrlParser: true, useUnifiedTopology: true })
+    var dboBraumstar = clientDBBraumstar.db("zicDb")
+
+    var data = {
+      _id: null,
+      username: dataUser.userName,
+      password: dataUser.pass,
+      createdAt: Date.now() / 1000 | 0,
+      updatedAr: Date.now() / 1000 | 0
+    }
+
+    let isSuccess = 0
+    let getOldUser = await dboBraumstar.collection("users").findOne({ username: dataUser.userName })
+    if (getOldUser == '') {
+      await dboBraumstar.collection("users").insertOne(data)
+    }
+    else if (getOldUser.username == dataUser.userName) {
+      isSuccess = -1
+      await client.emit("return-new-user-braumstar", isSuccess)
+      clientDBBraumstar.close()
+      return
+    }
+
+    let getNewUser = await dboBraumstar.collection("users").findOne({ username: dataUser.userName })
+    console.log(getNewUser)
+    if (getNewUser != '') {
+      isSuccess = 1
+    }
+    await client.emit("return-new-user-braumstar", isSuccess)
+    clientDBBraumstar.close()
+  })
+
+  client.on("add-shop-braumstar", async function (dataShop) {
+    clientDB.close()
+    let clientDBBraumstar = await MongoClient.connect('mongodb://zic:Mynewpassword%400@braumstar.com:27020/zicDb?authSource=zicDb', { useNewUrlParser: true, useUnifiedTopology: true })
+    var dboBraumstar = clientDBBraumstar.db("zicDb")
+    let isSuccess = 0
+
+    dataShop.shopname = dataShop.shopname.split("\n")
+    for (let i = 0; i < dataShop.shopname.length; i++) {
+      dataShop.shopname[i] = dataShop.shopname[i].trim()
+
+      if (dataShop.shopname[i] == '') {
+        continue
+      }
+
+      var data = {
+        _id: dataShop.shopname[i],
+        brandName: dataShop.shopname[i],
+        username: dataShop.user,
+        userId: '',
+        token: '',
+        tokenSecret: '',
+        marketplace: dataShop.country
+      }
+
+      await dboBraumstar.collection("etsyAccounts").deleteOne({ brandName: dataShop.shopname[i] })
+      await dboBraumstar.collection("etsyAccounts").insertOne(data)
+      isSuccess = 0
+
+      let getShop = await dboBraumstar.collection("etsyAccounts").findOne({ brandName: dataShop.shopname[i] })
+      if (getShop != '') {
+        isSuccess = 1
+      }
+    }
+
+    await client.emit("return-add-shop-braumstar", isSuccess)
+    clientDBBraumstar.close()
+  })
+  
+  client.on("delete-shop-braumstar", async function (dataShop) {
+    clientDB.close()
+    let clientDBBraumstar = await MongoClient.connect('mongodb://zic:Mynewpassword%400@braumstar.com:27020/zicDb?authSource=zicDb', { useNewUrlParser: true, useUnifiedTopology: true })
+    var dboBraumstar = clientDBBraumstar.db("zicDb")
+
+    dataShop.shopname = dataShop.shopname.split("\n")
+    for (let i = 0; i < dataShop.shopname.length; i++) {
+      dataShop.shopname[i] = dataShop.shopname[i].trim()
+
+      if (dataShop.shopname[i] == '') {
+        continue
+      }
+      await dboBraumstar.collection("etsyAccounts").deleteOne({ brandName: dataShop.shopname[i] })
+    }
+
+    await client.emit("return-delete-shop-braumstar", 1)
+    clientDBBraumstar.close()
+  })
 })
 
 async function fetchData(siteUrl) {
