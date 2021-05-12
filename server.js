@@ -25,7 +25,7 @@ var io = require("socket.io")(server)
 // })
 
 const limit = 100
-const limitPage = 20
+const limitPage = 10
 const api_key = '2mlnbmgdqv6esclz98opmmuq'
 var siteUrl
 
@@ -54,7 +54,7 @@ async function updateCate() {
 
 async function updateData() {
   // await updateCate()
-  await getShopName()
+  // await getShopName()
   await updateShopInfo()
   // await updateListing()
   // await updateUser()
@@ -118,7 +118,6 @@ async function saveShopNameToDB(dataShopName, shopCategory) {
 
   for (let index = 0; index < shopName.length; index++) {
     siteUrl = "https://www.etsy.com/shop/" + shopName[index].shop_name
-    console.log("getting " + siteUrl)
     let total_sales = await getTotalSalesFromWeb(siteUrl)
 
     total_sales = parseInt(total_sales)
@@ -233,7 +232,19 @@ async function completeUpdate() {
 
 app.get("/", function (req, res, next) {
   res.sendFile(__dirname + "/public/index.html")
-});
+})
+
+app.get("/tracking", function (req, res, next) {
+  res.sendFile(__dirname + "/public/tracking.html")
+})
+
+app.get("/tools", function (req, res, next) {
+  res.sendFile(__dirname + "/public/tools.html")
+})
+
+app.get("/listing", function (req, res, next) {
+  res.sendFile(__dirname + "/public/etsy_listing.html")
+})
 
 app.use(express.static("public"))
 

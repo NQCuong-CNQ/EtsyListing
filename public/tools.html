@@ -18,7 +18,7 @@
     <div class="wrapper">
         <nav id="sidebar" class="sidebar">
             <div class="sidebar-content js-simplebar">
-                <a class="sidebar-brand" href="index.html">
+                <a class="sidebar-brand" href="/">
                     <span class="align-middle">Etsy Tools</span>
                 </a>
 
@@ -28,7 +28,7 @@
                     </li>
 
                     <li class="sidebar-item ">
-                        <a class="sidebar-link" href="index.html">
+                        <a class="sidebar-link" href="/">
                             <i class="align-middle" data-feather="sliders"></i> <span
                                 class="align-middle">Dashboard</span>
                         </a>
@@ -39,19 +39,19 @@
                     </li>
 
                     <li class="sidebar-item ">
-                        <a class="sidebar-link" href="etsy_listing.html">
+                        <a class="sidebar-link" href="listing">
                             <i class="align-middle" data-feather="coffee"></i> <span class="align-middle">Etsy
                                 Listing</span>
                         </a>
                     </li>
                     <li class="sidebar-item ">
-                        <a class="sidebar-link" href="tracking.html">
+                        <a class="sidebar-link" href="tracking">
                             <i class="align-middle" data-feather="pie-chart"></i> <span
                                 class="align-middle">Tracking</span>
                         </a>
                     </li>
                     <li class="sidebar-item active">
-                        <a class="sidebar-link" href="tools.html">
+                        <a class="sidebar-link" href="tools">
                             <i class="align-middle" data-feather="settings"></i> <span class="align-middle">Tools</span>
                         </a>
                     </li>
@@ -96,7 +96,15 @@
             </nav>
 
             <main class="content">
-                <div class="container-fluid p-0">
+                <div id="loading">
+                    <div class="lds-ellipsis">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                </div>
+                <div class="container-fluid">
                     <h1>Tools thêm shop, user bên braumstar.com (Thử nghiệm)</h1>
 
                     <h3>Tạo User mới</h3>
@@ -111,7 +119,7 @@
                     <p id="list-shop"></p>
 
                     <p></p>
-                    <h3>Cập nhật Shop cho User </h3>
+                    <h3>Thêm Shop cho User </h3>
                     <div class='d-flex'>
                         <textarea id="input-shop-name" placeholder="Tên Shop, xuống hàng khi nhập nhiều Shop" cols="40"
                             rows="5"></textarea>
