@@ -41,7 +41,7 @@ async function scheduleUpdate() {
     await updateData()
   }
 }
-// updateData()
+updateData()
 async function updateCate() {
   let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
   var dbo = client.db("trackingdb")
