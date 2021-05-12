@@ -189,6 +189,9 @@ async function updateShopInfo() {
 
   for (let index = 0; index < dbData.length; index++) {
     let response = await makeRequest("GET", `https://openapi.etsy.com/v2/shops/${dbData[index].shop_name}?api_key=${api_key}`)
+    if (response == ''){
+      continue
+    }
     response = JSON.parse(response).results
 
     console.log('updateShopInfo: ' + response[0].shop_id)
