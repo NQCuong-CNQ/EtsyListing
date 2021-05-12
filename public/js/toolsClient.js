@@ -1,5 +1,5 @@
-var socket = io.connect("http://giftsvk.com:80")
-// var socket = io.connect("http://localhost:80")
+// var socket = io.connect("http://giftsvk.com:80")
+var socket = io.connect("http://localhost:80")
 
 $('#submit-user-button').on('click', async function () {
     if($('#input-user-name').val().trim() == '' || $('#input-user-pass').val().trim() == ''){

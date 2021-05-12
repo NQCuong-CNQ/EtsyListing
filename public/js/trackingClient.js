@@ -1,30 +1,23 @@
-var socket = io.connect("http://giftsvk.com:80")
-// var socket = io.connect("http://localhost:80")
+// var socket = io.connect("http://giftsvk.com:80")
+var socket = io.connect("http://localhost:80")
 var shopData
 var listingData
 var category
 var shopDataFilter = []
 var timeCreatedShopFilter = 0
 
-socket.on("connect", async function (data) {
-  await socket.emit("join")
-  $('#loading').css('display', 'block')
-  await socket.emit("get-total-shop")
+/* ------------------------------------------------MAIN SECTION------------------------------------------------ */
+$('#tracking-analysis-option-button').on('click', async function () {
+  alert("Đang được phát triển!\nChức năng ghi lại toàn bộ số lượng listing theo ngày, vẽ biểu đồ và phân tích")
 })
 
-socket.on("dataTransfer", function (data) {
-  shopData = data
-  shopDataFilter = data
-  $('#loading').css('display', 'none')
-  updateData()
-})
+$('#find-shop-by-name-button').on('click', async function () {
+  let shopName = $('#find-shop-by-name').val().trim()
+  if (shopName == '') {
+    alert('Please input shop name!')
+  }
 
-socket.on("total-shop", function (data) {
-  $('#fun-fact').text("Bạn có biết? Tổng số shop được tạo ra trên Etsy lên đến " + data.toLocaleString() + " shop")
-})
-
-socket.on("last-updated", function (data) {
-  $('#last-updated').text("Last updated: " + data.updateHistory)
+  await socket.emit("find-shop-by-name", shopName)
 })
 
 function updateData() {
@@ -48,19 +41,9 @@ function updateData() {
   $('#table_id').DataTable({
     scrollX: 400,
     pageLength: 25,
-    order: [[3, "desc"]]
+    order: [[3, "desc"]],
+    searching: false,
   })
-}
-
-function getDayTimeLife(creation_time) {
-  let timeNow = new Date().getTime()
-  let life_time = Math.floor(timeNow / 1000) - creation_time
-  return Math.floor(life_time / 86400)
-}
-
-function getAvgSales(total_sales, creation_time) {
-  let avgSales = total_sales / getDayTimeLife(creation_time)
-  return avgSales.toFixed(2)
 }
 
 async function getShopDetail(i) {
@@ -99,6 +82,65 @@ async function getShopDetail(i) {
     await getUserOption(i)
   })
 }
+
+async function getListingOption(i) {
+  await socket.emit("get_listing_shop_id", shopData[i].shop_id)
+  $('#loading').css('display', 'block')
+  $('#title-page').text('Listing Detail')
+
+  $('#option-shop-section').css("display", "none")
+  $('#list-shop-section').css("display", "none")
+  $('#listing-shop-section').css("display", "block")
+  $('#user-shop-section').css("display", "none")
+}
+
+async function getUserOption(i) {
+  await socket.emit("get_user_by_user_id", shopData[i].user_id)
+  $('#loading').css('display', 'block')
+  $('#title-page').text('User Detail')
+
+  $('#option-shop-section').css("display", "none")
+  $('#list-shop-section').css("display", "none")
+  $('#listing-shop-section').css("display", "none")
+  $('#user-shop-section').css("display", "block")
+}
+/* ------------------------------------------------END MAIN SECTION------------------------------------------------ */
+
+/* ------------------------------------------------SOCKET SECTION------------------------------------------------ */
+socket.on("connect", async function (data) {
+  await socket.emit("join")
+  $('#loading').css('display', 'block')
+})
+
+socket.on("updating", function (data) {
+  alert('Data Server is updating, please come back later!')
+})
+
+socket.on("dataTransfer", async function (data) {
+  await socket.emit("get-total-shop")
+
+  shopData = data
+  shopDataFilter = data
+
+  $('#loading').css('display', 'none')
+  updateData()
+})
+
+socket.on("return-find-shop-by-name", function (data) {
+  
+  shopData = data
+  shopDataFilter = data
+  console.log(shopDataFilter)
+  updateData()
+})
+
+socket.on("total-shop", function (data) {
+  $('#fun-fact').text("Bạn có biết? Tổng số shop được tạo ra trên Etsy lên đến " + data.toLocaleString() + " shop")
+})
+
+socket.on("last-updated", function (data) {
+  $('#last-updated').text("Last updated: " + data.updateHistory)
+})
 
 socket.on("shop-tracking-data", function (data) {
   $('#loading').css('display', 'none')
@@ -186,6 +228,166 @@ socket.on("shop-tracking-data", function (data) {
   });
 })
 
+socket.on("shopCategoryDataTransfer", function (data) {
+  $('#loading').css('display', 'none')
+  let listShopName = []
+  for (let i = 0; i < data.length; i++) {
+    if (data[i].category.includes(category)) {
+      listShopName.push(data[i].shop_name)
+    }
+  }
+
+  shopDataFilter = []
+  for (let index = 0; index < listShopName.length; index++) {
+    for (let j = 0; j < shopData.length; j++) {
+      if (listShopName[index] == shopData[j].shop_name) {
+        shopDataFilter.push(shopData[j])
+      }
+    }
+  }
+
+  if (timeCreatedShopFilter > 0) {
+    timeCreatedShopFilterAction()
+  } else {
+    updateData()
+  }
+})
+
+socket.on("userDataTransfer", function (data) {
+  $('#loading').css('display', 'none')
+
+  $('#user_img').attr('src', data.image_url_75x75)
+  $('#user_id').text(data.user_id)
+  $('#user_bio').text(data.bio)
+  $('#user_birth_day').text(data.birth_day)
+  $('#user_birth_month').text(data.birth_month)
+  $('#user_city').text(data.city)
+  $('#user_country_id').text(data.country_id)
+  $('#user_fname').text(data.first_name)
+  $('#user_lname').text(data.last_name)
+  $('#user_avata').text(data.image_url_75x75)
+  $('#user_creation_time').text(data.join_tsz)
+  $('#user_location').text(data.location)
+  $('#user_region').text(data.region)
+  $('#user_buy_count').text(data.transaction_buy_count.toLocaleString())
+  $('#user_sold_count').text(data.transaction_sold_count.toLocaleString())
+})
+
+socket.on("listingDataTransfer", function (data) {
+  $('#loading').css('display', 'none')
+  $('#table_id-list').DataTable().clear().destroy()
+  for (var i = 0; i < data.length; i++) {
+    let taxonomy = data[i].taxonomy_path
+    taxonomy = taxonomy[taxonomy.length - 1]
+    $('#table-list').append(`<tr>
+          <td>${i}</td>
+          <td>${data[i].title}</td>
+          <td>${taxonomy}</td>
+          <td>${data[i].price.toLocaleString()}</td>
+          <td>${getEpochTime(data[i].creation_tsz)}</td>
+          <td>${data[i].views.toLocaleString()}</td>
+          <td>${data[i].num_favorers.toLocaleString()}</td>
+          <td>${data[i].quantity.toLocaleString()}</td>
+          <td><a href='${data[i].url}' target="_blank">www.etsy.com/listing...</a></td>
+          <td>${data[i].occasion}</td>
+          <td>${data[i].is_customizable}</td>
+          <td>${data[i].is_digital}</td>
+          <td>${data[i].has_variations}</td>
+          <td>${data[i].state}</td>
+          <td>${data[i].listing_id}</td>
+        </tr>`)
+  }
+
+  $('#table_id-list').DataTable({
+    scrollX: 400,
+    pageLength: 10
+  })
+})
+/* ------------------------------------------------END SOCKET SECTION------------------------------------------------ */
+
+/* ------------------------------------------------ADDITIONAL SECTION------------------------------------------------ */
+
+function getDayTimeLife(creation_time) {
+  let timeNow = new Date().getTime()
+  let life_time = Math.floor(timeNow / 1000) - creation_time
+  return Math.floor(life_time / 86400)
+}
+
+function getAvgSales(total_sales, creation_time) {
+  let avgSales = total_sales / getDayTimeLife(creation_time)
+  return avgSales.toFixed(2)
+}
+
+function getEpochTime(input) {
+  var date = new Date(0)
+  date.setUTCSeconds(input)
+  time = String(date)
+  time = time.substr(0, time.length - 19)
+  time = time.split(' ')
+
+  time = time[0] + ' ' + time[2] + '-' + convertMonthInString(time[1]) + '-' + time[3] + ' ' + time[4] + ' ' + time[5]
+  return time
+}
+
+function convertMonthInString(month) {
+  switch (month) {
+    case 'Jan': return '01'
+    case 'Feb': return '02'
+    case 'Mar': return '03'
+    case 'Apr': return '04'
+    case 'May': return '05'
+    case 'Jun': return '06'
+    case 'Jul': return '07'
+    case 'Aug': return '08'
+    case 'Sep': return '09'
+    case 'Oct': return '10'
+    case 'Nov': return '11'
+    case 'Dec': return '12'
+  }
+}
+
+var coll = document.getElementsByClassName("collapsible")
+for (let i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function () {
+    this.classList.toggle("active")
+    var content = this.nextElementSibling
+    if (content.style.display === "block") {
+      content.style.display = "none";
+    } else {
+      content.style.display = "block"
+    }
+  })
+}
+/* ------------------------------------------------END ADDITIONAL SECTION------------------------------------------------ */
+
+/* ------------------------------------------------FILTER SECTION------------------------------------------------ */
+function updateDataTimeFiler(shopDataFilter) {
+  $('#table_id').DataTable().clear().destroy()
+  for (var i = 0; i < shopDataFilter.length; i++) {
+    $('#table').append(`<tr>
+        <td onclick="getShopDetail(${i})"><i class="fas fa-info-circle pointer"></i></td>
+        <td>${shopDataFilter[i].shop_name}</td>
+        <td><a href='${shopDataFilter[i].url}' target="_blank">www.etsy.com/shop...</a></td>
+        <td>${getAvgSales(shopDataFilter[i].total_sales, shopDataFilter[i].creation_tsz)}</td>
+        <td>${shopDataFilter[i].total_sales.toLocaleString()}</td>
+        <td>${getEpochTime(shopDataFilter[i].creation_tsz)}</td>
+        <td>${shopDataFilter[i].currency_code}</td>
+        <td>${shopDataFilter[i].listing_active_count.toLocaleString()}</td>
+        <td>${shopDataFilter[i].num_favorers.toLocaleString()}</td>
+        <td>${shopDataFilter[i].languages}</td>
+        <td>${shopDataFilter[i].shop_id}</td>
+    </tr>`)
+  }
+
+  $('#table_id').DataTable({
+    scrollX: 400,
+    pageLength: 25,
+    order: [[3, "desc"]],
+    searching: false,
+  })
+}
+
+
 $('#all-shop-filter').on('click', async function () {
   category = 'All'
   $('#dropdown-filter-shop').text('All')
@@ -272,171 +474,4 @@ async function shopFilterAction(category) {
   await socket.emit("get-shop-filter")
   $('#loading').css('display', 'block')
 }
-
-socket.on("shopCategoryDataTransfer", function (data) {
-  $('#loading').css('display', 'none')
-  let listShopName = []
-  for (let i = 0; i < data.length; i++) {
-    if (data[i].category.includes(category)) {
-      listShopName.push(data[i].shop_name)
-    }
-  }
-
-  shopDataFilter = []
-  for (let index = 0; index < listShopName.length; index++) {
-    for (let j = 0; j < shopData.length; j++) {
-      if (listShopName[index] == shopData[j].shop_name) {
-        shopDataFilter.push(shopData[j])
-      }
-    }
-  }
-
-  if (timeCreatedShopFilter > 0) {
-    timeCreatedShopFilterAction()
-  } else {
-    updateData()
-  }
-})
-
-async function getUserOption(i) {
-  await socket.emit("get_user_by_user_id", shopData[i].user_id)
-  $('#loading').css('display', 'block')
-  $('#title-page').text('User Detail')
-
-  $('#option-shop-section').css("display", "none")
-  $('#list-shop-section').css("display", "none")
-  $('#listing-shop-section').css("display", "none")
-  $('#user-shop-section').css("display", "block")
-}
-
-socket.on("userDataTransfer", function (data) {
-  $('#loading').css('display', 'none')
-
-  $('#user_img').attr('src', data.image_url_75x75)
-  $('#user_id').text(data.user_id)
-  $('#user_bio').text(data.bio)
-  $('#user_birth_day').text(data.birth_day)
-  $('#user_birth_month').text(data.birth_month)
-  $('#user_city').text(data.city)
-  $('#user_country_id').text(data.country_id)
-  $('#user_fname').text(data.first_name)
-  $('#user_lname').text(data.last_name)
-  $('#user_avata').text(data.image_url_75x75)
-  $('#user_creation_time').text(data.join_tsz)
-  $('#user_location').text(data.location)
-  $('#user_region').text(data.region)
-  $('#user_buy_count').text(data.transaction_buy_count.toLocaleString())
-  $('#user_sold_count').text(data.transaction_sold_count.toLocaleString())
-})
-
-function getEpochTime(input) {
-  var date = new Date(0)
-  date.setUTCSeconds(input)
-  time = String(date)
-  time = time.substr(0, time.length - 19)
-  time = time.split(' ')
-
-  time = time[0] + ' ' + time[2] + '-' + convertMonthInString(time[1]) + '-' + time[3] + ' ' + time[4] + ' ' + time[5]
-  return time
-}
-
-function convertMonthInString(month){
-  switch(month){
-    case 'Jan': return '01'
-    case 'Feb': return '02'
-    case 'Mar': return '03'
-    case 'Apr': return '04'
-    case 'May': return '05'
-    case 'Jun': return '06'
-    case 'Jul': return '07'
-    case 'Aug': return '08'
-    case 'Sep': return '09'
-    case 'Oct': return '10'
-    case 'Nov': return '11'
-    case 'Dec': return '12'
-  }
-}
-
-async function getListingOption(i) {
-  await socket.emit("get_listing_shop_id", shopData[i].shop_id)
-  $('#loading').css('display', 'block')
-  $('#title-page').text('Listing Detail')
-
-  $('#option-shop-section').css("display", "none")
-  $('#list-shop-section').css("display", "none")
-  $('#listing-shop-section').css("display", "block")
-  $('#user-shop-section').css("display", "none")
-}
-
-socket.on("listingDataTransfer", function (data) {
-  $('#loading').css('display', 'none')
-  $('#table_id-list').DataTable().clear().destroy()
-  for (var i = 0; i < data.length; i++) {
-    let taxonomy = data[i].taxonomy_path
-    taxonomy = taxonomy[taxonomy.length - 1]
-    $('#table-list').append(`<tr>
-          <td>${i}</td>
-          <td>${data[i].title}</td>
-          <td>${taxonomy}</td>
-          <td>${data[i].price.toLocaleString()}</td>
-          <td>${getEpochTime(data[i].creation_tsz)}</td>
-          <td>${data[i].views.toLocaleString()}</td>
-          <td>${data[i].num_favorers.toLocaleString()}</td>
-          <td>${data[i].quantity.toLocaleString()}</td>
-          <td><a href='${data[i].url}' target="_blank">www.etsy.com/listing...</a></td>
-          <td>${data[i].occasion}</td>
-          <td>${data[i].is_customizable}</td>
-          <td>${data[i].is_digital}</td>
-          <td>${data[i].has_variations}</td>
-          <td>${data[i].state}</td>
-          <td>${data[i].listing_id}</td>
-        </tr>`)
-  }
-
-  $('#table_id-list').DataTable({
-    scrollX: 400,
-    pageLength: 10
-  })
-})
-
-var coll = document.getElementsByClassName("collapsible")
-for (let i = 0; i < coll.length; i++) {
-  coll[i].addEventListener("click", function () {
-    this.classList.toggle("active")
-    var content = this.nextElementSibling
-    if (content.style.display === "block") {
-      content.style.display = "none";
-    } else {
-      content.style.display = "block"
-    }
-  })
-}
-
-$('#tracking-analysis-option-button').on('click', async function () {
-  alert("Đang được phát triển!\nChức năng ghi lại toàn bộ số lượng listing theo ngày, vẽ biểu đồ và phân tích")
-})
-
-function updateDataTimeFiler(shopDataFilter) {
-  $('#table_id').DataTable().clear().destroy()
-  for (var i = 0; i < shopDataFilter.length; i++) {
-    $('#table').append(`<tr>
-        <td onclick="getShopDetail(${i})"><i class="fas fa-info-circle pointer"></i></td>
-        <td>${shopDataFilter[i].shop_name}</td>
-        <td><a href='${shopDataFilter[i].url}' target="_blank">www.etsy.com/shop...</a></td>
-        <td>${getAvgSales(shopDataFilter[i].total_sales, shopDataFilter[i].creation_tsz)}</td>
-        <td>${shopDataFilter[i].total_sales.toLocaleString()}</td>
-        <td>${getEpochTime(shopDataFilter[i].creation_tsz)}</td>
-        <td>${shopDataFilter[i].currency_code}</td>
-        <td>${shopDataFilter[i].listing_active_count.toLocaleString()}</td>
-        <td>${shopDataFilter[i].num_favorers.toLocaleString()}</td>
-        <td>${shopDataFilter[i].languages}</td>
-        <td>${shopDataFilter[i].shop_id}</td>
-    </tr>`)
-  }
-
-  $('#table_id').DataTable({
-    scrollX: 400,
-    pageLength: 25,
-    order: [[3, "desc"]]
-  })
-}
+/* ------------------------------------------------END FILTER SECTION------------------------------------------------ */

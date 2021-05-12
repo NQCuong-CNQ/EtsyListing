@@ -29,6 +29,7 @@ const limitPage = 10
 const api_key = '2mlnbmgdqv6esclz98opmmuq'
 var siteUrl
 var isUpdate = false
+var total_shop = 0
 
 const MongoClient = require('mongodb').MongoClient;
 const { Console } = require('console');
@@ -41,7 +42,7 @@ async function scheduleUpdate() {
     await updateData()
   }
 }
-updateData()
+// updateData()
 async function updateCate() {
   let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
   var dbo = client.db("trackingdb")
@@ -53,14 +54,17 @@ async function updateCate() {
   await dbo.collection("category").insertOne(category)
 }
 
+getTotalShop()
 async function updateData() {
   isUpdate = true
   // await updateCate()
-  // await getShopName()
+  await getShopName()
   await updateShopInfo()
   // await updateListing()
   // await updateUser()
   await completeUpdate()
+
+  await getTotalShop()
   isUpdate = false
 }
 
@@ -274,12 +278,7 @@ io.on("connection", async function (client) {
   })
 
   await client.on("get-total-shop", async function () {
-    if (isUpdate) { }
-    else {
-      let result = await makeRequest("GET", `https://openapi.etsy.com/v2/shops?api_key=${api_key}&limit=1&offset=1`)
-      result = JSON.parse(result).results
-      await client.emit("total-shop", result[0].shop_id)
-    }
+    await client.emit("total-shop", total_shop)
   })
 
   await client.on("get_listing_shop_id", async function (shop_id) {
@@ -302,6 +301,15 @@ io.on("connection", async function (client) {
   await client.on("get-shop-filter", async function () {
     let dbData = await dbo.collection("shopCategory").find().toArray()
     await client.emit("shopCategoryDataTransfer", dbData)
+  })
+
+  await client.on("find-shop-by-name", async function (shopName) {
+    let response = await makeRequest("GET", `https://openapi.etsy.com/v2/shops/${shopName}?api_key=${api_key}`)
+    response = JSON.parse(response).results
+
+    siteUrl = "https://www.etsy.com/shop/" + shopName
+    response[0]["total_sales"] = await getTotalSalesFromWeb(siteUrl)
+    await client.emit("return-find-shop-by-name", response)
   })
 
   await client.on("get-list-shop-braumstar", async function (dataUser) {
@@ -462,6 +470,12 @@ async function makeRequest(method, url) {
     }
     xhr.send();
   })
+}
+
+async function getTotalShop() {
+  let result = await makeRequest("GET", `https://openapi.etsy.com/v2/shops?api_key=${api_key}&limit=1&offset=1`)
+  result = JSON.parse(result).results
+  total_shop = result[0].shop_id
 }
 
 server.listen(80)
