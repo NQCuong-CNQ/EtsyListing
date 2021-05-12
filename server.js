@@ -274,9 +274,12 @@ io.on("connection", async function (client) {
   })
 
   await client.on("get-total-shop", async function () {
-    let result = await makeRequest("GET", `https://openapi.etsy.com/v2/shops?api_key=${api_key}&limit=1&offset=1`)
-    result = JSON.parse(result).results
-    await client.emit("total-shop", result[0].shop_id)
+    if (isUpdate) { }
+    else {
+      let result = await makeRequest("GET", `https://openapi.etsy.com/v2/shops?api_key=${api_key}&limit=1&offset=1`)
+      result = JSON.parse(result).results
+      await client.emit("total-shop", result[0].shop_id)
+    }
   })
 
   await client.on("get_listing_shop_id", async function (shop_id) {
