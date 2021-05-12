@@ -83,6 +83,22 @@ async function getShopName() {
   }
 }
 
+test()
+async function test(){
+  let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
+  let dbo = client.db("trackingdb")
+  let currentVal = await dbo.collection("shopCategory").findOne({ shop_name: /as/ })
+  // try{
+    console.log(currentVal.safaf)
+    // if(s == undefined){
+    //   console.log('category')
+    // }
+  // }catch(e){
+  //   console.log('dsf')
+  // }
+  
+}
+
 async function saveShopNameToDB(dataShopName, shopCategory) {
   let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
   let dbo = client.db("trackingdb")
@@ -94,11 +110,20 @@ async function saveShopNameToDB(dataShopName, shopCategory) {
     let currCate = ''
     let newshopCategory = shopCategory
     if (currentVal != '') {
-      currCate = currentVal.category
-      if (currCate.includes(shopCategory)) {
-        newshopCategory = currCate
+      try{
+        currCate = currentVal.category
+      }catch(e){
+        
+      }
+      
+      if(currCate == ''){
+
       } else {
-        newshopCategory = currCate + ',' + shopCategory
+        if (currCate.includes(shopCategory)) {
+          newshopCategory = currCate
+        } else {
+          newshopCategory = currCate + ',' + shopCategory
+        }
       }
     }
 
