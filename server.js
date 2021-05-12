@@ -40,7 +40,7 @@ async function scheduleUpdate() {
     await updateData()
   }
 }
-
+updateData()
 async function updateCate() {
   let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
   var dbo = client.db("trackingdb")
@@ -83,22 +83,6 @@ async function getShopName() {
   }
 }
 
-test()
-async function test(){
-  let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
-  let dbo = client.db("trackingdb")
-  let currentVal = await dbo.collection("shopCategory").findOne({ shop_name: /as/ })
-  // try{
-    console.log(currentVal.safaf)
-    // if(s == undefined){
-    //   console.log('category')
-    // }
-  // }catch(e){
-  //   console.log('dsf')
-  // }
-  
-}
-
 async function saveShopNameToDB(dataShopName, shopCategory) {
   let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
   let dbo = client.db("trackingdb")
@@ -113,7 +97,6 @@ async function saveShopNameToDB(dataShopName, shopCategory) {
       try{
         currCate = currentVal.category
       }catch(e){
-        
       }
       
       if(currCate == ''){
