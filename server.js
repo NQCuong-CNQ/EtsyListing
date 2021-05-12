@@ -28,6 +28,7 @@ const limit = 100
 const limitPage = 10
 const api_key = '2mlnbmgdqv6esclz98opmmuq'
 var siteUrl
+var isUpdate = false
 
 const MongoClient = require('mongodb').MongoClient;
 const { Console } = require('console');
@@ -40,7 +41,7 @@ async function scheduleUpdate() {
     await updateData()
   }
 }
-updateData()
+// updateData()
 async function updateCate() {
   let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
   var dbo = client.db("trackingdb")
@@ -53,12 +54,14 @@ async function updateCate() {
 }
 
 async function updateData() {
+  isUpdate = true
   // await updateCate()
   // await getShopName()
   await updateShopInfo()
   // await updateListing()
   // await updateUser()
   await completeUpdate()
+  isUpdate = false
 }
 
 async function getShopName() {
@@ -94,12 +97,12 @@ async function saveShopNameToDB(dataShopName, shopCategory) {
     let currCate = ''
     let newshopCategory = shopCategory
     if (currentVal != '') {
-      try{
+      try {
         currCate = currentVal.category
-      }catch(e){
+      } catch (e) {
       }
-      
-      if(currCate == ''){
+
+      if (currCate == '') {
 
       } else {
         if (currCate.includes(shopCategory)) {
@@ -189,7 +192,7 @@ async function updateShopInfo() {
 
   for (let index = 0; index < dbData.length; index++) {
     let response = await makeRequest("GET", `https://openapi.etsy.com/v2/shops/${dbData[index].shop_name}?api_key=${api_key}`)
-    if (response == ''){
+    if (response == '') {
       continue
     }
     response = JSON.parse(response).results
@@ -258,11 +261,16 @@ io.on("connection", async function (client) {
 
   await client.on("join", async function (data) {
     console.log('1 client connected')
-    let dbData = await dbo.collection("shop").find().toArray()
-    await client.emit("dataTransfer", dbData)
 
-    let lastUpdated = await dbo.collection("log").find().toArray()
-    await client.emit("last-updated", lastUpdated[lastUpdated.length-1])
+    if (isUpdate) {
+      await client.emit("updating")
+    } else {
+      let dbData = await dbo.collection("shop").find().toArray()
+      await client.emit("dataTransfer", dbData)
+
+      let lastUpdated = await dbo.collection("log").find().toArray()
+      await client.emit("last-updated", lastUpdated[lastUpdated.length - 1])
+    }
   })
 
   await client.on("get-total-shop", async function () {
