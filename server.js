@@ -244,8 +244,12 @@ app.get("/", function (req, res, next) {
   res.sendFile(__dirname + "/public/index.html")
 })
 
-app.get("/tracking", function (req, res, next) {
-  res.sendFile(__dirname + "/public/tracking.html")
+app.get("/tracking-shop", function (req, res, next) {
+  res.sendFile(__dirname + "/public/tracking_shop.html")
+})
+
+app.get("/tracking-product", function (req, res, next) {
+  res.sendFile(__dirname + "/public/tracking_product.html")
 })
 
 app.get("/tools", function (req, res, next) {

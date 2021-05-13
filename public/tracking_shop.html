@@ -46,10 +46,14 @@
                         </a>
                     </li>
                     <li class="sidebar-item active">
-                        <a class="sidebar-link" href="tracking">
-                            <i class="align-middle" data-feather="pie-chart"></i> <span
-                                class="align-middle">Tracking</span>
+                        <a data-target="#ui" data-toggle="collapse" class="sidebar-link collapsed">
+                            <i class="align-middle" data-feather="pie-chart"></i> <span class="align-middle">Tracking</span>
                         </a>
+                        <ul id="ui" class="sidebar-dropdown list-unstyled collapse" data-parent="#sidebar">
+                            <li class="sidebar-item"><a class="sidebar-link" href="tracking-product">Products</a></li>
+                            <li class="sidebar-item"><a class="sidebar-link" href="tracking-shop">Shops</a></li>
+                            </li>
+                        </ul>
                     </li>
                     <li class="sidebar-item ">
                         <a class="sidebar-link" href="tools">
@@ -311,7 +315,7 @@
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.min.js"></script>
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js"></script>
-<script src="js/trackingClient.js"></script>
+<script src="js/tracking_shop_client.js"></script>
 <script defer src="js/extension/app.js"></script>
 <script defer src="js/extension/fontawesome.min.js"></script>
 <script defer src="js/extension/solid.min.js"></script>

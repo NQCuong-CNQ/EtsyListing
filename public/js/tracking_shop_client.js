@@ -16,7 +16,7 @@ $('#find-shop-by-name-button').on('click', async function () {
   if (shopName == '') {
     alert('Please input shop name!')
   }
-
+  $('#loading').css('display', 'block')
   await socket.emit("find-shop-by-name", shopName)
 })
 
@@ -127,7 +127,7 @@ socket.on("dataTransfer", async function (data) {
 })
 
 socket.on("return-find-shop-by-name", function (data) {
-  
+  $('#loading').css('display', 'none')
   shopData = data
   shopDataFilter = data
   console.log(shopDataFilter)
