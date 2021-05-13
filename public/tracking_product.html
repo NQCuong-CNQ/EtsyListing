@@ -46,19 +46,20 @@
                     </li>
                     <li class="sidebar-item active">
                         <a data-target="#ui" data-toggle="collapse" class="sidebar-link collapsed">
-                            <i class="align-middle" data-feather="pie-chart"></i> <span class="align-middle">Tracking</span>
+                            <i class="align-middle" data-feather="pie-chart"></i> <span
+                                class="align-middle">Tracking</span>
                         </a>
                         <ul id="ui" class="sidebar-dropdown list-unstyled collapse" data-parent="#sidebar">
                             <li class="sidebar-item"><a class="sidebar-link" href="tracking-product">Products</a></li>
                             <li class="sidebar-item"><a class="sidebar-link" href="tracking-shop">Shops</a></li>
-                            </li>
-                        </ul>
                     </li>
-                    <li class="sidebar-item ">
-                        <a class="sidebar-link" href="tools">
-                            <i class="align-middle" data-feather="settings"></i> <span class="align-middle">Tools</span>
-                        </a>
-                    </li>
+                </ul>
+                </li>
+                <li class="sidebar-item ">
+                    <a class="sidebar-link" href="tools">
+                        <i class="align-middle" data-feather="settings"></i> <span class="align-middle">Tools</span>
+                    </a>
+                </li>
             </div>
         </nav>
 
@@ -109,16 +110,80 @@
                     </div>
                 </div>
                 <div class="container-fluid">
-                    <input id="find-product-by-keyword" placeholder='Key word'>
-                            <button id="find-product-by-keyword-button">Search</button>
-                    <div id="product-search-list" class="row justify-content-center">
+                    <div class="d-flex">
+                        <input id="find-product-by-keyword" placeholder='Keyword'>
+                        <button class='button-primary' id="find-product-by-keyword-button">Search</button>
+
+                        <h5 style="margin-right: 0.5rem; margin-left: 1.5rem; align-self: flex-end;">Creation date
+                        </h5>
+                        <div class="dropdown">
+                            <button class="btn dropdown-toggle" type="button" data-toggle="dropdown"><span
+                                    id="dropdown-filter-shop-time-created">All</span>
+                                <span class="caret"></span></button>
+                            <ul class="dropdown-menu">
+                                <li id="all-time-created-shop-filter">
+                                    <p>All
+                                    <p>
+                                </li>
+                                <li id="6m-time-created-shop-filter">
+                                    <p>Last 1 day
+                                    <p>
+                                </li>
+                                <li id="in1y-time-created-shop-filter">
+                                    <p>Last 3 days
+                                    <p>
+                                </li>
+                                <li id="over1y-time-created-shop-filter">
+                                    <p>Last 7 days
+                                    <p>
+                                </li>
+                                <li id="custom-time-created-shop-filter">
+                                    <p>Customs
+                                    <p>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <h5 style="margin-right: 0.5rem; margin-left: 1.5rem; align-self: flex-end;">Sort by
+                        </h5>
+                        <div class="dropdown">
+                            <button class="btn dropdown-toggle" type="button" data-toggle="dropdown"><span
+                                    id="dropdown-filter-shop-time-created">Views</span>
+                                <span class="caret"></span></button>
+                            <ul class="dropdown-menu">
+                                <li id="all-time-created-shop-filter">
+                                    <p>Views
+                                    <p>
+                                </li>
+                                <li id="6m-time-created-shop-filter">
+                                    <p>Favorites
+                                    <p>
+                                </li>
+                                <li id="in1y-time-created-shop-filter">
+                                    <p>Price
+                                    <p>
+                                </li>
+                                <li id="over1y-time-created-shop-filter">
+                                    <p>% Favorites
+                                    <p>
+                                </li>
+                                <li id="custom-time-created-shop-filter">
+                                    <p>Quantity
+                                    <p>
+                                </li>
+                            </ul>
+                        </div>
 
                     </div>
 
 
+                    <div id="product-search-list" class="row justify-content-center">
+
+                    </div>
                 </div>
-            </main>
         </div>
+        </main>
+    </div>
     </div>
 </body>
 

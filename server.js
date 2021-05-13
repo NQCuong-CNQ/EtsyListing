@@ -327,7 +327,7 @@ io.on("connection", async function (client) {
 
   await client.on("find-product-by-keyword", async function (keyword) {
     let idListings = []
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < 1; i++) {
       siteUrl = `https://www.etsy.com/search?q=${keyword}&page=${i}&ref=pagination`
       let data = await getSearchProductFromWeb()
 
@@ -337,7 +337,7 @@ io.on("connection", async function (client) {
     }
 
     let listings
-    for (let i = 0; i < idListings.length; i++) {
+    for (let i = 0; i < 7; i++) {
       let result = await makeRequest("GET", `https://openapi.etsy.com/v2/listings/${idListings[i]}?api_key=${api_key}`)
       result = JSON.parse(result).results
 
@@ -345,6 +345,7 @@ io.on("connection", async function (client) {
       resultImgs = JSON.parse(resultImgs).results[0]
       listings = result[0]
       listings['img_url'] = resultImgs.url_570xN
+      listings['img_url_original'] = resultImgs.url_fullxfull
 
       await client.emit("return-find-product-by-keyword", listings)
     }
@@ -394,22 +395,22 @@ io.on("connection", async function (client) {
     // await client.emit("return-find-product-by-keyword", listings)
   })
 
-  function makeRequestdemo(method, url) {
-    return new Promise(function (resolve, reject) {
-      xhr = new XMLHttpRequest()
-      xhr.open(method, url, true)
-      xhr.onreadystatechange = function () {
-        if (xhr.readyState == 4 && xhr.status == 200) {
-          resolve(xhr.responseText)
-          console.log(xhr.status)
-        }
-        else if (xhr.status === 404) {
-          resolve(0)
-        }
-      }
-      xhr.send()
-    })
-  }
+  // function makeRequestdemo(method, url) {
+  //   return new Promise(function (resolve, reject) {
+  //     xhr = new XMLHttpRequest()
+  //     xhr.open(method, url, true)
+  //     xhr.onreadystatechange = function () {
+  //       if (xhr.readyState == 4 && xhr.status == 200) {
+  //         resolve(xhr.responseText)
+  //         console.log(xhr.status)
+  //       }
+  //       else if (xhr.status === 404) {
+  //         resolve(0)
+  //       }
+  //     }
+  //     xhr.send()
+  //   })
+  // }
 
   await client.on("get-list-shop-braumstar", async function (dataUser) {
     clientDB.close()
