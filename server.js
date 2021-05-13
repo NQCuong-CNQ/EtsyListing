@@ -17,7 +17,7 @@ var io = require("socket.io")(server)
 
 // app.use(function cors(req, res, next) {
 //   res.setHeader('Access-Control-Allow-Origin', '*')
-//   res.setHeader('Access-Control-Allow-Headers', 'X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method,Access-Control-Request-Headers, Authorization')
+//   res.setHeader('Access-Control-Allow-Headers', 'X-API-KEY, Origin, X-Requested-With, Content-Type: text/html, Accept, Access-Control-Request-Method,Access-Control-Request-Headers, Authorization, nosniff')
 //   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE')
 //   if (req.method === 'OPTIONS') {
 //     res.status(200);
@@ -83,7 +83,7 @@ async function getShopName() {
       let siteUrlPage = categoryLink[index] + i
       console.log('siteUrlPage: ' + siteUrlPage)
 
-      let dataShopName = await getShopNameFromWeb(siteUrlPage)
+      let dataShopName = await getShopNameFromWeb()
       console.log('page: ' + i)
       await saveShopNameToDB(dataShopName, categoryList[index])
     }
@@ -125,7 +125,7 @@ async function saveShopNameToDB(dataShopName, shopCategory) {
 
   for (let index = 0; index < shopName.length; index++) {
     siteUrl = "https://www.etsy.com/shop/" + shopName[index].shop_name
-    let total_sales = await getTotalSalesFromWeb(siteUrl)
+    let total_sales = await getTotalSalesFromWeb()
 
     total_sales = parseInt(total_sales)
     console.log(shopName[index].shop_name + ":" + total_sales)
@@ -312,16 +312,104 @@ io.on("connection", async function (client) {
     response = JSON.parse(response).results
 
     siteUrl = "https://www.etsy.com/shop/" + shopName
-    response[0]["total_sales"] = await getTotalSalesFromWeb(siteUrl)
+    response[0]["total_sales"] = await getTotalSalesFromWeb()
     await client.emit("return-find-shop-by-name", response)
   })
 
   await client.on("product-tracking-join", async function () {
     let response = await makeRequest("GET", `https://openapi.etsy.com/v2/listings/trending?api_key=${api_key}&limit=50`)
+    // let response = await makeRequest("GET", `https://openapi.etsy.com/v2/listings/539965490/images?api_key=2mlnbmgdqv6esclz98opmmuq`)
+
     response = JSON.parse(response).results
-console.log(response)
+    console.log(response)
     await client.emit("return-product-tracking-join", response)
   })
+
+  await client.on("find-product-by-keyword", async function (keyword) {
+    let idListings = []
+    for (let i = 0; i < 3; i++) {
+      siteUrl = `https://www.etsy.com/search?q=${keyword}&page=${i}&ref=pagination`
+      let data = await getSearchProductFromWeb()
+
+      for (let j = 0; j < data.length; j++) {
+        idListings.push(data[j])
+      }
+    }
+
+    let listings
+    for (let i = 0; i < idListings.length; i++) {
+      let result = await makeRequest("GET", `https://openapi.etsy.com/v2/listings/${idListings[i]}?api_key=${api_key}`)
+      result = JSON.parse(result).results
+
+      let resultImgs = await makeRequest("GET", `https://openapi.etsy.com/v2/listings/${idListings[i]}/images?api_key=${api_key}`)
+      resultImgs = JSON.parse(resultImgs).results[0]
+      listings = result[0]
+      listings['img_url'] = resultImgs.url_570xN
+
+      await client.emit("return-find-product-by-keyword", listings)
+    }
+    // let promises = []
+
+    // promises = []
+    // for (let i = 0; i < 20; i++) {
+    //   promises.push(makeRequestdemo("GET", `https://openapi.etsy.com/v2/listings/${idListings[i]}?api_key=${api_key}`))
+    // }
+
+    // Promise.all(promises).then((results) => {
+    //   for (let j = 0; j < results.length; j++) {
+    //     listings.push(JSON.parse(results[j]).results)
+    //     console.log(listings)
+    //   }
+
+    // promises = []
+    // for (let i = 0; i < 10; i++) {
+    //   promises.push(makeRequestdemo("GET", `https://openapi.etsy.com/v2/listings/${idListings[i]}/images?api_key=${api_key}`))
+    // }
+
+    // Promise.all(promises).then((results) => {
+    //   for (let i = 0; i < results.length; i++) {
+    //     listingImgs.push(JSON.parse(results[i]).results[0])
+    //   }
+
+    //   console.log('idListings')
+
+    // })
+
+
+    // })
+
+
+
+
+    // for (let i = 0; i < 5; i++) {
+    //   for (let j = 0; j < listings.length; j++) {
+    //     if (listings[i].listing_id == listingImgs[j].listing_image_id) {
+    //       listings[i]['img_url'] = listingImgs[j].url_570xN
+    //     }
+    //   }
+    // }
+
+    // console.log(listings)
+
+    // await client.emit("return-find-product-by-keyword", listings)
+  })
+
+  function makeRequestdemo(method, url) {
+    return new Promise(function (resolve, reject) {
+      xhr = new XMLHttpRequest()
+      xhr.open(method, url, true)
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+          resolve(xhr.responseText)
+          console.log(xhr.status)
+        }
+        else if (xhr.status === 404) {
+          resolve(0)
+        }
+      }
+      xhr.send()
+    })
+  }
 
   await client.on("get-list-shop-braumstar", async function (dataUser) {
     clientDB.close()
@@ -425,7 +513,7 @@ console.log(response)
   })
 })
 
-async function getSearchProductFromWeb(siteUrl) {
+async function getSearchProductFromWeb() {
   const $ = await fetchData(siteUrl)
   if ($ == 0) {
     return 0
@@ -457,7 +545,7 @@ async function fetchData(siteUrl) {
   return cheerio.load(result.data)
 }
 
-async function getTotalSalesFromWeb(siteUrl) {
+async function getTotalSalesFromWeb() {
   const $ = await fetchData(siteUrl)
   if ($ == 0) {
     return 0
@@ -469,7 +557,7 @@ async function getTotalSalesFromWeb(siteUrl) {
   return totalSales[0].replace(/,/g, '')
 }
 
-async function getShopNameFromWeb(siteUrl) {
+async function getShopNameFromWeb() {
   const $ = await fetchData(siteUrl)
   if ($ == 0) {
     return 0
@@ -486,7 +574,7 @@ async function getShopNameFromWeb(siteUrl) {
 
 async function makeRequest(method, url) {
   return new Promise(function (resolve, reject) {
-    xhr.open(method, url, true)
+    xhr.open(method, url)
     xhr.onreadystatechange = function () {
       if (xhr.readyState === xhr.DONE) {
         let status = xhr.status

@@ -1,5 +1,5 @@
-var socket = io.connect("http://giftsvk.com:80")
-// var socket = io.connect("http://localhost:80")
+// var socket = io.connect("http://giftsvk.com:80")
+var socket = io.connect("http://localhost:80")
 // var shopData
 // var listingData
 // var category
@@ -11,14 +11,14 @@ var socket = io.connect("http://giftsvk.com:80")
 //   alert("Đang được phát triển!\nChức năng ghi lại toàn bộ số lượng listing theo ngày, vẽ biểu đồ và phân tích")
 // })
 
-// $('#find-shop-by-name-button').on('click', async function () {
-//   let shopName = $('#find-shop-by-name').val().trim()
-//   if (shopName == '') {
-//     alert('Please input shop name!')
-//   }
+$('#find-product-by-keyword-button').on('click', async function () {
+  let keyword = $('#find-product-by-keyword').val().trim().replace(/ +(?= )/g,'')
+  if (keyword == '') {
+    alert('Please input keyword!')
+  }
 //   $('#loading').css('display', 'block')
-//   await socket.emit("find-shop-by-name", shopName)
-// })
+  await socket.emit("find-product-by-keyword", keyword)
+})
 
 // function updateData() {
 //   $('#table_id').DataTable().clear().destroy()
@@ -108,11 +108,9 @@ var socket = io.connect("http://giftsvk.com:80")
 
 /* ------------------------------------------------SOCKET SECTION------------------------------------------------ */
 socket.on("connect", async function (data) {
-    await socket.emit("product-tracking-join")
+    // await socket.emit("product-tracking-join")
     $('#loading').css('display', 'none')
 })
-
-
 
 socket.on("return-product-tracking-join", function (data) {
     for (var i = 0; i < data.length; i++){
@@ -131,6 +129,22 @@ socket.on("return-product-tracking-join", function (data) {
             </div>
         `)
     }
+    
+})
+
+socket.on("return-find-product-by-keyword", function (data) {
+    // for (var i = 0; i < data.length; i++){
+        $('#product-search-list').append(`
+            <div style="max-width: 18%; margin: 1rem 0.5rem; padding: 0.3rem; border-radius: 5px; border-color: black; border-style: solid; border-width: 1px;">
+                <img src="${data.img_url}" alt="" width="100%">
+                <a href="">${data.title}</a>
+                <p><i class="fas fa-dollar-sign"></i>${data.price}</p>
+                <p><i class="fas fa-eye"></i>${data.views}</p>
+                <p><i class="fas fa-heart"></i>${data.num_favorers}</p>
+                <p><i class="fas fa-heartbeat"></i></p>
+            </div>
+        `)
+    // }
     
 })
 
