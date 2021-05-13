@@ -1,5 +1,5 @@
-// var socket = io.connect("http://giftsvk.com:80")
-var socket = io.connect("http://localhost:80")
+var socket = io.connect("http://giftsvk.com:80")
+// var socket = io.connect("http://localhost:80")
 var shopData
 var listingData
 var category
@@ -322,10 +322,8 @@ function getEpochTime(input) {
   var date = new Date(0)
   date.setUTCSeconds(input)
   time = String(date)
-  time = time.substr(0, time.length - 19)
   time = time.split(' ')
-
-  time = time[0] + ' ' + time[2] + '-' + convertMonthInString(time[1]) + '-' + time[3] + ' ' + time[4] + ' ' + time[5]
+  time = time[2] + '-' + convertMonthInString(time[1]) + '-' + time[3]
   return time
 }
 
