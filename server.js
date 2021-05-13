@@ -316,14 +316,14 @@ io.on("connection", async function (client) {
     await client.emit("return-find-shop-by-name", response)
   })
 
-  await client.on("product-tracking-join", async function () {
-    let response = await makeRequest("GET", `https://openapi.etsy.com/v2/listings/trending?api_key=${api_key}&limit=50`)
-    // let response = await makeRequest("GET", `https://openapi.etsy.com/v2/listings/539965490/images?api_key=2mlnbmgdqv6esclz98opmmuq`)
+  // await client.on("product-tracking-join", async function () {
+  //   let response = await makeRequest("GET", `https://openapi.etsy.com/v2/listings/trending?api_key=${api_key}&limit=50`)
+  //   // let response = await makeRequest("GET", `https://openapi.etsy.com/v2/listings/539965490/images?api_key=2mlnbmgdqv6esclz98opmmuq`)
 
-    response = JSON.parse(response).results
-    console.log(response)
-    await client.emit("return-product-tracking-join", response)
-  })
+  //   response = JSON.parse(response).results
+  //   console.log(response)
+  //   await client.emit("return-product-tracking-join", response)
+  // })
 
   await client.on("find-product-by-keyword", async function (keyword) {
     let idListings = []
