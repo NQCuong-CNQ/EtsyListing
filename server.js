@@ -316,6 +316,13 @@ io.on("connection", async function (client) {
     await client.emit("return-find-shop-by-name", response)
   })
 
+  await client.on("product-tracking-join", async function () {
+    let response = await makeRequest("GET", `https://openapi.etsy.com/v2/listings/trending?api_key=${api_key}&limit=50`)
+    response = JSON.parse(response).results
+console.log(response)
+    await client.emit("return-product-tracking-join", response)
+  })
+
   await client.on("get-list-shop-braumstar", async function (dataUser) {
     clientDB.close()
     let clientDBBraumstar = await MongoClient.connect('mongodb://zic:Mynewpassword%400@braumstar.com:27020/zicDb?authSource=zicDb', { useNewUrlParser: true, useUnifiedTopology: true })
@@ -417,6 +424,25 @@ io.on("connection", async function (client) {
     clientDBBraumstar.close()
   })
 })
+
+async function getSearchProductFromWeb(siteUrl) {
+  const $ = await fetchData(siteUrl)
+  if ($ == 0) {
+    return 0
+  }
+  let searchProduct = $('[data-search-results]').html()
+  if (searchProduct == '') {
+    return 0
+  }
+
+  searchProduct = searchProduct.split('href="https://www.etsy.com/listing/')
+  for (let i = 0; i < searchProduct.length; i++) {
+    searchProduct[i] = searchProduct[i].substring(0, 12).split('/')[0]
+  }
+
+  searchProduct.shift()
+  return searchProduct
+}
 
 async function fetchData(siteUrl) {
   let result
