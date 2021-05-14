@@ -79,9 +79,7 @@ async function getListing() {
       idListings.push(data[j])
     }
   }
-  
   console.log(idListings.length)
-  await sleep(1000)
   for (let i = 1; i <= 5; i++) {
     siteUrl = `https://www.etsy.com/search?q=mug&page=${i}&ref=pagination`
     let data = await getSearchProductFromWeb()
@@ -91,7 +89,6 @@ async function getListing() {
     }
   }
   console.log(idListings.length)
-  await sleep(1000)
   for (let i = 1; i <= 5; i++) {
     siteUrl = `https://www.etsy.com/search?q=tumbler&page=${i}&ref=pagination`
     let data = await getSearchProductFromWeb()
@@ -101,9 +98,8 @@ async function getListing() {
     }
   }
   console.log(idListings.length)
-  await sleep(1000)
   for (let i = 1; i <= 5; i++) {
-    siteUrl = `https://www.etsy.com/search?q=shirt&page=${i}&ref=pagination`
+    siteUrl = `https://www.etsy.com/search?q=tshirt&page=${i}&ref=pagination`
     let data = await getSearchProductFromWeb()
     console.log(i)
     for (let j = 0; j < data.length; j++) {
@@ -111,7 +107,6 @@ async function getListing() {
     }
   }
   console.log(idListings.length)
-  await sleep(1000)
   for (let i = 1; i <= 5; i++) {
     siteUrl = `https://www.etsy.com/search?q=blanket&page=${i}&ref=pagination`
     let data = await getSearchProductFromWeb()
@@ -121,7 +116,6 @@ async function getListing() {
     }
   }
   console.log(idListings.length)
-  await sleep(1000)
   for (let i = 1; i <= 30; i++) {
     siteUrl = `https://www.etsy.com/c?ref=pagination&explicit=1&page=${i}`
     let data = await getSearchProductFromWeb()
@@ -130,8 +124,7 @@ async function getListing() {
       idListings.push(data[j])  
     }
   }
-  await sleep(1000)
-  
+
   idListings = [...new Set(idListings)]
   console.log(idListings.length)
 
@@ -152,7 +145,7 @@ async function getListing() {
 
     await dbo.collection("listing").insertOne(listings)
     console.log(listings.listing_id)
-    await sleep(200)
+    await sleep(100)
   }
 }
 
@@ -221,7 +214,7 @@ async function saveShopNameToDB(dataShopName, shopCategory) {
   }
 
   client.close()
-  await sleep(200)
+  await sleep(100)
 }
 
 async function updateUser() {
@@ -301,7 +294,7 @@ async function updateShopInfo() {
       'time_update': timeNow
     })
     await dbo.collection("shop").updateOne({ shop_id: response[0].shop_id }, { $set: { total_sales: dbData[index].total_sales } }, { upsert: true })
-    await sleep(200)
+    await sleep(100)
   }
   client.close()
 }
