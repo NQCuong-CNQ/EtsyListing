@@ -92,56 +92,57 @@ async function updateData() {
   await getTotalShop()
   isUpdate = false
 }
+//  getListing()
 
 async function getListing() {
   let idListings = []
 
-  for (let i = 1; i <= 5; i++) {
-    siteUrl = `https://www.etsy.com/search?q=canvas&page=${i}&ref=pagination`
-    let data = await getSearchProductFromWeb()
-    console.log(i)
-    for (let j = 0; j < data.length; j++) {
-      idListings.push(data[j])
-    }
-  }
-  console.log(idListings.length)
-  for (let i = 1; i <= 5; i++) {
-    siteUrl = `https://www.etsy.com/search?q=mug&page=${i}&ref=pagination`
-    let data = await getSearchProductFromWeb()
-    console.log(i)
-    for (let j = 0; j < data.length; j++) {
-      idListings.push(data[j])
-    }
-  }
-  console.log(idListings.length)
-  for (let i = 1; i <= 5; i++) {
-    siteUrl = `https://www.etsy.com/search?q=tumbler&page=${i}&ref=pagination`
-    let data = await getSearchProductFromWeb()
-    console.log(i)
-    for (let j = 0; j < data.length; j++) {
-      idListings.push(data[j])
-    }
-  }
-  console.log(idListings.length)
-  for (let i = 1; i <= 5; i++) {
-    siteUrl = `https://www.etsy.com/search?q=tshirt&page=${i}&ref=pagination`
-    let data = await getSearchProductFromWeb()
-    console.log(i)
-    for (let j = 0; j < data.length; j++) {
-      idListings.push(data[j])
-    }
-  }
-  console.log(idListings.length)
-  for (let i = 1; i <= 5; i++) {
-    siteUrl = `https://www.etsy.com/search?q=blanket&page=${i}&ref=pagination`
-    let data = await getSearchProductFromWeb()
-    console.log(i)
-    for (let j = 0; j < data.length; j++) {
-      idListings.push(data[j])
-    }
-  }
-  console.log(idListings.length)
-  for (let i = 1; i <= 30; i++) {
+  // for (let i = 1; i <= 5; i++) {
+  //   siteUrl = `https://www.etsy.com/search?q=canvas&page=${i}&ref=pagination`
+  //   let data = await getSearchProductFromWeb()
+  //   console.log(i)
+  //   for (let j = 0; j < data.length; j++) {
+  //     idListings.push(data[j])
+  //   }
+  // }
+  // console.log(idListings.length)
+  // for (let i = 1; i <= 5; i++) {
+  //   siteUrl = `https://www.etsy.com/search?q=mug&page=${i}&ref=pagination`
+  //   let data = await getSearchProductFromWeb()
+  //   console.log(i)
+  //   for (let j = 0; j < data.length; j++) {
+  //     idListings.push(data[j])
+  //   }
+  // }
+  // console.log(idListings.length)
+  // for (let i = 1; i <= 5; i++) {
+  //   siteUrl = `https://www.etsy.com/search?q=tumbler&page=${i}&ref=pagination`
+  //   let data = await getSearchProductFromWeb()
+  //   console.log(i)
+  //   for (let j = 0; j < data.length; j++) {
+  //     idListings.push(data[j])
+  //   }
+  // }
+  // console.log(idListings.length)
+  // for (let i = 1; i <= 5; i++) {
+  //   siteUrl = `https://www.etsy.com/search?q=tshirt&page=${i}&ref=pagination`
+  //   let data = await getSearchProductFromWeb()
+  //   console.log(i)
+  //   for (let j = 0; j < data.length; j++) {
+  //     idListings.push(data[j])
+  //   }
+  // }
+  // console.log(idListings.length)
+  // for (let i = 1; i <= 5; i++) {
+  //   siteUrl = `https://www.etsy.com/search?q=blanket&page=${i}&ref=pagination`
+  //   let data = await getSearchProductFromWeb()
+  //   console.log(i)
+  //   for (let j = 0; j < data.length; j++) {
+  //     idListings.push(data[j])
+  //   }
+  // }
+  // console.log(idListings.length)
+  for (let i = 1; i <= 1; i++) {
     siteUrl = `https://www.etsy.com/c?ref=pagination&explicit=1&page=${i}`
     let data = await getSearchProductFromWeb()
     console.log(i)
@@ -167,6 +168,10 @@ async function getListing() {
     listings = result[0]
     listings['img_url'] = resultImgs.url_570xN
     listings['img_url_original'] = resultImgs.url_fullxfull
+
+    let percentFavor = (listings.num_favorers / listings.views) * 100
+    percentFavor = percentFavor.toFixed(0)
+    listings['percent_favor'] = percentFavor
 
     await dbo.collection("listing").insertOne(listings)
     console.log(listings.listing_id)

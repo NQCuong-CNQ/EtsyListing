@@ -1,41 +1,64 @@
-var socket = io.connect("http://giftsvk.com:80")
-// var socket = io.connect("http://localhost:80")
-// var shopData
+// var socket = io.connect("http://giftsvk.com:80")
+var socket = io.connect("http://localhost:80")
 var listingData = []
-// var category
-// var shopDataFilter = []
-// var timeCreatedShopFilter = 0
 
 /* ------------------------------------------------MAIN SECTION------------------------------------------------ */
+
+$('#all-filter-listing-creation-date').on('click', async function () {
+ 
+})
+
+$('#sort-by-view-listing').on('click', async function () {
+  listingData.sort(compareViews)
+  updateData()
+  $('#sort-by-listing').text('Views')
+})
+$('#sort-by-favorite-listing').on('click', async function () {
+  listingData.sort(compareFavorites)
+  updateData()
+  $('#sort-by-listing').text('Favorites')
+})
+
+$('#sort-by-price-listing').on('click', async function () {
+  listingData.sort(comparePrice)
+  updateData()
+  $('#sort-by-listing').text('Price')
+})
+
+$('#sort-by-percent-favorite-listing').on('click', async function () {
+  listingData.sort(comparePercentFavorites)
+  updateData()
+  $('#sort-by-listing').text('% Favorites')
+})
+
+$('#sort-by-quantity-listing').on('click', async function () {
+  listingData.sort(compareQuantity)
+  updateData()
+  $('#sort-by-listing').text('Quantity')
+})
+
 $('#find-product-by-keyword-button').on('click', async function () {
-  let keyword = $('#find-product-by-keyword').val().trim().replace(/ +(?= )/g, '')
+  let keyword = $('#find-product-by-keyword').val().trim().toLowerCase().replace(/ +(?= )/g, '')
   if (keyword == '') {
-    alert('Please input keyword!')
+    updateData()
+    return
   }
   $('#loading').css('display', 'block')
 
   keyword = keyword.split(' ')
   let dataSearch = []
   for (var i = 0; i < listingData.length; i++) {
-    if(checkSearchByKeyword(keyword, i)){
+    if (checkSearchByKeyword(keyword, i)) {
       dataSearch.push(listingData[i])
     }
   }
-
-  updateData()
-
+  updateSearchData(dataSearch)
 })
 
-function checkSearchByKeyword(keyword, index) {
-  for (let j = 0; j < keyword.length; j++) {
-    if (listingData[index].title.includes(keyword[j])) {
-    } else { return false }
-  } return true
-}
 
-function updateData(){
+function updateData() {
   $('#product-search-list').empty()
-  for (var i = 0; i < 100; i++) {
+  for (var i = 0; i < listingData.length; i++) {
     $('#product-search-list').append(`
         <div class="list-product-search-container">
         <a href="${listingData[i].img_url_original}" target="_blank"><img src="${listingData[i].img_url}"
@@ -48,13 +71,15 @@ function updateData(){
         </div>
         <div class="row">
             <p class="col-6"><i class="fas fa-heart mr-1"></i>${listingData[i].num_favorers}</p>
-            <p class="col-6"><i class="fas fa-heartbeat mr-1"></i></p>
+            <p class="col-6"><i class="fas fa-heartbeat mr-1"></i>${listingData[i].percent_favor}%</p>
         </div>
     </div>
     `)
   }
   $('#loading').css('display', 'none')
 }
+
+
 
 /* ------------------------------------------------END MAIN SECTION------------------------------------------------ */
 
@@ -69,7 +94,8 @@ socket.on("updating", function (data) {
 socket.on("return-product-tracking-join", function (data) {
   listingData = []
   listingData = data
-  listingData.sort(compare)
+  listingData.sort(compareViews)
+  console.log(listingData[2].img_url_original)
 
   updateData()
 })
@@ -105,11 +131,39 @@ socket.on("return-product-tracking-join", function (data) {
 /* ------------------------------------------------ADDITIONAL SECTION------------------------------------------------ */
 
 
-function compare(a, b) {
-  // Use toUpperCase() to ignore character casing
+function compareViews(a, b) {
   const bandA = a.views
   const bandB = b.views
+  return compareAction(bandA, bandB)
+}
 
+function compareFavorites(a, b) {
+  const bandA = a.num_favorers
+  const bandB = b.num_favorers
+  return compareAction(bandA, bandB)
+}
+
+function comparePrice(a, b) {
+  const bandA = a.price
+  const bandB = b.price
+  return compareAction(bandA, bandB)
+}
+
+function comparePercentFavorites(a, b) {
+  const bandA = a.percent_favor
+  const bandB = b.percent_favor
+  return compareAction(bandA, bandB)
+} 
+
+function compareQuantity(a, b) {
+  const bandA = a.quantity
+  const bandB = b.quantity
+  return compareAction(bandA, bandB)
+}
+
+function compareAction(bandA, bandB) {
+  bandA = parseFloat(bandA)
+  bandB = parseFloat(bandB)
   let comparison = 0;
   if (bandA > bandB) {
     comparison = 1;
@@ -117,6 +171,31 @@ function compare(a, b) {
     comparison = -1;
   }
   return comparison * -1;
+}
+
+function updateSearchData(dataSearch) {
+  $('#product-search-list').empty()
+  for (var i = 0; i < dataSearch.length; i++) {
+    let percentFavor = (listingData[i].num_favorers / listingData[i].views) * 100
+    percentFavor = percentFavor.toFixed(0)
+    $('#product-search-list').append(`
+        <div class="list-product-search-container">
+        <a href="${dataSearch[i].img_url_original}" target="_blank"><img src="${dataSearch[i].img_url}"
+            alt="" width="100%" loading='lazy'></a>
+        
+        <a class="mt-2" href="${dataSearch[i].url}" target="_blank">${dataSearch[i].title}</a>
+        <div class="row">
+            <p class="col-6"><i class="fas fa-dollar-sign mr-1"></i>${dataSearch[i].price}</p>
+            <p class="col-6"><i class="fas fa-eye mr-1"></i>${dataSearch[i].views}</p>
+        </div>
+        <div class="row">
+            <p class="col-6"><i class="fas fa-heart mr-1"></i>${dataSearch[i].num_favorers}</p>
+            <p class="col-6"><i class="fas fa-heartbeat mr-1"></i>${listingData[i].percent_favor}%</p>
+        </div>
+    </div>
+    `)
+  }
+  $('#loading').css('display', 'none')
 }
 
 // function getDayTimeLife(creation_time) {
@@ -156,21 +235,29 @@ function compare(a, b) {
 //   }
 // }
 
-// var coll = document.getElementsByClassName("collapsible")
-// for (let i = 0; i < coll.length; i++) {
-//   coll[i].addEventListener("click", function () {
-//     this.classList.toggle("active")
-//     var content = this.nextElementSibling
-//     if (content.style.display === "block") {
-//       content.style.display = "none";
-//     } else {
-//       content.style.display = "block"
-//     }
-//   })
-// }
 /* ------------------------------------------------END ADDITIONAL SECTION------------------------------------------------ */
 
 /* ------------------------------------------------FILTER SECTION------------------------------------------------ */
+
+function checkSearchByKeyword(keyword, index) {
+  if (keyword.length == 1 && checkSearchTaxonomy(keyword, index)) {
+    return true
+  }
+
+  for (let j = 0; j < keyword.length; j++) {
+    if (listingData[index].title.toLowerCase().includes(keyword[j])) {
+    } else { return false }
+  } return true
+}
+
+function checkSearchTaxonomy(keyword, index) {
+  for (var i = 0; i < listingData[index].taxonomy_path.length; i++) {
+    if (listingData[index].taxonomy_path[i].toLowerCase().includes(keyword[0])) {
+      return true
+    }
+  }
+}
+
 // function updateDataTimeFiler(shopDataFilter) {
 //   $('#table_id').DataTable().clear().destroy()
 //   for (var i = 0; i < shopDataFilter.length; i++) {
