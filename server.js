@@ -54,10 +54,35 @@ async function updateCate() {
   await dbo.collection("category").insertOne(category)
 }
 
+// test()
+async function test(){
+  siteUrl = `https://www.etsy.com/search?q=canvas&page=1&ref=pagination`
+    let data = await getSearchProductFromWeb1()
+}
+async function getSearchProductFromWeb1() {
+  const $ = await fetchData(siteUrl)
+  if ($ == 0) {
+    return 0
+  }
+  let searchProduct = $('[data-search-results]').html()
+  if (searchProduct == '') {
+    return 0
+  }
+  fs.writeFileSync('text.txt', searchProduct,'utf8')
+  // searchProduct = searchProduct.split('href="https://www.etsy.com/listing/')
+  // for (let i = 0; i < searchProduct.length; i++) {
+  //   searchProduct[i] = searchProduct[i].substring(0, 12).split('/')[0]
+  // }
+
+  // searchProduct.shift()
+  // return searchProduct
+}
+
 getTotalShop()
 async function updateData() {
   isUpdate = true
   // await updateCate()
+  await getListing()
   await getShopName()
   await updateShopInfo()
   // await updateListing()
@@ -67,10 +92,10 @@ async function updateData() {
   await getTotalShop()
   isUpdate = false
 }
-getListing()
+
 async function getListing() {
   let idListings = []
-  
+
   for (let i = 1; i <= 5; i++) {
     siteUrl = `https://www.etsy.com/search?q=canvas&page=${i}&ref=pagination`
     let data = await getSearchProductFromWeb()
@@ -121,7 +146,7 @@ async function getListing() {
     let data = await getSearchProductFromWeb()
     console.log(i)
     for (let j = 0; j < data.length; j++) {
-      idListings.push(data[j])  
+      idListings.push(data[j])
     }
   }
 
@@ -398,65 +423,62 @@ io.on("connection", async function (client) {
     await client.emit("return-find-shop-by-name", response)
   })
 
-  // await client.on("product-tracking-join", async function () {
-  //   let response = await makeRequest("GET", `https://openapi.etsy.com/v2/listings/trending?api_key=${api_key}&limit=50`)
-  //   // let response = await makeRequest("GET", `https://openapi.etsy.com/v2/listings/539965490/images?api_key=2mlnbmgdqv6esclz98opmmuq`)
+  await client.on("product-tracking-join", async function () {
+    if (isUpdate) {
+      await client.emit("updating")
+    } else {
+      let dbData = await dbo.collection("listing").find().toArray()
+      await client.emit("return-product-tracking-join", dbData)
+    }
+  })
 
-  //   response = JSON.parse(response).results
-  //   console.log(response)
-  //   await client.emit("return-product-tracking-join", response)
+  // await client.on("find-product-by-keyword", async function (keyword) {
+
+
+
+  // await client.emit("return-find-product-by-keyword", listings)
+  // let promises = []
+
+  // promises = []
+  // for (let i = 0; i < 20; i++) {
+  //   promises.push(makeRequestdemo("GET", `https://openapi.etsy.com/v2/listings/${idListings[i]}?api_key=${api_key}`))
+  // }
+
+  // Promise.all(promises).then((results) => {
+  //   for (let j = 0; j < results.length; j++) {
+  //     listings.push(JSON.parse(results[j]).results)
+  //     console.log(listings)
+  //   }
+
+  // promises = []
+  // for (let i = 0; i < 10; i++) {
+  //   promises.push(makeRequestdemo("GET", `https://openapi.etsy.com/v2/listings/${idListings[i]}/images?api_key=${api_key}`))
+  // }
+
+  // Promise.all(promises).then((results) => {
+  //   for (let i = 0; i < results.length; i++) {
+  //     listingImgs.push(JSON.parse(results[i]).results[0])
+  //   }
+
+  //   console.log('idListings')
+
   // })
 
-  await client.on("find-product-by-keyword", async function (keyword) {
 
+  // })
 
+  // for (let i = 0; i < 5; i++) {
+  //   for (let j = 0; j < listings.length; j++) {
+  //     if (listings[i].listing_id == listingImgs[j].listing_image_id) {
+  //       listings[i]['img_url'] = listingImgs[j].url_570xN
+  //     }
+  //   }
+  // }
 
-    await client.emit("return-find-product-by-keyword", listings)
-    // let promises = []
+  // console.log(listings)
 
-    // promises = []
-    // for (let i = 0; i < 20; i++) {
-    //   promises.push(makeRequestdemo("GET", `https://openapi.etsy.com/v2/listings/${idListings[i]}?api_key=${api_key}`))
-    // }
-
-    // Promise.all(promises).then((results) => {
-    //   for (let j = 0; j < results.length; j++) {
-    //     listings.push(JSON.parse(results[j]).results)
-    //     console.log(listings)
-    //   }
-
-    // promises = []
-    // for (let i = 0; i < 10; i++) {
-    //   promises.push(makeRequestdemo("GET", `https://openapi.etsy.com/v2/listings/${idListings[i]}/images?api_key=${api_key}`))
-    // }
-
-    // Promise.all(promises).then((results) => {
-    //   for (let i = 0; i < results.length; i++) {
-    //     listingImgs.push(JSON.parse(results[i]).results[0])
-    //   }
-
-    //   console.log('idListings')
-
-    // })
-
-
-    // })
-
-
-
-
-    // for (let i = 0; i < 5; i++) {
-    //   for (let j = 0; j < listings.length; j++) {
-    //     if (listings[i].listing_id == listingImgs[j].listing_image_id) {
-    //       listings[i]['img_url'] = listingImgs[j].url_570xN
-    //     }
-    //   }
-    // }
-
-    // console.log(listings)
-
-    // await client.emit("return-find-product-by-keyword", listings)
-  })
+  // await client.emit("return-find-product-by-keyword", listings)
+  // })
 
   // function makeRequestdemo(method, url) {
   //   return new Promise(function (resolve, reject) {
@@ -599,12 +621,12 @@ async function getSearchProductFromWeb() {
 
 async function fetchData(siteUrl) {
   let result
-  
+
   try {
     result = await axios.get(siteUrl)
   } catch (err) {
     result = err.response.status
-    console.log('error '+ result)
+    console.log('error ' + result)
   }
   if (result == 404) {
     return 0

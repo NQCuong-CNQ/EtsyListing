@@ -8,69 +8,78 @@ var listingData = []
 
 /* ------------------------------------------------MAIN SECTION------------------------------------------------ */
 $('#find-product-by-keyword-button').on('click', async function () {
-  let keyword = $('#find-product-by-keyword').val().trim().replace(/ +(?= )/g,'')
-  if (keyword == '') {
-    alert('Please input keyword!')
-  }
+  // let keyword = $('#find-product-by-keyword').val().trim().replace(/ +(?= )/g, '')
+  // if (keyword == '') {
+  //   alert('Please input keyword!')
+  // }
 
-  $('#loading').css('display', 'block')
-  await socket.emit("find-product-by-keyword", keyword)
-  listingData = []
+  // $('#loading').css('display', 'block')
+  // await socket.emit("find-product-by-keyword", keyword)
+  // listingData = []
 })
 
 /* ------------------------------------------------END MAIN SECTION------------------------------------------------ */
 
 /* ------------------------------------------------SOCKET SECTION------------------------------------------------ */
 socket.on("connect", async function (data) {
-    // await socket.emit("product-tracking-join")
-    // $('#loading').css('display', 'none')
+  await socket.emit("product-tracking-join")
+  $('#loading').css('display', 'block')
 })
 
-// socket.on("return-product-tracking-join", function (data) {
-//     for (var i = 0; i < data.length; i++){
-//         console.log(data[i].state)
-//         if(data[i].state != 'active'){
-//             continue
-//         }
-//         $('#product-search-list').append(`
-//             <div style="max-width: 18%; margin: 1rem 0.5rem; padding: 0.3rem; border-radius: 5px; border-color: black; border-style: solid; border-width: 1px;">
-//                 <img src="${data[i].url}" alt="" width="100%">
-//                 <a href="">${data[i].title}</a>
-//                 <p><i class="fas fa-dollar-sign"></i>${data[i].price}</p>
-//                 <p><i class="fas fa-eye"></i>${data[i].views}</p>
-//                 <p><i class="fas fa-heart"></i>${data[i].num_favorers}</p>
-//                 <p><i class="fas fa-heartbeat"></i></p>
-//             </div>
-//         `)
-//     }
-    
-// })
+socket.on("updating", function (data) {
+  alert('Data Server is updating, please come back later!')
+})
 
-socket.on("return-find-product-by-keyword", function (data) {
-    $('#loading').css('display', 'none')
-    listingData.push(data)
-    listingData.sort(compare)
+socket.on("return-product-tracking-join", function (data) {
+  $('#loading').css('display', 'none')
+  listingData.push(data)
+  listingData.sort(compare)
 
-    $('#product-search-list').empty()
-    for (var i = 0; i < listingData.length; i++){
-        $('#product-search-list').append(`
+  for (var i = 0; i < data.length; i++) {
+    $('#product-search-list').append(`
         <div class="list-product-search-container">
-            <a href="${listingData[i].img_url_original}" target="_blank"><img src="${listingData[i].img_url}"
-                alt="" width="100%"></a>
-            
-            <a class="mt-2" href="${listingData[i].url}" target="_blank">${listingData[i].title}</a>
-            <div class="row">
-                <p class="col-6"><i class="fas fa-dollar-sign mr-1"></i>${listingData[i].price}</p>
-                <p class="col-6"><i class="fas fa-eye mr-1"></i>${listingData[i].views}</p>
-            </div>
-            <div class="row">
-                <p class="col-6"><i class="fas fa-heart mr-1"></i>${listingData[i].num_favorers}</p>
-                <p class="col-6"><i class="fas fa-heartbeat mr-1"></i></p>
-            </div>
+        <a href="${listingData[i].img_url_original}" target="_blank"><img src="${listingData[i].img_url}"
+            alt="" width="100%"></a>
+        
+        <a class="mt-2" href="${listingData[i].url}" target="_blank">${listingData[i].title}</a>
+        <div class="row">
+            <p class="col-6"><i class="fas fa-dollar-sign mr-1"></i>${listingData[i].price}</p>
+            <p class="col-6"><i class="fas fa-eye mr-1"></i>${listingData[i].views}</p>
         </div>
-        `)
-    }
+        <div class="row">
+            <p class="col-6"><i class="fas fa-heart mr-1"></i>${listingData[i].num_favorers}</p>
+            <p class="col-6"><i class="fas fa-heartbeat mr-1"></i></p>
+        </div>
+    </div>
+    `)
+  }
 })
+
+// socket.on("return-find-product-by-keyword", function (data) {
+//   $('#loading').css('display', 'none')
+//   listingData.push(data)
+//   listingData.sort(compare)
+
+//   $('#product-search-list').empty()
+//   for (var i = 0; i < listingData.length; i++) {
+//     $('#product-search-list').append(`
+//         <div class="list-product-search-container">
+//             <a href="${listingData[i].img_url_original}" target="_blank"><img src="${listingData[i].img_url}"
+//                 alt="" width="100%"></a>
+            
+//             <a class="mt-2" href="${listingData[i].url}" target="_blank">${listingData[i].title}</a>
+//             <div class="row">
+//                 <p class="col-6"><i class="fas fa-dollar-sign mr-1"></i>${listingData[i].price}</p>
+//                 <p class="col-6"><i class="fas fa-eye mr-1"></i>${listingData[i].views}</p>
+//             </div>
+//             <div class="row">
+//                 <p class="col-6"><i class="fas fa-heart mr-1"></i>${listingData[i].num_favorers}</p>
+//                 <p class="col-6"><i class="fas fa-heartbeat mr-1"></i></p>
+//             </div>
+//         </div>
+//         `)
+//   }
+// })
 
 /* ------------------------------------------------END SOCKET SECTION------------------------------------------------ */
 
@@ -78,18 +87,18 @@ socket.on("return-find-product-by-keyword", function (data) {
 
 
 function compare(a, b) {
-    // Use toUpperCase() to ignore character casing
-    const bandA = a.views
-    const bandB = b.views
-  
-    let comparison = 0;
-    if (bandA > bandB) {
-      comparison = 1;
-    } else if (bandA < bandB) {
-      comparison = -1;
-    }
-    return comparison*-1;
+  // Use toUpperCase() to ignore character casing
+  const bandA = a.views
+  const bandB = b.views
+
+  let comparison = 0;
+  if (bandA > bandB) {
+    comparison = 1;
+  } else if (bandA < bandB) {
+    comparison = -1;
   }
+  return comparison * -1;
+}
 
 // function getDayTimeLife(creation_time) {
 //   let timeNow = new Date().getTime()
