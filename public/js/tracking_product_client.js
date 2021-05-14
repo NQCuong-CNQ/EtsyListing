@@ -58,7 +58,7 @@ $('#find-product-by-keyword-button').on('click', async function () {
 
 function updateData() {
   $('#product-search-list').empty()
-  for (var i = 0; i < listingData.length; i++) {
+  for (var i = 0; i < 100; i++) {
     $('#product-search-list').append(`
         <div class="list-product-search-container">
         <a href="${listingData[i].img_url_original}" target="_blank"><img src="${listingData[i].img_url}"
@@ -175,9 +175,7 @@ function compareAction(bandA, bandB) {
 
 function updateSearchData(dataSearch) {
   $('#product-search-list').empty()
-  for (var i = 0; i < dataSearch.length; i++) {
-    let percentFavor = (listingData[i].num_favorers / listingData[i].views) * 100
-    percentFavor = percentFavor.toFixed(0)
+  for (var i = 0; i < 100; i++) {
     $('#product-search-list').append(`
         <div class="list-product-search-container">
         <a href="${dataSearch[i].img_url_original}" target="_blank"><img src="${dataSearch[i].img_url}"
