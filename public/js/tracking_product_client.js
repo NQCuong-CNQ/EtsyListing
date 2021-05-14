@@ -23,6 +23,7 @@ $('#find-product-by-keyword-button').on('click', async function () {
 /* ------------------------------------------------SOCKET SECTION------------------------------------------------ */
 socket.on("connect", async function (data) {
   await socket.emit("product-tracking-join")
+  console.log('sending')
   $('#loading').css('display', 'block')
 })
 
@@ -31,10 +32,11 @@ socket.on("updating", function (data) {
 })
 
 socket.on("return-product-tracking-join", function (data) {
+  console.log('receiving')
   $('#loading').css('display', 'none')
   listingData.push(data)
   listingData.sort(compare)
-
+  console.log('ok')
   for (var i = 0; i < data.length; i++) {
     $('#product-search-list').append(`
         <div class="list-product-search-container">
