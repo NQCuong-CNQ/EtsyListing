@@ -1,5 +1,5 @@
-// var socket = io.connect("http://giftsvk.com:80")
-var socket = io.connect("http://localhost:80")
+var socket = io.connect("http://giftsvk.com:80")
+// var socket = io.connect("http://localhost:80")
 var listingData = []
 var filterByDateOption = 0
 var isSearch = false
@@ -93,7 +93,7 @@ function searchOrFilterData() {
   }
 
   if (filterByDateOption == 'custom') {
-    
+
 
   } else if (filterByDateOption == 0) {
 
@@ -135,7 +135,13 @@ function updateData(dataFilter = listingData) {
     $('#loading').css('display', 'none')
     return
   }
-  for (var i = 0; i < dataFilter.length; i++) {
+
+  let count
+  if (dataFilter.length > 100) {
+    count = 100
+  } else { count = dataFilter.length }
+
+  for (var i = 0; i < count; i++) {
     $('#product-search-list').append(`
         <div class="list-product-search-container">
         <a href="${dataFilter[i].img_url_original}" target="_blank"><img src="${dataFilter[i].img_url}"
