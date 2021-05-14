@@ -145,7 +145,7 @@ async function getListing() {
 
     await dbo.collection("listing").insertOne(listings)
     console.log(listings.listing_id)
-    await sleep(100)
+    await sleep(200)
   }
 }
 
@@ -214,7 +214,7 @@ async function saveShopNameToDB(dataShopName, shopCategory) {
   }
 
   client.close()
-  await sleep(100)
+  await sleep(200)
 }
 
 async function updateUser() {
@@ -294,7 +294,7 @@ async function updateShopInfo() {
       'time_update': timeNow
     })
     await dbo.collection("shop").updateOne({ shop_id: response[0].shop_id }, { $set: { total_sales: dbData[index].total_sales } }, { upsert: true })
-    await sleep(100)
+    await sleep(200)
   }
   client.close()
 }
@@ -598,11 +598,12 @@ async function getSearchProductFromWeb() {
 
 async function fetchData(siteUrl) {
   let result
-  await sleep(100)
+  await sleep(300)
   try {
     result = await axios.get(siteUrl)
   } catch (err) {
     result = err.response.status
+    console.log('error '+ result)
   }
   if (result == 404) {
     return 0
