@@ -74,7 +74,7 @@ async function getListing() {
   for (let i = 1; i <= 5; i++) {
     siteUrl = `https://www.etsy.com/search?q=canvas&page=${i}&ref=pagination`
     let data = await getSearchProductFromWeb()
-    
+    console.log(i)
     for (let j = 0; j < data.length; j++) {
       idListings.push(data[j])
     }
@@ -83,7 +83,7 @@ async function getListing() {
   for (let i = 1; i <= 5; i++) {
     siteUrl = `https://www.etsy.com/search?q=mug&page=${i}&ref=pagination`
     let data = await getSearchProductFromWeb()
-
+    console.log(i)
     for (let j = 0; j < data.length; j++) {
       idListings.push(data[j])
     }
@@ -92,7 +92,7 @@ async function getListing() {
   for (let i = 1; i <= 5; i++) {
     siteUrl = `https://www.etsy.com/search?q=tumbler&page=${i}&ref=pagination`
     let data = await getSearchProductFromWeb()
-
+    console.log(i)
     for (let j = 0; j < data.length; j++) {
       idListings.push(data[j])
     }
@@ -101,7 +101,7 @@ async function getListing() {
   for (let i = 1; i <= 5; i++) {
     siteUrl = `https://www.etsy.com/search?q=shirt&page=${i}&ref=pagination`
     let data = await getSearchProductFromWeb()
-
+    console.log(i)
     for (let j = 0; j < data.length; j++) {
       idListings.push(data[j])
     }
@@ -110,7 +110,7 @@ async function getListing() {
   for (let i = 1; i <= 5; i++) {
     siteUrl = `https://www.etsy.com/search?q=blanket&page=${i}&ref=pagination`
     let data = await getSearchProductFromWeb()
-
+    console.log(i)
     for (let j = 0; j < data.length; j++) {
       idListings.push(data[j])
     }
@@ -119,7 +119,7 @@ async function getListing() {
   for (let i = 1; i <= 30; i++) {
     siteUrl = `https://www.etsy.com/c?ref=pagination&explicit=1&page=${i}`
     let data = await getSearchProductFromWeb()
-
+    console.log(i)
     for (let j = 0; j < data.length; j++) {
       idListings.push(data[j])  
     }
@@ -578,7 +578,7 @@ io.on("connection", async function (client) {
 })
 
 async function getSearchProductFromWeb() {
-  await sleep(1000)
+  await sleep(100)
   const $ = await fetchData(siteUrl)
   if ($ == 0) {
     return 0
