@@ -67,6 +67,87 @@ async function updateData() {
   await getTotalShop()
   isUpdate = false
 }
+getListing()
+async function getListing() {
+  let idListings = []
+  
+  for (let i = 1; i <= 5; i++) {
+    siteUrl = `https://www.etsy.com/search?q=canvas&page=${i}&ref=pagination`
+    let data = await getSearchProductFromWeb()
+
+    for (let j = 0; j < data.length; j++) {
+      idListings.push(data[j])
+    }
+  }
+  console.log(idListings.length)
+  for (let i = 1; i <= 5; i++) {
+    siteUrl = `https://www.etsy.com/search?q=mug&page=${i}&ref=pagination`
+    let data = await getSearchProductFromWeb()
+
+    for (let j = 0; j < data.length; j++) {
+      idListings.push(data[j])
+    }
+  }
+  console.log(idListings.length)
+  for (let i = 1; i <= 5; i++) {
+    siteUrl = `https://www.etsy.com/search?q=tumbler&page=${i}&ref=pagination`
+    let data = await getSearchProductFromWeb()
+
+    for (let j = 0; j < data.length; j++) {
+      idListings.push(data[j])
+    }
+  }
+  console.log(idListings.length)
+  for (let i = 1; i <= 5; i++) {
+    siteUrl = `https://www.etsy.com/search?q=shirt&page=${i}&ref=pagination`
+    let data = await getSearchProductFromWeb()
+
+    for (let j = 0; j < data.length; j++) {
+      idListings.push(data[j])
+    }
+  }
+  console.log(idListings.length)
+  for (let i = 1; i <= 5; i++) {
+    siteUrl = `https://www.etsy.com/search?q=blanket&page=${i}&ref=pagination`
+    let data = await getSearchProductFromWeb()
+
+    for (let j = 0; j < data.length; j++) {
+      idListings.push(data[j])
+    }
+  }
+  console.log(idListings.length)
+  for (let i = 1; i <= 30; i++) {
+    siteUrl = `https://www.etsy.com/c?ref=pagination&explicit=1&page=${i}`
+    let data = await getSearchProductFromWeb()
+
+    for (let j = 0; j < data.length; j++) {
+      idListings.push(data[j])  
+    }
+  }
+
+  idListings = [...new Set(idListings)]
+  console.log(idListings.length)
+
+  let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
+  var dbo = client.db("trackingdb")
+  await dbo.collection("listing").deleteMany()
+
+  let listings
+  for (let i = 0; i < idListings.length; i++) {
+    let result = await makeRequest("GET", `https://openapi.etsy.com/v2/listings/${idListings[i]}?api_key=${api_key}`)
+    result = JSON.parse(result).results
+
+    let resultImgs = await makeRequest("GET", `https://openapi.etsy.com/v2/listings/${idListings[i]}/images?api_key=${api_key}`)
+    resultImgs = JSON.parse(resultImgs).results[0]
+    listings = result[0]
+    listings['img_url'] = resultImgs.url_570xN
+    listings['img_url_original'] = resultImgs.url_fullxfull
+
+    await dbo.collection("listing").insertOne(listings)
+    console.log(listings.listing_id)
+    await sleep(100)
+  }
+}
 
 async function getShopName() {
   let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -327,29 +408,10 @@ io.on("connection", async function (client) {
   // })
 
   await client.on("find-product-by-keyword", async function (keyword) {
-    let idListings = []
-    for (let i = 0; i < 1; i++) {
-      siteUrl = `https://www.etsy.com/search?q=${keyword}&page=${i}&ref=pagination`
-      let data = await getSearchProductFromWeb()
 
-      for (let j = 0; j < data.length; j++) {
-        idListings.push(data[j])
-      }
-    }
 
-    let listings
-    for (let i = 0; i < 7; i++) {
-      let result = await makeRequest("GET", `https://openapi.etsy.com/v2/listings/${idListings[i]}?api_key=${api_key}`)
-      result = JSON.parse(result).results
 
-      let resultImgs = await makeRequest("GET", `https://openapi.etsy.com/v2/listings/${idListings[i]}/images?api_key=${api_key}`)
-      resultImgs = JSON.parse(resultImgs).results[0]
-      listings = result[0]
-      listings['img_url'] = resultImgs.url_570xN
-      listings['img_url_original'] = resultImgs.url_fullxfull
-
-      await client.emit("return-find-product-by-keyword", listings)
-    }
+    await client.emit("return-find-product-by-keyword", listings)
     // let promises = []
 
     // promises = []
@@ -596,7 +658,6 @@ async function getTotalShop() {
   let result = await makeRequest("GET", `https://openapi.etsy.com/v2/shops?api_key=${api_key}&limit=1&offset=1`)
   result = JSON.parse(result).results
   total_shop = result[0].shop_id
-  console.log(total_shop)
 }
 
 server.listen(80)
