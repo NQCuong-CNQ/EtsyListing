@@ -8,40 +8,38 @@ var listingData = []
 
 /* ------------------------------------------------MAIN SECTION------------------------------------------------ */
 $('#find-product-by-keyword-button').on('click', async function () {
-  // let keyword = $('#find-product-by-keyword').val().trim().replace(/ +(?= )/g, '')
-  // if (keyword == '') {
-  //   alert('Please input keyword!')
-  // }
-
-  // $('#loading').css('display', 'block')
-  // await socket.emit("find-product-by-keyword", keyword)
-  // listingData = []
-})
-
-/* ------------------------------------------------END MAIN SECTION------------------------------------------------ */
-
-/* ------------------------------------------------SOCKET SECTION------------------------------------------------ */
-socket.on("connect", async function (data) {
-  await socket.emit("product-tracking-join")
-  console.log('sending')
+  let keyword = $('#find-product-by-keyword').val().trim().replace(/ +(?= )/g, '')
+  if (keyword == '') {
+    alert('Please input keyword!')
+  }
   $('#loading').css('display', 'block')
+
+  keyword = keyword.split(' ')
+  let dataSearch = []
+  for (var i = 0; i < listingData.length; i++) {
+    if(checkSearchByKeyword(keyword, i)){
+      dataSearch.push(listingData[i])
+    }
+  }
+
+  updateData()
+
 })
 
-socket.on("updating", function (data) {
-  alert('Data Server is updating, please come back later!')
-})
+function checkSearchByKeyword(keyword, index) {
+  for (let j = 0; j < keyword.length; j++) {
+    if (listingData[index].title.includes(keyword[j])) {
+    } else { return false }
+  } return true
+}
 
-socket.on("return-product-tracking-join", function (data) {
-  console.log('receiving')
-  $('#loading').css('display', 'none')
-  listingData.push(data)
-  listingData.sort(compare)
-  console.log('ok')
-  for (var i = 0; i < data.length; i++) {
+function updateData(){
+  $('#product-search-list').empty()
+  for (var i = 0; i < 100; i++) {
     $('#product-search-list').append(`
         <div class="list-product-search-container">
         <a href="${listingData[i].img_url_original}" target="_blank"><img src="${listingData[i].img_url}"
-            alt="" width="100%"></a>
+            alt="" width="100%" loading='lazy'></a>
         
         <a class="mt-2" href="${listingData[i].url}" target="_blank">${listingData[i].title}</a>
         <div class="row">
@@ -55,6 +53,25 @@ socket.on("return-product-tracking-join", function (data) {
     </div>
     `)
   }
+  $('#loading').css('display', 'none')
+}
+
+/* ------------------------------------------------END MAIN SECTION------------------------------------------------ */
+
+/* ------------------------------------------------SOCKET SECTION------------------------------------------------ */
+socket.emit("product-tracking-join")
+$('#loading').css('display', 'block')
+
+socket.on("updating", function (data) {
+  alert('Data Server is updating, please come back later!')
+})
+
+socket.on("return-product-tracking-join", function (data) {
+  listingData = []
+  listingData = data
+  listingData.sort(compare)
+
+  updateData()
 })
 
 // socket.on("return-find-product-by-keyword", function (data) {
@@ -68,7 +85,7 @@ socket.on("return-product-tracking-join", function (data) {
 //         <div class="list-product-search-container">
 //             <a href="${listingData[i].img_url_original}" target="_blank"><img src="${listingData[i].img_url}"
 //                 alt="" width="100%"></a>
-            
+
 //             <a class="mt-2" href="${listingData[i].url}" target="_blank">${listingData[i].title}</a>
 //             <div class="row">
 //                 <p class="col-6"><i class="fas fa-dollar-sign mr-1"></i>${listingData[i].price}</p>

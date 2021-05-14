@@ -55,9 +55,9 @@ async function updateCate() {
 }
 
 // test()
-async function test(){
+async function test() {
   siteUrl = `https://www.etsy.com/search?q=canvas&page=1&ref=pagination`
-    let data = await getSearchProductFromWeb1()
+  let data = await getSearchProductFromWeb1()
 }
 async function getSearchProductFromWeb1() {
   const $ = await fetchData(siteUrl)
@@ -68,7 +68,7 @@ async function getSearchProductFromWeb1() {
   if (searchProduct == '') {
     return 0
   }
-  fs.writeFileSync('text.txt', searchProduct,'utf8')
+  fs.writeFileSync('text.txt', searchProduct, 'utf8')
   // searchProduct = searchProduct.split('href="https://www.etsy.com/listing/')
   // for (let i = 0; i < searchProduct.length; i++) {
   //   searchProduct[i] = searchProduct[i].substring(0, 12).split('/')[0]
@@ -424,13 +424,10 @@ io.on("connection", async function (client) {
   })
 
   await client.on("product-tracking-join", async function () {
-    console.log(isUpdate)
     if (isUpdate) {
       await client.emit("updating")
     } else {
       let dbData = await dbo.collection("listing").find().toArray()
-
-      console.log('sending')
       await client.emit("return-product-tracking-join", dbData)
     }
   })

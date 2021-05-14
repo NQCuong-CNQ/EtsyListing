@@ -107,10 +107,8 @@ async function getUserOption(i) {
 /* ------------------------------------------------END MAIN SECTION------------------------------------------------ */
 
 /* ------------------------------------------------SOCKET SECTION------------------------------------------------ */
-socket.on("connect", async function (data) {
-  await socket.emit("join")
-  $('#loading').css('display', 'block')
-})
+socket.emit("join")
+$('#loading').css('display', 'block')
 
 socket.on("updating", function (data) {
   alert('Data Server is updating, please come back later!')

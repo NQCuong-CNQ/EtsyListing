@@ -87,6 +87,12 @@ main.content{
     height: 100%;
     text-align: center;
 }
+#loading h4{
+  color: white;
+}
+#loading h3{
+  color: white;
+}
 .user_img_container{
   text-align: center;
   margin: 1rem 0;
@@ -175,7 +181,7 @@ main.content{
 }
 .list-product-search-container{
   max-width: 19%; 
-  margin: 1rem 0.3rem; 
+  margin: 1.5rem 0.3rem 0 0.3rem; 
   padding: 0.3rem; 
   border-radius: 8px;
   border-color: #adadad; 
