@@ -74,7 +74,7 @@ async function getListing() {
   for (let i = 1; i <= 5; i++) {
     siteUrl = `https://www.etsy.com/search?q=canvas&page=${i}&ref=pagination`
     let data = await getSearchProductFromWeb()
-
+    
     for (let j = 0; j < data.length; j++) {
       idListings.push(data[j])
     }
@@ -578,6 +578,7 @@ io.on("connection", async function (client) {
 })
 
 async function getSearchProductFromWeb() {
+  await sleep(1000)
   const $ = await fetchData(siteUrl)
   if ($ == 0) {
     return 0
@@ -598,7 +599,7 @@ async function getSearchProductFromWeb() {
 
 async function fetchData(siteUrl) {
   let result
-  await sleep(300)
+  
   try {
     result = await axios.get(siteUrl)
   } catch (err) {
