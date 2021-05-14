@@ -213,6 +213,7 @@ async function updateShopInfo() {
       'time_update': timeNow
     })
     await dbo.collection("shop").updateOne({ shop_id: response[0].shop_id }, { $set: { total_sales: dbData[index].total_sales } }, { upsert: true })
+    await sleep(100)
   }
   client.close()
 }
@@ -595,6 +596,7 @@ async function getTotalShop() {
   let result = await makeRequest("GET", `https://openapi.etsy.com/v2/shops?api_key=${api_key}&limit=1&offset=1`)
   result = JSON.parse(result).results
   total_shop = result[0].shop_id
+  console.log(total_shop)
 }
 
 server.listen(80)
