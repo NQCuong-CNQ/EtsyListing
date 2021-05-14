@@ -79,7 +79,9 @@ async function getListing() {
       idListings.push(data[j])
     }
   }
+  
   console.log(idListings.length)
+  await sleep(1000)
   for (let i = 1; i <= 5; i++) {
     siteUrl = `https://www.etsy.com/search?q=mug&page=${i}&ref=pagination`
     let data = await getSearchProductFromWeb()
@@ -89,6 +91,7 @@ async function getListing() {
     }
   }
   console.log(idListings.length)
+  await sleep(1000)
   for (let i = 1; i <= 5; i++) {
     siteUrl = `https://www.etsy.com/search?q=tumbler&page=${i}&ref=pagination`
     let data = await getSearchProductFromWeb()
@@ -98,6 +101,7 @@ async function getListing() {
     }
   }
   console.log(idListings.length)
+  await sleep(1000)
   for (let i = 1; i <= 5; i++) {
     siteUrl = `https://www.etsy.com/search?q=shirt&page=${i}&ref=pagination`
     let data = await getSearchProductFromWeb()
@@ -107,6 +111,7 @@ async function getListing() {
     }
   }
   console.log(idListings.length)
+  await sleep(1000)
   for (let i = 1; i <= 5; i++) {
     siteUrl = `https://www.etsy.com/search?q=blanket&page=${i}&ref=pagination`
     let data = await getSearchProductFromWeb()
@@ -116,6 +121,7 @@ async function getListing() {
     }
   }
   console.log(idListings.length)
+  await sleep(1000)
   for (let i = 1; i <= 30; i++) {
     siteUrl = `https://www.etsy.com/c?ref=pagination&explicit=1&page=${i}`
     let data = await getSearchProductFromWeb()
@@ -124,7 +130,8 @@ async function getListing() {
       idListings.push(data[j])  
     }
   }
-
+  await sleep(1000)
+  
   idListings = [...new Set(idListings)]
   console.log(idListings.length)
 
