@@ -1,5 +1,5 @@
-var socket = io.connect("http://giftsvk.com:80")
-// var socket = io.connect("http://localhost:80")
+// var socket = io.connect("http://giftsvk.com:80")
+var socket = io.connect("http://localhost:80")
 var listingData = []
 var filterByDateOption = 0
 var isSearch = false
@@ -10,26 +10,39 @@ var sortOption = 1
 $('#all-filter-listing-creation-date').on('click', async function () {
   filterByDateOption = 0
   searchOrFilterData()
+  $('#filter-listing-creation-date').text('All')
 })
 
 $('#1d-filter-listing-creation-date').on('click', async function () {
   filterByDateOption = 1
   searchOrFilterData()
+  $('#filter-listing-creation-date').text('Last 1 day')
 })
 
 $('#3d-filter-listing-creation-date').on('click', async function () {
   filterByDateOption = 3
   searchOrFilterData()
+  $('#filter-listing-creation-date').text('Last 3 days')
 })
 
 $('#7d-filter-listing-creation-date').on('click', async function () {
   filterByDateOption = 7
   searchOrFilterData()
+  $('#filter-listing-creation-date').text('Last 7 days')
 })
 
 $('#custom-filter-listing-creation-date').on('click', async function () {
   filterByDateOption = 'custom'
-  $('#custom-filter-listing-creation-date').daterangepicker()
+})
+
+$('#custom-filter-listing-creation-date').daterangepicker({
+  "showDropdowns": true,
+  "minYear": 2010,
+  "maxYear": 2023,
+  "startDate": "12/21/2020",
+  "opens": "center"
+}, function (start, end, label) {
+  $('#filter-listing-creation-date').text(start.format('MM-DD-YYYY') + ' to ' + end.format('MM-DD-YYYY'))
   searchOrFilterData()
 })
 
@@ -38,6 +51,7 @@ $('#sort-by-view-listing').on('click', async function () {
   searchOrFilterData()
   $('#sort-by-listing').text('Views')
 })
+
 $('#sort-by-favorite-listing').on('click', async function () {
   sortOption = 2
   searchOrFilterData()
@@ -93,10 +107,8 @@ function searchOrFilterData() {
   }
 
   if (filterByDateOption == 'custom') {
-
-
+    dataFilter = filterByCustomDate(dataFilter)
   } else if (filterByDateOption == 0) {
-
   } else {
     dataFilter = filterByDate(dataFilter, filterByDateOption)
   }
@@ -106,27 +118,6 @@ function searchOrFilterData() {
   }
 
   updateData(dataFilter)
-}
-
-function filterByDate(data, days) {
-  let filterData = []
-  for (let i = 0; i < data.length; i++) {
-    if (getDayTimeLife(data[i].original_creation_tsz) <= days) {
-      filterData.push(data[i])
-    }
-  }
-  return filterData
-}
-
-function searchByKeyword(keyword, data = listingData) {
-  keyword = keyword.split(' ')
-  let dataSearch = []
-  for (var i = 0; i < data.length; i++) {
-    if (checkSearchByKeyword(keyword, i)) {
-      dataSearch.push(data[i])
-    }
-  }
-  return dataSearch
 }
 
 function updateData(dataFilter = listingData) {
@@ -162,11 +153,10 @@ function updateData(dataFilter = listingData) {
   $('#loading').css('display', 'none')
 }
 
-
-
 /* ------------------------------------------------END MAIN SECTION------------------------------------------------ */
 
 /* ------------------------------------------------SOCKET SECTION------------------------------------------------ */
+
 socket.emit("product-tracking-join")
 $('#loading').css('display', 'block')
 
@@ -183,36 +173,9 @@ socket.on("return-product-tracking-join", function (data) {
   updateData()
 })
 
-// socket.on("return-find-product-by-keyword", function (data) {
-//   $('#loading').css('display', 'none')
-//   listingData.push(data)
-//   listingData.sort(compare)
-
-//   $('#product-search-list').empty()
-//   for (var i = 0; i < listingData.length; i++) {
-//     $('#product-search-list').append(`
-//         <div class="list-product-search-container">
-//             <a href="${listingData[i].img_url_original}" target="_blank"><img src="${listingData[i].img_url}"
-//                 alt="" width="100%"></a>
-
-//             <a class="mt-2" href="${listingData[i].url}" target="_blank">${listingData[i].title}</a>
-//             <div class="row">
-//                 <p class="col-6"><i class="fas fa-dollar-sign mr-1"></i>${listingData[i].price}</p>
-//                 <p class="col-6"><i class="fas fa-eye mr-1"></i>${listingData[i].views}</p>
-//             </div>
-//             <div class="row">
-//                 <p class="col-6"><i class="fas fa-heart mr-1"></i>${listingData[i].num_favorers}</p>
-//                 <p class="col-6"><i class="fas fa-heartbeat mr-1"></i></p>
-//             </div>
-//         </div>
-//         `)
-//   }
-// })
-
 /* ------------------------------------------------END SOCKET SECTION------------------------------------------------ */
 
 /* ------------------------------------------------ADDITIONAL SECTION------------------------------------------------ */
-
 
 function compareViews(a, b) {
   const bandA = a.views
@@ -311,118 +274,43 @@ function checkSearchTaxonomy(keyword, index) {
   }
 }
 
-// function updateDataTimeFiler(shopDataFilter) {
-//   $('#table_id').DataTable().clear().destroy()
-//   for (var i = 0; i < shopDataFilter.length; i++) {
-//     $('#table').append(`<tr>
-//         <td onclick="getShopDetail(${i})"><i class="fas fa-info-circle pointer"></i></td>
-//         <td>${shopDataFilter[i].shop_name}</td>
-//         <td><a href='${shopDataFilter[i].url}' target="_blank">www.etsy.com/shop...</a></td>
-//         <td>${getAvgSales(shopDataFilter[i].total_sales, shopDataFilter[i].creation_tsz)}</td>
-//         <td>${shopDataFilter[i].total_sales.toLocaleString()}</td>
-//         <td>${getEpochTime(shopDataFilter[i].creation_tsz)}</td>
-//         <td>${shopDataFilter[i].currency_code}</td>
-//         <td>${shopDataFilter[i].listing_active_count.toLocaleString()}</td>
-//         <td>${shopDataFilter[i].num_favorers.toLocaleString()}</td>
-//         <td>${shopDataFilter[i].languages}</td>
-//         <td>${shopDataFilter[i].shop_id}</td>
-//     </tr>`)
-//   }
+function filterByCustomDate(data) {
+  let filterData = []
+  let dateRange = $('#filter-listing-creation-date').text().split(' to ')
 
-//   $('#table_id').DataTable({
-//     scrollX: 400,
-//     pageLength: 25,
-//     order: [[3, "desc"]],
-//     searching: false,
-//   })
-// }
+  let dateFrom = new Date(dateRange[0]).getTime()
+  let dateTo = new Date(dateRange[1]).getTime()
 
+  for (let i = 0; i < data.length; i++) {
 
-// $('#all-shop-filter').on('click', async function () {
-//   category = 'All'
-//   $('#dropdown-filter-shop').text('All')
-//   if (timeCreatedShopFilter == 0) {
-//     shopDataFilter = shopData
-//   } else {
-//     timeCreatedShopFilterAction()
-//   }
-//   updateData()
-// })
+    if (data[i].original_creation_tsz >= Math.floor(dateFrom / 1000) && data[i].original_creation_tsz <= Math.floor(dateTo / 1000)) {
+      filterData.push(data[i])
+    }
+  }
 
-// $('#canvas-shop-filter').on('click', async function () {
-//   category = 'Canvas'
-//   await shopFilterAction(category)
-// })
+  return filterData
+}
 
-// $('#shirt-shop-filter').on('click', async function () {
-//   category = 'Shirt'
-//   await shopFilterAction(category)
-// })
+function filterByDate(data, days) {
+  let filterData = []
+  for (let i = 0; i < data.length; i++) {
+    if (getDayTimeLife(data[i].original_creation_tsz) <= days) {
+      filterData.push(data[i])
+    }
+  }
+  return filterData
+}
 
-// $('#mug-shop-filter').on('click', async function () {
-//   category = 'Mug'
-//   await shopFilterAction(category)
-// })
+function searchByKeyword(keyword, data = listingData) {
+  keyword = keyword.split(' ')
+  let dataSearch = []
+  for (var i = 0; i < data.length; i++) {
+    if (checkSearchByKeyword(keyword, i)) {
+      dataSearch.push(data[i])
+    }
+  }
+  return dataSearch
+}
 
-// $('#blanket-shop-filter').on('click', async function () {
-//   category = 'Blanket'
-//   await shopFilterAction(category)
-// })
-
-// $('#all-time-created-shop-filter').on('click', async function () {
-//   timeCreatedShopFilter = 0
-//   $('#dropdown-filter-shop-time-created').text('All')
-//   if (category == 'All') {
-//     shopDataFilter = shopData
-//   }
-//   updateData()
-// })
-
-// $('#6m-time-created-shop-filter').on('click', async function () {
-//   timeCreatedShopFilter = 1
-//   $('#dropdown-filter-shop-time-created').text('In 6 months')
-//   timeCreatedShopFilterAction()
-
-// })
-
-// $('#in1y-time-created-shop-filter').on('click', async function () {
-//   timeCreatedShopFilter = 2
-//   $('#dropdown-filter-shop-time-created').text('In 1 year')
-//   timeCreatedShopFilterAction()
-// })
-
-// $('#over1y-time-created-shop-filter').on('click', async function () {
-//   timeCreatedShopFilter = 3
-//   $('#dropdown-filter-shop-time-created').text('Over 1 years')
-//   timeCreatedShopFilterAction()
-// })
-
-// function timeCreatedShopFilterAction() {
-//   let shopTimeDataFilter = []
-//   let daysInTime = 0
-
-//   if (timeCreatedShopFilter == 1) {
-//     daysInTime = 182
-//   }
-//   if (timeCreatedShopFilter > 1) {
-//     daysInTime = 365
-//   }
-
-//   for (let i = 0; i < shopDataFilter.length; i++) {
-//     if (timeCreatedShopFilter <= 2 && getDayTimeLife(shopDataFilter[i].creation_tsz) <= daysInTime) {
-//       shopTimeDataFilter.push(shopDataFilter[i])
-//     } else if (timeCreatedShopFilter == 3 && getDayTimeLife(shopDataFilter[i].creation_tsz) > daysInTime) {
-//       shopTimeDataFilter.push(shopDataFilter[i])
-//     }
-//   }
-
-//   updateDataTimeFiler(shopTimeDataFilter)
-// }
-
-// async function shopFilterAction(category) {
-//   $('#dropdown-filter-shop').text(category)
-//   await socket.emit("get-shop-filter")
-//   $('#loading').css('display', 'block')
-// }
 /* ------------------------------------------------END FILTER SECTION------------------------------------------------ */
 

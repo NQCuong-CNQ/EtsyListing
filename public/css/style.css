@@ -188,3 +188,7 @@ main.content{
   border-style: solid; 
   border-width: 1px;
 }
+.daterangepicker{
+  top: 120px !important;
+  left: 460px !important;
+}

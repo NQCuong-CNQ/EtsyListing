@@ -35,7 +35,7 @@ const MongoClient = require('mongodb').MongoClient;
 const { Console } = require('console');
 const url = "mongodb://localhost:27017/trackingdb"
 
-setInterval(scheduleUpdate, 1800000) // 30p
+// setInterval(scheduleUpdate, 1800000) // 30p
 async function scheduleUpdate() {
   let date_ob = new Date()
   if (date_ob.getHours() == 9) {
@@ -434,71 +434,6 @@ io.on("connection", async function (client) {
       await client.emit("return-product-tracking-join", dbData)
     }
   })
-
-  // await client.on("find-product-by-keyword", async function (keyword) {
-
-
-
-  // await client.emit("return-find-product-by-keyword", listings)
-  // let promises = []
-
-  // promises = []
-  // for (let i = 0; i < 20; i++) {
-  //   promises.push(makeRequestdemo("GET", `https://openapi.etsy.com/v2/listings/${idListings[i]}?api_key=${api_key}`))
-  // }
-
-  // Promise.all(promises).then((results) => {
-  //   for (let j = 0; j < results.length; j++) {
-  //     listings.push(JSON.parse(results[j]).results)
-  //     console.log(listings)
-  //   }
-
-  // promises = []
-  // for (let i = 0; i < 10; i++) {
-  //   promises.push(makeRequestdemo("GET", `https://openapi.etsy.com/v2/listings/${idListings[i]}/images?api_key=${api_key}`))
-  // }
-
-  // Promise.all(promises).then((results) => {
-  //   for (let i = 0; i < results.length; i++) {
-  //     listingImgs.push(JSON.parse(results[i]).results[0])
-  //   }
-
-  //   console.log('idListings')
-
-  // })
-
-
-  // })
-
-  // for (let i = 0; i < 5; i++) {
-  //   for (let j = 0; j < listings.length; j++) {
-  //     if (listings[i].listing_id == listingImgs[j].listing_image_id) {
-  //       listings[i]['img_url'] = listingImgs[j].url_570xN
-  //     }
-  //   }
-  // }
-
-  // console.log(listings)
-
-  // await client.emit("return-find-product-by-keyword", listings)
-  // })
-
-  // function makeRequestdemo(method, url) {
-  //   return new Promise(function (resolve, reject) {
-  //     xhr = new XMLHttpRequest()
-  //     xhr.open(method, url, true)
-  //     xhr.onreadystatechange = function () {
-  //       if (xhr.readyState == 4 && xhr.status == 200) {
-  //         resolve(xhr.responseText)
-  //         console.log(xhr.status)
-  //       }
-  //       else if (xhr.status === 404) {
-  //         resolve(0)
-  //       }
-  //     }
-  //     xhr.send()
-  //   })
-  // }
 
   await client.on("get-list-shop-braumstar", async function (dataUser) {
     clientDB.close()
