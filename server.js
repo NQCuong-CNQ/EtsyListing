@@ -598,6 +598,7 @@ async function getSearchProductFromWeb() {
 
 async function fetchData(siteUrl) {
   let result
+  await sleep(100)
   try {
     result = await axios.get(siteUrl)
   } catch (err) {
