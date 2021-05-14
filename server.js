@@ -38,11 +38,11 @@ const url = "mongodb://localhost:27017/trackingdb"
 setInterval(scheduleUpdate, 1800000) // 30p
 async function scheduleUpdate() {
   let date_ob = new Date()
-  if (date_ob.getHours() == 1) {
+  if (date_ob.getHours() == 9) {
     await updateData()
   }
 }
-// updateData()
+
 async function updateCate() {
   let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
   var dbo = client.db("trackingdb")
@@ -54,29 +54,28 @@ async function updateCate() {
   await dbo.collection("category").insertOne(category)
 }
 
-// test()
-async function test() {
-  siteUrl = `https://www.etsy.com/search?q=canvas&page=1&ref=pagination`
-  let data = await getSearchProductFromWeb1()
-}
-async function getSearchProductFromWeb1() {
-  const $ = await fetchData(siteUrl)
-  if ($ == 0) {
-    return 0
-  }
-  let searchProduct = $('[data-search-results]').html()
-  if (searchProduct == '') {
-    return 0
-  }
-  fs.writeFileSync('text.txt', searchProduct, 'utf8')
-  // searchProduct = searchProduct.split('href="https://www.etsy.com/listing/')
-  // for (let i = 0; i < searchProduct.length; i++) {
-  //   searchProduct[i] = searchProduct[i].substring(0, 12).split('/')[0]
-  // }
+// async function test() {
+//   siteUrl = `https://www.etsy.com/search?q=canvas&page=1&ref=pagination`
+//   let data = await getSearchProductFromWeb1()
+// }
+// async function getSearchProductFromWeb1() {
+//   const $ = await fetchData(siteUrl)
+//   if ($ == 0) {
+//     return 0
+//   }
+//   let searchProduct = $('[data-search-results]').html()
+//   if (searchProduct == '') {
+//     return 0
+//   }
+//   fs.writeFileSync('text.txt', searchProduct, 'utf8')
+//   // searchProduct = searchProduct.split('href="https://www.etsy.com/listing/')
+//   // for (let i = 0; i < searchProduct.length; i++) {
+//   //   searchProduct[i] = searchProduct[i].substring(0, 12).split('/')[0]
+//   // }
 
-  // searchProduct.shift()
-  // return searchProduct
-}
+//   // searchProduct.shift()
+//   // return searchProduct
+// }
 
 getTotalShop()
 async function updateData() {
@@ -92,7 +91,6 @@ async function updateData() {
   await getTotalShop()
   isUpdate = false
 }
-//  getListing()
 
 async function getListing() {
   let idListings = []
