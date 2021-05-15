@@ -140,14 +140,14 @@ function updateData(dataFilter = listingData) {
         
         <a class="mt-2" href="${dataFilter[i].url}" target="_blank">${dataFilter[i].title}</a>
         <div class="row">
-            <p class="col-6"><i class="fas fa-dollar-sign mr-1"></i>${dataFilter[i].price}</p>
-            <p class="col-6"><i class="fas fa-eye mr-1"></i>${dataFilter[i].views}</p>
-            <p class="col-6"><i class="fas fa-heart mr-1"></i>${dataFilter[i].num_favorers}</p>
-        </div>
+            <p class="col-4"><i class="fas fa-dollar-sign mr-1"></i>${dataFilter[i].price}</p>
+            <p class="col-4"><i class="fas fa-eye mr-1"></i>${dataFilter[i].views}</p>
+            <p class="col-4"><i class="fas fa-heart mr-1"></i>${dataFilter[i].num_favorers}</p>
+        </div>  
         <div class="row">
-            <p class="col-6"><i class="fas fa-sort-amount-down"></i>${dataFilter[i].quantity}%</p>
-            <p class="col-6"><i class="fas fa-heartbeat mr-1"></i>${dataFilter[i].percent_favor}%</p>
-            <p class="col-6"><i class="fas fa-heartbeat mr-1"></i>${dataFilter[i].percent_favor}%</p>
+            <p class="col-4"><i class="fas fa-sort-amount-down"></i>${dataFilter[i].quantity}</p>
+            <p class="col-4"><i class="fas fa-heartbeat mr-1"></i>${dataFilter[i].percent_favor}</p>
+            <p class="col-4"><i class="fas fa-heartbeat mr-1"></i>${dataFilter[i].percent_favor}%</p>
         </div>
     </div>
     `)
