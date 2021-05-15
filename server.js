@@ -15,14 +15,11 @@ const cheerio = require('cheerio')
 var server = require("http").createServer(app)
 var io = require("socket.io")(server)
 
-// app.use(function cors(req, res, next) {
-//   res.setHeader('Access-Control-Allow-Origin', '*')
-//   res.setHeader('Access-Control-Allow-Headers', 'X-API-KEY, Origin, X-Requested-With, Content-Type: text/html, Accept, Access-Control-Request-Method,Access-Control-Request-Headers, Authorization, nosniff')
-//   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE')
-//   if (req.method === 'OPTIONS') {
-//     res.status(200);
-//   }next()
-// })
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*")
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
+  next()
+})
 
 const limit = 100
 const limitPage = 10
