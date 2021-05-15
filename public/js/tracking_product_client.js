@@ -2,10 +2,23 @@ var socket = io.connect("http://giftsvk.com:80")
 // var socket = io.connect("http://localhost:80")
 var listingData = []
 var filterByDateOption = 0
+var filterByTypeOption = 0
 var isSearch = false
 var sortOption = 1
 
 /* ------------------------------------------------MAIN SECTION------------------------------------------------ */
+
+$('#pod-filter-listing').on('click', async function () {
+  filterByTypeOption = 0
+  searchOrFilterData()
+  $('#filter-listing-type').text('POD')
+})
+
+$('#digital-filter-listing').on('click', async function () {
+  filterByTypeOption = 1
+  searchOrFilterData()
+  $('#filter-listing-type').text('Digital')
+})
 
 $('#all-filter-listing-creation-date').on('click', async function () {
   filterByDateOption = 0
@@ -92,6 +105,12 @@ function searchOrFilterData() {
 
   if (isSearch) {
     dataFilter = searchByKeyword(keyword)
+  }
+
+  if (filterByTypeOption == 0) {
+    dataFilter = filterByType(dataFilter)
+  } else if (filterByTypeOption == 1) {
+    dataFilter = filterByType(dataFilter, true)
   }
 
   if (sortOption == 1) {
@@ -253,9 +272,25 @@ function convertMonthInString(month) {
   }
 }
 
+function isDigital(data) {
+  if (data.title.toLowerCase().includes('digital') || data.is_digital == true) {
+    return true
+  } return false
+}
+
 /* ------------------------------------------------END ADDITIONAL SECTION------------------------------------------------ */
 
 /* ------------------------------------------------FILTER SECTION------------------------------------------------ */
+
+function filterByType(data, isDigit = false) {
+  let filterData = []
+  for (var i = 0; i < data.length; i++) {
+    if (isDigital(data[i]) == isDigit) {
+      filterData.push(data[i])
+    }
+  }
+  return filterData
+}
 
 function checkSearchByKeyword(keyword, index) {
   if (keyword.length == 1 && checkSearchTaxonomy(keyword, index)) {
@@ -284,7 +319,6 @@ function filterByCustomDate(data) {
   let dateTo = new Date(dateRange[1]).getTime()
 
   for (let i = 0; i < data.length; i++) {
-
     if (data[i].original_creation_tsz >= Math.floor(dateFrom / 1000) && data[i].original_creation_tsz <= Math.floor(dateTo / 1000)) {
       filterData.push(data[i])
     }

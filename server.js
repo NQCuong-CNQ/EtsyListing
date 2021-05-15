@@ -157,10 +157,16 @@ async function getListing() {
   for (let i = 0; i < idListings.length; i++) {
     let result = await makeRequest("GET", `https://openapi.etsy.com/v2/listings/${idListings[i]}?api_key=${api_key}`)
     result = JSON.parse(result).results
+    listings = result[0]
+
+    if(listings.is_digital == true){
+      console.log(listings.listing_id + 'digital')
+      continue
+    }
 
     let resultImgs = await makeRequest("GET", `https://openapi.etsy.com/v2/listings/${idListings[i]}/images?api_key=${api_key}`)
     resultImgs = JSON.parse(resultImgs).results[0]
-    listings = result[0]
+    
     listings['img_url'] = resultImgs.url_570xN
     listings['img_url_original'] = resultImgs.url_fullxfull
 

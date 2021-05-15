@@ -188,7 +188,31 @@ main.content{
   border-style: solid; 
   border-width: 1px;
 }
+.list-product-search-container a{
+  overflow: hidden;
+}
+.list-product-search-container img{
+  transition-duration: 0.5s;
+}
+.list-product-search-container img:hover{
+  transform: scale(1.2);
+}
 .daterangepicker{
   top: 120px !important;
   left: 460px !important;
+}
+.fa-dollar-sign{
+  color: green;
+}
+.fa-eye{
+  color: brown;
+}
+.fa-heart{
+  color: red;
+}
+.fa-sort-amount-down{
+  color: blue;
+}
+.fa-heartbeat{ 
+  color: violet;
 }
