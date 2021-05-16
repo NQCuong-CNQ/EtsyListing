@@ -273,7 +273,7 @@ function convertMonthInString(month) {
 }
 
 function isDigital(data) {
-  if (data.title.toLowerCase().includes('digital') || data.is_digital == true) {
+  if ( data.is_digital == true || data.title.toLowerCase().includes('digital')) {
     return true
   } return false
 }

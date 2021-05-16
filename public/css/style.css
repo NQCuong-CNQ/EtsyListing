@@ -190,6 +190,7 @@ main.content{
 }
 .list-product-search-container a{
   overflow: hidden;
+  border-radius: 5px;
 }
 .list-product-search-container img{
   transition-duration: 0.5s;
@@ -215,4 +216,7 @@ main.content{
 }
 .fa-heartbeat{ 
   color: violet;
+}
+.fa-info-circle{
+  color: blue;
 }
