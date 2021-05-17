@@ -424,6 +424,10 @@ io.on("connection", async function (client) {
 
   await client.on("find-shop-by-name", async function (shopName) {
     let response = await makeRequest("GET", `https://openapi.etsy.com/v2/shops/${shopName}?api_key=${api_key}`)
+    if(response == 0){
+      await client.emit("return-find-shop-by-name", response)
+      return
+    }
     response = JSON.parse(response).results
 
     siteUrl = "https://www.etsy.com/shop/" + shopName

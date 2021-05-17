@@ -1,13 +1,11 @@
-var socket = io.connect("http://giftsvk.com:80")
-// var socket = io.connect("http://localhost:80")
+// var socket = io.connect("http://giftsvk.com:80")
+var socket = io.connect("http://localhost:80")
 var shopData
 var listingData
 var category
 var shopCategory
-var shopDataFilter = []
 var timeCreatedShopFilter = 0
 var filterType = 0
-var isSearch = false
 
 /* ------------------------------------------------MAIN SECTION------------------------------------------------ */
 $('#tracking-analysis-option-button').on('click', async function () {
@@ -27,16 +25,29 @@ $('#digital-type-product-filter').on('click', async function () {
 })
 
 $('#find-shop-by-name-button').on('click', async function () {
-  isSearch = true
   let shopName = $('#find-shop-by-name').val().trim()
   if (shopName == '') {
-    isSearch = false
     searchOrFilterData()
     return
   }
-  $('#loading').css('display', 'block')
-  await socket.emit("find-shop-by-name", shopName)
+
+  let shop = searchLocalShop(shopName)
+  if(shop == 0) {
+    $('#loading').css('display', 'block')
+    await socket.emit("find-shop-by-name", shopName)
+  } else {
+    updateData(shop)
+  }
 })
+
+function searchLocalShop(shopName){
+  let shop = []
+  for (let i = 0; i < shopData.length; i++) {
+    if(shopData[i].shop_name.includes(shopName)){
+      shop.push(shopData[i])
+    }
+  } return shop
+}
 
 function searchOrFilterData() {
   let dataFilter = shopData
@@ -124,22 +135,22 @@ function isDigitShop(data) {
   } return false
 }
 
-function updateData(shopDataFilter = shopData) {
+function updateData(data = shopData) {
   $('#table_id').DataTable().clear().destroy()
-  for (var i = 0; i < shopDataFilter.length; i++) {
+  for (var i = 0; i < data.length; i++) {
     $('#table').append(`<tr>
         <td onclick="getShopDetail(${i})"><i class="fas fa-info-circle pointer"></i></td>
-        <td>${shopDataFilter[i].shop_name}</td>
-        <td><a href='${shopDataFilter[i].url}' target="_blank">etsy.com/shop...</a></td>
-        <td>${shopDataFilter[i].num_favorers.toLocaleString()}</td>
-        <td>${getAvgSales(shopDataFilter[i].total_sales, shopDataFilter[i].creation_tsz)}</td>
-        <td>${shopDataFilter[i].total_sales.toLocaleString()}</td>
-        <td>${getEpochTime(shopDataFilter[i].creation_tsz)}</td>
-        <td>${shopDataFilter[i].currency_code}</td>
-        <td>${shopDataFilter[i].listing_active_count.toLocaleString()}</td>
-        <td>${shopDataFilter[i].digital_listing_count.toLocaleString()}</td>
-        <td>${shopDataFilter[i].languages}</td>
-        <td>${shopDataFilter[i].shop_id}</td>
+        <td>${data[i].shop_name}</td>
+        <td><a href='${data[i].url}' target="_blank">etsy.com/shop...</a></td>
+        <td>${getAvgSales(data[i].total_sales, data[i].creation_tsz)}</td>
+        <td>${data[i].total_sales.toLocaleString()}</td>
+        <td>${data[i].num_favorers.toLocaleString()}</td>
+        <td>${getEpochTime(data[i].creation_tsz)}</td>
+        <td>${data[i].currency_code}</td>
+        <td>${data[i].listing_active_count.toLocaleString()}</td>
+        <td>${data[i].digital_listing_count.toLocaleString()}</td>
+        <td>${data[i].languages}</td>
+        <td>${data[i].shop_id}</td>
     </tr>`)
   }
 
@@ -221,7 +232,6 @@ socket.on("updating", function (data) {
 socket.on("dataTransfer", async function (data) {
   // await socket.emit("get-total-shop")
   shopData = data
-  shopDataFilter = data
 
   $('#loading').css('display', 'none')
   searchOrFilterData()
@@ -229,7 +239,11 @@ socket.on("dataTransfer", async function (data) {
 
 socket.on("return-find-shop-by-name", function (data) {
   $('#loading').css('display', 'none')
-  updateData(data)
+  if(data != 0){
+    updateData(data)
+  } else {
+    alert('This shop is not available')
+  }
 })
 
 // socket.on("total-shop", function (data) {
@@ -332,7 +346,6 @@ socket.on("shopCategoryDataTransfer", function (data) {
 
 socket.on("userDataTransfer", function (data) {
   $('#loading').css('display', 'none')
-
   $('#user_img').attr('src', data.image_url_75x75)
   $('#user_id').text(data.user_id)
   $('#user_bio').text(data.bio)
@@ -432,6 +445,7 @@ for (let i = 0; i < coll.length; i++) {
     }
   })
 }
+
 /* ------------------------------------------------END ADDITIONAL SECTION------------------------------------------------ */
 
 /* ------------------------------------------------FILTER SECTION------------------------------------------------ */
@@ -519,9 +533,4 @@ function timeCreatedShopFilterAction(dataFilter) {
   return shopTimeDataFilter
 }
 
-async function shopFilterAction(category) {
-  $('#dropdown-filter-shop').text(category)
-  await socket.emit("get-shop-filter")
-  $('#loading').css('display', 'block')
-}
 /* ------------------------------------------------END FILTER SECTION------------------------------------------------ */
