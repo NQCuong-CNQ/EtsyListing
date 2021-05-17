@@ -22,7 +22,7 @@ app.use(function(req, res, next) {
 })
 
 const limit = 100
-const limitPage = 10
+const limitPage = 7
 const api_key = '2mlnbmgdqv6esclz98opmmuq'
 var siteUrl
 var isUpdate = false
@@ -74,7 +74,6 @@ async function updateCate() {
 //   // return searchProduct
 // }
 
-getTotalShop()
 async function updateData() {
   isUpdate = true
   // await updateCate()
@@ -85,7 +84,7 @@ async function updateData() {
   // await updateUser()
   await completeUpdate()
 
-  await getTotalShop()
+  // await getTotalShop()
   isUpdate = false
 }
 
@@ -192,7 +191,7 @@ async function getShopName() {
   for (let index = 0; index < categoryList.length; index++) {
     console.log('category: ' + categoryList[index])
     for (let i = 0; i < limitPage; i++) {
-      let siteUrlPage = categoryLink[index] + i
+      let siteUrlPage = categoryLink[index] + (i+1)
       console.log('siteUrlPage: ' + siteUrlPage)
 
       let dataShopName = await getShopNameFromWeb()
@@ -391,12 +390,15 @@ io.on("connection", async function (client) {
 
       let lastUpdated = await dbo.collection("log").find().toArray()
       await client.emit("last-updated", lastUpdated[lastUpdated.length - 1])
+
+      let shopCategory = await dbo.collection("shopCategory").find().toArray()
+      await client.emit("shopCategoryDataTransfer", shopCategory)
     }
   })
 
-  await client.on("get-total-shop", async function () {
-    await client.emit("total-shop", total_shop)
-  })
+  // await client.on("get-total-shop", async function () {
+  //   await client.emit("total-shop", total_shop)
+  // })
 
   await client.on("get_listing_shop_id", async function (shop_id) {
     let result = await makeRequest("GET", `https://openapi.etsy.com/v2/shops/${shop_id}/listings/active?api_key=${api_key}`)
@@ -415,10 +417,10 @@ io.on("connection", async function (client) {
     await client.emit("shop-tracking-data", dbData)
   })
 
-  await client.on("get-shop-filter", async function () {
-    let dbData = await dbo.collection("shopCategory").find().toArray()
-    await client.emit("shopCategoryDataTransfer", dbData)
-  })
+  // await client.on("get-shop-filter", async function () {
+  //   let dbData = await dbo.collection("shopCategory").find().toArray()
+  //   await client.emit("shopCategoryDataTransfer", dbData)
+  // })
 
   await client.on("find-shop-by-name", async function (shopName) {
     let response = await makeRequest("GET", `https://openapi.etsy.com/v2/shops/${shopName}?api_key=${api_key}`)

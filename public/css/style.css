@@ -220,3 +220,32 @@ main.content{
 .fa-info-circle{
   color: blue;
 }
+
+.pagination {
+  display: flex;
+  align-items: center;
+  margin-top: 1rem;
+  justify-content: center;
+}
+
+.pagination a {
+  color: black;
+  float: left;
+  padding: 8px 16px;
+  text-decoration: none;
+}
+
+.pagination a.active {
+  background-color: #4CAF50;
+  color: white;
+  border-radius: 5px;
+}
+
+.pagination a:hover:not(.active) {
+  background-color: #ddd;
+  border-radius: 5px;
+}
+#pagination-number{
+  margin: 0; 
+  padding: 0 0.5rem;
+}

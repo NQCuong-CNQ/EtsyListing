@@ -5,6 +5,8 @@ var filterByDateOption = 0
 var filterByTypeOption = 0
 var isSearch = false
 var sortOption = 1
+var pagStart = 0
+var pagEnd = 100
 
 /* ------------------------------------------------MAIN SECTION------------------------------------------------ */
 
@@ -139,6 +141,39 @@ function searchOrFilterData() {
   updateData(dataFilter)
 }
 
+$('#first-pagination').on('click', async function () {
+  pagStart = 0
+  pagEnd = 100
+  $('#pagination-number').text('1')
+  searchOrFilterData()
+})
+
+$('#last-pagination').on('click', async function () {
+  pagStart = Math.floor(listingData.length / 100) * 100
+  pagEnd = listingData.length
+  $('#pagination-number').text(Math.floor(pagEnd / 100))
+  searchOrFilterData()
+})
+
+$('#next-pagination').on('click', async function () {
+  pagStart += 100
+  pagEnd += 100
+  if (pagEnd > Math.floor(listingData.length / 100) * 100) {
+    pagEnd = listingData.length
+  }
+  searchOrFilterData()
+})
+
+$('#back-pagination').on('click', async function () {
+  pagStart -= 100
+  pagEnd = pagStart + 100
+  if (pagStart < 0) {
+    pagStart = 0
+    pagEnd = 100
+  }
+  searchOrFilterData()
+})
+
 function updateData(dataFilter = listingData) {
   $('#product-search-list').empty()
   if (dataFilter == 1) {
@@ -146,12 +181,12 @@ function updateData(dataFilter = listingData) {
     return
   }
 
-  let count
   if (dataFilter.length > 100) {
-    count = 100
-  } else { count = dataFilter.length }
+    pagEnd = 100
+  } else { pagEnd = dataFilter.length }
+  console.log(pagStart + ' - '+ pagEnd)
 
-  for (var i = 0; i < count; i++) {
+  for (var i = pagStart; i < pagEnd; i++) {
     $('#product-search-list').append(`
         <div class="list-product-search-container">
         <a href="${dataFilter[i].img_url_original}" target="_blank"><img src="${dataFilter[i].img_url}"
@@ -186,12 +221,8 @@ socket.on("updating", function (data) {
 })
 
 socket.on("return-product-tracking-join", function (data) {
-  listingData = []
   listingData = data
-  listingData.sort(compareViews)
-  console.log(listingData[2].img_url_original)
-
-  updateData()
+  searchOrFilterData()
 })
 
 /* ------------------------------------------------END SOCKET SECTION------------------------------------------------ */
@@ -273,7 +304,7 @@ function convertMonthInString(month) {
 }
 
 function isDigital(data) {
-  if ( data.is_digital == true || data.title.toLowerCase().includes('digital')) {
+  if (data.is_digital == true || data.title.toLowerCase().includes('digital')) {
     return true
   } return false
 }

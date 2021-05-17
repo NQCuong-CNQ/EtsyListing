@@ -3,24 +3,110 @@ var socket = io.connect("http://giftsvk.com:80")
 var shopData
 var listingData
 var category
+var shopCategory
 var shopDataFilter = []
 var timeCreatedShopFilter = 0
+var filterType = 0
+var isSearch = false
 
 /* ------------------------------------------------MAIN SECTION------------------------------------------------ */
 $('#tracking-analysis-option-button').on('click', async function () {
   alert("Đang được phát triển!\nChức năng ghi lại toàn bộ số lượng listing theo ngày, vẽ biểu đồ và phân tích")
 })
 
+$('#pod-type-product-filter').on('click', async function () {
+  filterType = 0
+  $('#dropdown-filter-type-product').text('POD')
+  searchOrFilterData()
+})
+
+$('#digital-type-product-filter').on('click', async function () {
+  filterType = 1
+  $('#dropdown-filter-type-product').text('Digital')
+  searchOrFilterData()
+})
+
 $('#find-shop-by-name-button').on('click', async function () {
+  isSearch = true
   let shopName = $('#find-shop-by-name').val().trim()
   if (shopName == '') {
-    alert('Please input shop name!')
+    isSearch = false
+    searchOrFilterData()
+    return
   }
   $('#loading').css('display', 'block')
   await socket.emit("find-shop-by-name", shopName)
 })
 
-function updateData() {
+function searchOrFilterData() {
+  let dataFilter = shopData
+
+  if (filterType == 0) {
+    dataFilter = getTypeProduct(dataFilter)
+  } else if (filterType == 1) {
+    dataFilter = getTypeProduct(dataFilter, true)
+  }
+
+  if (category != '') {
+    if (category == 'Canvas') {
+      dataFilter = getCategoryProduct(dataFilter)
+    } else if (category == 'Mug') {
+      dataFilter = getCategoryProduct(dataFilter)
+    } else if (category == 'Shirt') {
+      dataFilter = getCategoryProduct(dataFilter)
+    } else if (category == 'Blanket') {
+      dataFilter = getCategoryProduct(dataFilter)
+    } else if (category == 'Tumbler') {
+      dataFilter = getCategoryProduct(dataFilter)
+    }
+  }
+
+  if (timeCreatedShopFilter > 0) {
+    dataFilter = timeCreatedShopFilterAction(dataFilter)
+  }
+
+  updateData(dataFilter)
+}
+
+function getCategoryProduct(dataFilter) {
+  $('#dropdown-filter-shop').text(category)
+
+  let filterData = []
+  let listShopName = []
+  for (let i = 0; i < shopCategory.length; i++) {
+    if (shopCategory[i].category.includes(category)) {
+      listShopName.push(shopCategory[i].shop_name)
+    }
+  }
+
+  for (let index = 0; index < listShopName.length; index++) {
+    for (let j = 0; j < dataFilter.length; j++) {
+      if (listShopName[index] == dataFilter[j].shop_name) {
+        filterData.push(dataFilter[j])
+      }
+    }
+  }
+
+  return filterData
+}
+
+function getTypeProduct(dataFilter, isDigit = false) {
+  let filterData = []
+  for (let i = 0; i < dataFilter.length; i++) {
+    if (isDigitShop(dataFilter[i]) == isDigit) {
+      filterData.push(dataFilter[i])
+    }
+  }
+  return filterData
+}
+
+function isDigitShop(data) {
+  if (data.digital_listing_count > (data.listing_active_count / 10)) {
+    return true
+  } return false
+}
+
+function updateData(shopDataFilter = shopData) {
   $('#table_id').DataTable().clear().destroy()
   for (var i = 0; i < shopDataFilter.length; i++) {
     $('#table').append(`<tr>
@@ -115,26 +201,22 @@ socket.on("updating", function (data) {
 })
 
 socket.on("dataTransfer", async function (data) {
-  await socket.emit("get-total-shop")
-
+  // await socket.emit("get-total-shop")
   shopData = data
   shopDataFilter = data
 
   $('#loading').css('display', 'none')
-  updateData()
+  searchOrFilterData()
 })
 
 socket.on("return-find-shop-by-name", function (data) {
   $('#loading').css('display', 'none')
-  shopData = data
-  shopDataFilter = data
-  console.log(shopDataFilter)
-  updateData()
+  updateData(data)
 })
 
-socket.on("total-shop", function (data) {
-  $('#fun-fact').text("Bạn có biết? Tổng số shop được tạo ra trên Etsy lên đến " + data.toLocaleString() + " shop")
-})
+// socket.on("total-shop", function (data) {
+//   $('#fun-fact').text("Bạn có biết? Tổng số shop được tạo ra trên Etsy lên đến " + data.toLocaleString() + " shop")
+// })
 
 socket.on("last-updated", function (data) {
   $('#last-updated').text("Last updated: " + data.updateHistory)
@@ -227,28 +309,7 @@ socket.on("shop-tracking-data", function (data) {
 })
 
 socket.on("shopCategoryDataTransfer", function (data) {
-  $('#loading').css('display', 'none')
-  let listShopName = []
-  for (let i = 0; i < data.length; i++) {
-    if (data[i].category.includes(category)) {
-      listShopName.push(data[i].shop_name)
-    }
-  }
-
-  shopDataFilter = []
-  for (let index = 0; index < listShopName.length; index++) {
-    for (let j = 0; j < shopData.length; j++) {
-      if (listShopName[index] == shopData[j].shop_name) {
-        shopDataFilter.push(shopData[j])
-      }
-    }
-  }
-
-  if (timeCreatedShopFilter > 0) {
-    timeCreatedShopFilterAction()
-  } else {
-    updateData()
-  }
+  shopCategory = data
 })
 
 socket.on("userDataTransfer", function (data) {
@@ -357,93 +418,58 @@ for (let i = 0; i < coll.length; i++) {
 /* ------------------------------------------------END ADDITIONAL SECTION------------------------------------------------ */
 
 /* ------------------------------------------------FILTER SECTION------------------------------------------------ */
-function updateDataTimeFiler(shopDataFilter) {
-  $('#table_id').DataTable().clear().destroy()
-  for (var i = 0; i < shopDataFilter.length; i++) {
-    $('#table').append(`<tr>
-        <td onclick="getShopDetail(${i})"><i class="fas fa-info-circle pointer"></i></td>
-        <td>${shopDataFilter[i].shop_name}</td>
-        <td><a href='${shopDataFilter[i].url}' target="_blank">www.etsy.com/shop...</a></td>
-        <td>${getAvgSales(shopDataFilter[i].total_sales, shopDataFilter[i].creation_tsz)}</td>
-        <td>${shopDataFilter[i].total_sales.toLocaleString()}</td>
-        <td>${getEpochTime(shopDataFilter[i].creation_tsz)}</td>
-        <td>${shopDataFilter[i].currency_code}</td>
-        <td>${shopDataFilter[i].listing_active_count.toLocaleString()}</td>
-        <td>${shopDataFilter[i].num_favorers.toLocaleString()}</td>
-        <td>${shopDataFilter[i].languages}</td>
-        <td>${shopDataFilter[i].shop_id}</td>
-    </tr>`)
-  }
-
-  $('#table_id').DataTable({
-    scrollX: 400,
-    pageLength: 25,
-    order: [[3, "desc"]],
-    searching: false,
-  })
-}
-
 
 $('#all-shop-filter').on('click', async function () {
   category = 'All'
   $('#dropdown-filter-shop').text('All')
-  if (timeCreatedShopFilter == 0) {
-    shopDataFilter = shopData
-  } else {
-    timeCreatedShopFilterAction()
-  }
-  updateData()
+  searchOrFilterData()
 })
 
 $('#canvas-shop-filter').on('click', async function () {
   category = 'Canvas'
-  await shopFilterAction(category)
+  searchOrFilterData()
 })
 
 $('#shirt-shop-filter').on('click', async function () {
   category = 'Shirt'
-  await shopFilterAction(category)
+  searchOrFilterData()
 })
 
 $('#mug-shop-filter').on('click', async function () {
   category = 'Mug'
-  await shopFilterAction(category)
+  searchOrFilterData()
 })
 
 $('#blanket-shop-filter').on('click', async function () {
   category = 'Blanket'
-  await shopFilterAction(category)
+  searchOrFilterData()
 })
 
 $('#all-time-created-shop-filter').on('click', async function () {
   timeCreatedShopFilter = 0
   $('#dropdown-filter-shop-time-created').text('All')
-  if (category == 'All') {
-    shopDataFilter = shopData
-  }
-  updateData()
+  searchOrFilterData()
 })
 
 $('#6m-time-created-shop-filter').on('click', async function () {
   timeCreatedShopFilter = 1
   $('#dropdown-filter-shop-time-created').text('In 6 months')
-  timeCreatedShopFilterAction()
-
+  searchOrFilterData()
 })
 
 $('#in1y-time-created-shop-filter').on('click', async function () {
   timeCreatedShopFilter = 2
   $('#dropdown-filter-shop-time-created').text('In 1 year')
-  timeCreatedShopFilterAction()
+  searchOrFilterData()
 })
 
 $('#over1y-time-created-shop-filter').on('click', async function () {
   timeCreatedShopFilter = 3
   $('#dropdown-filter-shop-time-created').text('Over 1 years')
-  timeCreatedShopFilterAction()
+  searchOrFilterData()
 })
 
-function timeCreatedShopFilterAction() {
+function timeCreatedShopFilterAction(dataFilter) {
   let shopTimeDataFilter = []
   let daysInTime = 0
 
@@ -454,15 +480,14 @@ function timeCreatedShopFilterAction() {
     daysInTime = 365
   }
 
-  for (let i = 0; i < shopDataFilter.length; i++) {
-    if (timeCreatedShopFilter <= 2 && getDayTimeLife(shopDataFilter[i].creation_tsz) <= daysInTime) {
-      shopTimeDataFilter.push(shopDataFilter[i])
-    } else if (timeCreatedShopFilter == 3 && getDayTimeLife(shopDataFilter[i].creation_tsz) > daysInTime) {
-      shopTimeDataFilter.push(shopDataFilter[i])
+  for (let i = 0; i < dataFilter.length; i++) {
+    if (timeCreatedShopFilter <= 2 && getDayTimeLife(dataFilter[i].creation_tsz) <= daysInTime) {
+      shopTimeDataFilter.push(dataFilter[i])
+    } else if (timeCreatedShopFilter == 3 && getDayTimeLife(dataFilter[i].creation_tsz) > daysInTime) {
+      shopTimeDataFilter.push(dataFilter[i])
     }
   }
-
-  updateDataTimeFiler(shopTimeDataFilter)
+  return shopTimeDataFilter
 }
 
 async function shopFilterAction(category) {
