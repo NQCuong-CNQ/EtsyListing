@@ -73,11 +73,11 @@ async function updateCate() {
 //   // searchProduct.shift()
 //   // return searchProduct
 // }
-
+updateData()
 async function updateData() {
   isUpdate = true
   // await updateCate()
-  await getListing()
+  // await getListing()
   await getShopName()
   await updateShopInfo()
   // await updateListing()
