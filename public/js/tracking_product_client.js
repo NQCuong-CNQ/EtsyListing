@@ -1,6 +1,7 @@
 var socket = io.connect("http://giftsvk.com:80")
 // var socket = io.connect("http://localhost:80")
 var listingData = []
+var dataFilter = []
 var filterByDateOption = 0
 var filterByTypeOption = 0
 var isSearch = false
@@ -46,10 +47,6 @@ $('#7d-filter-listing-creation-date').on('click', async function () {
   $('#filter-listing-creation-date').text('Last 7 days')
 })
 
-$('#custom-filter-listing-creation-date').on('click', async function () {
-  filterByDateOption = 'custom'
-})
-
 $('#custom-filter-listing-creation-date').daterangepicker({
   "showDropdowns": true,
   "minYear": 2010,
@@ -57,6 +54,7 @@ $('#custom-filter-listing-creation-date').daterangepicker({
   "startDate": "12/21/2020",
   "opens": "center"
 }, function (start, end, label) {
+  filterByDateOption = 'custom'
   $('#filter-listing-creation-date').text(start.format('MM-DD-YYYY') + ' to ' + end.format('MM-DD-YYYY'))
   searchOrFilterData()
 })
@@ -98,7 +96,7 @@ $('#find-product-by-keyword-button').on('click', async function () {
 
 function searchOrFilterData() {
   $('#loading').css('display', 'block')
-  let dataFilter = listingData
+  dataFilter = listingData
 
   let keyword = $('#find-product-by-keyword').val().trim().toLowerCase().replace(/ +(?= )/g, '')
   if (keyword == '') {
@@ -144,15 +142,13 @@ function searchOrFilterData() {
 $('#first-pagination').on('click', async function () {
   pagStart = 0
   pagEnd = 100
-  $('#pagination-number').text('1')
-  searchOrFilterData()
+  updateData(dataFilter)
 })
 
 $('#last-pagination').on('click', async function () {
-  pagStart = Math.floor(listingData.length / 100) * 100
+  pagStart = Math.floor(listingData.length / 100) * 100 
   pagEnd = listingData.length
-  $('#pagination-number').text(Math.floor(pagEnd / 100))
-  searchOrFilterData()
+  updateData(dataFilter)
 })
 
 $('#next-pagination').on('click', async function () {
@@ -161,7 +157,7 @@ $('#next-pagination').on('click', async function () {
   if (pagEnd > Math.floor(listingData.length / 100) * 100) {
     pagEnd = listingData.length
   }
-  searchOrFilterData()
+  updateData(dataFilter)
 })
 
 $('#back-pagination').on('click', async function () {
@@ -171,7 +167,7 @@ $('#back-pagination').on('click', async function () {
     pagStart = 0
     pagEnd = 100
   }
-  searchOrFilterData()
+  updateData(dataFilter)
 })
 
 function updateData(dataFilter = listingData) {
@@ -181,12 +177,14 @@ function updateData(dataFilter = listingData) {
     return
   }
 
-  if (dataFilter.length > 100) {
-    pagEnd = 100
-  } else { pagEnd = dataFilter.length }
-  console.log(pagStart + ' - '+ pagEnd)
+  if (dataFilter.length < 100) {
+    pagEnd = dataFilter.length
+  }
+  console.log(pagStart + ' - ' + pagEnd)
+  $('#pagination-number').text(pagStart / 100 + 1)
 
   for (var i = pagStart; i < pagEnd; i++) {
+    console.log(i)
     $('#product-search-list').append(`
         <div class="list-product-search-container">
         <a href="${dataFilter[i].img_url_original}" target="_blank"><img src="${dataFilter[i].img_url}"

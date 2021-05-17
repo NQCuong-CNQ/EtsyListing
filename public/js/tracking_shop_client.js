@@ -61,11 +61,29 @@ function searchOrFilterData() {
     }
   }
 
-  if (timeCreatedShopFilter > 0) {
+  if (timeCreatedShopFilter == 'custom') {
+    dataFilter = timeCreatedShopFilterCustom(dataFilter)
+  } else if (timeCreatedShopFilter > 0) {
     dataFilter = timeCreatedShopFilterAction(dataFilter)
   }
 
   updateData(dataFilter)
+}
+
+function timeCreatedShopFilterCustom(data){
+  let filterData = []
+  let dateRange = $('#dropdown-filter-shop-time-created').text().split(' to ')
+
+  let dateFrom = new Date(dateRange[0]).getTime()
+  let dateTo = new Date(dateRange[1]).getTime()
+
+  for (let i = 0; i < data.length; i++) {
+    if (data[i].creation_tsz >= Math.floor(dateFrom / 1000) && data[i].creation_tsz <= Math.floor(dateTo / 1000)) {
+      filterData.push(data[i])
+    }
+  }
+
+  return filterData
 }
 
 function getCategoryProduct(dataFilter) {
@@ -112,20 +130,20 @@ function updateData(shopDataFilter = shopData) {
     $('#table').append(`<tr>
         <td onclick="getShopDetail(${i})"><i class="fas fa-info-circle pointer"></i></td>
         <td>${shopDataFilter[i].shop_name}</td>
-        <td><a href='${shopDataFilter[i].url}' target="_blank">www.etsy.com/shop...</a></td>
+        <td><a href='${shopDataFilter[i].url}' target="_blank">etsy.com/shop...</a></td>
+        <td>${shopDataFilter[i].num_favorers.toLocaleString()}</td>
         <td>${getAvgSales(shopDataFilter[i].total_sales, shopDataFilter[i].creation_tsz)}</td>
         <td>${shopDataFilter[i].total_sales.toLocaleString()}</td>
         <td>${getEpochTime(shopDataFilter[i].creation_tsz)}</td>
         <td>${shopDataFilter[i].currency_code}</td>
         <td>${shopDataFilter[i].listing_active_count.toLocaleString()}</td>
-        <td>${shopDataFilter[i].num_favorers.toLocaleString()}</td>
+        <td>${shopDataFilter[i].digital_listing_count.toLocaleString()}</td>
         <td>${shopDataFilter[i].languages}</td>
         <td>${shopDataFilter[i].shop_id}</td>
     </tr>`)
   }
 
   $('#table_id').DataTable({
-    scrollX: 400,
     pageLength: 25,
     order: [[3, "desc"]],
     searching: false,
@@ -347,8 +365,7 @@ socket.on("listingDataTransfer", function (data) {
           <td>${data[i].views.toLocaleString()}</td>
           <td>${data[i].num_favorers.toLocaleString()}</td>
           <td>${data[i].quantity.toLocaleString()}</td>
-          <td><a href='${data[i].url}' target="_blank">www.etsy.com/listing...</a></td>
-          <td>${data[i].occasion}</td>
+          <td><a href='${data[i].url}' target="_blank">etsy.com/listing...</a></td>
           <td>${data[i].is_customizable}</td>
           <td>${data[i].is_digital}</td>
           <td>${data[i].has_variations}</td>
@@ -466,6 +483,18 @@ $('#in1y-time-created-shop-filter').on('click', async function () {
 $('#over1y-time-created-shop-filter').on('click', async function () {
   timeCreatedShopFilter = 3
   $('#dropdown-filter-shop-time-created').text('Over 1 years')
+  searchOrFilterData()
+})
+
+$('#custom-time-created-shop-filter').daterangepicker({
+  "showDropdowns": true,
+  "minYear": 2010,
+  "maxYear": 2023,
+  "startDate": "12/21/2020",
+  "opens": "center"
+}, function (start, end, label) {
+  timeCreatedShopFilter = 'custom'
+  $('#dropdown-filter-shop-time-created').text(start.format('MM-DD-YYYY') + ' to ' + end.format('MM-DD-YYYY'))
   searchOrFilterData()
 })
 
