@@ -146,16 +146,16 @@ $('#first-pagination').on('click', async function () {
 })
 
 $('#last-pagination').on('click', async function () {
-  pagStart = Math.floor(listingData.length / 100) * 100 
-  pagEnd = listingData.length
+  pagStart = Math.floor(dataFilter.length / 100) * 100
+  pagEnd = dataFilter.length
   updateData(dataFilter)
 })
 
 $('#next-pagination').on('click', async function () {
   pagStart += 100
   pagEnd += 100
-  if (pagEnd > Math.floor(listingData.length / 100) * 100) {
-    pagEnd = listingData.length
+  if (pagEnd > Math.floor(dataFilter.length / 100) * 100) {
+    pagEnd = dataFilter.length
   }
   updateData(dataFilter)
 })
@@ -180,11 +180,10 @@ function updateData(dataFilter = listingData) {
   if (dataFilter.length < 100) {
     pagEnd = dataFilter.length
   }
-  console.log(pagStart + ' - ' + pagEnd)
+  $('#number-entries').text('Showing ' + pagStart + ' - ' + pagEnd + ' of ' + dataFilter.length + ' listing')
   $('#pagination-number').text(pagStart / 100 + 1)
 
   for (var i = pagStart; i < pagEnd; i++) {
-    console.log(i)
     $('#product-search-list').append(`
         <div class="list-product-search-container">
         <a href="${dataFilter[i].img_url_original}" target="_blank"><img src="${dataFilter[i].img_url}"

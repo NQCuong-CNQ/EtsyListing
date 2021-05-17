@@ -357,7 +357,7 @@ socket.on("listingDataTransfer", function (data) {
     let taxonomy = data[i].taxonomy_path
     taxonomy = taxonomy[taxonomy.length - 1]
     $('#table-list').append(`<tr>
-          <td>${i}</td>
+          <td>${i+1}</td>
           <td>${data[i].title}</td>
           <td>${taxonomy}</td>
           <td>${data[i].price.toLocaleString()}</td>

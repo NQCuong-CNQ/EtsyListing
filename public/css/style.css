@@ -220,11 +220,12 @@ main.content{
 .fa-info-circle{
   color: #58baff;
 }
-
+#number-entries{
+  margin: 0;
+}
 .pagination {
   display: flex;
   align-items: center;
-  margin-top: 1rem;
   justify-content: center;
 }
 
