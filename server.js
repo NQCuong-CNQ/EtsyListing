@@ -194,7 +194,7 @@ async function getShopName() {
       let siteUrlPage = categoryLink[index] + (i+1)
       console.log('siteUrlPage: ' + siteUrlPage)
 
-      let dataShopName = await getShopNameFromWeb()
+      let dataShopName = await getShopNameFromWeb(siteUrlPage)
       console.log('page: ' + i)
       await saveShopNameToDB(dataShopName, categoryList[index])
     }
@@ -593,7 +593,7 @@ async function getTotalSalesFromWeb() {
   return totalSales[0].replace(/,/g, '')
 }
 
-async function getShopNameFromWeb() {
+async function getShopNameFromWeb(siteUrl) {
   const $ = await fetchData(siteUrl)
   if ($ == 0) {
     return 0
