@@ -8,6 +8,7 @@ var isSearch = false
 var sortOption = 1
 var pagStart = 0
 var pagEnd = 100
+var isGridView = true
 
 /* ------------------------------------------------MAIN SECTION------------------------------------------------ */
 
@@ -171,7 +172,7 @@ $('#back-pagination').on('click', async function () {
 })
 
 function updateData(dataFilter = listingData) {
-  $('#product-search-list').empty()
+  $('#product-list').empty()
   if (dataFilter == 1) {
     $('#loading').css('display', 'none')
     return
@@ -179,28 +180,32 @@ function updateData(dataFilter = listingData) {
 
   if (dataFilter.length < 100) {
     pagEnd = dataFilter.length
+  } else {
+    if (pagEnd < 100) {
+      pagEnd = 100
+    }
   }
+  updatePaginationBtn(dataFilter)
+
   $('#number-entries').text('Showing ' + pagStart + ' - ' + pagEnd + ' of ' + dataFilter.length + ' listing')
   $('#pagination-number').text(pagStart / 100 + 1)
 
   for (var i = pagStart; i < pagEnd; i++) {
-    console.log((dataFilter[i].views/dataFilter[i].num_favorers)+'-'+dataFilter[i].percent_favor+'-'+dataFilter[i].percent_favor)
-    $('#product-search-list').append(`
+    $('#product-list').append(`
         <div class="list-product-search-container">
-        <a href="${dataFilter[i].img_url_original}" target="_blank"><img src="${dataFilter[i].img_url}"
-            alt="" width="100%" loading='lazy'></a>
-        
-        <a class="mt-2" href="${dataFilter[i].url}" target="_blank">${dataFilter[i].title}</a>
-        <div class="row">
-            <p class="col-4"><i class="fas fa-dollar-sign mr-1"></i>${dataFilter[i].price}</p>
-            <p class="col-4"><i class="fas fa-eye mr-1"></i>${dataFilter[i].views}</p>
-            <p class="col-4"><i class="fas fa-heart mr-1"></i>${dataFilter[i].num_favorers}</p>
-        </div>  
-        <div class="row">
-            <p class="col-4"><i class="fas fa-sort-amount-down"></i>${dataFilter[i].quantity}</p>
-            <p class="col-4"><i class="fas fa-heartbeat mr-1"></i>${dataFilter[i].percent_favor}%</p>
-        </div>
-    </div>
+          <a href="${dataFilter[i].img_url_original}" target="_blank"><img src="${dataFilter[i].img_url}"
+              alt="" width="100%" loading='lazy'></a>
+          <a class="mt-2" href="${dataFilter[i].url}" target="_blank">${dataFilter[i].title}</a>
+          <div class="row pl-3 pr-2">
+              <p class="col-4 p-0"><i class="fas fa-dollar-sign mr-1"></i>${dataFilter[i].price}</p>
+              <p class="col-4 p-0"><i class="fas fa-eye mr-1"></i>${dataFilter[i].views}</p>
+              <p class="col-4 p-0"><i class="fas fa-heart mr-1"></i>${dataFilter[i].num_favorers}</p>
+          </div>  
+          <div class="row pl-3 pr-2">
+              <p class="col-4 p-0"><i class="fas fa-sort-amount-down mr-1"></i>${dataFilter[i].quantity}</p>
+              <p class="col-4 p-0"><i class="fas fa-heartbeat mr-1"></i>${dataFilter[i].percent_favor}%</p>
+          </div>
+      </div>
     `)
   }
   $('#loading').css('display', 'none')
@@ -216,6 +221,7 @@ $('#loading').css('display', 'block')
 
 socket.on("updating", function (data) {
   alert('Data Server is updating, please come back later!')
+  $('#getting-data-loading').text('Data Server is updating, please come back later!')
 })
 
 socket.on("return-product-tracking-join", function (data) {
@@ -226,6 +232,17 @@ socket.on("return-product-tracking-join", function (data) {
 /* ------------------------------------------------END SOCKET SECTION------------------------------------------------ */
 
 /* ------------------------------------------------ADDITIONAL SECTION------------------------------------------------ */
+
+$('.grid-view-listing').on('click', async function () {
+  if (isGridView) {
+    isGridView = false
+    $('.grid-view-listing').html('<i class="fas fa-list-ul"></i>')
+
+  } else {
+    isGridView = true
+    $('.grid-view-listing').html('<i class="fas fa-th"></i>')
+  }
+})
 
 function scrollToTop() {
   document.body.scrollTop = 0;
@@ -310,6 +327,31 @@ function isDigital(data) {
   if (data.is_digital == true || data.title.toLowerCase().includes('digital')) {
     return true
   } return false
+}
+
+function updatePaginationBtn(data) {
+  if (pagEnd == data.length) {
+    $('#next-pagination').css('pointer-events', 'none')
+    $('#last-pagination').css('pointer-events', 'none')
+    $('#next-pagination').css('color', 'lightgray')
+    $('#last-pagination').css('color', 'lightgray')
+  } else {
+    $('#next-pagination').css('pointer-events', 'auto')
+    $('#last-pagination').css('pointer-events', 'auto')
+    $('#next-pagination').css('color', 'black')
+    $('#last-pagination').css('color', 'black')
+  }
+  if (pagStart == 0) {
+    $('#back-pagination').css('pointer-events', 'none')
+    $('#first-pagination').css('pointer-events', 'none')
+    $('#back-pagination').css('color', 'lightgray')
+    $('#first-pagination').css('color', 'lightgray')
+  } else {
+    $('#back-pagination').css('pointer-events', 'auto')
+    $('#first-pagination').css('pointer-events', 'auto')
+    $('#back-pagination').css('color', 'black')
+    $('#first-pagination').css('color', 'black')
+  }
 }
 
 /* ------------------------------------------------END ADDITIONAL SECTION------------------------------------------------ */

@@ -168,7 +168,6 @@ function updateData(data = shopData) {
 
   $('#table-shop').DataTable({
     pageLength: 10,
-    scrollX: 400,
     order: [[2, "desc"]],
     searching: false,
   })
@@ -240,14 +239,14 @@ $('#loading').css('display', 'block')
 
 socket.on("updating", function (data) {
   alert('Data Server is updating, please come back later!')
+  $('#getting-data-loading').text('Data Server is updating, please come back later!')
 })
 
 socket.on("dataTransfer", async function (data) {
-  // await socket.emit("get-total-shop")
   shopData = data
-
   $('#loading').css('display', 'none')
   searchOrFilterData()
+  await socket.emit("get-total-shop")
 })
 
 socket.on("return-find-shop-by-name", function (data) {
@@ -384,14 +383,13 @@ socket.on("listingDataTransfer", function (data) {
     taxonomy = taxonomy[taxonomy.length - 1]
     $('#table-list').append(`<tr>
           <td>${i+1}</td>
-          <td>${data[i].title}</td>
+          <td><a href='${data[i].url}' target="_blank">${data[i].title}</a></td>
           <td>${taxonomy}</td>
           <td>${data[i].price.toLocaleString()}</td>
           <td>${getEpochTime(data[i].creation_tsz)}</td>
           <td>${data[i].views.toLocaleString()}</td>
           <td>${data[i].num_favorers.toLocaleString()}</td>
           <td>${data[i].quantity.toLocaleString()}</td>
-          <td><a href='${data[i].url}' target="_blank">etsy.com/listing...</a></td>
           <td>${data[i].is_customizable}</td>
           <td>${data[i].is_digital}</td>
           <td>${data[i].has_variations}</td>
@@ -405,6 +403,7 @@ socket.on("listingDataTransfer", function (data) {
     pageLength: 10
   })
 })
+
 /* ------------------------------------------------END SOCKET SECTION------------------------------------------------ */
 
 /* ------------------------------------------------ADDITIONAL SECTION------------------------------------------------ */

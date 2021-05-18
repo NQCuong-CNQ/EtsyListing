@@ -22,7 +22,7 @@ app.use(function (req, res, next) {
 })
 
 const limit = 100
-const limitPage = 1
+const limitPage = 7
 const api_key = '2mlnbmgdqv6esclz98opmmuq'
 var siteUrl
 var isUpdate = false
@@ -50,50 +50,13 @@ async function updateCate() {
   }
   await dbo.collection("category").insertOne(category)
 }
-// test()
-// async function test() {
-//   siteUrl = `https://www.etsy.com/shop/NewMoonBeginnings?ref=simple-shop-header-name&listing_id=400456817#items`
-//   let data = await getSearchProductFromWeb1()
-// }
-// async function getSearchProductFromWeb1() {
-//   const $ = await fetchData(siteUrl)
-//   if ($ == 0) {
-//     return 0
-//   }
 
-//   let data = []
-//   let totalSales
-//   totalSales = $('.shop-sales-reviews > span').text().split(' ')
-//   if (totalSales == '') {
-//     return 0
-//   }
-//   totalSales = totalSales[0].replace(/,/g, '')
-//   data['totalSales'] = totalSales
-
-//   let imgs = $('[data-listings-container]').html()
-//   if (imgs == '') {
-//     return 0
-//   }
-//   imgs = imgs.split('<img data-listing-card-listing-image="" src="')
-//   for (let i = 0; i < imgs.length; i++) {
-//     imgs[i] = imgs[i].split('"')[0]
-//   }
-
-//   imgs.shift()
-//   imgs.splice(8, imgs.length)
-
-//   data['imgs'] = imgs
-
-//   // return data
-  
-//   console.log(data)
-// }
 getTotalShop()
-updateData()
+// updateData()
 async function updateData() {
   isUpdate = true
   // await updateCate()
-  // await getListing()
+  await getListing()
   await getShopName()
   await updateShopInfo()
   // await updateListing()
