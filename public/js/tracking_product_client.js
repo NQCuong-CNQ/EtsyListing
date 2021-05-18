@@ -184,6 +184,7 @@ function updateData(dataFilter = listingData) {
   $('#pagination-number').text(pagStart / 100 + 1)
 
   for (var i = pagStart; i < pagEnd; i++) {
+    console.log((dataFilter[i].views/dataFilter[i].num_favorers)+'-'+dataFilter[i].percent_favor+'-'+dataFilter[i].percent_favor)
     $('#product-search-list').append(`
         <div class="list-product-search-container">
         <a href="${dataFilter[i].img_url_original}" target="_blank"><img src="${dataFilter[i].img_url}"
@@ -197,13 +198,13 @@ function updateData(dataFilter = listingData) {
         </div>  
         <div class="row">
             <p class="col-4"><i class="fas fa-sort-amount-down"></i>${dataFilter[i].quantity}</p>
-            <p class="col-4"><i class="fas fa-heartbeat mr-1"></i>${dataFilter[i].percent_favor}</p>
             <p class="col-4"><i class="fas fa-heartbeat mr-1"></i>${dataFilter[i].percent_favor}%</p>
         </div>
     </div>
     `)
   }
   $('#loading').css('display', 'none')
+  scrollToTop()
 }
 
 /* ------------------------------------------------END MAIN SECTION------------------------------------------------ */
@@ -225,6 +226,11 @@ socket.on("return-product-tracking-join", function (data) {
 /* ------------------------------------------------END SOCKET SECTION------------------------------------------------ */
 
 /* ------------------------------------------------ADDITIONAL SECTION------------------------------------------------ */
+
+function scrollToTop() {
+  document.body.scrollTop = 0;
+  document.documentElement.scrollTop = 0;
+}
 
 function compareViews(a, b) {
   const bandA = a.views

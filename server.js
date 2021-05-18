@@ -15,14 +15,14 @@ const cheerio = require('cheerio')
 var server = require("http").createServer(app)
 var io = require("socket.io")(server)
 
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*")
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
   next()
 })
 
 const limit = 100
-const limitPage = 7
+const limitPage = 1
 const api_key = '2mlnbmgdqv6esclz98opmmuq'
 var siteUrl
 var isUpdate = false
@@ -50,9 +50,9 @@ async function updateCate() {
   }
   await dbo.collection("category").insertOne(category)
 }
-
+// test()
 // async function test() {
-//   siteUrl = `https://www.etsy.com/search?q=canvas&page=1&ref=pagination`
+//   siteUrl = `https://www.etsy.com/shop/NewMoonBeginnings?ref=simple-shop-header-name&listing_id=400456817#items`
 //   let data = await getSearchProductFromWeb1()
 // }
 // async function getSearchProductFromWeb1() {
@@ -60,19 +60,35 @@ async function updateCate() {
 //   if ($ == 0) {
 //     return 0
 //   }
-//   let searchProduct = $('[data-search-results]').html()
-//   if (searchProduct == '') {
+
+//   let data = []
+//   let totalSales
+//   totalSales = $('.shop-sales-reviews > span').text().split(' ')
+//   if (totalSales == '') {
 //     return 0
 //   }
-//   fs.writeFileSync('text.txt', searchProduct, 'utf8')
-//   // searchProduct = searchProduct.split('href="https://www.etsy.com/listing/')
-//   // for (let i = 0; i < searchProduct.length; i++) {
-//   //   searchProduct[i] = searchProduct[i].substring(0, 12).split('/')[0]
-//   // }
+//   totalSales = totalSales[0].replace(/,/g, '')
+//   data['totalSales'] = totalSales
 
-//   // searchProduct.shift()
-//   // return searchProduct
+//   let imgs = $('[data-listings-container]').html()
+//   if (imgs == '') {
+//     return 0
+//   }
+//   imgs = imgs.split('<img data-listing-card-listing-image="" src="')
+//   for (let i = 0; i < imgs.length; i++) {
+//     imgs[i] = imgs[i].split('"')[0]
+//   }
+
+//   imgs.shift()
+//   imgs.splice(8, imgs.length)
+
+//   data['imgs'] = imgs
+
+//   // return data
+  
+//   console.log(data)
 // }
+getTotalShop()
 updateData()
 async function updateData() {
   isUpdate = true
@@ -84,7 +100,7 @@ async function updateData() {
   // await updateUser()
   await completeUpdate()
 
-  // await getTotalShop()
+  await getTotalShop()
   isUpdate = false
 }
 
@@ -158,14 +174,14 @@ async function getListing() {
     result = JSON.parse(result).results
     listings = result[0]
 
-    if(listings.is_digital == true){
+    if (listings.is_digital == true) {
       console.log(listings.listing_id + 'digital')
       continue
     }
 
     let resultImgs = await makeRequest("GET", `https://openapi.etsy.com/v2/listings/${idListings[i]}/images?api_key=${api_key}`)
     resultImgs = JSON.parse(resultImgs).results[0]
-    
+
     listings['img_url'] = resultImgs.url_570xN
     listings['img_url_original'] = resultImgs.url_fullxfull
 
@@ -191,7 +207,7 @@ async function getShopName() {
   for (let index = 0; index < categoryList.length; index++) {
     console.log('category: ' + categoryList[index])
     for (let i = 0; i < limitPage; i++) {
-      let siteUrlPage = categoryLink[index] + (i+1)
+      let siteUrlPage = categoryLink[index] + (i + 1)
       console.log('siteUrlPage: ' + siteUrlPage)
 
       let dataShopName = await getShopNameFromWeb(siteUrlPage)
@@ -236,11 +252,14 @@ async function saveShopNameToDB(dataShopName, shopCategory) {
 
   for (let index = 0; index < shopName.length; index++) {
     siteUrl = "https://www.etsy.com/shop/" + shopName[index].shop_name
-    let total_sales = await getTotalSalesFromWeb()
+    let shopData = await getTotalSalesAndImgFromWeb()
+
+    let total_sales = shopData.totalSales
+    let imgs = shopData.imgs
 
     total_sales = parseInt(total_sales)
     console.log(shopName[index].shop_name + ":" + total_sales)
-    await dbo.collection("shopName").updateOne({ shop_name: shopName[index].shop_name }, { $set: { total_sales: total_sales } }, { upsert: true })
+    await dbo.collection("shopName").updateOne({ shop_name: shopName[index].shop_name }, { $set: { total_sales: total_sales, imgs_listing: imgs } }, { upsert: true })
   }
 
   client.close()
@@ -287,8 +306,8 @@ async function updateListing() {
       result = JSON.parse(result).results
       var count = Object.keys(result).length;
       for (let j = 0; j < count; j++) {
+        result[j]['shop_id'] = dataShop[i].shop_id
         await dbo.collection("listing").updateOne({ listing_id: result[j].listing_id }, { $set: result[j] }, { upsert: true })
-        await dbo.collection("listing").updateOne({ listing_id: result[j].listing_id }, { $set: { "shop_id": dataShop[i].shop_id } }, { upsert: true })
       }
     }
   }
@@ -313,6 +332,8 @@ async function updateShopInfo() {
     response = JSON.parse(response).results
 
     console.log('updateShopInfo: ' + response[0].shop_id)
+    response[0]['total_sales'] = dbData[index].total_sales
+    response[0]['imgs_listing'] = dbData[index].imgs_listing
     await dbo.collection("shop").updateOne({ shop_id: response[0].shop_id }, { $set: response[0] }, { upsert: true })
 
     let timeNow = getDateTimeNow()
@@ -323,7 +344,6 @@ async function updateShopInfo() {
       'num_favorers': response[0].num_favorers,
       'time_update': timeNow
     })
-    await dbo.collection("shop").updateOne({ shop_id: response[0].shop_id }, { $set: { total_sales: dbData[index].total_sales } }, { upsert: true })
     await sleep(100)
   }
   client.close()
@@ -396,9 +416,9 @@ io.on("connection", async function (client) {
     }
   })
 
-  // await client.on("get-total-shop", async function () {
-  //   await client.emit("total-shop", total_shop)
-  // })
+  await client.on("get-total-shop", async function () {
+    await client.emit("total-shop", total_shop)
+  })
 
   await client.on("get_listing_shop_id", async function (shop_id) {
     let result = await makeRequest("GET", `https://openapi.etsy.com/v2/shops/${shop_id}/listings/active?api_key=${api_key}`)
@@ -417,21 +437,16 @@ io.on("connection", async function (client) {
     await client.emit("shop-tracking-data", dbData)
   })
 
-  // await client.on("get-shop-filter", async function () {
-  //   let dbData = await dbo.collection("shopCategory").find().toArray()
-  //   await client.emit("shopCategoryDataTransfer", dbData)
-  // })
-
   await client.on("find-shop-by-name", async function (shopName) {
     let response = await makeRequest("GET", `https://openapi.etsy.com/v2/shops/${shopName}?api_key=${api_key}`)
-    if(response == 0){
+    if (response == 0) {
       await client.emit("return-find-shop-by-name", response)
       return
     }
     response = JSON.parse(response).results
 
     siteUrl = "https://www.etsy.com/shop/" + shopName
-    response[0]["total_sales"] = await getTotalSalesFromWeb()
+    response[0]["total_sales"] = await getTotalSalesAndImgFromWeb()
     await client.emit("return-find-shop-by-name", response)
   })
 
@@ -581,16 +596,36 @@ async function fetchData(siteUrl) {
   return cheerio.load(result.data)
 }
 
-async function getTotalSalesFromWeb() {
+async function getTotalSalesAndImgFromWeb() {
   const $ = await fetchData(siteUrl)
   if ($ == 0) {
     return 0
   }
-  let totalSales = $('.shop-sales-reviews > span').text().split(' ')
+
+  let data = []
+  let totalSales
+  totalSales = $('.shop-sales-reviews > span').text().split(' ')
   if (totalSales == '') {
     return 0
   }
-  return totalSales[0].replace(/,/g, '')
+  totalSales = totalSales[0].replace(/,/g, '')
+  data['totalSales'] = totalSales
+
+  let imgs = $('[data-listings-container]').html()
+  if (imgs == '') {
+    return 0
+  }
+  imgs = imgs.split('<img data-listing-card-listing-image="" src="')
+  for (let i = 0; i < imgs.length; i++) {
+    imgs[i] = imgs[i].split('"')[0]
+  }
+
+  imgs.shift()
+  imgs.splice(8, imgs.length)
+
+  data['imgs'] = imgs
+
+  return data
 }
 
 async function getShopNameFromWeb(siteUrl) {

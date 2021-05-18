@@ -173,7 +173,7 @@ main.content{
   overflow: hidden;
 }
 #product-search-list a:hover{
-  color: black;
+  color: #3b7ddd;
   text-decoration: none;
 }
 #product-search-list p{
@@ -188,9 +188,8 @@ main.content{
   border-style: solid; 
   border-width: 1px;
 }
-.list-product-search-container a{
-  overflow: hidden;
-  border-radius: 5px;
+.list-product-search-title:hover{
+  color: #3b7ddd;
 }
 .list-product-search-container img{
   transition-duration: 0.5s;
@@ -249,4 +248,19 @@ main.content{
 #pagination-number{
   margin: 0; 
   padding: 0 0.5rem;
+}
+th, td{
+  text-align:center;
+}
+#table-shop-body a{
+  color: black;
+  text-decoration: none;
+}
+#table-shop-body a:hover{
+  color: rgb(0, 140, 255);
+  text-decoration: none;
+  font-weight: bold;
+}
+html {
+  scroll-behavior: smooth;
 }

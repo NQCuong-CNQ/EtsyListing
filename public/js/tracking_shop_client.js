@@ -136,12 +136,24 @@ function isDigitShop(data) {
 }
 
 function updateData(data = shopData) {
-  $('#table_id').DataTable().clear().destroy()
+  $('#table-shop').DataTable().clear().destroy()
   for (var i = 0; i < data.length; i++) {
-    $('#table').append(`<tr>
+    $('#table-shop-body').append(`<tr>
         <td onclick="getShopDetail(${i})"><i class="fas fa-info-circle pointer"></i></td>
-        <td>${data[i].shop_name}</td>
-        <td><a href='${data[i].url}' target="_blank">etsy.com/shop...</a></td>
+        <td><a href='${data[i].url}' target="_blank">${data[i].shop_name}</a>
+          <div> 
+            <img src="${data[i].imgs_listing[0]}" alt="Empty" width="70px" height="70px">
+            <img src="${data[i].imgs_listing[1]}" alt="Empty" width="70px" height="70px">
+            <img src="${data[i].imgs_listing[2]}" alt="Empty" width="70px" height="70px">
+            <img src="${data[i].imgs_listing[3]}" alt="Empty" width="70px" height="70px">
+          </div>
+          <div class="mt-1">
+            <img src="${data[i].imgs_listing[4]}" alt="Empty" width="70px" height="70px">
+            <img src="${data[i].imgs_listing[5]}" alt="Empty" width="70px" height="70px">
+            <img src="${data[i].imgs_listing[6]}" alt="Empty" width="70px" height="70px">
+            <img src="${data[i].imgs_listing[7]}" alt="Empty" width="70px" height="70px">
+          </div>
+        </td>
         <td>${getAvgSales(data[i].total_sales, data[i].creation_tsz)}</td>
         <td>${data[i].total_sales.toLocaleString()}</td>
         <td>${data[i].num_favorers.toLocaleString()}</td>
@@ -154,9 +166,10 @@ function updateData(data = shopData) {
     </tr>`)
   }
 
-  $('#table_id').DataTable({
-    pageLength: 25,
-    order: [[3, "desc"]],
+  $('#table-shop').DataTable({
+    pageLength: 10,
+    scrollX: 400,
+    order: [[2, "desc"]],
     searching: false,
   })
 }
@@ -246,9 +259,9 @@ socket.on("return-find-shop-by-name", function (data) {
   }
 })
 
-// socket.on("total-shop", function (data) {
-//   $('#fun-fact').text("Bạn có biết? Tổng số shop được tạo ra trên Etsy lên đến " + data.toLocaleString() + " shop")
-// })
+socket.on("total-shop", function (data) {
+  $('#fun-fact').text("Bạn có biết? Tổng số shop được tạo ra trên Etsy lên đến " + data.toLocaleString() + " shop")
+})
 
 socket.on("last-updated", function (data) {
   $('#last-updated').text("Last updated: " + data.updateHistory)

@@ -70,15 +70,6 @@
                     <i class="hamburger align-self-center"></i>
                 </a>
 
-                <form class="d-none d-sm-inline-block">
-                    <div class="input-group input-group-navbar">
-                        <input type="text" class="form-control" placeholder="Search…" aria-label="Search">
-                        <button class="btn" type="button">
-                            <i class="align-middle" data-feather="search"></i>
-                        </button>
-                    </div>
-                </form>
-
                 <div class="navbar-collapse collapse">
                     <ul class="navbar-nav navbar-align">
 
@@ -192,7 +183,6 @@
                                 </ul>
                             </div>
     
-
                             <h5 style="margin-right: 0.5rem; margin-left: 1.5rem; align-self: flex-end;">Find Shop:
                             </h5>
                             <input id="find-shop-by-name" placeholder='Shop Name'>
@@ -200,12 +190,11 @@
                         </div>
 
                         <div>
-                            <table id="table_id">
+                            <table id="table-shop" class="stripe">
                                 <thead>
                                     <tr>
                                         <th></th>
                                         <th>Shop Name</th>
-                                        <th>Link</th>
                                         <th>Sales/Day</th>
                                         <th>Total Sales</th>
                                         <th>Num Favorers</th>
@@ -217,11 +206,11 @@
                                         <th>Shop Id</th>
                                     </tr>
                                 </thead>
-                                <tbody id="table">
+                                <tbody id="table-shop-body">
                                 </tbody>
                             </table>
                         </div>
-                        <!-- <h6 id="fun-fact"></h6> -->
+                        <h6 id="fun-fact"></h6>
                         <h6>Dữ liệu được cập nhật từ 11:00pm - 7:00am hàng ngày (GMT+7)</h6>
                         <h6 id='last-updated'></h6>
                     </div>
