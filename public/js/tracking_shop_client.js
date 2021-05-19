@@ -237,7 +237,6 @@ async function getUserOption(i) {
 
 let shopLocalData = window.localStorage.getItem('listing-shop')
 if(shopLocalData != null){
-  window.localStorage.removeItem('listing-shop')
   toastr.info('Load old data from local storage') 
   shopLocalData = JSON.parse(shopLocalData)
   
