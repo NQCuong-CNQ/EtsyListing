@@ -224,7 +224,7 @@ if(shopLocalData != null){
   console.log(listingData)
   searchOrFilterData()
 } else {
-  console.log('local data not available yet')
+  console.log('local data is not available yet')
   $('#loading').css('display', 'block')
 }
 
@@ -235,7 +235,7 @@ socket.on("updating", function (data) {
   $('#getting-data-loading').text('Data Server is updating, please come back later!')
 })
 
-socket.on("return-product-tracking-join1", function (data) {
+socket.on("return-product-tracking-join", function (data) {
   listingData = data
 
   let temp
