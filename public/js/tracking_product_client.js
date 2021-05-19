@@ -197,13 +197,13 @@ function updateData(dataFilter = listingData) {
               alt="" width="100%" loading='lazy'></a>
           <a class="mt-2" href="${dataFilter[i].url}" target="_blank">${dataFilter[i].title}</a>
           <div class="row pl-3 pr-2">
-              <p class="col-4 p-0"><i class="fas fa-dollar-sign mr-1"></i>${dataFilter[i].price}</p>
-              <p class="col-4 p-0"><i class="fas fa-eye mr-1"></i>${dataFilter[i].views}</p>
-              <p class="col-4 p-0"><i class="fas fa-heart mr-1"></i>${dataFilter[i].num_favorers}</p>
+              <p class="col-4 p-0"><i class="fas fa-dollar-sign mr-1 data-toggle="tooltip" data-placement="bottom" title="Price""></i>${dataFilter[i].price}</p>
+              <p class="col-4 p-0"><i class="fas fa-eye mr-1 data-toggle="tooltip" data-placement="bottom" title="Views""></i>${dataFilter[i].views}</p>
+              <p class="col-4 p-0"><i class="fas fa-heart mr-1 data-toggle="tooltip" data-placement="bottom" title="Favorite""></i>${dataFilter[i].num_favorers}</p>
           </div>  
           <div class="row pl-3 pr-2">
-              <p class="col-4 p-0"><i class="fas fa-sort-amount-down mr-1"></i>${dataFilter[i].quantity}</p>
-              <p class="col-4 p-0"><i class="fas fa-heartbeat mr-1"></i>${dataFilter[i].percent_favor}%</p>
+              <p class="col-4 p-0"><i class="fas fa-sort-amount-down mr-1 data-toggle="tooltip" data-placement="bottom" title="Quantity""></i>${dataFilter[i].quantity}</p>
+              <p class="col-4 p-0"><i class="fas fa-heartbeat mr-1 data-toggle="tooltip" data-placement="bottom" title="% Favorite""></i>${dataFilter[i].percent_favor}%</p>
           </div>
       </div>
     `)
@@ -216,13 +216,12 @@ function updateData(dataFilter = listingData) {
 
 /* ------------------------------------------------SOCKET SECTION------------------------------------------------ */
 
-let shopLocalData = window.localStorage.getItem('listing-data')
-if(shopLocalData != null){
+let listingLocalData = window.localStorage.getItem('listing-data')
+if(listingLocalData != null){
   toastr.info('Load old data from local storage') 
-  shopLocalData = JSON.parse(shopLocalData)
+  listingLocalData = JSON.parse(listingLocalData)
   
-  listingData = shopLocalData
-  console.log(listingData)
+  listingData = listingLocalData
   searchOrFilterData()
 
   toastr.info('Updating data...')
@@ -239,6 +238,8 @@ socket.on("updating", function (data) {
 
 socket.on("return-product-tracking-join", function (data) {
   listingData = data
+  searchOrFilterData()
+  toastr.success('Data Updated')
 
   let temp
   let tempData = []
@@ -258,27 +259,23 @@ socket.on("return-product-tracking-join", function (data) {
     tempData[i]=temp
   }
 
-  searchOrFilterData()
-  toastr.success('Data Updated')
   window.localStorage.setItem('listing-data', JSON.stringify(tempData))
-  // window.localStorage.removeItem('listing-data')
-
 })
 
 /* ------------------------------------------------END SOCKET SECTION------------------------------------------------ */
 
 /* ------------------------------------------------ADDITIONAL SECTION------------------------------------------------ */
 
-$('.grid-view-listing').on('click', async function () {
-  if (isGridView) {
-    isGridView = false
-    $('.grid-view-listing').html('<i class="fas fa-list-ul"></i>')
+// $('.grid-view-listing').on('click', async function () {
+//   if (isGridView) {
+//     isGridView = false
+//     $('.grid-view-listing').html('<i class="fas fa-list-ul"></i>')
 
-  } else {
-    isGridView = true
-    $('.grid-view-listing').html('<i class="fas fa-th"></i>')
-  }
-})
+//   } else {
+//     isGridView = true
+//     $('.grid-view-listing').html('<i class="fas fa-th"></i>')
+//   }
+// })
 
 function scrollToTop() {
   document.body.scrollTop = 0;

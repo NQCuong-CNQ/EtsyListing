@@ -1,7 +1,6 @@
 var socket = io.connect("http://giftsvk.com:80")
 // var socket = io.connect("http://localhost:80")
 var shopData
-var listingData
 var category
 var shopCategory
 var timeCreatedShopFilter = 0
@@ -235,8 +234,21 @@ async function getUserOption(i) {
 /* ------------------------------------------------END MAIN SECTION------------------------------------------------ */
 
 /* ------------------------------------------------SOCKET SECTION------------------------------------------------ */
+
+let shopLocalData = window.localStorage.getItem('listing-shop')
+if(shopLocalData != null){
+  toastr.info('Load old data from local storage') 
+  shopLocalData = JSON.parse(shopLocalData)
+  
+  shopData = shopLocalData
+  searchOrFilterData()
+
+  toastr.info('Updating data...')
+} else {
+  $('#loading').css('display', 'block')
+}
+
 socket.emit("join")
-$('#loading').css('display', 'block')
 
 socket.on("updating", function (data) {
   alert('Data Server is updating, please come back later!')
@@ -247,6 +259,27 @@ socket.on("dataTransfer", async function (data) {
   shopData = data
   $('#loading').css('display', 'none')
   searchOrFilterData()
+
+  let temp
+  let tempData = []
+  
+  for(let i = 0; i < data.length; i++){
+    temp = new Object()
+    temp['title'] = data[i].title
+    temp['img_url'] = data[i].img_url
+    temp['img_url_original'] = data[i].img_url_original
+    temp['views'] = data[i].views
+    temp['num_favorers'] = data[i].num_favorers
+    temp['price'] = data[i].price
+    temp['quantity'] = data[i].quantity
+    temp['original_creation_tsz'] = data[i].original_creation_tsz
+    temp['is_digital'] = data[i].is_digital
+    temp['percent_favor'] = data[i].percent_favor
+    tempData[i]=temp
+  }
+
+  toastr.success('Data Updated')
+  window.localStorage.setItem('listing-shop', JSON.stringify(tempData))
   await socket.emit("get-total-shop")
 })
 
