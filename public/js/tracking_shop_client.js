@@ -1,7 +1,7 @@
 var socket = io.connect("http://giftsvk.com:80")
 // var socket = io.connect("http://localhost:80")
 var shopData
-var category
+var category = 'Canvas'
 var shopCategory
 var timeCreatedShopFilter = 0
 var filterType = 0
@@ -57,18 +57,17 @@ function searchOrFilterData() {
     dataFilter = getTypeProduct(dataFilter, true)
   }
 
-  if (category != '') {
-    if (category == 'Canvas') {
-      dataFilter = getCategoryProduct(dataFilter)
-    } else if (category == 'Mug') {
-      dataFilter = getCategoryProduct(dataFilter)
-    } else if (category == 'Shirt') {
-      dataFilter = getCategoryProduct(dataFilter)
-    } else if (category == 'Blanket') {
-      dataFilter = getCategoryProduct(dataFilter)
-    } else if (category == 'Tumbler') {
-      dataFilter = getCategoryProduct(dataFilter)
-    }
+  if (category == 'Canvas') {
+    dataFilter = getCategoryProduct(dataFilter)
+  } else if (category == 'Mug') {
+    dataFilter = getCategoryProduct(dataFilter)
+  } else if (category == 'Shirt') {
+    dataFilter = getCategoryProduct(dataFilter)
+  } else if (category == 'Blanket') {
+    dataFilter = getCategoryProduct(dataFilter)
+  } else if (category == 'Tumbler') {
+    dataFilter = getCategoryProduct(dataFilter)
+  } else if (category == 'All') {
   }
 
   if (timeCreatedShopFilter == 'custom') {

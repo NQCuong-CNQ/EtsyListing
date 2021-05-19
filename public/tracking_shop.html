@@ -11,7 +11,7 @@
 
     <link href="css/app.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet" media="print" onload="this.media='all'">
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css" media="print" onload="this.media='all'">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" media="print" onload="this.media='all'"/>
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" media="print" onload="this.media='all'"/>
     
@@ -127,13 +127,9 @@
                             <h5 style="margin-right: 0.5rem; margin-left: 1.5rem; align-self: flex-end;">Products:</h5>
                             <div class="dropdown">
                                 <button class="btn dropdown-toggle" type="button" data-toggle="dropdown"><span
-                                        id="dropdown-filter-shop">All</span>
+                                        id="dropdown-filter-shop">Canvas</span>
                                     <span class="caret"></span></button>
                                 <ul class="dropdown-menu">
-                                    <li id="all-shop-filter">
-                                        <p>All
-                                        <p>
-                                    </li>
                                     <li id="canvas-shop-filter">
                                         <p>Canvas
                                         <p>
@@ -152,6 +148,10 @@
                                     </li>
                                     <li id="tumbler-shop-filter">
                                         <p>Tumbler
+                                        <p>
+                                    </li>
+                                    <li id="all-shop-filter">
+                                        <p>All
                                         <p>
                                     </li>
                                 </ul>
