@@ -1,5 +1,5 @@
-var socket = io.connect("http://giftsvk.com:80")
-// var socket = io.connect("http://localhost:80")
+// var socket = io.connect("http://giftsvk.com:80")
+var socket = io.connect("http://localhost:80")
 var listingData = []
 var dataFilter = []
 var filterByDateOption = 0
@@ -217,14 +217,16 @@ function updateData(dataFilter = listingData) {
 /* ------------------------------------------------SOCKET SECTION------------------------------------------------ */
 
 let shopLocalData = window.localStorage.getItem('listing-data')
-if(shopLocalData != null){ 
+if(shopLocalData != null){
+  toastr.info('Load old data from local storage') 
   shopLocalData = JSON.parse(shopLocalData)
   
   listingData = shopLocalData
   console.log(listingData)
   searchOrFilterData()
+
+  toastr.info('Updating data...')
 } else {
-  console.log('local data is not available yet')
   $('#loading').css('display', 'block')
 }
 
@@ -256,9 +258,11 @@ socket.on("return-product-tracking-join", function (data) {
     tempData[i]=temp
   }
 
+  searchOrFilterData()
+  toastr.success('Data Updated')
   window.localStorage.setItem('listing-data', JSON.stringify(tempData))
   // window.localStorage.removeItem('listing-data')
-  searchOrFilterData()
+
 })
 
 /* ------------------------------------------------END SOCKET SECTION------------------------------------------------ */

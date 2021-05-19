@@ -17,6 +17,9 @@ th, td { white-space: nowrap; }
 .dropdown li{
     padding: 0.5rem 1rem;
 }
+img{
+  image-rendering: pixelated;
+}
 .dropdown li:hover{
     background-color: #495057;
 }
