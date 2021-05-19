@@ -249,6 +249,8 @@ if(categoryLocalData != null){
   } else {
     $('#loading').css('display', 'block')
   }
+} else {
+  $('#loading').css('display', 'block')
 }
 
 socket.emit("join")
