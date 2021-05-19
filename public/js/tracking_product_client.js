@@ -1,5 +1,5 @@
-var socket = io.connect("http://giftsvk.com:80")
-// var socket = io.connect("http://localhost:80")
+// var socket = io.connect("http://giftsvk.com:80")
+var socket = io.connect("http://localhost:80")
 var listingData = []
 var dataFilter = []
 var filterByDateOption = 0
@@ -216,16 +216,48 @@ function updateData(dataFilter = listingData) {
 
 /* ------------------------------------------------SOCKET SECTION------------------------------------------------ */
 
+let shopLocalData = window.localStorage.getItem('listing-data')
+if(shopLocalData != null){ 
+  shopLocalData = JSON.parse(shopLocalData)
+  
+  listingData = shopLocalData
+  console.log(listingData)
+  searchOrFilterData()
+} else {
+  console.log('local data not available yet')
+  $('#loading').css('display', 'block')
+}
+
 socket.emit("product-tracking-join")
-$('#loading').css('display', 'block')
 
 socket.on("updating", function (data) {
   alert('Data Server is updating, please come back later!')
   $('#getting-data-loading').text('Data Server is updating, please come back later!')
 })
 
-socket.on("return-product-tracking-join", function (data) {
+socket.on("return-product-tracking-join1", function (data) {
   listingData = data
+
+  let temp
+  let tempData = []
+  
+  for(let i = 0; i < data.length; i++){
+    temp = new Object()
+    temp['title'] = data[i].title
+    temp['img_url'] = data[i].img_url
+    temp['img_url_original'] = data[i].img_url_original
+    temp['views'] = data[i].views
+    temp['num_favorers'] = data[i].num_favorers
+    temp['price'] = data[i].price
+    temp['quantity'] = data[i].quantity
+    temp['original_creation_tsz'] = data[i].original_creation_tsz
+    temp['is_digital'] = data[i].is_digital
+    temp['percent_favor'] = data[i].percent_favor
+    tempData[i]=temp
+  }
+
+  window.localStorage.setItem('listing-data', JSON.stringify(tempData))
+  // window.localStorage.removeItem('listing-data')
   searchOrFilterData()
 })
 

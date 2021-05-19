@@ -1,5 +1,5 @@
 var socket = io.connect("http://giftsvk.com:80")
-// var socket = io.connect("http://localhost:80")
+var socket = io.connect("http://localhost:80")
 var shopData
 var listingData
 var category
@@ -139,19 +139,21 @@ function updateData(data = shopData) {
   for (var i = 0; i < data.length; i++) {
     $('#table-shop-body').append(`<tr>
         <td onclick="getShopDetail(${i})"><i class="fas fa-info-circle pointer"></i></td>
-        <td><a href='${data[i].url}' target="_blank">${data[i].shop_name}</a>
-          <div> 
-            <img src="${data[i].imgs_listing[0]}" alt="Empty" width="70px" height="70px">
-            <img src="${data[i].imgs_listing[1]}" alt="Empty" width="70px" height="70px">
-            <img src="${data[i].imgs_listing[2]}" alt="Empty" width="70px" height="70px">
-            <img src="${data[i].imgs_listing[3]}" alt="Empty" width="70px" height="70px">
-          </div>
-          <div class="mt-1">
-            <img src="${data[i].imgs_listing[4]}" alt="Empty" width="70px" height="70px">
-            <img src="${data[i].imgs_listing[5]}" alt="Empty" width="70px" height="70px">
-            <img src="${data[i].imgs_listing[6]}" alt="Empty" width="70px" height="70px">
-            <img src="${data[i].imgs_listing[7]}" alt="Empty" width="70px" height="70px">
-          </div>
+        <td>
+          <a href='${data[i].url}' target="_blank">${data[i].shop_name}
+            <div> 
+              <img src="${data[i].imgs_listing[0]}" alt="Empty" width="70px" height="70px">
+              <img src="${data[i].imgs_listing[1]}" alt="Empty" width="70px" height="70px">
+              <img src="${data[i].imgs_listing[2]}" alt="Empty" width="70px" height="70px">
+              <img src="${data[i].imgs_listing[3]}" alt="Empty" width="70px" height="70px">
+            </div>
+            <div class="mt-1">
+              <img src="${data[i].imgs_listing[4]}" alt="Empty" width="70px" height="70px">
+              <img src="${data[i].imgs_listing[5]}" alt="Empty" width="70px" height="70px">
+              <img src="${data[i].imgs_listing[6]}" alt="Empty" width="70px" height="70px">
+              <img src="${data[i].imgs_listing[7]}" alt="Empty" width="70px" height="70px">
+            </div>
+          </a>
         </td>
         <td>${getAvgSales(data[i].total_sales, data[i].creation_tsz)}</td>
         <td>${data[i].total_sales.toLocaleString()}</td>

@@ -37,6 +37,7 @@ input{
     border-radius: 5px;
     padding: 0.3rem;
     font-size: 15px;
+    transition: 0.2s;
   }
   
 .active, .button-primary:hover {
@@ -232,7 +233,9 @@ main.content{
 }
 .fa-info-circle{
   color: #58baff;
+  transition: 0.2s;
 }
+.fa-info-circle:hover{color:red}
 #number-entries{
   margin: 0;
 }
@@ -269,6 +272,7 @@ th, td{
 #table-shop-body a{
   color: black;
   text-decoration: none;
+  transition: 0.2s;
 }
 #table-shop-body a:hover{
   color: rgb(0, 140, 255);
