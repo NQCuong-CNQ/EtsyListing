@@ -265,16 +265,16 @@ socket.on("dataTransfer", async function (data) {
   
   for(let i = 0; i < data.length; i++){
     temp = new Object()
-    temp['title'] = data[i].title
-    temp['img_url'] = data[i].img_url
-    temp['img_url_original'] = data[i].img_url_original
-    temp['views'] = data[i].views
+    temp['shop_name'] = data[i].shop_name
+    temp['imgs_listing'] = data[i].imgs_listing
+    temp['total_sales'] = data[i].total_sales
+    temp['creation_tsz'] = data[i].creation_tsz
+    temp['currency_code'] = data[i].currency_code
+    temp['digital_listing_count'] = data[i].digital_listing_count
+    temp['listing_active_count'] = data[i].listing_active_count
     temp['num_favorers'] = data[i].num_favorers
-    temp['price'] = data[i].price
-    temp['quantity'] = data[i].quantity
-    temp['original_creation_tsz'] = data[i].original_creation_tsz
-    temp['is_digital'] = data[i].is_digital
-    temp['percent_favor'] = data[i].percent_favor
+    temp['shop_id'] = data[i].shop_id
+    temp['languages'] = data[i].languages
     tempData[i]=temp
   }
 
