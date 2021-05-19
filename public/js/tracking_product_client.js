@@ -219,11 +219,9 @@ function updateData(dataFilter = listingData) {
 let listingLocalData = window.localStorage.getItem('listing-data')
 if(listingLocalData != null){
   toastr.info('Load old data from local storage') 
-  listingLocalData = JSON.parse(listingLocalData)
-  
-  listingData = listingLocalData
-  searchOrFilterData()
+  listingData = JSON.parse(listingLocalData)
 
+  searchOrFilterData()
   toastr.info('Updating data...')
 } else {
   $('#loading').css('display', 'block')

@@ -1,5 +1,5 @@
-var socket = io.connect("http://giftsvk.com:80")
-// var socket = io.connect("http://localhost:80")
+// var socket = io.connect("http://giftsvk.com:80")
+var socket = io.connect("http://localhost:80")
 var shopData
 var category = 'Canvas'
 var shopCategory
@@ -235,16 +235,20 @@ async function getUserOption(i) {
 /* ------------------------------------------------SOCKET SECTION------------------------------------------------ */
 
 let shopLocalData = window.localStorage.getItem('listing-shop')
-if(shopLocalData != null){
-  toastr.info('Load old data from local storage') 
-  shopLocalData = JSON.parse(shopLocalData)
-  
-  shopData = shopLocalData
-  searchOrFilterData()
+let categoryLocalData = window.localStorage.getItem('listing-shop-category')
 
-  toastr.info('Updating data...')
-} else {
-  $('#loading').css('display', 'block')
+if(categoryLocalData != null){ 
+  shopCategory = JSON.parse(categoryLocalData)
+
+  if(shopLocalData != null){
+    toastr.info('Load old data from local storage') 
+    shopData = JSON.parse(shopLocalData)
+    
+    searchOrFilterData()
+    toastr.info('Updating data...')
+  } else {
+    $('#loading').css('display', 'block')
+  }
 }
 
 socket.emit("join")
@@ -387,6 +391,7 @@ socket.on("shop-tracking-data", function (data) {
 
 socket.on("shopCategoryDataTransfer", function (data) {
   shopCategory = data
+  window.localStorage.setItem('listing-shop-category', JSON.stringify(shopCategory))
 })
 
 socket.on("userDataTransfer", function (data) {

@@ -368,14 +368,14 @@ io.on("connection", async function (client) {
     if (isUpdate) {
       await client.emit("updating")
     } else {
+      let shopCategory = await dbo.collection("shopCategory").find().toArray()
+      await client.emit("shopCategoryDataTransfer", shopCategory)
+
       let dbData = await dbo.collection("shop").find().toArray()
       await client.emit("dataTransfer", dbData)
 
       let lastUpdated = await dbo.collection("log").find().toArray()
       await client.emit("last-updated", lastUpdated[lastUpdated.length - 1])
-
-      let shopCategory = await dbo.collection("shopCategory").find().toArray()
-      await client.emit("shopCategoryDataTransfer", shopCategory)
     }
   })
 
