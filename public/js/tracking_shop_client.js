@@ -115,7 +115,6 @@ function getCategoryProduct(dataFilter) {
       }
     }
   }
-
   return filterData
 }
 
@@ -485,6 +484,11 @@ $('#mug-shop-filter').on('click', async function () {
 
 $('#blanket-shop-filter').on('click', async function () {
   category = 'Blanket'
+  searchOrFilterData()
+})
+
+$('#tumbler-shop-filter').on('click', async function () {
+  category = 'Tumbler'
   searchOrFilterData()
 })
 
