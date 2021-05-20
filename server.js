@@ -524,6 +524,7 @@ io.on("connection", async function (client) {
       let trackObj = new Object
       trackObj['pro_ID'] = temp[i].split(',')[0]
       trackObj['track_number'] = temp[i].split(',')[19]
+      console.log(trackObj)
       trackData.push()
     }
     console.log(trackData)
