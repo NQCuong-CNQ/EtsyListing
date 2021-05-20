@@ -519,13 +519,13 @@ io.on("connection", async function (client) {
   await client.on("track-order-join", async function (data) {
     let trackData = []
     let temp = data.split('\n')
-    // console.log(trackData)
+    
     for (let i = 0; i < temp.length; i++){
       let trackObj = new Object
-      trackObj['pro_ID'] = temp[i].split(',')[0]
-      trackObj['track_number'] = temp[i].split(',')[19]
+      trackObj['pro_ID'] = temp[i].split(',')[0].replace(/[^0-9]/g, '')
+      trackObj['track_number'] = temp[i].split(',')[19].replace(/[^0-9]/g, '')
       console.log(trackObj)
-      trackData.push()
+      trackData.push(trackObj)
     }
     console.log(trackData)
     // await client.broadcast.emit("track-order-return")
