@@ -518,7 +518,7 @@ io.on("connection", async function (client) {
 
   await client.on("track-order-join", async function (data) {
     console.log('qua')
-    await client.emit("track-order-return")
+    await client.broadcast.emit("track-order-return")
   })
 })
 
