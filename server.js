@@ -517,6 +517,11 @@ io.on("connection", async function (client) {
     await client.emit("return-delete-shop-braumstar", 1)
     clientDBBraumstar.close()
   })
+
+  await client.on("track-order-join", async function (data) { 
+    console.log('qua')
+    await client.emit("track-order-return")
+  })
 })
 
 async function getSearchProductFromWeb() {
