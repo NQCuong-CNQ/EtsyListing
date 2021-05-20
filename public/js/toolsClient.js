@@ -1,4 +1,4 @@
-var socket = io.connect("http://giftsvk.com:80")
+var socket = io.connect("https://giftsvk.com:80")
 // var socket = io.connect("http://localhost:80")
 
 $('#submit-user-button').on('click', async function () {
