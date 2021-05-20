@@ -517,8 +517,13 @@ io.on("connection", async function (client) {
   })
 
   await client.on("track-order-join", async function (data) {
-    console.log('qua')
-    await client.broadcast.emit("track-order-return")
+    let trackData = []
+    trackData = data.split('\n')
+    console.log(trackData)
+    for (let i = 0; i < trackData.length; i++){
+
+    }
+    // await client.broadcast.emit("track-order-return")
   })
 })
 
