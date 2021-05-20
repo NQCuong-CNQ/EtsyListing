@@ -13,12 +13,10 @@ var server = https.createServer({
   key: fs.readFileSync("./ssl/privkey.pem"),
 }, app)
 
-var io = require("socket.io")(server)
-
-app.use(function (req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*")
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
-  next()
+var io = require("socket.io")(server, {
+  cors: {
+    origin: '*',
+  }
 })
 
 const limit = 100
@@ -518,7 +516,7 @@ io.on("connection", async function (client) {
     clientDBBraumstar.close()
   })
 
-  await client.on("track-order-join", async function (data) { 
+  await client.on("track-order-join", async function (data) {
     console.log('qua')
     await client.emit("track-order-return")
   })
