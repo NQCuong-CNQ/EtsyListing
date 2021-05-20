@@ -9,10 +9,21 @@ date.setDate(date.getDate() - 2)
 var start = date.toLocaleDateString("en-US", options)
 
 console.log(end + start)
-$.ajax({
-    url: `https://app.customcat.com/app/122009/order/exportorders?start_date=${start}&end_date=${end}`,
-    success: async function (result) {
-        await socket.emit("track-order-join", result)
-        console.log('Data sent to server successful')
-    }
-})
+getData()
+
+async function getData() {
+    await sleep(3000)
+    $.ajax({
+        url: `https://app.customcat.com/app/122009/order/exportorders?start_date=${start}&end_date=${end}`,
+        success: async function (result) {
+            await socket.emit("track-order-join", result)
+            console.log('Data sent to server successful')
+        }
+    })
+}
+
+async function sleep(ms) {
+    return new Promise(
+        resolve => setTimeout(resolve, ms)
+    );
+}

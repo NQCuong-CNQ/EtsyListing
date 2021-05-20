@@ -524,11 +524,15 @@ io.on("connection", async function (client) {
       let trackObj = new Object
       trackObj['pro_ID'] = temp[i].split(',')[0].replace(/[^0-9]/g, '')
       trackObj['track_number'] = temp[i].split(',')[19].replace(/[^0-9]/g, '')
-      console.log(trackObj)
+
+      if(trackObj['track_number'] == ''){
+        continue
+      }
+
       trackData.push(trackObj)
     }
-    console.log(trackData)
-    // await client.broadcast.emit("track-order-return")
+
+    await client.broadcast.emit("track-order-return", trackData)
   })
 })
 
