@@ -8,8 +8,12 @@ const axios = require("axios")
 const cheerio = require('cheerio')
 
 var https_options = {
-  key: fs.readFileSync("../../../../Certbot/archive/giftsvk.com/privkey1.pem"),
+  key: fs.readFileSync('../../../../Certbot/archive/giftsvk.com/fullchain1.pem'),
   cert: fs.readFileSync("../../../../Certbot/archive/giftsvk.com/cert1.pem"),
+  key: fs.readFileSync("../../../../Certbot/archive/giftsvk.com/privkey1.pem"),
+  
+  requestCert: false,
+  rejectUnauthorized: false
 };
 
 var server = require("https").createServer(https_options, app)
@@ -627,12 +631,12 @@ async function getTotalShop() {
 
 server.listen(80)
 
-// require("greenlock-express")
-//   .init({
-//     packageRoot: __dirname,
-//     configDir: "./greenlock.d",
-//     maintainerEmail: "jon@example.com",
-//     cluster: false,
-//     // approveDomains: ['giftsvk.com', 'www.giftsvk.com'],
-//   })
-//   .serve(app)
+require("greenlock-express")
+  .init({
+    packageRoot: __dirname,
+    configDir: "./greenlock.d",
+    maintainerEmail: "jon@example.com",
+    cluster: false,
+    approveDomains: ['giftsvk.com', 'www.giftsvk.com'],
+  })
+  .serve(app)
