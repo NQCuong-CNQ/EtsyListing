@@ -7,16 +7,11 @@ var xhr = new XMLHttpRequest()
 const axios = require("axios")
 const cheerio = require('cheerio')
 
-var https_options = {
-  key: fs.readFileSync('../../../../Certbot/archive/giftsvk.com/fullchain1.pem'),
-  cert: fs.readFileSync("../../../../Certbot/archive/giftsvk.com/cert1.pem"),
-  key: fs.readFileSync("../../../../Certbot/archive/giftsvk.com/privkey1.pem"),
-  
-  requestCert: false,
-  rejectUnauthorized: false
-};
+var server = https.createServer({
+  cert: fs.readFileSync("./ssl/fullchain.pem"),
+  key: fs.readFileSync("./ssl/privkey.pem"),
+}, app)
 
-var server = require("https").createServer(https_options, app)
 var io = require("socket.io")(server)
 
 app.use(function (req, res, next) {
@@ -629,14 +624,4 @@ async function getTotalShop() {
   total_shop = result[0].shop_id
 }
 
-server.listen(80)
-
-require("greenlock-express")
-  .init({
-    packageRoot: __dirname,
-    configDir: "./greenlock.d",
-    maintainerEmail: "jon@example.com",
-    cluster: false,
-    approveDomains: ['giftsvk.com', 'www.giftsvk.com'],
-  })
-  .serve(app)
+server.listen(443)
