@@ -9,8 +9,8 @@ const axios = require("axios")
 const cheerio = require('cheerio')
 
 var server = https.createServer({
-  // cert: fs.readFileSync("./ssl/fullchain.pem"),
-  // key: fs.readFileSync("./ssl/privkey.pem"),
+  cert: fs.readFileSync("./ssl/fullchain.pem"),
+  key: fs.readFileSync("./ssl/privkey.pem"),
 }, app)
 
 var io = require("socket.io")(server)
@@ -624,15 +624,5 @@ async function getTotalShop() {
   result = JSON.parse(result).results
   total_shop = result[0].shop_id
 }
-
-require("greenlock-express")
-  .init({
-    packageRoot: __dirname,
-    configDir: "./greenlock.d",
-    maintainerEmail: "jon@example.com",
-    cluster: false,
-    approveDomains: ['giftsvk.com', 'www.giftsvk.com'],
-  })
-  .serve(app)
 
 server.listen(443)
