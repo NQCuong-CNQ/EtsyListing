@@ -7,12 +7,12 @@ var xhr = new XMLHttpRequest()
 const axios = require("axios")
 const cheerio = require('cheerio')
 
-// var https_options = {
-//   cert: fs.readFileSync("ssl/certificate.crt"),
-//   ca: fs.readFileSync('ssl/ca_bundle.crt')
-// };
+var https_options = {
+  key: fs.readFileSync("../../../../Certbot/archive/giftsvk.com/privkey1.pem"),
+  cert: fs.readFileSync("../../../../Certbot/archive/giftsvk.com/cert1.pem"),
+};
 
-var server = require("http").createServer(app)
+var server = require("https").createServer(https_options, app)
 var io = require("socket.io")(server)
 
 app.use(function (req, res, next) {
