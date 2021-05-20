@@ -519,8 +519,8 @@ io.on("connection", async function (client) {
   await client.on("track-order-join", async function (data) {
     let trackData = []
     let temp = data.split('\n')
-    
-    for (let i = 0; i < temp.length; i++){
+
+    for (let i = 1; i < temp.length - 1; i++){
       let trackObj = new Object
       trackObj['pro_ID'] = temp[i].split(',')[0].replace(/[^0-9]/g, '')
       trackObj['track_number'] = temp[i].split(',')[19].replace(/[^0-9]/g, '')
