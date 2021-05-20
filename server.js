@@ -52,7 +52,7 @@ async function updateCate() {
 }
 
 getTotalShop()
-updateData()
+// updateData()
 async function updateData() {
   isUpdate = true
   // await updateCate()
@@ -136,11 +136,6 @@ async function getListing() {
     let result = await makeRequest("GET", `https://openapi.etsy.com/v2/listings/${idListings[i]}?api_key=${api_key}`)
     result = JSON.parse(result).results
     listings = result[0]
-
-    if (listings.is_digital == true) {
-      console.log(listings.listing_id + 'digital')
-      continue
-    }
 
     let resultImgs = await makeRequest("GET", `https://openapi.etsy.com/v2/listings/${idListings[i]}/images?api_key=${api_key}`)
     resultImgs = JSON.parse(resultImgs).results[0]
