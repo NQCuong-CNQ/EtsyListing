@@ -236,10 +236,11 @@ socket.on("updating", function (data) {
 
 socket.on("return-product-tracking-join", function (data) {
   for (var i = 0; i < data.length; i++) {
-    if(data[i].state == 'active'){
-      listingData[i] = data[i]
+    if(data[i].state != 'active'){
+      data.splice(i, 1)
     }
   }
+  listingData = data
   
   searchOrFilterData()
   toastr.success('Data Updated')
