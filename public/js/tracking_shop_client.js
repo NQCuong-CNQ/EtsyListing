@@ -236,7 +236,7 @@ async function getUserOption(i) {
 
 let shopLocalData = window.localStorage.getItem('listing-shop')
 let categoryLocalData = window.localStorage.getItem('listing-shop-category')
-window.localStorage.clear()
+
 if(categoryLocalData != null){ 
   shopCategory = JSON.parse(categoryLocalData)
 

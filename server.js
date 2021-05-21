@@ -410,9 +410,11 @@ io.on("connection", async function (client) {
     if (isUpdate) {
       await client.emit("updating")
     } else {
-      console.log('product-tracking-join')
+      console.log('1')
       let dbData = await dbo.collection("listing").find().toArray()
+      console.log('2')
       await client.emit("return-product-tracking-join", dbData)
+      console.log('3')
     }
   })
 
