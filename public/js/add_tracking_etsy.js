@@ -1,4 +1,7 @@
-var socket = io.connect("https://giftsvk.com:443")
+var socket = io.connect("https://giftsvk.com:443", {
+    port: 443,
+    reconnect: true
+})
 
 console.log("da ket noi !!!")
 socket.on("track-order-return", async function (data) {

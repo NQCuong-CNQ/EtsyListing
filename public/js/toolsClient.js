@@ -1,4 +1,7 @@
-var socket = io.connect("https://giftsvk.com:443")
+var socket = io.connect("https://giftsvk.com:443", {
+    port: 443,
+    reconnect: true
+})
 // var socket = io.connect("http://localhost:80")
 
 $('#submit-user-button').on('click', async function () {

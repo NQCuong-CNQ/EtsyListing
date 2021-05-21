@@ -356,7 +356,6 @@ io.on("connection", async function (client) {
   let clientDB = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
   var dbo = clientDB.db("trackingdb")
 
-
   await client.on("join", async function (data) {
     console.log('1 client connected')
 
