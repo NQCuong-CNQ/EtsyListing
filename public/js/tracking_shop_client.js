@@ -236,11 +236,11 @@ async function getUserOption(i) {
 
 let shopLocalData = window.localStorage.getItem('listing-shop')
 let categoryLocalData = window.localStorage.getItem('listing-shop-category')
-
-if(categoryLocalData.length > 0){ 
+window.localStorage.clear()
+if(categoryLocalData != null){ 
   shopCategory = JSON.parse(categoryLocalData)
 
-  if(shopLocalData.length > 0){
+  if(shopLocalData != null){
     toastr.info('Load old data from local storage') 
     shopData = JSON.parse(shopLocalData)
     

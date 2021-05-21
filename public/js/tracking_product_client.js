@@ -217,8 +217,7 @@ function updateData(dataFilter = listingData) {
 /* ------------------------------------------------SOCKET SECTION------------------------------------------------ */
 
 let listingLocalData = window.localStorage.getItem('listing-data')
-window.localStorage.clear()
-if(listingLocalData.length > 0){
+if(listingLocalData != null){
   toastr.info('Load old data from local storage') 
   listingData = JSON.parse(listingLocalData)
 
