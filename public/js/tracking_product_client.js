@@ -217,7 +217,7 @@ function updateData(dataFilter = listingData) {
 /* ------------------------------------------------SOCKET SECTION------------------------------------------------ */
 
 let listingLocalData = window.localStorage.getItem('listing-data')
-console.log(listingLocalData.length)
+window.localStorage.clear()
 if(listingLocalData.length > 0){
   toastr.info('Load old data from local storage') 
   listingData = JSON.parse(listingLocalData)
@@ -258,6 +258,7 @@ socket.on("return-product-tracking-join", function (data) {
     tempData[i]=temp
   }
 
+  window.localStorage.clear()
   window.localStorage.setItem('listing-data', JSON.stringify(tempData))
 })
 

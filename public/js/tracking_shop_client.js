@@ -237,10 +237,10 @@ async function getUserOption(i) {
 let shopLocalData = window.localStorage.getItem('listing-shop')
 let categoryLocalData = window.localStorage.getItem('listing-shop-category')
 
-if(categoryLocalData != null){ 
+if(categoryLocalData.length > 0){ 
   shopCategory = JSON.parse(categoryLocalData)
 
-  if(shopLocalData != null){
+  if(shopLocalData.length > 0){
     toastr.info('Load old data from local storage') 
     shopData = JSON.parse(shopLocalData)
     
@@ -284,6 +284,7 @@ socket.on("dataTransfer", async function (data) {
   }
 
   toastr.success('Data Updated')
+  window.localStorage.clear()
   window.localStorage.setItem('listing-shop', JSON.stringify(tempData))
   await socket.emit("get-total-shop")
 })
