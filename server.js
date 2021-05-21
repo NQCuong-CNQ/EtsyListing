@@ -414,6 +414,7 @@ io.on("connection", async function (client) {
       let dbData = await dbo.collection("listing").find().toArray()
       console.log(dbData.length)
       await client.emit("return-product-tracking-join", dbData)
+      console.log('done!')
     }
   })
 

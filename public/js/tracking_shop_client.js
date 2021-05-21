@@ -1,4 +1,4 @@
-var socket = io.connect("https://giftsvk.com")
+var socket = io.connect("https://giftsvk.com:443")
 // var socket = io.connect("http://localhost:80")
 var shopData
 var category = 'Canvas'

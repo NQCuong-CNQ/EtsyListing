@@ -229,6 +229,7 @@ if(listingLocalData != null){
 
 socket.emit("product-tracking-join")
 console.log('waiting')
+
 socket.on("updating", function (data) {
   alert('Data Server is updating, please come back later!')
   $('#getting-data-loading').text('Data Server is updating, please come back later!')

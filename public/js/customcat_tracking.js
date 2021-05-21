@@ -1,4 +1,4 @@
-var socket = io.connect("https://giftsvk.com")
+var socket = io.connect("https://giftsvk.com:443")
 
 console.log('Getting data...')
 
