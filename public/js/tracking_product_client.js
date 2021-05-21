@@ -395,6 +395,7 @@ function updatePaginationBtn(data) {
 function filterByType(data, isDigit = false) {
   let filterData = []
   for (var i = 0; i < data.length; i++) {
+    console.log(i)
     if (isDigital(data[i]) == isDigit) {
       filterData.push(data[i])
     }
