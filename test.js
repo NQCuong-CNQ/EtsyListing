@@ -5,6 +5,9 @@ const http = require("http")
 var server = http.createServer(app)
   
 var io = require("socket.io")
-io.
+var socket = io.connect("https://giftsvk.com:443")
+socket.on("test", async function () {
+    console.log('test')
+  })
 
-  server.listen(5555)
+server.listen(5555)
