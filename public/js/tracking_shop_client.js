@@ -284,7 +284,6 @@ socket.on("dataTransfer", async function (data) {
   }
 
   toastr.success('Data Updated')
-  window.localStorage.clear()
   window.localStorage.setItem('listing-shop', JSON.stringify(tempData))
   await socket.emit("get-total-shop")
 })

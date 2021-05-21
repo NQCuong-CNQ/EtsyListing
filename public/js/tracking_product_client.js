@@ -236,6 +236,7 @@ socket.on("updating", function (data) {
 
 socket.on("return-product-tracking-join", function (data) {
   listingData = data
+  console.log(data)
   searchOrFilterData()
   toastr.success('Data Updated')
 
@@ -257,7 +258,6 @@ socket.on("return-product-tracking-join", function (data) {
     tempData[i]=temp
   }
 
-  window.localStorage.clear()
   window.localStorage.setItem('listing-data', JSON.stringify(tempData))
 })
 

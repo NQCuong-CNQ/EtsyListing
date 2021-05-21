@@ -412,9 +412,7 @@ io.on("connection", async function (client) {
     } else {
       console.log('1')
       let dbData = await dbo.collection("listing").find().toArray()
-      console.log('2')
       await client.emit("return-product-tracking-join", dbData)
-      console.log('3')
     }
   })
 
