@@ -228,7 +228,6 @@ if(listingLocalData != null){
 }
 
 socket.emit("product-tracking-join")
-console.log('waiting')
 
 socket.on("updating", function (data) {
   alert('Data Server is updating, please come back later!')
@@ -236,8 +235,12 @@ socket.on("updating", function (data) {
 })
 
 socket.on("return-product-tracking-join", function (data) {
-  listingData = data
-  console.log(data)
+  for (var i = 0; i < data.length; i++) {
+    if(data[i].state == 'active'){
+      listingData[i] = data[i]
+    }
+  }
+  
   searchOrFilterData()
   toastr.success('Data Updated')
 
@@ -357,7 +360,6 @@ function convertMonthInString(month) {
 }
 
 function isDigital(data) {
-  console.log(data.title)
   if (data.is_digital == true || data.title.toLowerCase().includes('digital')) {
     return true
   } return false
@@ -395,7 +397,6 @@ function updatePaginationBtn(data) {
 function filterByType(data, isDigit = false) {
   let filterData = []
   for (var i = 0; i < data.length; i++) {
-    console.log(i)
     if (isDigital(data[i]) == isDigit) {
       filterData.push(data[i])
     }

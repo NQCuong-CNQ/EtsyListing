@@ -145,8 +145,10 @@ async function getListing() {
     percentFavor = percentFavor.toFixed(0)
     listings['percent_favor'] = percentFavor
 
-    await dbo.collection("listing").insertOne(listings)
-    console.log(listings.listing_id)
+    if(listings.state == 'active'){
+      await dbo.collection("listing").insertOne(listings)
+      console.log(listings.listing_id)
+    }
     await sleep(100)
   }
 }
@@ -410,11 +412,8 @@ io.on("connection", async function (client) {
     if (isUpdate) {
       await client.emit("updating")
     } else {
-      
       let dbData = await dbo.collection("listing").find().toArray()
-      console.log(dbData.length)
       await client.emit("return-product-tracking-join", dbData)
-      console.log('done!')
     }
   })
 
