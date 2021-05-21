@@ -33,7 +33,7 @@ const url = "mongodb://localhost:27017/trackingdb"
 setInterval(scheduleUpdate, 2700000) // 45p
 async function scheduleUpdate() {
   let date_ob = new Date()
-  if (date_ob.getHours() == 20) {
+  if (date_ob.getHours() == 6) {
     await updateData()
   }
 }
@@ -50,11 +50,11 @@ async function updateCate() {
 }
 
 getTotalShop()
-updateData()
+// updateData()
 async function updateData() {
   isUpdate = true
-  await updateCate()
-  // await getListing()
+  // await updateCate()
+  await getListing()
   await getShopName()
   await updateShopInfo()
   // await updateListing()
