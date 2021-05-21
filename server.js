@@ -20,7 +20,7 @@ var io = require("socket.io")(server, {
 })
 
 const limit = 100
-const limitPage = 7
+const limitPage = 1
 const api_key = '2mlnbmgdqv6esclz98opmmuq'
 var siteUrl
 var isUpdate = false
@@ -50,7 +50,7 @@ async function updateCate() {
 }
 
 getTotalShop()
-// updateData()
+updateData()
 async function updateData() {
   isUpdate = true
   // await updateCate()

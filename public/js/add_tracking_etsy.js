@@ -6,7 +6,6 @@ socket.on("track-order-return", async function (data) {
         console.log(data[i])
         await addTracking(data[i].pro_ID, data[i].track_number)
         await sleep(1000)
-        return
     }
 })
 
@@ -20,7 +19,12 @@ async function addTracking(id, number) {
     await sleep(4000)
 
     $('[placeholder="Enter tracking number (recommended)"]:eq(0)').val(number)
-    
+    if(number.charAt(0) == 9 || number.charAt(0) == 1){
+        $('[for="Select shipping carrier..."] option[value="-1"]').prop("selected", true)
+    }
+    //  else if (number.charAt(0) == 8){
+    //     $('[for="Select shipping carrier..."] option[value="2"]').prop("selected", true)
+    // }
 
 }
 
