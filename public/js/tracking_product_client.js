@@ -236,7 +236,6 @@ socket.on("updating", function (data) {
 
 socket.on("return-product-tracking-join", function (data) {
   listingData = data
-  console.log(data)
   searchOrFilterData()
   toastr.success('Data Updated')
 
@@ -356,6 +355,7 @@ function convertMonthInString(month) {
 }
 
 function isDigital(data) {
+  console.log(data.title)
   if (data.is_digital == true || data.title.toLowerCase().includes('digital')) {
     return true
   } return false
