@@ -240,7 +240,7 @@ socket.on("return-product-tracking-join", function (data) {
       data.splice(i, 1)
     }
   }
-  listingData = data
+  listingData = data 
   
   searchOrFilterData()
   toastr.success('Data Updated')
