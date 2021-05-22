@@ -49,13 +49,12 @@ async function updateCate() {
   await dbo.collection("category").insertOne(category)
 }
 
-getTotalShop()
-// updateData()
+updateData()
 async function updateData() {
   isUpdate = true
   // await updateCate()
   // await getListing()
-  // await getShopName()
+  await getShopName()
   await updateShopInfo()
   await completeUpdate()
 
@@ -536,6 +535,13 @@ async function getTotalSalesAndImgFromWeb() {
 
   let data = []
   let totalSales
+  
+  if ($('.shop-sales-reviews > span') == null) {
+    data['totalSales'] = 0
+    data['imgs'] = 0
+    return data
+  }
+
   totalSales = $('.shop-sales-reviews > span').text().split(' ')
   if (totalSales == '') {
     return 0
@@ -543,6 +549,12 @@ async function getTotalSalesAndImgFromWeb() {
   totalSales = totalSales[0].replace(/,/g, '')
   data['totalSales'] = totalSales
 
+  if ($('[data-listings-container]') == null) {
+    data['totalSales'] = 0
+    data['imgs'] = 0
+    return data
+  }
+  
   let imgs = $('[data-listings-container]').html()
   if (imgs == '') {
     return 0
@@ -565,6 +577,7 @@ async function getShopNameFromWeb(siteUrl) {
   if ($ == 0) {
     return 0
   }
+  
   let shopName = $('ul.tab-reorder-container').text()
   shopName = shopName.split('shop ')
   shopName.splice(0, 1);
