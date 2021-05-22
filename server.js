@@ -516,9 +516,8 @@ io.on("connection", async function (client) {
     await client.emit("track-order-step4", name)
     console.log('step 4')
   })
+  await client.emit("test")
 })
-
-await client.emit("test")
 
 async function getSearchProductFromWeb() {
   await sleep(100)
