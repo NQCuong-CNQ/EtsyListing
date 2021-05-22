@@ -21,7 +21,17 @@ async function addTracking(id, number) {
 
     await sleep(4000)
 
-    await socket.emit("step1")
+    let trackData = new Object
+    trackData['name'] = 'lynLL'
+    trackData['number_tracking'] = number
+
+    await socket.emit("track-order-step1", trackData)
+
+    socket.on("track-order-step4", async function (name) {
+        if(name == 'lynLL'){
+            alert('ngon!')
+        }
+    })
 
     // $('[placeholder="Enter tracking number (recommended)"]:eq(0)').val(number)
     // if(number.charAt(0) == 9 || number.charAt(0) == 1){

@@ -488,8 +488,14 @@ io.on("connection", async function (client) {
 
       trackData.push(trackObj)
     }
-    await client.broadcast.emit("test", 'test')
-    await client.broadcast.emit("track-order-return", trackData)
+    // await client.broadcast.emit("track-order-return", trackData)
+  })
+
+  await client.on("track-order-step1", async function (data) {
+    await client.emit("track-order-step2", data)
+  })
+  await client.on("track-order-step3", async function (name) {
+    await client.emit("track-order-step4", name)
   })
 })
 
