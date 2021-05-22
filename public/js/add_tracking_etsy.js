@@ -3,16 +3,27 @@ var socket = io.connect("https://giftsvk.com:443", {
     reconnect: true
 })
 
+var data = []
+var index = 0
+
 console.log("da ket noi !!!")
-// socket.on("track-order-return", async function (data) {
-//     for (var i = 0; i < data.length; i++){
-//         console.log(data[i])
-//         await addTracking(data[i].pro_ID, data[i].track_number)
-//         await sleep(1000)
-//     }
-// })
-addTracking('2066310217', '5555555555555')
-async function addTracking(id, number) {
+socket.on("track-order-return", async function (data) {
+    data = data
+    await addTracking()
+})
+
+async function addTracking(){
+    if(index == data.length){
+        index = 0
+        return
+    }
+    
+    console.log(data[index])
+    await addTracking(data[index].pro_ID, data[index].track_number)
+    await sleep(1000)
+}
+
+async function addTrackingAction(id, number) {
     await sleep(6000)
 
     console.log(id + '/ ' + number)
@@ -35,13 +46,14 @@ async function addTracking(id, number) {
     console.log('step 1')
 
     socket.on("track-order-step4", async function (name) {
-        
         console.log('step 4' + name)
         if(name == 'lynLL'){
-            alert('ngon!')
+            console.log('done')
         }
     })
 
+    index ++
+    await addTracking()
     // $('[placeholder="Enter tracking number (recommended)"]:eq(0)').val(number)
     // if(number.charAt(0) == 9 || number.charAt(0) == 1){
     //     $('[for="Select shipping carrier..."] option[value="-1"]').prop("selected", true)

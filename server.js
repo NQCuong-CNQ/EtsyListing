@@ -503,7 +503,7 @@ io.on("connection", async function (client) {
 
       trackData.push(trackObj)
     }
-    // await client.broadcast.emit("track-order-return", trackData)
+    await client.broadcast.emit("track-order-return", trackData)
   })
 
   await client.on("track-order-step1", async function (data) {
@@ -517,7 +517,6 @@ io.on("connection", async function (client) {
     await client.broadcast.emit("track-order-step4", name)
     console.log('step 4')
   })
-  await client.broadcast.emit("test")
 })
 
 async function getSearchProductFromWeb() {
