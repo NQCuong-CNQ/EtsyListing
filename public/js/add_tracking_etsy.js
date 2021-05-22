@@ -9,6 +9,7 @@ var index = 0
 console.log("da ket noi !!!")
 socket.on("track-order-return", async function (data) {
     data = data
+    console.log(data)
     await addTracking()
 })
 

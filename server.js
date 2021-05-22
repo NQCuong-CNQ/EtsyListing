@@ -489,6 +489,7 @@ io.on("connection", async function (client) {
   })
 
   await client.on("track-order-join", async function (data) {
+    console.log('getting data success!')
     let trackData = []
     let temp = data.split('\n')
 
@@ -503,6 +504,7 @@ io.on("connection", async function (client) {
 
       trackData.push(trackObj)
     }
+    console.log('send data to etsy')
     await client.broadcast.emit("track-order-return", trackData)
   })
 
