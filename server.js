@@ -323,67 +323,67 @@ io.on("connection", async function (client) {
     console.log('1 client connected')
 
     if (isUpdate) {
-      await client.emit("updating")
+      await client.broadcast.emit("updating")
     } else {
       let shopCategory = await dbo.collection("shopCategory").find().toArray()
-      await client.emit("shopCategoryDataTransfer", shopCategory)
+      await client.broadcast.emit("shopCategoryDataTransfer", shopCategory)
 
       let dbData = await dbo.collection("shop").find().toArray()
-      await client.emit("dataTransfer", dbData)
+      await client.broadcast.emit("dataTransfer", dbData)
 
       let lastUpdated = await dbo.collection("log").find().toArray()
-      await client.emit("last-updated", lastUpdated[lastUpdated.length - 1])
+      await client.broadcast.emit("last-updated", lastUpdated[lastUpdated.length - 1])
     }
   })
 
   await client.on("get-total-shop", async function () {
-    await client.emit("total-shop", total_shop)
+    await client.broadcast.emit("total-shop", total_shop)
   })
 
   await client.on("step1", async function () {
-    await client.emit("total-shop", total_shop)
+    await client.broadcast.emit("total-shop", total_shop)
   })
 
 
   await client.on("get_listing_shop_id", async function (shop_id) {
     let result = await makeRequest("GET", `https://openapi.etsy.com/v2/shops/${shop_id}/listings/active?api_key=${api_key}`)
     result = JSON.parse(result).results
-    await client.emit("listingDataTransfer", result)
+    await client.broadcast.emit("listingDataTransfer", result)
   })
 
   await client.on("get_user_by_user_id", async function (user_id) {
     let result = await makeRequest("GET", `https://openapi.etsy.com/v2/users/${user_id}/profile?api_key=${api_key}`)
     result = JSON.parse(result).results
-    await client.emit("userDataTransfer", result[0])
+    await client.broadcast.emit("userDataTransfer", result[0])
   })
 
   await client.on("shop-tracking", async function (shop_id) {
     let dbData = await dbo.collection("shopTracking").find({ shop_id: { "$eq": shop_id } }).toArray()
-    await client.emit("shop-tracking-data", dbData)
+    await client.broadcast.emit("shop-tracking-data", dbData)
   })
 
   await client.on("find-shop-by-name", async function (shopName) {
     let response = await makeRequest("GET", `https://openapi.etsy.com/v2/shops/${shopName}?api_key=${api_key}`)
     if (response == 0) {
-      await client.emit("return-find-shop-by-name", response)
+      await client.broadcast.emit("return-find-shop-by-name", response)
       return
     }
     response = JSON.parse(response).results
 
     siteUrl = "https://www.etsy.com/shop/" + shopName
     response[0]["total_sales"] = await getTotalSalesAndImgFromWeb()
-    await client.emit("return-find-shop-by-name", response)
+    await client.broadcast.emit("return-find-shop-by-name", response)
   })
 
   await client.on("product-tracking-join", async function () {
     if (isUpdate) {
-      await client.emit("updating")
+      await client.broadcast.emit("updating")
     } else {
       let dbData = await dbo.collection("listing").find().toArray()
-      await client.emit("return-product-tracking-join", dbData)
+      await client.broadcast.emit("return-product-tracking-join", dbData)
 
       let history = await dbo.collection("listingTracking").find().toArray()
-      await client.emit("return-product-history-tracking-join", history)
+      await client.broadcast.emit("return-product-history-tracking-join", history)
     }
   })
 
@@ -393,7 +393,7 @@ io.on("connection", async function (client) {
     var dboBraumstar = clientDBBraumstar.db("zicDb")
 
     let dbData = await dboBraumstar.collection("etsyAccounts").find({ username: dataUser }).toArray()
-    await client.emit("list-shop-braumstar", dbData)
+    await client.broadcast.emit("list-shop-braumstar", dbData)
     clientDBBraumstar.close()
   })
 
@@ -417,7 +417,7 @@ io.on("connection", async function (client) {
     }
     else if (getOldUser.username == dataUser.userName) {
       isSuccess = -1
-      await client.emit("return-new-user-braumstar", isSuccess)
+      await client.broadcast.emit("return-new-user-braumstar", isSuccess)
       clientDBBraumstar.close()
       return
     }
@@ -427,7 +427,7 @@ io.on("connection", async function (client) {
     if (getNewUser != '') {
       isSuccess = 1
     }
-    await client.emit("return-new-user-braumstar", isSuccess)
+    await client.broadcast.emit("return-new-user-braumstar", isSuccess)
     clientDBBraumstar.close()
   })
 
@@ -465,7 +465,7 @@ io.on("connection", async function (client) {
       }
     }
 
-    await client.emit("return-add-shop-braumstar", isSuccess)
+    await client.broadcast.emit("return-add-shop-braumstar", isSuccess)
     clientDBBraumstar.close()
   })
 
@@ -484,7 +484,7 @@ io.on("connection", async function (client) {
       await dboBraumstar.collection("etsyAccounts").deleteOne({ brandName: dataShop.shopname[i] })
     }
 
-    await client.emit("return-delete-shop-braumstar", 1)
+    await client.broadcast.emit("return-delete-shop-braumstar", 1)
     clientDBBraumstar.close()
   })
 
@@ -508,15 +508,15 @@ io.on("connection", async function (client) {
 
   await client.on("track-order-step1", async function (data) {
     console.log('step 1')
-    await client.emit("track-order-step2", data)
+    await client.broadcast.emit("track-order-step2", data)
     console.log('step 2')
   })
   await client.on("track-order-step3", async function (name) {
     console.log('step 3')
-    await client.emit("track-order-step4", name)
+    await client.broadcast.emit("track-order-step4", name)
     console.log('step 4')
   })
-  await client.emit("test")
+  await client.broadcast.emit("test")
 })
 
 async function getSearchProductFromWeb() {
