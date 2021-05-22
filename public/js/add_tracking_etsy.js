@@ -15,7 +15,7 @@ socket.on("track-order-return", async function (dataReceive) {
 })
 
 async function addTracking() {
-    console.log(index + '/'+data.length)
+    console.log(index + '/' + data.length)
     if (index == data.length) {
         index = 0
         return
@@ -50,12 +50,12 @@ async function addTrackingAction(id, number) {
     socket.on("track-order-step4", async function (name) {
         console.log('step 4' + name)
         if (name == 'lynLL') {
-            console.log('done')
+            index++
+            await addTracking()
         }
     })
 
-    index++
-    await addTracking()
+
     // $('[placeholder="Enter tracking number (recommended)"]:eq(0)').val(number)
     // if(number.charAt(0) == 9 || number.charAt(0) == 1){
     //     $('[for="Select shipping carrier..."] option[value="-1"]').prop("selected", true)
