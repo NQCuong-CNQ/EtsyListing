@@ -7,15 +7,15 @@ var data = []
 var index = 0
 
 console.log("da ket noi !!!")
-socket.on("track-order-return", async function (data) {
-    data = data
+socket.on("track-order-return", async function (dataReceive) {
+    data = dataReceive
     console.log(data)
     console.log(data.length)
     await addTracking()
 })
 
 async function addTracking() {
-    console.log('vo')
+    console.log(index + '/'+data.length)
     if (index == data.length) {
         index = 0
         return
