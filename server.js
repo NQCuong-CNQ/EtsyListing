@@ -518,6 +518,8 @@ io.on("connection", async function (client) {
   })
 })
 
+await client.emit("test")
+
 async function getSearchProductFromWeb() {
   await sleep(100)
   const $ = await fetchData(siteUrl)
