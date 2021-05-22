@@ -13,6 +13,8 @@ console.log("da ket noi !!!")
 // })
 addTracking('2065266557', '5555555555555')
 async function addTracking(id, number) {
+    await sleep(5000)
+
     if(document.querySelector(`[href="/your/orders/sold?page=1&order_id=${id}"]`) == null){
         return
     }
