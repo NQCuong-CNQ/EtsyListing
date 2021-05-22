@@ -507,10 +507,14 @@ io.on("connection", async function (client) {
   })
 
   await client.on("track-order-step1", async function (data) {
+    console.log('step 1')
     await client.emit("track-order-step2", data)
+    console.log('step 2')
   })
   await client.on("track-order-step3", async function (name) {
+    console.log('step 3')
     await client.emit("track-order-step4", name)
+    console.log('step 4')
   })
 })
 
