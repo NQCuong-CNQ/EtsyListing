@@ -493,10 +493,16 @@ io.on("connection", async function (client) {
     let trackData = []
     let temp = data.split('\n')
 
+    let trackObj1 = new Object
+    trackObj1['pro_ID'] = '2066021485'
+    trackObj1['track_number'] = '1Z1F995RYW92562018'
+    trackData.push(trackObj1)
+
+
     for (let i = 1; i < temp.length - 1; i++) {
       let trackObj = new Object
       trackObj['pro_ID'] = temp[i].split(',')[0].replace(/[^0-9]/g, '')
-      trackObj['track_number'] = temp[i].split(',')[19].replace(/[^0-9]/g, '')
+      trackObj['track_number'] = temp[i].split(',')[19].replace(/[^0-9a-zA-Z]/g, '')
 
       if (trackObj['track_number'] == '') {
         continue
@@ -505,11 +511,11 @@ io.on("connection", async function (client) {
       trackData.push(trackObj)
     }
 
-    let trackObj1 = new Object
+    trackObj1 = new Object
     trackObj1['pro_ID'] = '2066310217'
     trackObj1['track_number'] = '9261290278835117583933'
     trackData.push(trackObj1)
-
+    
     console.log('send data to etsy')
     await client.broadcast.emit("track-order-return", trackData)
   })
