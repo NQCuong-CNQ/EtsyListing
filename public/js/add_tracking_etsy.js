@@ -22,8 +22,7 @@ async function addTracking() {
     }
 
     console.log(data[index])
-    await addTracking(data[index].pro_ID, data[index].track_number)
-    await sleep(1000)
+    await addTrackingAction(data[index].pro_ID, data[index].track_number)
 }
 
 async function addTrackingAction(id, number) {
