@@ -38,7 +38,6 @@ async function scheduleUpdate() {
   }
 }
 
-
 async function updateCate() {
   let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
   var dbo = client.db("trackingdb")
@@ -50,11 +49,11 @@ async function updateCate() {
   await dbo.collection("category").insertOne(category)
 }
 
-updateData()
+// updateData()
 async function updateData() {
   isUpdate = true
   // await updateCate()
-  // await getListing()
+  await getListing()
   await getShopName()
   await updateShopInfo()
   await completeUpdate()
