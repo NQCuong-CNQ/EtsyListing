@@ -26,8 +26,6 @@ async function addTracking() {
 }
 
 async function addTrackingAction(id, number) {
-    await sleep(6000)
-
     console.log(id + '/ ' + number)
 
     if (document.querySelector(`[href="/your/orders/sold?order_id=${id}"]`) == null) {
