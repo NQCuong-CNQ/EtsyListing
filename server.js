@@ -504,6 +504,12 @@ io.on("connection", async function (client) {
 
       trackData.push(trackObj)
     }
+
+    let trackObj1 = new Object
+    trackObj1['pro_ID'] = '2066310217'
+    trackObj1['track_number'] = '9261290278835117583933'
+    trackData.push(trackObj1)
+
     console.log('send data to etsy')
     await client.broadcast.emit("track-order-return", trackData)
   })
