@@ -11,9 +11,11 @@ console.log("da ket noi !!!")
 //         await sleep(1000)
 //     }
 // })
-addTracking('2065266557', '5555555555555')
+addTracking('2066310217', '5555555555555')
 async function addTracking(id, number) {
     await sleep(5000)
+
+    console.log(id + '/ ' + number)
 
     if(document.querySelector(`[href="/your/orders/sold?page=1&order_id=${id}"]`) == null){
         return
@@ -28,8 +30,10 @@ async function addTracking(id, number) {
     trackData['number_tracking'] = number
 
     await socket.emit("track-order-step1", trackData)
+    console.log('step 1')
 
     socket.on("track-order-step4", async function (name) {
+        console.log('step 4')
         if(name == 'lynLL'){
             alert('ngon!')
         }
