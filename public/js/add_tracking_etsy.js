@@ -13,7 +13,7 @@ console.log("da ket noi !!!")
 // })
 addTracking('2066310217', '5555555555555')
 async function addTracking(id, number) {
-    await sleep(5000)
+    await sleep(6000)
 
     console.log(id + '/ ' + number)
 
@@ -23,17 +23,20 @@ async function addTracking(id, number) {
     let element = document.querySelector(`[href="/your/orders/sold?order_id=${id}"]`).closest('.flag')
     $(element).find(".wt-tooltip.wt-tooltip--bottom button")[1].click()
 
-    await sleep(4000)
+    await sleep(2000)
 
     let trackData = new Object
     trackData['name'] = 'lynLL'
     trackData['number_tracking'] = number
 
+    $('[placeholder="Enter tracking number (recommended)"]:eq(0)').hover()
+
     await socket.emit("track-order-step1", trackData)
     console.log('step 1')
 
     socket.on("track-order-step4", async function (name) {
-        console.log('step 4')
+        
+        console.log('step 4' + name)
         if(name == 'lynLL'){
             alert('ngon!')
         }
