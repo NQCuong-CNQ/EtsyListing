@@ -25,11 +25,18 @@ async function addTracking() {
     await addTrackingAction(data[index].pro_ID, data[index].track_number)
 }
 
+socket.on("track-order-step4", async function (name) {
+    console.log('step 4' + name)
+    if (name == 'lynLL') {
+        await addTracking()
+    }
+})
+
 async function addTrackingAction(id, number) {
     console.log(id + '/ ' + number)
+    index++
 
     if (document.querySelector(`[href="/your/orders/sold?order_id=${id}"]`) == null) {
-        index++
         await addTracking()
         return
     }
@@ -46,15 +53,6 @@ async function addTrackingAction(id, number) {
 
     await socket.emit("track-order-step1", trackData)
     console.log('step 1')
-
-    socket.on("track-order-step4", async function (name) {
-        console.log('step 4' + name)
-        if (name == 'lynLL') {
-            index++
-            await addTracking()
-        }
-    })
-
 
     // $('[placeholder="Enter tracking number (recommended)"]:eq(0)').val(number)
     // if(number.charAt(0) == 9 || number.charAt(0) == 1){
