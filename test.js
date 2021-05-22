@@ -30,9 +30,5 @@
 
 // server.listen(8080)
 
-let str = 'sdfsda'
-str = str.split('')
-console.log(str.length)
-for(let i = 0; i<str.length; i++){
-  console.log(str[i])
-}
+let date = new Date().getTime() / 1000 
+console.log(Math.floor( date/86400))

@@ -128,6 +128,7 @@ async function getListing() {
   await dbo.collection("listing").deleteMany()
 
   let listings
+  let listingTracking
   for (let i = 0; i < idListings.length; i++) {
     let result = await makeRequest("GET", `https://openapi.etsy.com/v2/listings/${idListings[i]}?api_key=${api_key}`)
     result = JSON.parse(result).results
@@ -143,9 +144,21 @@ async function getListing() {
     percentFavor = percentFavor.toFixed(0)
     listings['percent_favor'] = percentFavor
 
-    if(listings.state == 'active'){
+    if (listings.state == 'active') {
       await dbo.collection("listing").insertOne(listings)
       console.log(listings.listing_id)
+
+      listingTracking['listing_id'] = listings.listing_id
+      listingTracking['creation_tsz'] = listings.creation_tsz
+      listingTracking['quantity'] = listings.quantity
+      listingTracking['views'] = listings.views
+      listingTracking['num_favorers'] = listings.num_favorers
+
+      let date = new Date().getTime() / 1000
+      date = Math.floor(date / 86400)
+      listingTracking['date_update'] = date
+
+      await dbo.collection("listingTracking").insertOne(listings)
     }
     await sleep(100)
   }
@@ -267,7 +280,7 @@ function getDateTimeNow() {
   let minutes = ("0" + date_ob.getMinutes()).slice(-2)
   let seconds = ("0" + date_ob.getSeconds()).slice(-2)
   let timeNow = year + "-" + month + "-" + date + " " + hours + ":" + minutes + ":" + seconds
-  return timeNow  
+  return timeNow
 }
 
 async function completeUpdate() {
@@ -369,6 +382,9 @@ io.on("connection", async function (client) {
     } else {
       let dbData = await dbo.collection("listing").find().toArray()
       await client.emit("return-product-tracking-join", dbData)
+
+      let history = await dbo.collection("listingTracking").find().toArray()
+      await client.emit("return-product-history-tracking-join", history)
     }
   })
 
@@ -477,12 +493,12 @@ io.on("connection", async function (client) {
     let trackData = []
     let temp = data.split('\n')
 
-    for (let i = 1; i < temp.length - 1; i++){
+    for (let i = 1; i < temp.length - 1; i++) {
       let trackObj = new Object
       trackObj['pro_ID'] = temp[i].split(',')[0].replace(/[^0-9]/g, '')
       trackObj['track_number'] = temp[i].split(',')[19].replace(/[^0-9]/g, '')
 
-      if(trackObj['track_number'] == ''){
+      if (trackObj['track_number'] == '') {
         continue
       }
 
@@ -542,7 +558,7 @@ async function getTotalSalesAndImgFromWeb() {
 
   let data = []
   let totalSales
-  
+
   if ($('.shop-sales-reviews > span') == null) {
     data['totalSales'] = 0
     data['imgs'] = 0
@@ -555,7 +571,7 @@ async function getTotalSalesAndImgFromWeb() {
   }
   totalSales = totalSales[0].replace(/,/g, '')
   data['totalSales'] = totalSales
-  
+
   let imgs = $('[data-listings-container]').html()
   if (imgs == null) {
     data['totalSales'] = 0
@@ -577,7 +593,7 @@ async function getShopNameFromWeb(siteUrl) {
   if ($ == 0) {
     return 0
   }
-  
+
   let shopName = $('ul.tab-reorder-container').text()
   shopName = shopName.split('shop ')
   shopName.splice(0, 1);

@@ -200,13 +200,13 @@ function updateData(dataFilter = listingData) {
               alt="" width="100%" loading='lazy'></a>
           <a class="mt-2" href="${dataFilter[i].url}" target="_blank">${dataFilter[i].title}</a>
           <div class="row pl-3 pr-2">
-              <p class="col-4 p-0"><i class="fas fa-dollar-sign mr-1 data-toggle="tooltip" data-placement="bottom" title="Price""></i>${dataFilter[i].price}</p>
-              <p class="col-4 p-0"><i class="fas fa-eye mr-1 data-toggle="tooltip" data-placement="bottom" title="Views""></i>${dataFilter[i].views}</p>
-              <p class="col-4 p-0"><i class="fas fa-heart mr-1 data-toggle="tooltip" data-placement="bottom" title="Favorite""></i>${dataFilter[i].num_favorers}</p>
+              <p class="col-4 p-0"><i class="fas fa-dollar-sign mr-1"></i>${dataFilter[i].price}</p>
+              <p class="col-4 p-0"><i class="fas fa-eye mr-1"></i>${dataFilter[i].views}</p>
+              <p class="col-4 p-0"><i class="fas fa-heart mr-1"></i>${dataFilter[i].num_favorers}</p>
           </div>  
           <div class="row pl-3 pr-2">
-              <p class="col-4 p-0"><i class="fas fa-sort-amount-down mr-1 data-toggle="tooltip" data-placement="bottom" title="Quantity""></i>${dataFilter[i].quantity}</p>
-              <p class="col-4 p-0"><i class="fas fa-heartbeat mr-1 data-toggle="tooltip" data-placement="bottom" title="% Favorite""></i>${dataFilter[i].percent_favor}%</p>
+              <p class="col-4 p-0"><i class="fas fa-sort-amount-down mr-1"></i>${dataFilter[i].quantity}</p>
+              <p class="col-4 p-0"><i class="fas fa-heartbeat mr-1"></i>${dataFilter[i].percent_favor}%</p>
           </div>
       </div>
     `)
@@ -221,10 +221,10 @@ function updateData(dataFilter = listingData) {
 
 let listingLocalData = window.localStorage.getItem('listing-data')
 if(listingLocalData != null){
-  toastr.info('Load old data from local storage') 
   listingData = JSON.parse(listingLocalData)
 
   searchOrFilterData()
+  toastr.clear()
   toastr.info('Updating data...')
 } else {
   $('#loading').css('display', 'block')
@@ -233,8 +233,12 @@ if(listingLocalData != null){
 socket.emit("product-tracking-join")
 
 socket.on("updating", function (data) {
-  alert('Data Server is updating, please come back later!')
-  $('#getting-data-loading').text('Data Server is updating, please come back later!')
+  toastr.clear()
+  toastr.warning('Data Server is updating, cannot get new information!')
+})
+
+socket.on("return-product-history-tracking-join", function (data) {
+  
 })
 
 socket.on("return-product-tracking-join", function (data) {
@@ -246,6 +250,7 @@ socket.on("return-product-tracking-join", function (data) {
   listingData = data 
   
   searchOrFilterData()
+  toastr.clear()
   toastr.success('Data Updated')
 
   let temp

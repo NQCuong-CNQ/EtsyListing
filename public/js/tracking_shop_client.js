@@ -244,10 +244,10 @@ if(categoryLocalData != null){
   shopCategory = JSON.parse(categoryLocalData)
 
   if(shopLocalData != null){
-    toastr.info('Load old data from local storage') 
     shopData = JSON.parse(shopLocalData)
     
     searchOrFilterData()
+    toastr.clear()
     toastr.info('Updating data...')
   } else {
     $('#loading').css('display', 'block')
@@ -259,8 +259,8 @@ if(categoryLocalData != null){
 socket.emit("join")
 
 socket.on("updating", function (data) {
-  alert('Data Server is updating, please come back later!')
-  $('#getting-data-loading').text('Data Server is updating, please come back later!')
+  toastr.clear()
+  toastr.warning('Data Server is updating, cannot get new information!')
 })
 
 socket.on("dataTransfer", async function (data) {
@@ -286,6 +286,7 @@ socket.on("dataTransfer", async function (data) {
     tempData[i]=temp
   }
 
+  toastr.clear()
   toastr.success('Data Updated')
   window.localStorage.setItem('listing-shop', JSON.stringify(tempData))
   await socket.emit("get-total-shop")
@@ -542,21 +543,21 @@ $('#all-time-created-shop-filter').on('click', async function () {
   searchOrFilterData()
 })
 
-$('#6m-time-created-shop-filter').on('click', async function () {
+$('#7d-time-created-shop-filter').on('click', async function () {
   timeCreatedShopFilter = 1
-  $('#dropdown-filter-shop-time-created').text('In 6 months')
+  $('#dropdown-filter-shop-time-created').text('In 7 days')
   searchOrFilterData()
 })
 
-$('#in1y-time-created-shop-filter').on('click', async function () {
+$('#14d-time-created-shop-filter').on('click', async function () {
   timeCreatedShopFilter = 2
-  $('#dropdown-filter-shop-time-created').text('In 1 year')
+  $('#dropdown-filter-shop-time-created').text('In 14 days')
   searchOrFilterData()
 })
 
-$('#over1y-time-created-shop-filter').on('click', async function () {
+$('#1m-time-created-shop-filter').on('click', async function () {
   timeCreatedShopFilter = 3
-  $('#dropdown-filter-shop-time-created').text('Over 1 years')
+  $('#dropdown-filter-shop-time-created').text('In 1 months')
   searchOrFilterData()
 })
 
@@ -564,7 +565,7 @@ $('#custom-time-created-shop-filter').daterangepicker({
   "showDropdowns": true,
   "minYear": 2010,
   "maxYear": 2023,
-  "startDate": "12/21/2020",
+  "startDate": "12/05/2021",
   "opens": "center"
 }, function (start, end, label) {
   timeCreatedShopFilter = 'custom'
@@ -577,10 +578,11 @@ function timeCreatedShopFilterAction(dataFilter) {
   let daysInTime = 0
 
   if (timeCreatedShopFilter == 1) {
-    daysInTime = 182
-  }
-  if (timeCreatedShopFilter > 1) {
-    daysInTime = 365
+    daysInTime = 7
+  } else if (timeCreatedShopFilter == 2) {
+    daysInTime = 14
+  } else if (timeCreatedShopFilter == 3) {
+    daysInTime = 30
   }
 
   for (let i = 0; i < dataFilter.length; i++) {
