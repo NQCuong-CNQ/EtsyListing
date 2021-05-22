@@ -4,14 +4,14 @@ var socket = io.connect("https://giftsvk.com:443", {
 })
 
 console.log("da ket noi !!!")
-socket.on("track-order-return", async function (data) {
-    for (var i = 0; i < data.length; i++){
-        console.log(data[i])
-        await addTracking(data[i].pro_ID, data[i].track_number)
-        await sleep(1000)
-    }
-})
-
+// socket.on("track-order-return", async function (data) {
+//     for (var i = 0; i < data.length; i++){
+//         console.log(data[i])
+//         await addTracking(data[i].pro_ID, data[i].track_number)
+//         await sleep(1000)
+//     }
+// })
+addTracking('2065266557', '5555555555555')
 async function addTracking(id, number) {
     if(document.querySelector(`[href="/your/orders/sold?page=1&order_id=${id}"]`) == null){
         return
@@ -21,10 +21,12 @@ async function addTracking(id, number) {
 
     await sleep(4000)
 
-    $('[placeholder="Enter tracking number (recommended)"]:eq(0)').val(number)
-    if(number.charAt(0) == 9 || number.charAt(0) == 1){
-        $('[for="Select shipping carrier..."] option[value="-1"]').prop("selected", true)
-    }
+    await socket.emit("step1")
+
+    // $('[placeholder="Enter tracking number (recommended)"]:eq(0)').val(number)
+    // if(number.charAt(0) == 9 || number.charAt(0) == 1){
+    //     $('[for="Select shipping carrier..."] option[value="-1"]').prop("selected", true)
+    // }
     //  else if (number.charAt(0) == 8){
     //     $('[for="Select shipping carrier..."] option[value="2"]').prop("selected", true)
     // }

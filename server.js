@@ -20,7 +20,7 @@ var io = require("socket.io")(server, {
 })
 
 const limit = 100
-const limitPage = 1
+const limitPage = 5
 const api_key = '2mlnbmgdqv6esclz98opmmuq'
 var siteUrl
 var isUpdate = false
@@ -54,11 +54,9 @@ getTotalShop()
 async function updateData() {
   isUpdate = true
   // await updateCate()
-  await getListing()
-  await getShopName()
+  // await getListing()
+  // await getShopName()
   await updateShopInfo()
-  // await updateListing()
-  // await updateUser()
   await completeUpdate()
 
   await getTotalShop()
@@ -113,7 +111,7 @@ async function getListing() {
     }
   }
   console.log(idListings.length)
-  for (let i = 1; i <= 30; i++) {
+  for (let i = 1; i <= 5; i++) {
     siteUrl = `https://www.etsy.com/c?ref=pagination&explicit=1&page=${i}`
     let data = await getSearchProductFromWeb()
     console.log(i)
@@ -224,53 +222,6 @@ async function saveShopNameToDB(dataShopName, shopCategory) {
   await sleep(100)
 }
 
-async function updateUser() {
-  let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
-  var dbo = client.db("trackingdb")
-  let dataShop = await dbo.collection("shop").find().toArray()
-
-  for (let i = 0; i < dataShop.length; i++) {
-    if (dataShop[i].total_sales >= 10) {
-      console.log('get user shop: ' + dataShop[i].shop_id)
-      let result = await makeRequest("GET", `https://openapi.etsy.com/v2/users/${dataShop[i].user_id}/profile?api_key=${api_key}`)
-      if (result == 0) {
-        console.log('pass')
-        continue
-      }
-      result = JSON.parse(result).results
-      var count = Object.keys(result).length;
-      for (let j = 0; j < count; j++) {
-        await dbo.collection("user").updateOne({ user_id: result[j].user_id }, { $set: result[j] }, { upsert: true })
-      }
-    }
-  }
-}
-
-async function updateListing() {
-  let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
-  var dbo = client.db("trackingdb")
-  let dataShop = await dbo.collection("shop").find().toArray()
-
-  for (let i = 0; i < dataShop.length; i++) {
-    if (dataShop[i].total_sales >= 100) {
-      console.log('get listing shop: ' + dataShop[i].shop_id)
-
-      let result = await makeRequest("GET", `https://openapi.etsy.com/v2/shops/${dataShop[i].shop_id}/listings/active?api_key=${api_key}`) //limit 100
-      if (result == 0) {
-        console.log('pass')
-        continue
-      }
-
-      result = JSON.parse(result).results
-      var count = Object.keys(result).length;
-      for (let j = 0; j < count; j++) {
-        result[j]['shop_id'] = dataShop[i].shop_id
-        await dbo.collection("listing").updateOne({ listing_id: result[j].listing_id }, { $set: result[j] }, { upsert: true })
-      }
-    }
-  }
-}
-
 async function sleep(ms) {
   return new Promise(
     resolve => setTimeout(resolve, ms)
@@ -316,7 +267,7 @@ function getDateTimeNow() {
   let minutes = ("0" + date_ob.getMinutes()).slice(-2)
   let seconds = ("0" + date_ob.getSeconds()).slice(-2)
   let timeNow = year + "-" + month + "-" + date + " " + hours + ":" + minutes + ":" + seconds
-  return timeNow
+  return timeNow  
 }
 
 async function completeUpdate() {
@@ -376,6 +327,11 @@ io.on("connection", async function (client) {
   await client.on("get-total-shop", async function () {
     await client.emit("total-shop", total_shop)
   })
+
+  await client.on("step1", async function () {
+    await client.emit("total-shop", total_shop)
+  })
+
 
   await client.on("get_listing_shop_id", async function (shop_id) {
     let result = await makeRequest("GET", `https://openapi.etsy.com/v2/shops/${shop_id}/listings/active?api_key=${api_key}`)

@@ -8,11 +8,15 @@ console.log('Getting data...')
 var options = { year: 'numeric', month: '2-digit', day: '2-digit' };
 var date = new Date()
 var end = date.toLocaleDateString("en-US", options)
-date.setDate(date.getDate() - 2)
+date.setDate(date.getDate() - 2)    
 var start = date.toLocaleDateString("en-US", options)
 
 console.log(end + start)
 getData()
+
+socket.on("restart-customcat", async function () {
+    location.reload()
+})
 
 async function getData() {
     await sleep(3000)
