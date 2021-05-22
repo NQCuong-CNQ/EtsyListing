@@ -38,6 +38,7 @@ async function scheduleUpdate() {
   }
 }
 
+
 async function updateCate() {
   let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
   var dbo = client.db("trackingdb")
@@ -548,16 +549,11 @@ async function getTotalSalesAndImgFromWeb() {
   }
   totalSales = totalSales[0].replace(/,/g, '')
   data['totalSales'] = totalSales
-
-  if ($('[data-listings-container]') == null) {
-    data['totalSales'] = 0
-    data['imgs'] = 0
-    return data
-  }
   
   let imgs = $('[data-listings-container]').html()
-  if (imgs == '') {
-    return 0
+  if (imgs == null) {
+    data['totalSales'] = 0
+    return data
   }
   imgs = imgs.split('<img data-listing-card-listing-image="" src="')
   for (let i = 0; i < imgs.length; i++) {
@@ -566,9 +562,7 @@ async function getTotalSalesAndImgFromWeb() {
 
   imgs.shift()
   imgs.splice(8, imgs.length)
-
   data['imgs'] = imgs
-
   return data
 }
 
