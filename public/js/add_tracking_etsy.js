@@ -17,10 +17,10 @@ async function addTracking(id, number) {
 
     console.log(id + '/ ' + number)
 
-    if(document.querySelector(`[href="/your/orders/sold?page=1&order_id=${id}"]`) == null){
+    if(document.querySelector(`[href="/your/orders/sold?order_id=${id}"]`) == null){
         return
     }
-    let element = document.querySelector(`[href="/your/orders/sold?page=1&order_id=${id}"]`).closest('.flag')
+    let element = document.querySelector(`[href="/your/orders/sold?order_id=${id}"]`).closest('.flag')
     $(element).find(".wt-tooltip.wt-tooltip--bottom button")[1].click()
 
     await sleep(4000)
