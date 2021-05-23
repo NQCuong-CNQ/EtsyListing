@@ -1,12 +1,19 @@
-var socket = io.connect("https://giftsvk.com:443", {
+var socket = io.connect("https://giftsvk.com", {
     port: 443,
     reconnect: true
 })
 
 var data = []
 var index = 0
+var shopName
 
-console.log("da ket noi !!!")
+main
+async function main(){
+    await sleep(5000)
+    shopName = $('[data-tour-anchor="etsy-channel"] [data-test-id="unsanitize"]').text().trim()
+    console.log(shopName)
+}
+
 socket.on("track-order-return", async function (dataReceive) {
     data = dataReceive
     console.log(data)
@@ -27,7 +34,7 @@ async function addTracking() {
 
 socket.on("track-order-step4", async function (name) {
     console.log('step 4' + name)
-    if (name == 'lynLL') {
+    if (name == shopName) {
         await addTracking()
     }
 })
@@ -46,21 +53,12 @@ async function addTrackingAction(id, number) {
     await sleep(2000)
 
     let trackData = new Object
-    trackData['name'] = 'lynLL'
+    trackData['name'] = shopName
     trackData['number_tracking'] = number
 
     $('[placeholder="Enter tracking number (recommended)"]:eq(0)').hover()
 
     await socket.emit("track-order-step1", trackData)
-    console.log('step 1')
-
-    // $('[placeholder="Enter tracking number (recommended)"]:eq(0)').val(number)
-    // if(number.charAt(0) == 9 || number.charAt(0) == 1){
-    //     $('[for="Select shipping carrier..."] option[value="-1"]').prop("selected", true)
-    // }
-    //  else if (number.charAt(0) == 8){
-    //     $('[for="Select shipping carrier..."] option[value="2"]').prop("selected", true)
-    // }
 
 }
 

@@ -1,4 +1,4 @@
-var socket = io.connect("https://giftsvk.com:443", {
+var socket = io.connect("https://giftsvk.com", {
     port: 443,
     reconnect: true
 })
