@@ -7,7 +7,7 @@ var data = []
 var index = 0
 var shopName
 
-main
+main()
 async function main(){
     await sleep(5000)
     shopName = $('[data-tour-anchor="etsy-channel"] [data-test-id="unsanitize"]').text().trim()
