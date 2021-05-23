@@ -133,6 +133,10 @@ async function getListing() {
     result = JSON.parse(result).results
     listings = result[0]
 
+    if(listings.toString().includes('does not exist')){
+      continue
+    }
+
     let resultImgs = await makeRequest("GET", `https://openapi.etsy.com/v2/listings/${idListings[i]}/images?api_key=${api_key}`)
     resultImgs = JSON.parse(resultImgs).results[0]
 
