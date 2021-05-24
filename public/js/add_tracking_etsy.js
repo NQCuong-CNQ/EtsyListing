@@ -17,8 +17,6 @@ async function main(){
 
 socket.on("track-order-return", async function (dataReceive) {
     data = dataReceive
-    console.log(data)
-    console.log(data.length)
     await addTracking()
 })
 
