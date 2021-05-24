@@ -317,8 +317,8 @@ app.get("/listing", function (req, res, next) {
   res.sendFile(__dirname + "/public/etsy_listing.html")
 })
 
-app.get("/listing", function (req, res, next) {
-  res.sendFile(__dirname + "/public/etsy_listing.html")
+app.get("/add_tracking_history", function (req, res, next) {
+  res.sendFile(__dirname + "/public/add_tracking_etsy.html")
 })
 
 app.use(express.static("public"))
