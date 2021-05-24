@@ -127,7 +127,7 @@ async function getListing() {
   await dbo.collection("listing").deleteMany()
 
   let listings
-  let listingTracking
+  let listingTracking = []
   for (let i = 0; i < idListings.length; i++) {
     let result = await makeRequest("GET", `https://openapi.etsy.com/v2/listings/${idListings[i]}?api_key=${api_key}`)
     result = JSON.parse(result).results
@@ -150,7 +150,6 @@ async function getListing() {
     if (listings.state == 'active') {
       await dbo.collection("listing").insertOne(listings)
       console.log(listings.listing_id)
-      console.log(listings)
 
       listingTracking['listing_id'] = listings.listing_id
       listingTracking['creation_tsz'] = listings.creation_tsz
