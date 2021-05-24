@@ -143,7 +143,7 @@ async function getListing() {
     date = Math.floor(date / 86400)
     listingTracking['date_update'] = date
 
-    await dbo.collection("listing").insertOne(listingTracking)
+    await dbo.collection("listing").insertOne({listingTracking})
     await sleep(100)
   }
 }
