@@ -3,9 +3,10 @@ var socket = io.connect("https://giftsvk.com", {
     reconnect: true
 })
 
-await socket.emit("tracking-history-join")
+socket.emit("tracking-history-join")
 
 socket.on("tracking-history-return-data", async function (data) {
+    console.log(data)
     updateData(data)
 })
 

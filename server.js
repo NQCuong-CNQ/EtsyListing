@@ -532,6 +532,7 @@ io.on("connection", async function (client) {
 
   await client.on("tracking-history-join", async function () {
     let dbdata = await dbo.collection("tracking_etsy_history").find().toArray()
+    console.log(dbdata)
     await client.emit("tracking-history-return-data", dbdata)
   })
 })
