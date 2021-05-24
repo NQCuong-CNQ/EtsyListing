@@ -65,25 +65,21 @@ async function updateData() {
 async function getListing() {
   let idListings = []
 
-  for (let i = 1; i <= 5; i++) {
-    siteUrl = `https://www.etsy.com/search?q=canvas&page=${i}&ref=pagination`
-    let data = await getSearchProductFromWeb()
-    console.log(i)
-    for (let j = 0; j < data.length; j++) {
-      idListings.push(data[j])
+  let listKeyWord = ["father's day", "pride month", "independence day", "tshirt", "canvas", "art print", "mug", "blanket"]
+
+  for (let i = 0; i < listKeyWord.length; i++) {
+    for (let j = 0; j <= 5; j++) {
+      siteUrl = `https://www.etsy.com/search?q=${listKeyWord[i]}&page=${j}&ref=pagination`
+      let data = await getSearchProductFromWeb()
+      console.log(j)
+      for (let k = 0; k < data.length; k++) {
+        idListings.push(data[k])
+      }
     }
   }
+
   console.log(idListings.length)
-  for (let i = 1; i <= 5; i++) {
-    siteUrl = `https://www.etsy.com/search?q=mug&page=${i}&ref=pagination`
-    let data = await getSearchProductFromWeb()
-    console.log(i)
-    for (let j = 0; j < data.length; j++) {
-      idListings.push(data[j])
-    }
-  }
-  console.log(idListings.length)
-  for (let i = 1; i <= 5; i++) {
+  for (let i = 1; i <= 2; i++) {
     siteUrl = `https://www.etsy.com/search?q=tumbler&page=${i}&ref=pagination`
     let data = await getSearchProductFromWeb()
     console.log(i)
@@ -91,78 +87,62 @@ async function getListing() {
       idListings.push(data[j])
     }
   }
-  console.log(idListings.length)
-  for (let i = 1; i <= 5; i++) {
-    siteUrl = `https://www.etsy.com/search?q=tshirt&page=${i}&ref=pagination`
-    let data = await getSearchProductFromWeb()
-    console.log(i)
-    for (let j = 0; j < data.length; j++) {
-      idListings.push(data[j])
-    }
-  }
-  console.log(idListings.length)
-  for (let i = 1; i <= 5; i++) {
-    siteUrl = `https://www.etsy.com/search?q=blanket&page=${i}&ref=pagination`
-    let data = await getSearchProductFromWeb()
-    console.log(i)
-    for (let j = 0; j < data.length; j++) {
-      idListings.push(data[j])
-    }
-  }
-  console.log(idListings.length)
-  for (let i = 1; i <= 5; i++) {
-    siteUrl = `https://www.etsy.com/c?ref=pagination&explicit=1&page=${i}`
-    let data = await getSearchProductFromWeb()
-    console.log(i)
-    for (let j = 0; j < data.length; j++) {
-      idListings.push(data[j])
-    }
-  }
-
   idListings = [...new Set(idListings)]
   console.log(idListings.length)
 
   let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
   var dbo = client.db("trackingdb")
-  await dbo.collection("listing").deleteMany()
 
   let listings
   let listingTracking = []
+  let date = new Date().getTime() / 1000
+
   for (let i = 0; i < idListings.length; i++) {
+    let idBlackList = await dbo.collection("listingBlackList").findOne(listings.listing_id)
+    console.log('idBlackList' + idBlackList)
+    if (idBlackList != '') {
+      console.log('pass' + idBlackList)
+      continue
+    }
+
     let result = await makeRequest("GET", `https://openapi.etsy.com/v2/listings/${idListings[i]}?api_key=${api_key}`)
     result = JSON.parse(result).results
     listings = result[0]
 
-    if (listings.toString().includes('does not exist')) {
+    console.log(date + "/" + listings.creation_tsz + "/" + (date - listings.creation_tsz) / 86400)
+    if(listings.state != 'active'){
+      await dbo.collection("listing").deleteMany({listing_id: listings.listing_id})
+    }
+    if (listings.toString().includes('does not exist') || (date - listings.creation_tsz > (86400 * 30)) || listings.state != 'active') {
+      await dbo.collection("listingBlackList").updateOne({ listing_id: listings.listing_id }, { $set: { listing_id: listings.listing_id } }, { upsert: true })
       continue
     }
 
     let resultImgs = await makeRequest("GET", `https://openapi.etsy.com/v2/listings/${idListings[i]}/images?api_key=${api_key}`)
     resultImgs = JSON.parse(resultImgs).results[0]
 
-    listings['img_url'] = resultImgs.url_570xN
-    listings['img_url_original'] = resultImgs.url_fullxfull
+    listingTracking['img_url'] = resultImgs.url_570xN
+    listingTracking['img_url_original'] = resultImgs.url_fullxfull
 
     let percentFavor = (listings.num_favorers / listings.views) * 100
     percentFavor = percentFavor.toFixed(0)
-    listings['percent_favor'] = percentFavor
+    listingTracking['percent_favor'] = percentFavor
 
-    if (listings.state == 'active') {
-      await dbo.collection("listing").insertOne(listings)
-      console.log(listings.listing_id)
+    console.log(listings.listing_id)
 
-      listingTracking['listing_id'] = listings.listing_id
-      listingTracking['creation_tsz'] = listings.creation_tsz
-      listingTracking['quantity'] = listings.quantity
-      listingTracking['views'] = listings.views
-      listingTracking['num_favorers'] = listings.num_favorers
+    listingTracking['listing_id'] = listings.listing_id
+    listingTracking['title'] = listings.title
+    listingTracking['taxonomy_path'] = listings.taxonomy_path
+    listingTracking['url'] = listings.url
+    listingTracking['creation_tsz'] = listings.creation_tsz
+    listingTracking['quantity'] = listings.quantity
+    listingTracking['views'] = listings.views
+    listingTracking['num_favorers'] = listings.num_favorers
 
-      let date = new Date().getTime() / 1000
-      date = Math.floor(date / 86400)
-      listingTracking['date_update'] = date
+    date = Math.floor(date / 86400)
+    listingTracking['date_update'] = date
 
-      await dbo.collection("listingTracking").insertOne(listings)
-    }
+    await dbo.collection("listing").insertOne(listingTracking)
     await sleep(100)
   }
 }
@@ -435,7 +415,7 @@ io.on("connection", async function (client) {
     // if (getNewUser != '') {
     //   isSuccess = 1
     // }
-    await client.emit("return-new-user-braumstar", isSuccess)
+    await client.emit("return-new-user-braumstar", 1)
     clientDBBraumstar.close()
   })
 

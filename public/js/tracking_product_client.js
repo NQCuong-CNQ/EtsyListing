@@ -87,10 +87,10 @@ $('#sort-by-percent-favorite-listing').on('click', async function () {
   $('#sort-by-listing').text('% Favorites')
 })
 
-$('#sort-by-quantity-listing').on('click', async function () {
+$('#sort-by-sale-day-listing').on('click', async function () {
   sortOption = 5
   searchOrFilterData()
-  $('#sort-by-listing').text('Quantity')
+  $('#sort-by-listing').text('Sales/day')
 })
 
 $('#find-product-by-keyword-button').on('click', async function () {
@@ -111,11 +111,11 @@ function searchOrFilterData() {
     dataFilter = searchByKeyword(keyword)
   }
 
-  if (filterByTypeOption == 0) {
-    dataFilter = filterByType(dataFilter)
-  } else if (filterByTypeOption == 1) {
-    dataFilter = filterByType(dataFilter, true)
-  }
+  // if (filterByTypeOption == 0) {
+  //   dataFilter = filterByType(dataFilter)
+  // } else if (filterByTypeOption == 1) {
+  //   dataFilter = filterByType(dataFilter, true)
+  // }
 
   if (sortOption == 1) {
     dataFilter.sort(compareViews)
@@ -126,7 +126,7 @@ function searchOrFilterData() {
   } else if (sortOption == 4) {
     dataFilter.sort(comparePercentFavorites)
   } else if (sortOption == 5) {
-    dataFilter.sort(compareQuantity)
+    dataFilter.sort(compareSaleDay)
   }
 
   if (filterByDateOption == 'custom') {
@@ -200,12 +200,10 @@ function updateData(dataFilter = listingData) {
               alt="" width="100%" loading='lazy'></a>
           <a class="mt-2" href="${dataFilter[i].url}" target="_blank">${dataFilter[i].title}</a>
           <div class="row pl-3 pr-2">
-              <p class="col-4 p-0"><i class="fas fa-dollar-sign mr-1"></i>${dataFilter[i].price}</p>
               <p class="col-4 p-0"><i class="fas fa-eye mr-1"></i>${dataFilter[i].views}</p>
               <p class="col-4 p-0"><i class="fas fa-heart mr-1"></i>${dataFilter[i].num_favorers}</p>
           </div>  
           <div class="row pl-3 pr-2">
-              <p class="col-4 p-0"><i class="fas fa-sort-amount-down mr-1"></i>${dataFilter[i].quantity}</p>
               <p class="col-4 p-0"><i class="fas fa-heartbeat mr-1"></i>${dataFilter[i].percent_favor}%</p>
           </div>
       </div>
@@ -318,7 +316,7 @@ function comparePercentFavorites(a, b) {
   return compareAction(bandA, bandB)
 }
 
-function compareQuantity(a, b) {
+function compareSaleDay(a, b) {
   const bandA = a.quantity
   const bandB = b.quantity
   return compareAction(bandA, bandB)
@@ -368,11 +366,11 @@ function convertMonthInString(month) {
   }
 }
 
-function isDigital(data) {
-  if (data.is_digital == true || data.title.toLowerCase().includes('digital')) {
-    return true
-  } return false
-}
+// function isDigital(data) {
+//   if (data.is_digital == true || data.title.toLowerCase().includes('digital')) {
+//     return true
+//   } return false
+// }
 
 function updatePaginationBtn(data) {
   if (pagEnd == data.length) {
@@ -403,15 +401,15 @@ function updatePaginationBtn(data) {
 
 /* ------------------------------------------------FILTER SECTION------------------------------------------------ */
 
-function filterByType(data, isDigit = false) {
-  let filterData = []
-  for (var i = 0; i < data.length; i++) {
-    if (isDigital(data[i]) == isDigit) {
-      filterData.push(data[i])
-    }
-  }
-  return filterData
-}
+// function filterByType(data, isDigit = false) {
+//   let filterData = []
+//   for (var i = 0; i < data.length; i++) {
+//     if (isDigital(data[i]) == isDigit) {
+//       filterData.push(data[i])
+//     }
+//   }
+//   return filterData
+// }
 
 function checkSearchByKeyword(keyword, index) {
   if (keyword.length == 1 && checkSearchTaxonomy(keyword, index)) {
