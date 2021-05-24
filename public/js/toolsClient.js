@@ -5,7 +5,8 @@ var socket = io.connect("https://giftsvk.com", {
 
 $('#submit-user-button').on('click', async function () {
     if($('#input-user-name').val().trim() == '' || $('#input-user-pass').val().trim() == ''){
-        alert("Vui lòng điền đầy đủ thông tin")
+        toastr.clear()
+        toastr.warning('Vui lòng điền đầy đủ thông tin!')
         return
     }
     $('#loading').css('display', 'block')
@@ -16,19 +17,23 @@ $('#submit-user-button').on('click', async function () {
 socket.on("return-new-user-braumstar", function (data) {
     $('#loading').css('display', 'none')
     if (data == -1) {
-        alert('Đã có user này')
+        toastr.clear()
+        toastr.warning('Đã có user này!')
     }
     else if (data == 1) {
-        alert('Thêm thành công')
+        toastr.clear()
+        toastr.success('Thêm thành công')
     }
     else {
-        alert('Thêm thất bại')
+        toastr.clear()
+        toastr.error('Thêm thất bại!')
     }
 })
 
 $('#submit-shop-button').on('click', async function () {
     if($('#input-shop-name').val().trim() == '' || $('#input-user-shop-name').val().trim() == '' || $('#input-country-shop-name').val().trim() == ''){
-        alert("Vui lòng điền đầy đủ thông tin")
+        toastr.clear()
+        toastr.warning('Vui lòng điền đầy đủ thông tin!')
         return
     }
     $('#loading').css('display', 'block')
@@ -39,17 +44,19 @@ $('#submit-shop-button').on('click', async function () {
 socket.on("return-add-shop-braumstar", function (data) {
     $('#loading').css('display', 'none')
     if (data == 1) {
-        alert('Thêm thành công')
+        toastr.success('Thêm thành công')
         $('#input-shop-name').val('')
     }
     else {
-        alert('Thêm thất bại')
+        toastr.clear()
+        toastr.error('Thêm thất bại!')
     }
 })
 
 $('#submit-shop-die-button').on('click', async function () {
     if($('#input-shop-die-name').val().trim() == ''){
-        alert("Vui lòng điền đầy đủ thông tin")
+        toastr.clear()
+        toastr.warning('Vui lòng điền đầy đủ thông tin!')
         return
     }
     $('#loading').css('display', 'block')
@@ -60,17 +67,19 @@ $('#submit-shop-die-button').on('click', async function () {
 socket.on("return-delete-shop-braumstar", function (data) {
     $('#loading').css('display', 'none')
     if (data == 1) {
-        alert('Xóa thành công')
+        toastr.success('Xóa thành công')
         $('#input-shop-die-name').val('')
     }
     else {
-        alert('Xóa thất bại')
+        toastr.clear()
+        toastr.error('Xóa thất bại!')
     }
 })
 
 $('#submit-shop-list-button').on('click', async function () {
     if($('#input-user-shop-list').val().trim() == ''){
-        alert("Vui lòng điền đầy đủ thông tin")
+        toastr.clear()
+        toastr.warning('Vui lòng điền đầy đủ thông tin!')
         return
     }
     $('#loading').css('display', 'block')
@@ -83,7 +92,8 @@ socket.on("list-shop-braumstar", function (data) {
     $('#loading').css('display', 'none')
 
     if (data == '') {
-        alert('Không tìm thấy shop nào.')
+        toastr.clear()
+        toastr.warning('Không tìm thấy shop nào.')
         $('#input-user-shop-list').val('')
     }
     let shop = ''
