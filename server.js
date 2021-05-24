@@ -99,7 +99,7 @@ async function getListing() {
   let date = new Date().getTime() / 1000
 
   for (let i = 0; i < idListings.length; i++) {
-    let idBlackList = await dbo.collection("listingBlackList").findOne(idListings[i])
+    let idBlackList = await dbo.collection("listingBlackList").findOne({ listing_id: idListings[i] })
     console.log('idBlackList' + idBlackList)
     if (idBlackList != '') {
       console.log('pass' + idBlackList)
@@ -111,8 +111,8 @@ async function getListing() {
     listings = result[0]
 
     console.log(date + "/" + listings.creation_tsz + "/" + (date - listings.creation_tsz) / 86400)
-    if(listings.state != 'active'){
-      await dbo.collection("listing").deleteMany({listing_id: listings.listing_id})
+    if (listings.state != 'active') {
+      await dbo.collection("listing").deleteMany({ listing_id: listings.listing_id })
     }
     if (listings.toString().includes('does not exist') || (date - listings.creation_tsz > (86400 * 30)) || listings.state != 'active') {
       await dbo.collection("listingBlackList").updateOne({ listing_id: listings.listing_id }, { $set: { listing_id: listings.listing_id } }, { upsert: true })
