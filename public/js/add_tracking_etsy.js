@@ -58,6 +58,7 @@ async function addTrackingAction(id, number) {
 
     trackData = new Object
     trackData['name'] = shopName
+    trackData['id'] = id
     trackData['number_tracking'] = number
 
     $('[placeholder="Enter tracking number (recommended)"]:eq(0)').hover()
