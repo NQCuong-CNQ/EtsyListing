@@ -95,7 +95,7 @@ async function getListing() {
   var dbo = client.db("trackingdb")
 
   let listings
-  let listingTracking = []
+  let listingTracking
   let date = new Date().getTime() / 1000
 
   for (let i = 0; i < idListings.length; i++) {
@@ -122,6 +122,7 @@ async function getListing() {
     let resultImgs = await makeRequest("GET", `https://openapi.etsy.com/v2/listings/${idListings[i]}/images?api_key=${api_key}`)
     resultImgs = JSON.parse(resultImgs).results[0]
 
+    listingTracking = new Object
     listingTracking['img_url'] = resultImgs.url_570xN
     listingTracking['img_url_original'] = resultImgs.url_fullxfull
 
@@ -143,7 +144,7 @@ async function getListing() {
     date = Math.floor(date / 86400)
     listingTracking['date_update'] = date
 
-    await dbo.collection("listing").insertOne({listingTracking})
+    await dbo.collection("listing").insertOne(listingTracking)
     await sleep(100)
   }
 }
