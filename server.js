@@ -317,6 +317,10 @@ app.get("/listing", function (req, res, next) {
   res.sendFile(__dirname + "/public/etsy_listing.html")
 })
 
+app.get("/listing", function (req, res, next) {
+  res.sendFile(__dirname + "/public/etsy_listing.html")
+})
+
 app.use(express.static("public"))
 
 io.on("connection", async function (client) {
@@ -397,7 +401,7 @@ io.on("connection", async function (client) {
     var dboBraumstar = clientDBBraumstar.db("zicDb")
 
     let dbData = await dboBraumstar.collection("etsyAccounts").find({ username: dataUser }).toArray()
-    await client.broadcast.emit("list-shop-braumstar", dbData)
+    await client.emit("list-shop-braumstar", dbData)
     clientDBBraumstar.close()
   })
 
@@ -421,7 +425,7 @@ io.on("connection", async function (client) {
     }
     else if (getOldUser.username == dataUser.userName) {
       isSuccess = -1
-      await client.broadcast.emit("return-new-user-braumstar", isSuccess)
+      await client.emit("return-new-user-braumstar", isSuccess)
       clientDBBraumstar.close()
       return
     }
@@ -431,7 +435,7 @@ io.on("connection", async function (client) {
     if (getNewUser != '') {
       isSuccess = 1
     }
-    await client.broadcast.emit("return-new-user-braumstar", isSuccess)
+    await client.emit("return-new-user-braumstar", isSuccess)
     clientDBBraumstar.close()
   })
 
@@ -469,7 +473,7 @@ io.on("connection", async function (client) {
       }
     }
 
-    await client.broadcast.emit("return-add-shop-braumstar", isSuccess)
+    await client.emit("return-add-shop-braumstar", isSuccess)
     clientDBBraumstar.close()
   })
 
@@ -488,7 +492,7 @@ io.on("connection", async function (client) {
       await dboBraumstar.collection("etsyAccounts").deleteOne({ brandName: dataShop.shopname[i] })
     }
 
-    await client.broadcast.emit("return-delete-shop-braumstar", 1)
+    await client.emit("return-delete-shop-braumstar", 1)
     clientDBBraumstar.close()
   })
 
@@ -509,16 +513,6 @@ io.on("connection", async function (client) {
 
       trackData.push(trackObj)
     }
-
-    trackObj = new Object
-    trackObj['pro_ID'] = '2059066090'
-    trackObj['track_number'] = '9261290278835117642074'
-    trackData.push(trackObj)
-    
-    trackObj = new Object
-    trackObj['pro_ID'] = '2060734942'
-    trackObj['track_number'] = '1Z1F995RYW94558083'
-    trackData.push(trackObj)
 
     console.log('send data to etsy')
     await client.broadcast.emit("track-order-return", trackData)

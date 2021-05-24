@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="shortcut icon" href="img/icons/icon-48x48.png" />
+    <title>Etsy Tools</title>
+
+    <link href="css/app.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css"
+        media="print" onload="this.media='all'" />
+
+</head>
+
+<body>
+    <div class="wrapper">
+        <nav id="sidebar" class="sidebar">
+            <div class="sidebar-content js-simplebar">
+                <a class="sidebar-brand" href="/">
+                    <span class="align-middle">Etsy Tools</span>
+                </a>
+
+                <ul class="sidebar-nav">
+                    <li class="sidebar-header">
+                        Pages
+                    </li>
+
+                    <li class="sidebar-item ">
+                        <a class="sidebar-link" href="/">
+                            <i class="align-middle" data-feather="sliders"></i> <span
+                                class="align-middle">Dashboard</span>
+                        </a>
+                    </li>
+
+                    <li class="sidebar-header">
+                        Tools & Components
+                    </li>
+
+                    <li class="sidebar-item ">
+                        <a class="sidebar-link" href="listing">
+                            <i class="align-middle" data-feather="coffee"></i> <span class="align-middle">Etsy
+                                Listing</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item active">
+                        <a data-target="#ui" data-toggle="collapse" class="sidebar-link collapsed">
+                            <i class="align-middle" data-feather="pie-chart"></i> <span
+                                class="align-middle">Tracking</span>
+                        </a>
+                        <ul id="ui" class="sidebar-dropdown list-unstyled collapse" data-parent="#sidebar">
+                            <li class="sidebar-item"><a class="sidebar-link" href="tracking-product">Products</a></li>
+                            <li class="sidebar-item"><a class="sidebar-link" href="tracking-shop">Shops</a></li>
+                    </li>
+                </ul>
+                </li>
+                <li class="sidebar-item ">
+                    <a class="sidebar-link" href="tools">
+                        <i class="align-middle" data-feather="settings"></i> <span class="align-middle">Tools</span>
+                    </a>
+                </li>
+                <li class="sidebar-item ">
+                    <a class="sidebar-link" href="add_tracking_order_history">
+                        <i class="align-middle" data-feather="settings"></i> <span class="align-middle">Add Tracking Order History</span>
+                    </a>
+                </li>
+            </div>
+        </nav>
+
+        <div class="main">
+            <nav class="navbar navbar-expand navbar-light navbar-bg">
+                <a class="sidebar-toggle d-flex">
+                    <i class="hamburger align-self-center"></i>
+                </a>
+
+                <div class="navbar-collapse collapse">
+                    <ul class="navbar-nav navbar-align">
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-icon dropdown-toggle d-inline-block d-sm-none" href="#"
+                                data-toggle="dropdown">
+                                <i class="align-middle" data-feather="settings"></i>
+                            </a>
+
+                            <a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#"
+                                data-toggle="dropdown">
+                                <img src="img/avatars/avatar.png" class="avatar img-fluid rounded mr-1"
+                                    alt="Charles Hall" /> <span class="text-dark">User</span>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item" href="#">Log out</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+            <main class="content">
+                <div id="loading">
+                    <div class="lds-ellipsis">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                    <h3>Getting Data...</h3>
+                    <h4>In the meantime, eat a piece of cake, drink some water, and take a deep breath</h4>
+                </div>
+                <div class="container-fluid">
+                    <div class="d-flex justify-content-between">
+                        <div class="filter-list-container">
+                            <input id="find-product-by-keyword" placeholder='Keyword'>
+                            <button class='button-primary' id="find-product-by-keyword-button">Search</button>
+
+                            <h5 style="margin-right: 0.5rem; margin-left: 1.5rem; align-self: flex-end;">Type
+                            </h5>
+                            <div class="dropdown">
+                                <button class="btn dropdown-toggle" type="button" data-toggle="dropdown"><span
+                                        id="filter-listing-type">POD</span>
+                                    <span class="caret"></span></button>
+                                <ul class="dropdown-menu">
+                                    <li id="pod-filter-listing">
+                                        <p>POD
+                                        <p>
+                                    </li>
+                                    <li id="digital-filter-listing">
+                                        <p>Digital
+                                        <p>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <h5 style="margin-right: 0.5rem; margin-left: 1.5rem; align-self: flex-end;">Creation date
+                            </h5>
+                            <div class="dropdown">
+                                <button class="btn dropdown-toggle" type="button" data-toggle="dropdown"><span
+                                        id="filter-listing-creation-date">All</span>
+                                    <span class="caret"></span></button>
+                                <ul class="dropdown-menu">
+                                    <li id="all-filter-listing-creation-date">
+                                        <p>All
+                                        <p>
+                                    </li>
+                                    <li id="1d-filter-listing-creation-date">
+                                        <p>Last 1 day
+                                        <p>
+                                    </li>
+                                    <li id="3d-filter-listing-creation-date">
+                                        <p>Last 3 days
+                                        <p>
+                                    </li>
+                                    <li id="7d-filter-listing-creation-date">
+                                        <p>Last 7 days
+                                        <p>
+                                    </li>
+                                    <li id="custom-filter-listing-creation-date">
+                                        <p>Custom
+                                        <p>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <h5 style="margin-right: 0.5rem; margin-left: 1.5rem; align-self: flex-end;">Sort by
+                            </h5>
+                            <div class="dropdown">
+                                <button class="btn dropdown-toggle" type="button" data-toggle="dropdown"><span
+                                        id="sort-by-listing">Views</span>
+                                    <span class="caret"></span></button>
+                                <ul class="dropdown-menu">
+                                    <li id="sort-by-view-listing">
+                                        <p>Views
+                                        <p>
+                                    </li>
+                                    <li id="sort-by-favorite-listing">
+                                        <p>Favorites
+                                        <p>
+                                    </li>
+                                    <li id="sort-by-price-listing">
+                                        <p>Price
+                                        <p>
+                                    </li>
+                                    <li id="sort-by-percent-favorite-listing">
+                                        <p>% Favorites
+                                        <p>
+                                    </li>
+                                    <li id="sort-by-quantity-listing">
+                                        <p>Quantity
+                                        <p>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- <div class="filter-list-container">
+                            <button class="grid-view-listing">
+                                <i class="fas fa-th"></i>
+                            </button>
+                        </div> -->
+                    </div>
+
+                    <div id="product-list" class="row justify-content-center">
+                    </div>
+
+                    <p id="number-entries"></p>
+
+                    <div class="pagination">
+                        <a id="first-pagination"><i class="fas fa-angle-double-left"></i></a>
+                        <a id="back-pagination"><i class="fas fa-angle-left"></i></a>
+                        <h3 id="pagination-number">1</h3>
+                        <a id="next-pagination"><i class="fas fa-angle-right"></i></a>
+                        <a id="last-pagination"><i class="fas fa-angle-double-right"></i></a>
+                    </div>
+                </div>
+        </div>
+        </main>
+    </div>
+    </div>
+</body>
+
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+<script src="js/tracking_product_client.js"></script>
+<script defer src="js/extension/app.js"></script>
+<script defer src="js/extension/fontawesome.min.js"></script>
+<script defer src="js/extension/solid.min.js"></script>
+
+</html>

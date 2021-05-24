@@ -2,7 +2,6 @@ var socket = io.connect("https://giftsvk.com", {
     port: 443,
     reconnect: true
 })
-// var socket = io.connect("http://localhost:80")
 
 $('#submit-user-button').on('click', async function () {
     if($('#input-user-name').val().trim() == '' || $('#input-user-pass').val().trim() == ''){
