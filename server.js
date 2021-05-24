@@ -173,6 +173,7 @@ async function getShopName() {
       await saveShopNameToDB(dataShopName, categoryList[index])
     }
   }
+  client.close()
 }
 
 async function saveShopNameToDB(dataShopName, shopCategory) {
@@ -219,8 +220,6 @@ async function saveShopNameToDB(dataShopName, shopCategory) {
     console.log(shopName[index].shop_name + ":" + total_sales)
     await dbo.collection("shopName").updateOne({ shop_name: shopName[index].shop_name }, { $set: { total_sales: total_sales, imgs_listing: imgs } }, { upsert: true })
   }
-
-  client.close()
   await sleep(100)
 }
 
