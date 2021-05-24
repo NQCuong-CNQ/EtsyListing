@@ -68,8 +68,8 @@ async function getListing() {
 
   // for (let i = 0; i < listKeyWord.length; i++) {
   //   console.log(listKeyWord[i])
-  //   for (let j = 0; j <= 0; j++) {
-  //     siteUrl = `https://www.etsy.com/search?q=${listKeyWord[i]}&page=${j+1}&ref=pagination`
+  //   for (let j = 1; j <= 0; j++) {
+  //     siteUrl = `https://www.etsy.com/search?q=${listKeyWord[i]}&page=${j}&ref=pagination`
   //     let data = await getSearchProductFromWeb()
   //     console.log(j)
   //     for (let k = 0; k < data.length; k++) {
@@ -80,8 +80,8 @@ async function getListing() {
   // }
 
   console.log(idListings.length)
-  for (let i = 1; i <= 0; i++) {
-    siteUrl = `https://www.etsy.com/search?q=tumbler&page=${i+1}&ref=pagination`
+  for (let i = 1; i <= 1; i++) {
+    siteUrl = `https://www.etsy.com/search?q=tumbler&page=${i}&ref=pagination`
     let data = await getSearchProductFromWeb()
     console.log(i)
     for (let j = 0; j < data.length; j++) {
