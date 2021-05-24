@@ -99,7 +99,7 @@ async function getListing() {
   let date = new Date().getTime() / 1000
 
   for (let i = 0; i < idListings.length; i++) {
-    let idBlackList = await dbo.collection("listingBlackList").findOne(listings.listing_id)
+    let idBlackList = await dbo.collection("listingBlackList").findOne(idListings[i])
     console.log('idBlackList' + idBlackList)
     if (idBlackList != '') {
       console.log('pass' + idBlackList)
