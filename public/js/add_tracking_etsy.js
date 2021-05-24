@@ -6,6 +6,7 @@ var socket = io.connect("https://giftsvk.com", {
 var data = []
 var index = 0
 var shopName
+let trackData
 
 main()
 async function main(){
@@ -35,6 +36,9 @@ async function addTracking() {
 socket.on("track-order-step4", async function (name) {
     console.log('step 4' + name)
     if (name == shopName) {
+        trackData['time_add_tracking'] = new Date()
+        await socket.emit("track-order-step5", trackData)
+        console.log('saved history' + trackData)
         await addTracking()
     }
 })
@@ -52,7 +56,7 @@ async function addTrackingAction(id, number) {
 
     await sleep(2000)
 
-    let trackData = new Object
+    trackData = new Object
     trackData['name'] = shopName
     trackData['number_tracking'] = number
 
