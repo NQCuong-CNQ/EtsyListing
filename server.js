@@ -89,6 +89,9 @@ async function getListing() {
   //   }
   // }
 
+  let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
+  var dbo = client.db("trackingdb")
+
   let dblisting = await dbo.collection("listing").find().toArray()
   for (let i = 0; i < dblisting.length; i++) {
     idListings.push(dblisting[i].listing_id)
@@ -96,9 +99,6 @@ async function getListing() {
 
   idListings = [...new Set(idListings)]
   console.log(idListings.length)
-
-  let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
-  var dbo = client.db("trackingdb")
 
   let listings
   let listingTracking
@@ -150,6 +150,7 @@ async function getListing() {
     await dbo.collection("listing").insertOne(listingTracking)
     await sleep(100)
   }
+  client.close()
 }
 
 async function getShopName() {
