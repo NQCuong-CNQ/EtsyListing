@@ -101,7 +101,7 @@ async function getListing() {
   for (let i = 0; i < idListings.length; i++) {
     let idBlackList = await dbo.collection("listingBlackList").findOne({ listing_id: idListings[i] })
     console.log('idBlackList' + idBlackList)
-    if (idBlackList != '') {
+    if (idBlackList != null) {
       console.log('pass' + idBlackList)
       continue
     }
