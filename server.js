@@ -97,8 +97,7 @@ async function getListing() {
   let listings
   let listingTracking
   let date = new Date().getTime() / 1000
-  console.log(date)
-  // return
+  let dateCount = Math.floor(date / 86400)
   for (let i = 0; i < idListings.length; i++) {
     let idBlackList = await dbo.collection("listingBlackList").findOne({ listing_id: idListings[i] })
     console.log('idBlackList' + idBlackList)
@@ -111,7 +110,7 @@ async function getListing() {
     result = JSON.parse(result).results
     listings = result[0]
 
-    console.log(date + "/" + listings.creation_tsz + "/" + (date - listings.creation_tsz) / 86400)
+    console.log(date + "/" + listings.creation_tsz + "/" + date - listings.creation_tsz)
     if (listings.state != 'active') {
       await dbo.collection("listing").deleteMany({ listing_id: listings.listing_id })
     }
@@ -141,9 +140,7 @@ async function getListing() {
     listingTracking['quantity'] = listings.quantity
     listingTracking['views'] = listings.views
     listingTracking['num_favorers'] = listings.num_favorers
-
-    date = Math.floor(date / 86400)
-    listingTracking['date_update'] = date
+    listingTracking['date_update'] = dateCount
 
     await dbo.collection("listing").insertOne(listingTracking)
     await sleep(100)
