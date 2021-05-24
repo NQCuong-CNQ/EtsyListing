@@ -64,23 +64,24 @@ async function updateData() {
 
 async function getListing() {
   let idListings = []
-
   let listKeyWord = ["father's day", "pride month", "independence day", "tshirt", "canvas", "art print", "mug", "blanket"]
 
   for (let i = 0; i < listKeyWord.length; i++) {
-    for (let j = 0; j <= 1; j++) {
-      siteUrl = `https://www.etsy.com/search?q=${listKeyWord[i]}&page=${j}&ref=pagination`
+    console.log(listKeyWord[i])
+    for (let j = 0; j <= 0; j++) {
+      siteUrl = `https://www.etsy.com/search?q=${listKeyWord[i]}&page=${j+1}&ref=pagination`
       let data = await getSearchProductFromWeb()
       console.log(j)
       for (let k = 0; k < data.length; k++) {
         idListings.push(data[k])
       }
+      console.log(idListings.length)
     }
   }
 
   console.log(idListings.length)
-  for (let i = 1; i <= 1; i++) {
-    siteUrl = `https://www.etsy.com/search?q=tumbler&page=${i}&ref=pagination`
+  for (let i = 1; i <= 0; i++) {
+    siteUrl = `https://www.etsy.com/search?q=tumbler&page=${i+1}&ref=pagination`
     let data = await getSearchProductFromWeb()
     console.log(i)
     for (let j = 0; j < data.length; j++) {
