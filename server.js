@@ -150,6 +150,7 @@ async function getListing() {
     if (listings.state == 'active') {
       await dbo.collection("listing").insertOne(listings)
       console.log(listings.listing_id)
+      console.log(listings)
 
       listingTracking['listing_id'] = listings.listing_id
       listingTracking['creation_tsz'] = listings.creation_tsz
