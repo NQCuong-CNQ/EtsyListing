@@ -14,9 +14,10 @@ var start = date.toLocaleDateString("en-US", options)
 console.log(end + start)
 getData()
 
-socket.on("restart-customcat", async function () {
-    location.reload()
-})
+setInterval(scheduleUpdate, 3600000) // 1h
+function scheduleUpdate() {
+  location.reload()
+}
 
 async function getData() {
     await sleep(3000)

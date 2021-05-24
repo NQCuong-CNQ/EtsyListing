@@ -49,7 +49,7 @@ async function updateCate() {
   await dbo.collection("category").insertOne(category)
 }
 
-// updateData()
+updateData()
 async function updateData() {
   isUpdate = true
   // await updateCate()
@@ -68,7 +68,7 @@ async function getListing() {
   let listKeyWord = ["father's day", "pride month", "independence day", "tshirt", "canvas", "art print", "mug", "blanket"]
 
   for (let i = 0; i < listKeyWord.length; i++) {
-    for (let j = 0; j <= 5; j++) {
+    for (let j = 0; j <= 1; j++) {
       siteUrl = `https://www.etsy.com/search?q=${listKeyWord[i]}&page=${j}&ref=pagination`
       let data = await getSearchProductFromWeb()
       console.log(j)
@@ -79,7 +79,7 @@ async function getListing() {
   }
 
   console.log(idListings.length)
-  for (let i = 1; i <= 2; i++) {
+  for (let i = 1; i <= 1; i++) {
     siteUrl = `https://www.etsy.com/search?q=tumbler&page=${i}&ref=pagination`
     let data = await getSearchProductFromWeb()
     console.log(i)
