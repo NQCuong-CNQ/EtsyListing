@@ -1,0 +1,24 @@
+var socket = io.connect("https://giftsvk.com", {
+    port: 443,
+    reconnect: true
+})
+
+
+function updateData(data) {
+    $('#table_id-tracking-history').DataTable().clear().destroy()
+    for (var i = 0; i < data.length; i++) {
+        $('#table_id-tracking-history-body').append(`<tr>
+            <td>${i}</td>
+            <td>${data[i].id}</td>
+            <td>${data[i].name}</td>
+            <td>${data[i].number_tracking}</td>
+            <td>${data[i].time_add_tracking}</td>
+      </tr>`)
+    }
+
+    $('#table_id-tracking-history').DataTable({
+        pageLength: 10,
+        order: [[2, "desc"]],
+        searching: false,
+    })
+}

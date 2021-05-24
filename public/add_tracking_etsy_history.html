@@ -64,7 +64,8 @@
                 </li>
                 <li class="sidebar-item active">
                     <a class="sidebar-link" href="add_tracking_history">
-                        <i class="align-middle" data-feather="calendar"></i> <span class="align-middle">Add Tracking History</span>
+                        <i class="align-middle" data-feather="calendar"></i> <span class="align-middle">Add Tracking
+                            History</span>
                     </a>
                 </li>
             </div>
@@ -99,7 +100,7 @@
             </nav>
 
             <main class="content">
-                <div id="loading">
+                <div id="loading" class="d-none">
                     <div class="lds-ellipsis">
                         <div></div>
                         <div></div>
@@ -110,7 +111,24 @@
                     <h4>In the meantime, eat a piece of cake, drink some water, and take a deep breath</h4>
                 </div>
                 <div class="container-fluid">
-                    
+                    <div id="" style="display: none">
+                        <h4>Only show maximum 100 listing</h4>
+                        <div>
+                            <table id="table_id-tracking-history">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Order ID</th>
+                                        <th>Shop Name</th>
+                                        <th>Tracking Code</th>
+                                        <th>Add Time</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table_id-tracking-history-body">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
         </div>
         </main>
@@ -123,7 +141,7 @@
 <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-<script src="js/tracking_product_client.js"></script>
+<script src="js/add_tracking_etsy_history.js"></script>
 <script defer src="js/extension/app.js"></script>
 <script defer src="js/extension/fontawesome.min.js"></script>
 <script defer src="js/extension/solid.min.js"></script>
