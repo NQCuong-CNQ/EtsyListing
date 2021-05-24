@@ -62,7 +62,6 @@ async function addTrackingAction(id, number) {
     $('[placeholder="Enter tracking number (recommended)"]:eq(0)').hover()
 
     await socket.emit("track-order-step1", trackData)
-
 }
 
 async function sleep(ms) {

@@ -529,6 +529,11 @@ io.on("connection", async function (client) {
   await client.on("track-order-step5", async function (data) {
     await dbo.collection("tracking_etsy_history").insertOne(data)
   })
+
+  await client.on("tracking-history-join", async function () {
+    let dbdata = await dbo.collection("tracking_etsy_history").find().toArray()
+    await client.emit("tracking-history-return-data", dbdata)
+  })
 })
 
 async function getSearchProductFromWeb() {
