@@ -9,7 +9,7 @@ var shopName
 let trackData
 
 main()
-async function main(){
+async function main() {
     await sleep(5000)
     shopName = $('[data-tour-anchor="etsy-channel"] [data-test-id="unsanitize"]').text().trim()
     console.log(shopName)
@@ -34,7 +34,7 @@ async function addTracking() {
 socket.on("track-order-step4", async function (name) {
     console.log('step 4' + name)
     if (name == shopName) {
-        trackData['time_add_tracking'] = new Date().toLocaleString()
+        trackData['time_add_tracking'] = Math.floor(new Date().getTime() / 1000)
         await socket.emit("track-order-step5", trackData)
         console.log('saved history' + trackData)
         await addTracking()

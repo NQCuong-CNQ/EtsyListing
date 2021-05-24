@@ -6,7 +6,6 @@ var socket = io.connect("https://giftsvk.com", {
 socket.emit("tracking-history-join")
 
 socket.on("tracking-history-return-data", async function (data) {
-    console.log(data)
     updateData(data)
 })
 

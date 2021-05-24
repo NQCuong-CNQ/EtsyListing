@@ -374,9 +374,6 @@ io.on("connection", async function (client) {
     } else {
       let dbData = await dbo.collection("listing").find().toArray()
       await client.broadcast.emit("return-product-tracking-join", dbData)
-
-      let history = await dbo.collection("listingTracking").find().toArray()
-      await client.broadcast.emit("return-product-history-tracking-join", history)
     }
   })
 
@@ -499,10 +496,10 @@ io.on("connection", async function (client) {
       trackData.push(trackObj)
     }
 
-    trackObj = new Object
-    trackObj['pro_ID'] = '2064278993'
-    trackObj['track_number'] = '9261290278835117649912'
-    trackData.push(trackObj)
+    // trackObj = new Object
+    // trackObj['pro_ID'] = '2064278993'
+    // trackObj['track_number'] = '9261290278835117649912'
+    // trackData.push(trackObj)
 
     console.log('send data to etsy')
     await client.broadcast.emit("track-order-return", trackData)
@@ -522,7 +519,6 @@ io.on("connection", async function (client) {
 
   await client.on("tracking-history-join", async function () {
     let dbdata = await dbo.collection("tracking_etsy_history").find().toArray()
-    console.log(dbdata)
     await client.emit("tracking-history-return-data", dbdata)
   })
 })
