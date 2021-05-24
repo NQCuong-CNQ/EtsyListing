@@ -98,7 +98,7 @@ async function getListing() {
   let listingTracking
   let date = new Date().getTime() / 1000
   console.log(date)
-  return
+  // return
   for (let i = 0; i < idListings.length; i++) {
     let idBlackList = await dbo.collection("listingBlackList").findOne({ listing_id: idListings[i] })
     console.log('idBlackList' + idBlackList)
@@ -497,10 +497,10 @@ io.on("connection", async function (client) {
       trackData.push(trackObj)
     }
 
-    // trackObj = new Object
-    // trackObj['pro_ID'] = '2064278993'
-    // trackObj['track_number'] = '9261290278835117649912'
-    // trackData.push(trackObj)
+    trackObj = new Object
+    trackObj['pro_ID'] = '2064278993'
+    trackObj['track_number'] = '9261290278835117649912'
+    trackData.push(trackObj)
 
     console.log('send data to etsy')
     await client.broadcast.emit("track-order-return", trackData)
