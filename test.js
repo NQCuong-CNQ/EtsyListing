@@ -29,6 +29,17 @@
 
 
 // server.listen(8080)
+const MongoClient = require('mongodb').MongoClient;
+let clientDBBraumstar =  MongoClient.connect('mongodb://zic:Mynewpassword%400@braumstar.com:27020/zicDb?authSource=zicDb', { useNewUrlParser: true, useUnifiedTopology: true })
+    var dboBraumstar = clientDBBraumstar.db("zicDb")
 
-let date = new Date().getTime() / 1000 
-console.log(Math.floor( date/86400))
+    var data = {
+      _id: null,
+      username: 'ae11',
+      password: 'aeviking',
+      createdAt: Date.now() / 1000 | 0,
+      updatedAr: Date.now() / 1000 | 0
+    }
+
+
+       dboBraumstar.collection("users").insertOne(data)

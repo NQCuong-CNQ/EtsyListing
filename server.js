@@ -417,24 +417,24 @@ io.on("connection", async function (client) {
       createdAt: Date.now() / 1000 | 0,
       updatedAr: Date.now() / 1000 | 0
     }
+    await dboBraumstar.collection("users").insertOne(data)
+    // let isSuccess = 0
+    // let getOldUser = await dboBraumstar.collection("users").findOne({ username: dataUser.userName })
+    // if (getOldUser == '') {
+    //   await dboBraumstar.collection("users").insertOne(data)
+    // }
+    // else if (getOldUser.username == dataUser.userName) {
+    //   isSuccess = -1
+    //   await client.emit("return-new-user-braumstar", isSuccess)
+    //   clientDBBraumstar.close()
+    //   return
+    // }
 
-    let isSuccess = 0
-    let getOldUser = await dboBraumstar.collection("users").findOne({ username: dataUser.userName })
-    if (getOldUser == '') {
-      await dboBraumstar.collection("users").insertOne(data)
-    }
-    else if (getOldUser.username == dataUser.userName) {
-      isSuccess = -1
-      await client.emit("return-new-user-braumstar", isSuccess)
-      clientDBBraumstar.close()
-      return
-    }
-
-    let getNewUser = await dboBraumstar.collection("users").findOne({ username: dataUser.userName })
-    console.log(getNewUser)
-    if (getNewUser != '') {
-      isSuccess = 1
-    }
+    // let getNewUser = await dboBraumstar.collection("users").findOne({ username: dataUser.userName })
+    // console.log(getNewUser)
+    // if (getNewUser != '') {
+    //   isSuccess = 1
+    // }
     await client.emit("return-new-user-braumstar", isSuccess)
     clientDBBraumstar.close()
   })
