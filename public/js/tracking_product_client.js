@@ -235,10 +235,6 @@ socket.on("updating", function (data) {
   toastr.warning('Data Server is updating, cannot get new information!')
 })
 
-socket.on("return-product-history-tracking-join", function (data) {
-  
-})
-
 socket.on("return-product-tracking-join", function (data) {
   for (var i = 0; i < data.length; i++) {
     if(data[i].state != 'active'){

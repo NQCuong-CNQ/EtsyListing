@@ -49,13 +49,13 @@ async function updateCate() {
   await dbo.collection("category").insertOne(category)
 }
 
-updateData()
+//updateData()
 async function updateData() {
   isUpdate = true
   // await updateCate()
   await getListing()
-  // await getShopName()
-  // await updateShopInfo()
+  await getShopName()
+  await updateShopInfo()
   await completeUpdate()
 
   await getTotalShop()
@@ -64,11 +64,13 @@ async function updateData() {
 
 async function getListing() {
   let idListings = []
+  let date = new Date().getTime() / 1000
+  let dateCount = Math.floor(date / 86400)
   let listKeyWord = ["father's day", "pride month", "independence day", "tshirt", "canvas", "art print poster", "mug", "blanket"]
 
   for (let i = 0; i < listKeyWord.length; i++) {
     console.log(listKeyWord[i])
-    for (let j = 1; j <= 1; j++) {
+    for (let j = 1; j <= 5; j++) {
       siteUrl = `https://www.etsy.com/search?q=${listKeyWord[i]}&page=${j}&ref=pagination`
       let data = await getSearchProductFromWeb()
       console.log(j)
@@ -79,21 +81,26 @@ async function getListing() {
     }
   }
 
-  // console.log(idListings.length)
-  // for (let i = 1; i <= 1; i++) {
-  //   siteUrl = `https://www.etsy.com/search?q=tumbler&page=${i}&ref=pagination`
-  //   let data = await getSearchProductFromWeb()
-  //   console.log(i)
-  //   for (let j = 0; j < data.length; j++) {
-  //     idListings.push(data[j])
-  //   }
-  // }
+  console.log(idListings.length)
+  for (let i = 1; i <= 1; i++) {
+    siteUrl = `https://www.etsy.com/search?q=tumbler&page=${i}&ref=pagination`
+    let data = await getSearchProductFromWeb()
+    console.log(i)
+    for (let j = 0; j < data.length; j++) {
+      idListings.push(data[j])
+    }
+  }
 
   let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
   var dbo = client.db("trackingdb")
 
   let dblisting = await dbo.collection("listing").find().toArray()
   for (let i = 0; i < dblisting.length; i++) {
+    if(date - dblisting[i].creation_tsz > (86400 * 30) ){
+      await dbo.collection("listingBlackList").updateOne({ listing_id: dblisting[i].listing_id }, { $set: { listing_id: dblisting[i].listing_id } }, { upsert: true })
+      await dbo.collection("listing").deleteMany({ listing_id: dblisting[i].listing_id })
+      continue
+    }
     idListings.push(dblisting[i].listing_id)
   }
 
@@ -102,8 +109,6 @@ async function getListing() {
 
   let listings
   let listingTracking
-  let date = new Date().getTime() / 1000
-  let dateCount = Math.floor(date / 86400)
   for (let i = 0; i < idListings.length; i++) {
     let idBlackList = await dbo.collection("listingBlackList").findOne({ listing_id: idListings[i] })
     if (idBlackList != null) {
