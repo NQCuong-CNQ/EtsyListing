@@ -138,10 +138,11 @@ function isDigitShop(data) {
 function updateData(data = shopData) {
   $('#table-shop').DataTable().clear().destroy()
   for (var i = 0; i < data.length; i++) {
+    console.log(data[i].url)
     $('#table-shop-body').append(`<tr>
         <td onclick="getShopDetail(${i})"><i class="fas fa-info-circle pointer"></i></td>
         <td>
-          <a href='${data[i].url}' target="_blank">${data[i].shop_name}
+          <a href="${data[i].url}" target="_blank">${data[i].shop_name}
             <div> 
               <img src="${data[i].imgs_listing[0]}" alt="Empty" width="70px" height="70px">
               <img src="${data[i].imgs_listing[1]}" alt="Empty" width="70px" height="70px">

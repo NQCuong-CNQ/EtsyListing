@@ -194,6 +194,7 @@ function updateData(dataFilter = listingData) {
   $('#pagination-number').text(pagStart / 100 + 1)
 
   for (var i = pagStart; i < pagEnd; i++) {
+    console.log(dataFilter[i].url)
     $('#product-list').append(`
         <div class="list-product-search-container">
           <a href="${dataFilter[i].img_url_original}" target="_blank"><img src="${dataFilter[i].img_url}"
