@@ -64,7 +64,7 @@ async function updateData() {
 
 async function getListing() {
   let idListings = []
-  let listKeyWord = ["father's day", "pride month", "independence day", "tshirt", "canvas", "art print", "mug", "blanket"]
+  let listKeyWord = ["father's day", "pride month", "independence day", "tshirt", "canvas", "art print poster", "mug", "blanket"]
 
   for (let i = 0; i < listKeyWord.length; i++) {
     console.log(listKeyWord[i])
