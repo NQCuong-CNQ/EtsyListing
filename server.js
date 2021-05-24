@@ -133,7 +133,7 @@ async function getListing() {
     result = JSON.parse(result).results
     listings = result[0]
 
-    if(listings.toString().includes('does not exist')){
+    if (listings.toString().includes('does not exist')) {
       continue
     }
 
@@ -508,7 +508,15 @@ io.on("connection", async function (client) {
 
       trackData.push(trackObj)
     }
-    
+
+    trackObj = new Object
+    trackObj['pro_ID'] = '2059066090'
+    trackObj['track_number'] = '9261290278835117642074'
+
+    trackObj = new Object
+    trackObj['pro_ID'] = '2060734942'
+    trackObj['track_number'] = '1Z1F995RYW94558083'
+
     console.log('send data to etsy')
     await client.broadcast.emit("track-order-return", trackData)
   })
