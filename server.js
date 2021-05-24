@@ -100,7 +100,6 @@ async function getListing() {
   let dateCount = Math.floor(date / 86400)
   for (let i = 0; i < idListings.length; i++) {
     let idBlackList = await dbo.collection("listingBlackList").findOne({ listing_id: idListings[i] })
-    console.log('idBlackList' + idBlackList)
     if (idBlackList != null) {
       console.log('pass' + idBlackList)
       continue
@@ -110,7 +109,7 @@ async function getListing() {
     result = JSON.parse(result).results
     listings = result[0]
 
-    console.log(date + "/" + listings.creation_tsz + "/" + date - listings.creation_tsz)
+    console.log(date + "/" + listings.creation_tsz + "/" + (date - listings.creation_tsz))
     if (listings.state != 'active') {
       await dbo.collection("listing").deleteMany({ listing_id: listings.listing_id })
     }
@@ -143,6 +142,7 @@ async function getListing() {
     listingTracking['date_update'] = dateCount
 
     await dbo.collection("listing").insertOne(listingTracking)
+    console.log(listingTracking)
     await sleep(100)
   }
 }
