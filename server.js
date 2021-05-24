@@ -88,6 +88,12 @@ async function getListing() {
   //     idListings.push(data[j])
   //   }
   // }
+
+  let dblisting = await dbo.collection("listing").find().toArray()
+  for (let i = 0; i < dblisting.length; i++) {
+    idListings.push(dblisting[i].listing_id)
+  }
+
   idListings = [...new Set(idListings)]
   console.log(idListings.length)
 
