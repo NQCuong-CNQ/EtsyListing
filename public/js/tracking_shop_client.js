@@ -311,6 +311,7 @@ socket.on("last-updated", function (data) {
 })
 
 socket.on("shop-tracking-data", function (data) {
+  console.log(data)
   $('#loading').css('display', 'none')
   var ctx = document.getElementById("chart-total-sales").getContext("2d");
   var gradientblue = ctx.createLinearGradient(0, 0, 0, 225);
