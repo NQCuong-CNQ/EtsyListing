@@ -302,6 +302,7 @@ function handleDuplicates() {
 
     if(arrPos.length > 2){
       let numDays = (listingData[lastPos].original_creation_tsz - listingData[arrPos[0]].original_creation_tsz)/86400
+      console.log('numDays'+numDays)
       if(numDays > 1){
         let totalCount 
         for (let j = 0; j < arrPos.length; j++) {
@@ -310,6 +311,7 @@ function handleDuplicates() {
         temp['sales_day'] = Math.floor(totalCount/numDays)
       }
     }
+    console.log('temp'+temp)
     newData.push(temp)
   }
   listingData = newData
