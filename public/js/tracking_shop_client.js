@@ -175,6 +175,7 @@ function updateData(data = shopData) {
 
 async function getShopDetail(i) {
   if (gettingData) {
+    toastr.clear()
     toastr.warning('Please wait until data is updated!')
   } else {
     await socket.emit("shop-tracking", shopData[i].shop_id)
