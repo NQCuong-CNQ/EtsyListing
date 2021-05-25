@@ -248,6 +248,7 @@ socket.on("return-product-tracking-join", function (data) {
 
   for (let i = 0; i < data.length; i++) {
     temp = new Object()
+    temp['listing_id'] = data[i].listing_id
     temp['title'] = data[i].title
     temp['url'] = data[i].url
     temp['img_url'] = data[i].img_url
@@ -265,20 +266,53 @@ socket.on("return-product-tracking-join", function (data) {
   window.localStorage.setItem('listing-data', JSON.stringify(tempData))
 })
 
-function handleDuplicates(){
-  let dataDup = new Object
-  let dataById
-  
+function handleDuplicates() {
+  let dataDupPos = new Object
+  let dataDupById
+
   for (let i = 0; i < listingData.length; i++) {
-    dataDup[`${listingData[i].listing_id}`] += i+','
+    dataDupPos[`${listingData[i].listing_id}`] += i + ','
   }
 
-  dataById = Object.keys(dataDup)
-  for (let i = 0; i < dataById.length; i++) {
-    dataDup[`${dataById[i]}`] = dataDup[`${dataById[i]}`].replace(/undefined/g,'')
-  } 
-  console.log(dataDup)
-  console.log(dataById)
+  dataDupById = Object.keys(dataDupPos)
+  for (let i = 0; i < dataDupById.length; i++) {
+    dataDupPos[`${dataDupById[i]}`] = dataDupPos[`${dataDupById[i]}`].replace(/undefined/g, '')
+  }
+  console.log(dataDupPos)
+  console.log(dataDupById)
+
+  let newData = []
+  let temp
+  for (let i = 0; i < dataDupById.length; i++) {
+    let arrPos = dataDupPos[dataDupById[i]].split(',')
+    let lastPos = arrPos[arrPos.length - 2]
+    temp = new Object()
+    temp['listing_id'] = listingData[lastPos].listing_id
+    temp['title'] = listingData[lastPos].title
+    temp['url'] = listingData[lastPos].url
+    temp['img_url'] = listingData[lastPos].img_url
+    temp['img_url_original'] = listingData[lastPos].img_url_original
+    temp['views'] = listingData[lastPos].views
+    temp['num_favorers'] = listingData[lastPos].num_favorers
+    temp['price'] = listingData[lastPos].price
+    temp['quantity'] = listingData[lastPos].quantity
+    temp['original_creation_tsz'] = listingData[lastPos].original_creation_tsz
+    temp['is_digital'] = listingData[lastPos].is_digital
+    temp['percent_favor'] = listingData[lastPos].percent_favor
+
+    if(arrPos.length > 2){
+      let numDays = (listingData[lastPos].original_creation_tsz - listingData[arrPos[0]].original_creation_tsz)/86400
+      if(numDays > 1){
+        let totalCount 
+        for (let j = 0; j < arrPos.length; j++) {
+          totalCount = listingData[lastPos].quantity - listingData[arrPos[0]].quantity
+        }
+        temp['sales_day'] = Math.floor(totalCount/numDays)
+      }
+    }
+    newData.push(temp)
+  }
+  listingData = newData
 }
 
 /* ------------------------------------------------END SOCKET SECTION------------------------------------------------ */
