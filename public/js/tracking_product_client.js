@@ -302,14 +302,14 @@ function handleDuplicates() {
     temp['is_digital'] = listingData[lastPos].is_digital
     temp['percent_favor'] = listingData[lastPos].percent_favor
     temp['sales_day'] = 0
-    if(arrPos.length > 2){
-      let numDays = (listingData[lastPos].original_creation_tsz - listingData[arrPos[0]].original_creation_tsz)/86400
-      if(numDays > 1){
-        let totalCount 
+    if (arrPos.length > 2) {
+      let numDays = (listingData[lastPos].original_creation_tsz - listingData[arrPos[0]].original_creation_tsz) / 86400
+      if (numDays > 1) {
+        let totalCount
         for (let j = 0; j < arrPos.length; j++) {
           totalCount = listingData[lastPos].quantity - listingData[arrPos[0]].quantity
         }
-        temp['sales_day'] = Math.floor(totalCount/numDays)
+        temp['sales_day'] = Math.floor(totalCount / numDays)
       }
     }
     newData.push(temp)
@@ -463,14 +463,14 @@ function checkSearchByKeyword(keyword, index) {
   }
 
   for (let j = 0; j < keyword.length; j++) {
-    if (listingData[index].title.toLowerCase().includes(keyword[j])) {
+    if (listingData[index].title.toLowerCase().indexOf(keyword[j]) !== -1) {
     } else { return false }
   } return true
 }
 
 function checkSearchTaxonomy(keyword, index) {
   for (var i = 0; i < listingData[index].taxonomy_path.length; i++) {
-    if (listingData[index].taxonomy_path[i].toLowerCase().includes(keyword[0])) {
+    if (listingData[index].taxonomy_path[i].toLowerCase().indexOf(keyword[0]) !== -1) {
       return true
     }
   }
@@ -503,6 +503,12 @@ function filterByDate(data, days) {
 }
 
 function searchByKeyword(keyword, data = listingData) {
+  let fuse = new Fuse(data, {
+    keys: ['title', 'taxonomy_path']
+  })
+  
+  return fuse.search(keyword)
+
   keyword = keyword.split(' ')
   let dataSearch = []
   for (var i = 0; i < data.length; i++) {
