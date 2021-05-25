@@ -2,7 +2,7 @@ var socket = io.connect("https://giftsvk.com", {
   port: 443,
   reconnect: true
 })
-// var socket = io.connect("http://localhost:80")
+
 var shopData
 var category = 'Canvas'
 var shopCategory
@@ -34,7 +34,7 @@ $('#find-shop-by-name-button').on('click', async function () {
   }
 
   let shop = searchLocalShop(shopName)
-  if(shop == 0) {
+  if (shop == 0) {
     $('#loading').css('display', 'block')
     await socket.emit("find-shop-by-name", shopName)
   } else {
@@ -42,10 +42,10 @@ $('#find-shop-by-name-button').on('click', async function () {
   }
 })
 
-function searchLocalShop(shopName){
+function searchLocalShop(shopName) {
   let shop = []
   for (let i = 0; i < shopData.length; i++) {
-    if(shopData[i].shop_name.includes(shopName)){
+    if (shopData[i].shop_name.includes(shopName)) {
       shop.push(shopData[i])
     }
   } return shop
@@ -82,7 +82,7 @@ function searchOrFilterData() {
   updateData(dataFilter)
 }
 
-function timeCreatedShopFilterCustom(data){
+function timeCreatedShopFilterCustom(data) {
   let filterData = []
   let dateRange = $('#dropdown-filter-shop-time-created').text().split(' to ')
 
@@ -240,12 +240,12 @@ async function getUserOption(i) {
 let shopLocalData = window.localStorage.getItem('listing-shop')
 let categoryLocalData = window.localStorage.getItem('listing-shop-category')
 
-if(categoryLocalData != null){ 
+if (categoryLocalData != null) {
   shopCategory = JSON.parse(categoryLocalData)
 
-  if(shopLocalData != null){
+  if (shopLocalData != null) {
     shopData = JSON.parse(shopLocalData)
-    
+
     searchOrFilterData()
     toastr.clear()
     toastr.info('Updating data...')
@@ -270,8 +270,8 @@ socket.on("dataTransfer", async function (data) {
 
   let temp
   let tempData = []
-  
-  for(let i = 0; i < data.length; i++){
+
+  for (let i = 0; i < data.length; i++) {
     temp = new Object()
     temp['shop_name'] = data[i].shop_name
     temp['url'] = data[i].url
@@ -284,7 +284,7 @@ socket.on("dataTransfer", async function (data) {
     temp['num_favorers'] = data[i].num_favorers
     temp['shop_id'] = data[i].shop_id
     temp['languages'] = data[i].languages
-    tempData[i]=temp
+    tempData[i] = temp
   }
 
   toastr.clear()
@@ -295,7 +295,7 @@ socket.on("dataTransfer", async function (data) {
 
 socket.on("return-find-shop-by-name", function (data) {
   $('#loading').css('display', 'none')
-  if(data != 0){
+  if (data != 0) {
     updateData(data)
   } else {
     alert('This shop is not available')
@@ -427,7 +427,7 @@ socket.on("listingDataTransfer", function (data) {
     let taxonomy = data[i].taxonomy_path
     taxonomy = taxonomy[taxonomy.length - 1]
     $('#table-list').append(`<tr>
-          <td>${i+1}</td>
+          <td>${i + 1}</td>
           <td><a href='${data[i].url}' target="_blank">${data[i].title}</a></td>
           <td>${taxonomy}</td>
           <td>${data[i].price.toLocaleString()}</td>

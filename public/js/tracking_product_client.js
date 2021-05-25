@@ -2,7 +2,7 @@ var socket = io.connect("https://giftsvk.com", {
   port: 443,
   reconnect: true
 })
-// var socket = io.connect("http://localhost:80")
+
 var listingData = []
 var dataFilter = []
 var filterByDateOption = 0
@@ -194,7 +194,6 @@ function updateData(dataFilter = listingData) {
   $('#pagination-number').text(pagStart / 100 + 1)
 
   for (var i = pagStart; i < pagEnd; i++) {
-    console.log(dataFilter[i].url)
     $('#product-list').append(`
         <div class="list-product-search-container">
           <a href="${dataFilter[i].img_url_original}" target="_blank"><img src="${dataFilter[i].img_url}"
@@ -219,7 +218,7 @@ function updateData(dataFilter = listingData) {
 /* ------------------------------------------------SOCKET SECTION------------------------------------------------ */
 
 let listingLocalData = window.localStorage.getItem('listing-data')
-if(listingLocalData != null){
+if (listingLocalData != null) {
   listingData = JSON.parse(listingLocalData)
 
   searchOrFilterData()
@@ -237,21 +236,18 @@ socket.on("updating", function (data) {
 })
 
 socket.on("return-product-tracking-join", function (data) {
-  for (var i = 0; i < data.length; i++) {
-    if(data[i].state != 'active'){
-      data.splice(i, 1)
-    }
-  }
-  listingData = data 
+  listingData = data
+
   
+
   searchOrFilterData()
   toastr.clear()
   toastr.success('Data Updated')
 
   let temp
   let tempData = []
-  
-  for(let i = 0; i < data.length; i++){
+
+  for (let i = 0; i < data.length; i++) {
     temp = new Object()
     temp['title'] = data[i].title
     temp['url'] = data[i].url
@@ -264,7 +260,7 @@ socket.on("return-product-tracking-join", function (data) {
     temp['original_creation_tsz'] = data[i].original_creation_tsz
     temp['is_digital'] = data[i].is_digital
     temp['percent_favor'] = data[i].percent_favor
-    tempData[i]=temp
+    tempData[i] = temp
   }
 
   window.localStorage.setItem('listing-data', JSON.stringify(tempData))
