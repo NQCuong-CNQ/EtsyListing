@@ -6,9 +6,9 @@ var socket = io.connect("https://giftsvk.com", {
 var listingData = []
 var dataFilter = []
 var filterByDateOption = 0
-var filterByTypeOption = 0
+// var filterByTypeOption = 0
 var isSearch = false
-var sortOption = 1
+var sortOption = 5
 var pagLenght = 50
 var pagStart = 0
 var pagEnd = pagLenght
@@ -16,17 +16,17 @@ var isGridView = true
 
 /* ------------------------------------------------MAIN SECTION------------------------------------------------ */
 
-$('#pod-filter-listing').on('click', async function () {
-  filterByTypeOption = 0
-  searchOrFilterData()
-  $('#filter-listing-type').text('POD')
-})
+// $('#pod-filter-listing').on('click', async function () {
+//   filterByTypeOption = 0
+//   searchOrFilterData()
+//   $('#filter-listing-type').text('POD')
+// })
 
-$('#digital-filter-listing').on('click', async function () {
-  filterByTypeOption = 1
-  searchOrFilterData()
-  $('#filter-listing-type').text('Digital')
-})
+// $('#digital-filter-listing').on('click', async function () {
+//   filterByTypeOption = 1
+//   searchOrFilterData()
+//   $('#filter-listing-type').text('Digital')
+// })
 
 $('#all-filter-listing-creation-date').on('click', async function () {
   filterByDateOption = 0
@@ -203,9 +203,11 @@ function updateData(dataFilter = listingData) {
           <div class="row pl-3 pr-2">
               <p class="col-4 p-0"><i class="fas fa-eye mr-1"></i>${dataFilter[i].views}</p>
               <p class="col-4 p-0"><i class="fas fa-heart mr-1"></i>${dataFilter[i].num_favorers}</p>
+              <p class="col-4 p-0"><i class="fas fa-heartbeat mr-1"></i>${dataFilter[i].percent_favor}%</p>
           </div>  
           <div class="row pl-3 pr-2">
-              <p class="col-4 p-0"><i class="fas fa-heartbeat mr-1"></i>${dataFilter[i].percent_favor}%</p>
+            <p class="col-6 p-0"><i class="fas fa-cart-plus mr-1"></i>${dataFilter[i].sales_day}</p>
+            <p class="col-6 p-0"><i class="fas fa-calendar-alt mr-1"></i>${getEpochTime(dataFilter[i].original_creation_tsz)}</p>
           </div>
       </div>
     `)
@@ -309,7 +311,7 @@ function handleDuplicates() {
         for (let j = 0; j < arrPos.length; j++) {
           totalCount = listingData[lastPos].quantity - listingData[arrPos[0]].quantity
         }
-        temp['sales_day'] = Math.floor(totalCount / numDays)
+        temp['sales_day'] = (totalCount / numDays).toFixed(2)
       }
     }
     newData.push(temp)
@@ -391,7 +393,7 @@ function getEpochTime(input) {
   date.setUTCSeconds(input)
   time = String(date)
   time = time.split(' ')
-  time = time[2] + '-' + convertMonthInString(time[1]) + '-' + time[3]
+  time = time[2] + '/' + convertMonthInString(time[1])
   return time
 }
 
@@ -505,7 +507,7 @@ function filterByDate(data, days) {
 function searchByKeyword(keyword, data = listingData) {
   let dataSearch = []
   if(keyword.includes("father's day") || keyword.includes("fathers day") || keyword.includes("father day")){
-    
+
   }
   keyword = keyword.split(' ')
   

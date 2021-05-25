@@ -123,7 +123,6 @@ async function getListing() {
     result = JSON.parse(result).results
     listings = result[0]
 
-    console.log(date + "/" + listings.creation_tsz + "/" + (date - listings.creation_tsz))
     if (listings.state != 'active') {
       await dbo.collection("listing").deleteMany({ listing_id: listings.listing_id })
     }
