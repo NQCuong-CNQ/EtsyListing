@@ -250,7 +250,19 @@ async function updateShopInfo() {
       console.log('updateShopInfo: ' + response[0].shop_id)
       response[0]['total_sales'] = dbData[index].total_sales
       response[0]['imgs_listing'] = dbData[index].imgs_listing
-      await dbo.collection("shop").updateOne({ shop_id: response[0].shop_id }, { $set: response[0] }, { upsert: true })
+      await dbo.collection("shop").updateOne({ shop_id: response[0].shop_id }, { $set: {
+        shop_id: response[0].shop_id,
+        imgs_listing: response[0]['imgs_listing'],
+        total_sales: response[0]['total_sales'],
+        shop_name: response[0]['shop_name'],
+        url: response[0]['url'],
+        creation_tsz: response[0]['creation_tsz'],
+        num_favorers: response[0]['num_favorers'],
+        currency_code: response[0]['currency_code'],
+        listing_active_count: response[0]['listing_active_count'],
+        digital_listing_count: response[0]['digital_listing_count'],
+        languages: response[0]['languages'],
+      } }, { upsert: true })
 
       let timeNow = getDateTimeNow()
       await dbo.collection("shopTracking").insertOne({

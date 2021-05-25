@@ -8,11 +8,9 @@ var category = 'Canvas'
 var shopCategory
 var timeCreatedShopFilter = 0
 var filterType = 0
+var gettingData = 1
 
 /* ------------------------------------------------MAIN SECTION------------------------------------------------ */
-$('#tracking-analysis-option-button').on('click', async function () {
-  alert("Đang được phát triển!\nChức năng ghi lại toàn bộ số lượng listing theo ngày, vẽ biểu đồ và phân tích")
-})
 
 $('#pod-type-product-filter').on('click', async function () {
   filterType = 0
@@ -176,40 +174,26 @@ function updateData(data = shopData) {
 }
 
 async function getShopDetail(i) {
-  await socket.emit("shop-tracking", shopData[i].shop_id)
-  $('#loading').css('display', 'block')
-  $('#title-page').text('Shop Detail')
+  if (gettingData) {
+    toastr.warning('Please wait until data is updated!')
+  } else {
+    await socket.emit("shop-tracking", shopData[i].shop_id)
+    $('#loading').css('display', 'block')
+    $('#title-page').text('Shop Detail')
 
-  $('#option-shop-section').css("display", "block")
-  $('#list-shop-section').css("display", "none")
-  $('#listing-shop-section').css("display", "none")
-  $('#user-shop-section').css("display", "none")
+    $('#option-shop-section').css("display", "block")
+    $('#list-shop-section').css("display", "none")
+    $('#listing-shop-section').css("display", "none")
+    $('#user-shop-section').css("display", "none")
 
-  $('#shop-id-option-section').text(shopData[i].shop_id)
-  $('#shop-name-option-section').text('Shop name: ' + shopData[i].shop_name)
-  $('#shop-title-option-section').text(shopData[i].title)
-  $('#shop-url-option-section').text(shopData[i].url)
-  $('#shop-announcement-option-section').text(shopData[i].announcement)
-  $('#shop-creation-time-option-section').text(getEpochTime(shopData[i].creation_tsz))
-  $('#shop-currency_code-option-section').text(shopData[i].currency_code)
-  $('#shop-digital_listing_count-option-section').text(shopData[i].digital_listing_count.toLocaleString())
-  $('#shop-is_vacation-option-section').text(shopData[i].is_vacation)
-  $('#shop-last_updated_tsz-option-section').text(getEpochTime(shopData[i].last_updated_tsz))
-  $('#shop-listing_active_count-option-section').text(shopData[i].listing_active_count.toLocaleString())
-  $('#shop-num_favorers-option-section').text(shopData[i].num_favorers.toLocaleString())
-  $('#shop-policy_payment-option-section').text(shopData[i].policy_payment)
-  $('#shop-policy_refunds-option-section').text(shopData[i].policy_refunds)
-  $('#shop-policy_shipping-option-section').text(shopData[i].policy_shipping)
-  $('#shop-sale_message-option-section').text(shopData[i].sale_message)
-  $('#shop-policy_additional-option-section').text(shopData[i].policy_additional)
-  $('#shop-user_id-option-section').text(shopData[i].user_id)
-
-  $('#listing-option-button').on('click', async function () {
-    await getListingOption(i)
-  })
-  $('#user-option-button').on('click', async function () {
-    await getUserOption(i)
-  })
+    $('#shop-name-option-section').text('Shop name: ' + shopData[i].shop_name)
+    $('#listing-option-button').on('click', async function () {
+      await getListingOption(i)
+    })
+    $('#user-option-button').on('click', async function () {
+      await getUserOption(i)
+    })
+  }
 }
 
 async function getListingOption(i) {
@@ -265,6 +249,7 @@ socket.on("updating", function (data) {
 
 socket.on("dataTransfer", async function (data) {
   shopData = data
+  gettingData = 0
   $('#loading').css('display', 'none')
   searchOrFilterData()
 
@@ -311,18 +296,17 @@ socket.on("last-updated", function (data) {
 })
 
 socket.on("shop-tracking-data", function (data) {
-  console.log(data)
   $('#loading').css('display', 'none')
-  var ctx = document.getElementById("chart-total-sales").getContext("2d");
-  var gradientblue = ctx.createLinearGradient(0, 0, 0, 225);
-  gradientblue.addColorStop(0, "rgba(6,91,249,0.3)");
-  gradientblue.addColorStop(1, "rgba(6,91,249, 0)");
-  var gradientred = ctx.createLinearGradient(0, 0, 0, 225);
-  gradientred.addColorStop(0, "rgba(255,0,40,0.3)");
-  gradientred.addColorStop(1, "rgba(255,0,40, 0)");
-  var gradientgreen = ctx.createLinearGradient(0, 0, 0, 225);
-  gradientgreen.addColorStop(0, "rgba(47,208,87,0.3)");
-  gradientgreen.addColorStop(1, "rgba(47,208,87, 0)");
+  var ctx = document.getElementById("chart-total-sales").getContext("2d")
+  var gradientblue = ctx.createLinearGradient(0, 0, 0, 225)
+  gradientblue.addColorStop(0, "rgba(6,91,249,0.3)")
+  gradientblue.addColorStop(1, "rgba(6,91,249, 0)")
+  var gradientred = ctx.createLinearGradient(0, 0, 0, 225)
+  gradientred.addColorStop(0, "rgba(255,0,40,0.3)")
+  gradientred.addColorStop(1, "rgba(255,0,40, 0)")
+  var gradientgreen = ctx.createLinearGradient(0, 0, 0, 225)
+  gradientgreen.addColorStop(0, "rgba(47,208,87,0.3)")
+  gradientgreen.addColorStop(1, "rgba(47,208,87, 0)")
 
   let label = []
   let total_sales = []
@@ -394,7 +378,7 @@ socket.on("shop-tracking-data", function (data) {
         }]
       }
     }
-  });
+  })
 })
 
 socket.on("shopCategoryDataTransfer", function (data) {
@@ -454,8 +438,8 @@ socket.on("listingDataTransfer", function (data) {
 
 /* ------------------------------------------------ADDITIONAL SECTION------------------------------------------------ */
 
-$('#find-shop-by-name').on('keypress',function(e) {
-  if(e.key == 'Enter') {
+$('#find-shop-by-name').on('keypress', function (e) {
+  if (e.key == 'Enter') {
     $('#find-shop-by-name-button').trigger('click')
   }
 })
@@ -495,19 +479,6 @@ function convertMonthInString(month) {
     case 'Nov': return '11'
     case 'Dec': return '12'
   }
-}
-
-var coll = document.getElementsByClassName("collapsible")
-for (let i = 0; i < coll.length; i++) {
-  coll[i].addEventListener("click", function () {
-    this.classList.toggle("active")
-    var content = this.nextElementSibling
-    if (content.style.display === "block") {
-      content.style.display = "none";
-    } else {
-      content.style.display = "block"
-    }
-  })
 }
 
 /* ------------------------------------------------END ADDITIONAL SECTION------------------------------------------------ */
