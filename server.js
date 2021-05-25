@@ -66,11 +66,14 @@ async function getListing() {
   let idListings = []
   let date = new Date().getTime() / 1000
   let dateCount = Math.floor(date / 86400)
-  let listKeyWord = ["father's day", "pride month", "independence day", "tshirt", "canvas", "art print poster", "mug", "blanket"]
+  let listKeyWord = ["father's day canvas", "father's day tshirt", "father's day art print", "father's day mug", "father's day blanket", 
+  "pride month tshirt", "pride month canvas", "pride month art print", "pride month mug", "pride month blanket", 
+  "independence day tshirt", "independence day canvas", "independence day art print", "independence day mug", "independence day blanket", 
+  "tshirt", "canvas", "art print poster", "mug", "blanket"]
 
   for (let i = 0; i < listKeyWord.length; i++) {
     console.log(listKeyWord[i])
-    for (let j = 1; j <= 5; j++) {
+    for (let j = 1; j <= 3; j++) {
       siteUrl = `https://www.etsy.com/search?q=${listKeyWord[i]}&page=${j}&ref=pagination`
       let data = await getSearchProductFromWeb()
       console.log(j)

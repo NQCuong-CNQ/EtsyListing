@@ -503,44 +503,18 @@ function filterByDate(data, days) {
 }
 
 function searchByKeyword(keyword, data = listingData) {
-  let fuse
-  if(keyword.length > 7){
-    fuse = new Fuse(data, {
-      keys: ['title', 'taxonomy_path'],
-      minMatchCharLength: keyword.length - 3
-    })
-  } else if(keyword.length > 5){
-    fuse = new Fuse(data, {
-      keys: ['title', 'taxonomy_path'],
-      minMatchCharLength: keyword.length - 2
-    })
-  } else if (keyword.length > 3){
-    fuse = new Fuse(data, {
-      keys: ['title', 'taxonomy_path'],
-      minMatchCharLength: keyword.length - 1
-    })
-  } else {
-    fuse = new Fuse(data, {
-      keys: ['title', 'taxonomy_path'],
-      minMatchCharLength: keyword.length
-    })
-  }
-
   let dataSearch = []
-  let fuseData = fuse.search(keyword)
-  for (var i = 0; i < fuseData.length; i++) {
-    dataSearch.push(fuseData[i].item)
+  if(keyword.includes("father's day") || keyword.includes("fathers day") || keyword.includes("father day")){
+    
+  }
+  keyword = keyword.split(' ')
+  
+  for (var i = 0; i < data.length; i++) {
+    if (checkSearchByKeyword(keyword, i)) {
+      dataSearch.push(data[i])
+    }
   }
   return dataSearch
-
-  // keyword = keyword.split(' ')
-  // let dataSearch = []
-  // for (var i = 0; i < data.length; i++) {
-  //   if (checkSearchByKeyword(keyword, i)) {
-  //     dataSearch.push(data[i])
-  //   }
-  // }
-  // return dataSearch
 }
 
 /* ------------------------------------------------END FILTER SECTION------------------------------------------------ */
