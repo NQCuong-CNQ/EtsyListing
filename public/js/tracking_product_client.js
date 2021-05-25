@@ -503,9 +503,29 @@ function filterByDate(data, days) {
 }
 
 function searchByKeyword(keyword, data = listingData) {
-  let fuse = new Fuse(data, {
-    keys: ['title', 'taxonomy_path']
-  })
+  let fuse
+  if(keyword.length > 7){
+    fuse = new Fuse(data, {
+      keys: ['title', 'taxonomy_path'],
+      minMatchCharLength: keyword.length - 7
+    })
+  } else if(keyword.length > 5){
+    fuse = new Fuse(data, {
+      keys: ['title', 'taxonomy_path'],
+      minMatchCharLength: keyword.length - 2
+    })
+  } else if (keyword.length > 3){
+    fuse = new Fuse(data, {
+      keys: ['title', 'taxonomy_path'],
+      minMatchCharLength: keyword.length - 1
+    })
+  } else {
+    fuse = new Fuse(data, {
+      keys: ['title', 'taxonomy_path'],
+      minMatchCharLength: keyword.length
+    })
+  }
+
   let dataSearch = []
   let fuseData = fuse.search(keyword)
   for (var i = 0; i < fuseData.length; i++) {
