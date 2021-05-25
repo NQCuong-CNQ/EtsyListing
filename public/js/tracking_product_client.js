@@ -513,14 +513,14 @@ function searchByKeyword(keyword, data = listingData) {
   }
   return dataSearch
 
-  keyword = keyword.split(' ')
-  let dataSearch = []
-  for (var i = 0; i < data.length; i++) {
-    if (checkSearchByKeyword(keyword, i)) {
-      dataSearch.push(data[i])
-    }
-  }
-  return dataSearch
+  // keyword = keyword.split(' ')
+  // let dataSearch = []
+  // for (var i = 0; i < data.length; i++) {
+  //   if (checkSearchByKeyword(keyword, i)) {
+  //     dataSearch.push(data[i])
+  //   }
+  // }
+  // return dataSearch
 }
 
 /* ------------------------------------------------END FILTER SECTION------------------------------------------------ */
