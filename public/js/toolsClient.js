@@ -4,7 +4,7 @@ var socket = io.connect("https://giftsvk.com", {
 })
 
 $('#submit-user-button').on('click', async function () {
-    if($('#input-user-name').val().trim() == '' || $('#input-user-pass').val().trim() == ''){
+    if ($('#input-user-name').val().trim() == '' || $('#input-user-pass').val().trim() == '') {
         toastr.clear()
         toastr.warning('Vui lòng điền đầy đủ thông tin!')
         return
@@ -31,7 +31,7 @@ socket.on("return-new-user-braumstar", function (data) {
 })
 
 $('#submit-shop-button').on('click', async function () {
-    if($('#input-shop-name').val().trim() == '' || $('#input-user-shop-name').val().trim() == '' || $('#input-country-shop-name').val().trim() == ''){
+    if ($('#input-shop-name').val().trim() == '' || $('#input-user-shop-name').val().trim() == '' || $('#input-country-shop-name').val().trim() == '') {
         toastr.clear()
         toastr.warning('Vui lòng điền đầy đủ thông tin!')
         return
@@ -54,7 +54,7 @@ socket.on("return-add-shop-braumstar", function (data) {
 })
 
 $('#submit-shop-die-button').on('click', async function () {
-    if($('#input-shop-die-name').val().trim() == ''){
+    if ($('#input-shop-die-name').val().trim() == '') {
         toastr.clear()
         toastr.warning('Vui lòng điền đầy đủ thông tin!')
         return
@@ -77,7 +77,7 @@ socket.on("return-delete-shop-braumstar", function (data) {
 })
 
 $('#submit-shop-list-button').on('click', async function () {
-    if($('#input-user-shop-list').val().trim() == ''){
+    if ($('#input-user-shop-list').val().trim() == '') {
         toastr.clear()
         toastr.warning('Vui lòng điền đầy đủ thông tin!')
         return
@@ -101,4 +101,31 @@ socket.on("list-shop-braumstar", function (data) {
         shop += data[i].brandName + '\n'
     }
     $('#list-shop').text(shop)
+})
+
+$('#input-user-shop-list').on('keypress', function (e) {
+    if (e.key == 'Enter') {
+        $('#submit-shop-list-button').trigger('click')
+    }
+})
+
+$('#input-user-name').on('keypress', function (e) {
+    if (e.key == 'Enter') {
+        $('#submit-user-button').trigger('click')
+    }
+})
+$('#input-user-pass').on('keypress', function (e) {
+    if (e.key == 'Enter') {
+        $('#submit-user-button').trigger('click')
+    }
+})
+$('#input-user-shop-name').on('keypress', function (e) {
+    if (e.key == 'Enter') {
+        $('#submit-shop-button').trigger('click')
+    }
+})
+$('#input-country-shop-name').on('keypress', function (e) {
+    if (e.key == 'Enter') {
+        $('#submit-shop-button').trigger('click')
+    }
 })

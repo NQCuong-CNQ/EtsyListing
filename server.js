@@ -359,6 +359,7 @@ io.on("connection", async function (client) {
 
   await client.on("shop-tracking", async function (shop_id) {
     let dbData = await dbo.collection("shopTracking").find({ shop_id: { "$eq": shop_id } }).toArray()
+    console.log(dbData)
     await client.emit("shop-tracking-data", dbData)
   })
 

@@ -453,6 +453,12 @@ socket.on("listingDataTransfer", function (data) {
 
 /* ------------------------------------------------ADDITIONAL SECTION------------------------------------------------ */
 
+$('#find-shop-by-name').on('keypress',function(e) {
+  if(e.key == 'Enter') {
+    $('#find-shop-by-name-button').trigger('click')
+  }
+})
+
 function getDayTimeLife(creation_time) {
   let timeNow = new Date().getTime()
   let life_time = Math.floor(timeNow / 1000) - creation_time
