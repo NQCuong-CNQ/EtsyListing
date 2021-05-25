@@ -238,8 +238,7 @@ socket.on("updating", function (data) {
 socket.on("return-product-tracking-join", function (data) {
   listingData = data
 
-  
-
+  handleDuplicates()
   searchOrFilterData()
   toastr.clear()
   toastr.success('Data Updated')
@@ -265,6 +264,15 @@ socket.on("return-product-tracking-join", function (data) {
 
   window.localStorage.setItem('listing-data', JSON.stringify(tempData))
 })
+
+function handleDuplicates(){
+  let newData = []
+  
+  for (let i = 0; i < listingData.length; i++) {
+    newData[`${listingData[i].listing_id}`] += i+','
+  }
+  console.log(newData)
+}
 
 /* ------------------------------------------------END SOCKET SECTION------------------------------------------------ */
 

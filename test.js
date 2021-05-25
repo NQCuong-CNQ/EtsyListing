@@ -29,5 +29,8 @@
 
 
 // server.listen(8080)
-let date = new Date().toLocaleString()
-  console.log(date)
+let listingData = 'sfas'
+let newData = []
+newData[`${listingData}`] += 5+','
+
+console.log(newData.sfas)

@@ -23,6 +23,6 @@ function updateData(data) {
 
     $('#table_id-tracking-history').DataTable({
         pageLength: 25,
-        order: [[0, "asc"]],
+        order: [[0, "desc"]],
     })
 }
