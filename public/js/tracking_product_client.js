@@ -201,7 +201,6 @@ function updateData(dataFilter = listingData) {
   $('#pagination-number').text(pagStart / pagLenght + 1)
 
   for (var i = pagStart; i < pagEnd; i++) {
-    console.log(dataFilter[i].original_creation_tsz)
     $('#product-list').append(`
         <div class="list-product-search-container">
           <a href="${dataFilter[i].img_url_original}" target="_blank"><img src="${dataFilter[i].img_url}"
@@ -269,7 +268,7 @@ socket.on("return-product-tracking-join", function (data) {
     temp['price'] = data[i].price
     temp['quantity'] = data[i].quantity
     temp['original_creation_tsz'] = data[i].original_creation_tsz
-    temp['taxonomy_path'] = listingData[lastPos].taxonomy_path
+    temp['taxonomy_path'] = data[i].taxonomy_path
     temp['is_digital'] = data[i].is_digital
     temp['percent_favor'] = data[i].percent_favor
     tempData[i] = temp

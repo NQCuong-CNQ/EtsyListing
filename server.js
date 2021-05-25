@@ -66,10 +66,10 @@ async function getListing() {
   let idListings = []
   let date = new Date().getTime() / 1000
   let dateCount = Math.floor(date / 86400)
-  let listKeyWord = ["father's day canvas", "father's day tshirt", "father's day art print", "father's day mug", "father's day blanket", 
-  "pride month tshirt", "pride month canvas", "pride month art print", "pride month mug", "pride month blanket", 
-  "independence day tshirt", "independence day canvas", "independence day art print", "independence day mug", "independence day blanket", 
-  "tshirt", "canvas", "art print poster", "mug", "blanket"]
+  let listKeyWord = ["father's day canvas", "father's day tshirt", "father's day art print", "father's day mug", "father's day blanket",
+    "pride month tshirt", "pride month canvas", "pride month art print", "pride month mug", "pride month blanket",
+    "independence day tshirt", "independence day canvas", "independence day art print", "independence day mug", "independence day blanket",
+    "tshirt", "canvas", "art print poster", "mug", "blanket"]
 
   for (let i = 0; i < listKeyWord.length; i++) {
     console.log(listKeyWord[i])
@@ -99,12 +99,12 @@ async function getListing() {
 
   let dblisting = await dbo.collection("listing").find().toArray()
   for (let i = 0; i < dblisting.length; i++) {
-    if(date - dblisting[i].creation_tsz > (86400 * 30) ){
+    if (date - dblisting[i].creation_tsz > (86400 * 30)) {
       await dbo.collection("listingBlackList").updateOne({ listing_id: dblisting[i].listing_id }, { $set: { listing_id: dblisting[i].listing_id } }, { upsert: true })
       await dbo.collection("listing").deleteMany({ listing_id: dblisting[i].listing_id })
-      continue
+    } else {
+      idListings.push(dblisting[i].listing_id)
     }
-    idListings.push(dblisting[i].listing_id)
   }
 
   idListings = [...new Set(idListings)]
@@ -116,47 +116,45 @@ async function getListing() {
     let idBlackList = await dbo.collection("listingBlackList").findOne({ listing_id: idListings[i] })
     if (idBlackList != null) {
       console.log('pass' + idBlackList)
-      continue
+    } else {
+      let result = await makeRequest("GET", `https://openapi.etsy.com/v2/listings/${idListings[i]}?api_key=${api_key}`)
+      result = JSON.parse(result).results
+      listings = result[0]
+
+      if (listings.state != 'active') {
+        await dbo.collection("listing").deleteMany({ listing_id: listings.listing_id })
+      }
+      if (listings.toString().includes('does not exist') || ((date - listings.creation_tsz) > (86400 * 30)) || listings.state != 'active') {
+        await dbo.collection("listingBlackList").updateOne({ listing_id: listings.listing_id }, { $set: { listing_id: listings.listing_id } }, { upsert: true })
+      } else {
+        let resultImgs = await makeRequest("GET", `https://openapi.etsy.com/v2/listings/${idListings[i]}/images?api_key=${api_key}`)
+        resultImgs = JSON.parse(resultImgs).results[0]
+
+        listingTracking = new Object
+        listingTracking['img_url'] = resultImgs.url_570xN
+        listingTracking['img_url_original'] = resultImgs.url_fullxfull
+
+        let percentFavor = (listings.num_favorers / listings.views) * 100
+        percentFavor = percentFavor.toFixed(0)
+        listingTracking['percent_favor'] = percentFavor
+
+        console.log(listings.listing_id)
+
+        listingTracking['listing_id'] = listings.listing_id
+        listingTracking['title'] = listings.title
+        listingTracking['taxonomy_path'] = listings.taxonomy_path
+        listingTracking['url'] = listings.url
+        listingTracking['original_creation_tsz'] = listings.original_creation_tsz
+        listingTracking['quantity'] = listings.quantity
+        listingTracking['views'] = listings.views
+        listingTracking['num_favorers'] = listings.num_favorers
+        listingTracking['date_update'] = dateCount
+        listingTracking['price'] = listings.price
+        listingTracking['is_digital'] = listings.is_digital
+
+        await dbo.collection("listing").insertOne(listingTracking)
+      }
     }
-
-    let result = await makeRequest("GET", `https://openapi.etsy.com/v2/listings/${idListings[i]}?api_key=${api_key}`)
-    result = JSON.parse(result).results
-    listings = result[0]
-
-    if (listings.state != 'active') {
-      await dbo.collection("listing").deleteMany({ listing_id: listings.listing_id })
-    }
-    if (listings.toString().includes('does not exist') || (date - listings.creation_tsz > (86400 * 30)) || listings.state != 'active') {
-      await dbo.collection("listingBlackList").updateOne({ listing_id: listings.listing_id }, { $set: { listing_id: listings.listing_id } }, { upsert: true })
-      continue
-    }
-
-    let resultImgs = await makeRequest("GET", `https://openapi.etsy.com/v2/listings/${idListings[i]}/images?api_key=${api_key}`)
-    resultImgs = JSON.parse(resultImgs).results[0]
-
-    listingTracking = new Object
-    listingTracking['img_url'] = resultImgs.url_570xN
-    listingTracking['img_url_original'] = resultImgs.url_fullxfull
-
-    let percentFavor = (listings.num_favorers / listings.views) * 100
-    percentFavor = percentFavor.toFixed(0)
-    listingTracking['percent_favor'] = percentFavor
-
-    console.log(listings.listing_id)
-
-    listingTracking['listing_id'] = listings.listing_id
-    listingTracking['title'] = listings.title
-    listingTracking['taxonomy_path'] = listings.taxonomy_path
-    listingTracking['url'] = listings.url
-    listingTracking['original_creation_tsz'] = listings.original_creation_tsz
-    listingTracking['quantity'] = listings.quantity
-    listingTracking['views'] = listings.views
-    listingTracking['num_favorers'] = listings.num_favorers
-    listingTracking['date_update'] = dateCount
-    listingTracking['price'] = listings.price
-    listingTracking['is_digital'] = listings.is_digital
-
-    await dbo.collection("listing").insertOne(listingTracking)
     await sleep(100)
   }
   client.close()
@@ -246,24 +244,24 @@ async function updateShopInfo() {
   for (let index = 0; index < dbData.length; index++) {
     let response = await makeRequest("GET", `https://openapi.etsy.com/v2/shops/${dbData[index].shop_name}?api_key=${api_key}`)
     if (response == '') {
-      continue
+    } else {
+      response = JSON.parse(response).results
+
+      console.log('updateShopInfo: ' + response[0].shop_id)
+      response[0]['total_sales'] = dbData[index].total_sales
+      response[0]['imgs_listing'] = dbData[index].imgs_listing
+      await dbo.collection("shop").updateOne({ shop_id: response[0].shop_id }, { $set: response[0] }, { upsert: true })
+
+      let timeNow = getDateTimeNow()
+      await dbo.collection("shopTracking").insertOne({
+        'shop_id': response[0].shop_id,
+        'total_sales': dbData[index].total_sales,
+        'listing_active_count': response[0].listing_active_count,
+        'num_favorers': response[0].num_favorers,
+        'time_update': timeNow
+      })
+      await sleep(100)
     }
-    response = JSON.parse(response).results
-
-    console.log('updateShopInfo: ' + response[0].shop_id)
-    response[0]['total_sales'] = dbData[index].total_sales
-    response[0]['imgs_listing'] = dbData[index].imgs_listing
-    await dbo.collection("shop").updateOne({ shop_id: response[0].shop_id }, { $set: response[0] }, { upsert: true })
-
-    let timeNow = getDateTimeNow()
-    await dbo.collection("shopTracking").insertOne({
-      'shop_id': response[0].shop_id,
-      'total_sales': dbData[index].total_sales,
-      'listing_active_count': response[0].listing_active_count,
-      'num_favorers': response[0].num_favorers,
-      'time_update': timeNow
-    })
-    await sleep(100)
   }
   client.close()
 }
@@ -441,26 +439,25 @@ io.on("connection", async function (client) {
       dataShop.shopname[i] = dataShop.shopname[i].trim()
 
       if (dataShop.shopname[i] == '') {
-        continue
-      }
+      } else {
+        var data = {
+          _id: dataShop.shopname[i],
+          brandName: dataShop.shopname[i],
+          username: dataShop.user,
+          userId: '',
+          token: '',
+          tokenSecret: '',
+          marketplace: dataShop.country
+        }
 
-      var data = {
-        _id: dataShop.shopname[i],
-        brandName: dataShop.shopname[i],
-        username: dataShop.user,
-        userId: '',
-        token: '',
-        tokenSecret: '',
-        marketplace: dataShop.country
-      }
+        await dboBraumstar.collection("etsyAccounts").deleteOne({ brandName: dataShop.shopname[i] })
+        await dboBraumstar.collection("etsyAccounts").insertOne(data)
+        isSuccess = 0
 
-      await dboBraumstar.collection("etsyAccounts").deleteOne({ brandName: dataShop.shopname[i] })
-      await dboBraumstar.collection("etsyAccounts").insertOne(data)
-      isSuccess = 0
-
-      let getShop = await dboBraumstar.collection("etsyAccounts").findOne({ brandName: dataShop.shopname[i] })
-      if (getShop != '') {
-        isSuccess = 1
+        let getShop = await dboBraumstar.collection("etsyAccounts").findOne({ brandName: dataShop.shopname[i] })
+        if (getShop != '') {
+          isSuccess = 1
+        }
       }
     }
 
@@ -476,11 +473,9 @@ io.on("connection", async function (client) {
     dataShop.shopname = dataShop.shopname.split("\n")
     for (let i = 0; i < dataShop.shopname.length; i++) {
       dataShop.shopname[i] = dataShop.shopname[i].trim()
-
-      if (dataShop.shopname[i] == '') {
-        continue
+      if (dataShop.shopname[i] != '') {
+        await dboBraumstar.collection("etsyAccounts").deleteOne({ brandName: dataShop.shopname[i] })
       }
-      await dboBraumstar.collection("etsyAccounts").deleteOne({ brandName: dataShop.shopname[i] })
     }
 
     await client.emit("return-delete-shop-braumstar", 1)
@@ -498,11 +493,9 @@ io.on("connection", async function (client) {
       trackObj['pro_ID'] = temp[i].split(',')[0].replace(/[^0-9]/g, '')
       trackObj['track_number'] = temp[i].split(',')[19].replace(/[^0-9a-zA-Z]/g, '')
 
-      if (trackObj['track_number'] == '') {
-        continue
+      if (trackObj['track_number'] != '') {
+        trackData.push(trackObj)
       }
-
-      trackData.push(trackObj)
     }
 
     // trackObj = new Object
