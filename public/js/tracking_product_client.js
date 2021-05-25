@@ -76,10 +76,10 @@ $('#sort-by-favorite-listing').on('click', async function () {
   $('#sort-by-listing').text('Favorites')
 })
 
-$('#sort-by-price-listing').on('click', async function () {
+$('#sort-by-day-listing').on('click', async function () {
   sortOption = 3
   searchOrFilterData()
-  $('#sort-by-listing').text('Price')
+  $('#sort-by-listing').text('Days')
 })
 
 $('#sort-by-percent-favorite-listing').on('click', async function () {
@@ -123,7 +123,7 @@ function searchOrFilterData() {
   } else if (sortOption == 2) {
     dataFilter.sort(compareFavorites)
   } else if (sortOption == 3) {
-    dataFilter.sort(comparePrice)
+    dataFilter.sort(compareDay)
   } else if (sortOption == 4) {
     dataFilter.sort(comparePercentFavorites)
   } else if (sortOption == 5) {
@@ -352,9 +352,9 @@ function compareFavorites(a, b) {
   return compareAction(bandA, bandB)
 }
 
-function comparePrice(a, b) {
-  const bandA = a.price
-  const bandB = b.price
+function compareDay(a, b) {
+  const bandA = a.original_creation_tsz
+  const bandB = b.original_creation_tsz
   return compareAction(bandA, bandB)
 }
 
@@ -365,8 +365,8 @@ function comparePercentFavorites(a, b) {
 }
 
 function compareSaleDay(a, b) {
-  const bandA = a.quantity
-  const bandB = b.quantity
+  const bandA = a.sales_day
+  const bandB = b.sales_day
   return compareAction(bandA, bandB)
 }
 
