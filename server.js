@@ -146,11 +146,13 @@ async function getListing() {
     listingTracking['title'] = listings.title
     listingTracking['taxonomy_path'] = listings.taxonomy_path
     listingTracking['url'] = listings.url
-    listingTracking['creation_tsz'] = listings.creation_tsz
+    listingTracking['original_creation_tsz'] = listings.original_creation_tsz
     listingTracking['quantity'] = listings.quantity
     listingTracking['views'] = listings.views
     listingTracking['num_favorers'] = listings.num_favorers
     listingTracking['date_update'] = dateCount
+    listingTracking['price'] = listings.price
+    listingTracking['is_digital'] = listings.is_digital
 
     await dbo.collection("listing").insertOne(listingTracking)
     await sleep(100)

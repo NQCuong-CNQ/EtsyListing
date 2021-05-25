@@ -9,8 +9,9 @@ var filterByDateOption = 0
 var filterByTypeOption = 0
 var isSearch = false
 var sortOption = 1
+var pagLenght = 50
 var pagStart = 0
-var pagEnd = 100
+var pagEnd = pagLenght
 var isGridView = true
 
 /* ------------------------------------------------MAIN SECTION------------------------------------------------ */
@@ -145,31 +146,31 @@ function searchOrFilterData() {
 
 $('#first-pagination').on('click', async function () {
   pagStart = 0
-  pagEnd = 100
+  pagEnd = pagLenght
   updateData(dataFilter)
 })
 
 $('#last-pagination').on('click', async function () {
-  pagStart = Math.floor(dataFilter.length / 100) * 100
+  pagStart = Math.floor(dataFilter.length / pagLenght) * pagLenght
   pagEnd = dataFilter.length
   updateData(dataFilter)
 })
 
 $('#next-pagination').on('click', async function () {
-  pagStart += 100
-  pagEnd += 100
-  if (pagEnd > Math.floor(dataFilter.length / 100) * 100) {
+  pagStart += pagLenght
+  pagEnd += pagLenght
+  if (pagEnd > Math.floor(dataFilter.length / pagLenght) * pagLenght) {
     pagEnd = dataFilter.length
   }
   updateData(dataFilter)
 })
 
 $('#back-pagination').on('click', async function () {
-  pagStart -= 100
-  pagEnd = pagStart + 100
+  pagStart -= pagLenght
+  pagEnd = pagStart + pagLenght
   if (pagStart < 0) {
     pagStart = 0
-    pagEnd = 100
+    pagEnd = pagLenght
   }
   updateData(dataFilter)
 })
@@ -181,17 +182,17 @@ function updateData(dataFilter = listingData) {
     return
   }
 
-  if (dataFilter.length < 100) {
+  if (dataFilter.length < pagLenght) {
     pagEnd = dataFilter.length
   } else {
-    if (pagEnd < 100) {
-      pagEnd = 100
+    if (pagEnd < pagLenght) {
+      pagEnd = pagLenght
     }
   }
   updatePaginationBtn(dataFilter)
 
   $('#number-entries').text('Showing ' + pagStart + ' - ' + pagEnd + ' of ' + dataFilter.length + ' listing')
-  $('#pagination-number').text(pagStart / 100 + 1)
+  $('#pagination-number').text(pagStart / pagLenght + 1)
 
   for (var i = pagStart; i < pagEnd; i++) {
     $('#product-list').append(`
@@ -220,7 +221,7 @@ function updateData(dataFilter = listingData) {
 let listingLocalData = window.localStorage.getItem('listing-data')
 if (listingLocalData != null) {
   listingData = JSON.parse(listingLocalData)
-  // handleDuplicates()
+  handleDuplicates()
   searchOrFilterData()
   toastr.clear()
   toastr.info('Updating data...')
@@ -286,9 +287,7 @@ function handleDuplicates() {
   for (let i = 0; i < dataDupById.length; i++) {
     let arrPos = dataDupPos[dataDupById[i]].split(',')
     let lastPos = arrPos[arrPos.length - 2]
-    // console.log('arrPos'+dataDupById[i])
-    // console.log('arrPos'+arrPos)
-    // console.log('lastPos'+lastPos)
+
     temp = new Object()
     temp['listing_id'] = listingData[lastPos].listing_id
     temp['title'] = listingData[lastPos].title
@@ -305,7 +304,6 @@ function handleDuplicates() {
     temp['sales_day'] = 0
     if(arrPos.length > 2){
       let numDays = (listingData[lastPos].original_creation_tsz - listingData[arrPos[0]].original_creation_tsz)/86400
-      // console.log('numDays'+numDays)
       if(numDays > 1){
         let totalCount 
         for (let j = 0; j < arrPos.length; j++) {
@@ -314,7 +312,6 @@ function handleDuplicates() {
         temp['sales_day'] = Math.floor(totalCount/numDays)
       }
     }
-    // console.log('temp'+temp)
     newData.push(temp)
   }
   listingData = newData
