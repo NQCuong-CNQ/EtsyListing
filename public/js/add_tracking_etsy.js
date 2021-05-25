@@ -8,6 +8,11 @@ var index = 0
 var shopName
 let trackData
 
+setInterval(scheduleUpdate, 43200000) // 12h
+function scheduleUpdate() {
+  location.reload()
+}
+
 main()
 async function main() {
     await sleep(5000)
@@ -16,8 +21,6 @@ async function main() {
 }
 
 socket.on("track-order-return", async function (dataReceive) {
-    await location.reload()
-    await sleep(7000)
     data = dataReceive
     await addTracking()
 })
