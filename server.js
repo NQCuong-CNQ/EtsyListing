@@ -328,7 +328,6 @@ io.on("connection", async function (client) {
 
       let dbData = await dbo.collection("shop").find().toArray()
       await client.broadcast.emit("dataTransfer", dbData)
-      console.log(dbData)
 
       let lastUpdated = await dbo.collection("log").find().toArray()
       await client.broadcast.emit("last-updated", lastUpdated[lastUpdated.length - 1])

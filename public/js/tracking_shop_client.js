@@ -266,6 +266,7 @@ socket.on("updating", function (data) {
 
 socket.on("dataTransfer", async function (data) {
   shopData = data
+  console.log(shopData)
   $('#loading').css('display', 'none')
   searchOrFilterData()
 
