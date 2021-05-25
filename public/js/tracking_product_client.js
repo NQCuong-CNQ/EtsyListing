@@ -507,7 +507,7 @@ function searchByKeyword(keyword, data = listingData) {
   if(keyword.length > 7){
     fuse = new Fuse(data, {
       keys: ['title', 'taxonomy_path'],
-      minMatchCharLength: keyword.length - 7
+      minMatchCharLength: keyword.length - 3
     })
   } else if(keyword.length > 5){
     fuse = new Fuse(data, {
