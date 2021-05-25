@@ -266,12 +266,18 @@ socket.on("return-product-tracking-join", function (data) {
 })
 
 function handleDuplicates(){
-  let newData = []
+  let dataDup = new Object
+  let dataById
   
   for (let i = 0; i < listingData.length; i++) {
-    newData[`${listingData[i].listing_id}`] += i+','
+    dataDup[`${listingData[i].listing_id}`] += i+','
   }
-  console.log(newData)
+  for (let i = 0; i < dataDup.length; i++) {
+    dataDup[`${listingData[i].listing_id}`] = dataDup[`${listingData[i].listing_id}`].replace(/undefined/g,'')
+  } 
+  dataById = Object.keys(dataDup)
+  console.log(dataDup)
+  console.log(dataById)
 }
 
 /* ------------------------------------------------END SOCKET SECTION------------------------------------------------ */
