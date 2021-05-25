@@ -5,7 +5,7 @@ var socket = io.connect("https://giftsvk.com", {
 
 var listingData = []
 var dataFilter = []
-var filterByDateOption = 0
+var filterByDateOption = 14
 // var filterByTypeOption = 0
 var isSearch = false
 var sortOption = 5
@@ -201,6 +201,7 @@ function updateData(dataFilter = listingData) {
   $('#pagination-number').text(pagStart / pagLenght + 1)
 
   for (var i = pagStart; i < pagEnd; i++) {
+    console.log(dataFilter[i].original_creation_tsz)
     $('#product-list').append(`
         <div class="list-product-search-container">
           <a href="${dataFilter[i].img_url_original}" target="_blank"><img src="${dataFilter[i].img_url}"
@@ -268,6 +269,7 @@ socket.on("return-product-tracking-join", function (data) {
     temp['price'] = data[i].price
     temp['quantity'] = data[i].quantity
     temp['original_creation_tsz'] = data[i].original_creation_tsz
+    temp['taxonomy_path'] = listingData[lastPos].taxonomy_path
     temp['is_digital'] = data[i].is_digital
     temp['percent_favor'] = data[i].percent_favor
     tempData[i] = temp
@@ -306,6 +308,7 @@ function handleDuplicates() {
     temp['price'] = listingData[lastPos].price
     temp['quantity'] = listingData[lastPos].quantity
     temp['original_creation_tsz'] = listingData[lastPos].original_creation_tsz
+    temp['taxonomy_path'] = listingData[lastPos].taxonomy_path
     temp['is_digital'] = listingData[lastPos].is_digital
     temp['percent_favor'] = listingData[lastPos].percent_favor
     temp['sales_day'] = 0
@@ -334,8 +337,10 @@ function handleDuplicates() {
 
 /* ------------------------------------------------ADDITIONAL SECTION------------------------------------------------ */
 
-$('#find-product-by-keyword').trigger('keypress', function(){
-  $('#find-product-by-keyword-button').click()
+$('#find-product-by-keyword').on('keypress',function(e) {
+  if(e.key == 'Enter') {
+    $('#find-product-by-keyword-button').trigger('click')
+  }
 })
 
 // $('.grid-view-listing').on('click', async function () {
