@@ -198,9 +198,7 @@ async function saveShopNameToDB(dataShopName, shopCategory) {
         currCate = currentVal.category
       } catch (e) {
       }
-
       if (currCate == '') {
-
       } else {
         if (currCate.includes(shopCategory)) {
           newshopCategory = currCate
@@ -233,7 +231,7 @@ async function saveShopNameToDB(dataShopName, shopCategory) {
 async function sleep(ms) {
   return new Promise(
     resolve => setTimeout(resolve, ms)
-  );
+  )
 }
 
 async function updateShopInfo() {
