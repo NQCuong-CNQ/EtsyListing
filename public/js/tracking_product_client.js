@@ -506,8 +506,12 @@ function searchByKeyword(keyword, data = listingData) {
   let fuse = new Fuse(data, {
     keys: ['title', 'taxonomy_path']
   })
-  console.log(fuse.search(keyword))
-  return fuse.search(keyword)
+  let dataSearch = []
+  let fuseData = fuse.search(keyword)
+  for (var i = 0; i < fuseData.length; i++) {
+    dataSearch.push(fuseData[i].item)
+  }
+  return dataSearch
 
   keyword = keyword.split(' ')
   let dataSearch = []
