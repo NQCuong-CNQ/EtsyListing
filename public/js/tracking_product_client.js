@@ -286,9 +286,9 @@ function handleDuplicates() {
   for (let i = 0; i < dataDupById.length; i++) {
     let arrPos = dataDupPos[dataDupById[i]].split(',')
     let lastPos = arrPos[arrPos.length - 2]
-    console.log('arrPos'+dataDupById[i])
-    console.log('arrPos'+arrPos)
-    console.log('lastPos'+lastPos)
+    // console.log('arrPos'+dataDupById[i])
+    // console.log('arrPos'+arrPos)
+    // console.log('lastPos'+lastPos)
     temp = new Object()
     temp['listing_id'] = listingData[lastPos].listing_id
     temp['title'] = listingData[lastPos].title
@@ -302,10 +302,10 @@ function handleDuplicates() {
     temp['original_creation_tsz'] = listingData[lastPos].original_creation_tsz
     temp['is_digital'] = listingData[lastPos].is_digital
     temp['percent_favor'] = listingData[lastPos].percent_favor
-
+    temp['sales_day'] = 0
     if(arrPos.length > 2){
       let numDays = (listingData[lastPos].original_creation_tsz - listingData[arrPos[0]].original_creation_tsz)/86400
-      console.log('numDays'+numDays)
+      // console.log('numDays'+numDays)
       if(numDays > 1){
         let totalCount 
         for (let j = 0; j < arrPos.length; j++) {
@@ -314,10 +314,11 @@ function handleDuplicates() {
         temp['sales_day'] = Math.floor(totalCount/numDays)
       }
     }
-    console.log('temp'+temp)
+    // console.log('temp'+temp)
     newData.push(temp)
   }
   listingData = newData
+  console.log(listingData)
 }
 
 /* ------------------------------------------------END SOCKET SECTION------------------------------------------------ */
