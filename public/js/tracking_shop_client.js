@@ -138,7 +138,6 @@ function isDigitShop(data) {
 function updateData(data = shopData) {
   $('#table-shop').DataTable().clear().destroy()
   for (var i = 0; i < data.length; i++) {
-    console.log(data[i].url)
     $('#table-shop-body').append(`<tr>
         <td onclick="getShopDetail(${i})"><i class="fas fa-info-circle pointer"></i></td>
         <td>
@@ -266,7 +265,6 @@ socket.on("updating", function (data) {
 
 socket.on("dataTransfer", async function (data) {
   shopData = data
-  console.log(shopData)
   $('#loading').css('display', 'none')
   searchOrFilterData()
 
@@ -276,6 +274,7 @@ socket.on("dataTransfer", async function (data) {
   for(let i = 0; i < data.length; i++){
     temp = new Object()
     temp['shop_name'] = data[i].shop_name
+    temp['url'] = data[i].url
     temp['imgs_listing'] = data[i].imgs_listing
     temp['total_sales'] = data[i].total_sales
     temp['creation_tsz'] = data[i].creation_tsz

@@ -254,6 +254,7 @@ socket.on("return-product-tracking-join", function (data) {
   for(let i = 0; i < data.length; i++){
     temp = new Object()
     temp['title'] = data[i].title
+    temp['url'] = data[i].url
     temp['img_url'] = data[i].img_url
     temp['img_url_original'] = data[i].img_url_original
     temp['views'] = data[i].views
