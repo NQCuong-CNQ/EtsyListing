@@ -286,6 +286,9 @@ function handleDuplicates() {
   for (let i = 0; i < dataDupById.length; i++) {
     let arrPos = dataDupPos[dataDupById[i]].split(',')
     let lastPos = arrPos[arrPos.length - 2]
+    console.log('arrPos'+dataDupById[i])
+    console.log('arrPos'+arrPos)
+    console.log('lastPos'+lastPos)
     temp = new Object()
     temp['listing_id'] = listingData[lastPos].listing_id
     temp['title'] = listingData[lastPos].title
