@@ -220,7 +220,7 @@ function updateData(dataFilter = listingData) {
 let listingLocalData = window.localStorage.getItem('listing-data')
 if (listingLocalData != null) {
   listingData = JSON.parse(listingLocalData)
-
+  handleDuplicates()
   searchOrFilterData()
   toastr.clear()
   toastr.info('Updating data...')
@@ -272,10 +272,11 @@ function handleDuplicates(){
   for (let i = 0; i < listingData.length; i++) {
     dataDup[`${listingData[i].listing_id}`] += i+','
   }
-  for (let i = 0; i < dataDup.length; i++) {
-    dataDup[`${listingData[i].listing_id}`] = dataDup[`${listingData[i].listing_id}`].replace(/undefined/g,'')
-  } 
+
   dataById = Object.keys(dataDup)
+  for (let i = 0; i < dataById.length; i++) {
+    dataDup[`${dataById[i]}`] = dataDup[`${dataById[i]}`].replace(/undefined/g,'')
+  } 
   console.log(dataDup)
   console.log(dataById)
 }
