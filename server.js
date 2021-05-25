@@ -321,64 +321,64 @@ io.on("connection", async function (client) {
     console.log('1 client connected')
 
     if (isUpdate) {
-      await client.broadcast.emit("updating")
+      await client.emit("updating")
     } else {
       let shopCategory = await dbo.collection("shopCategory").find().toArray()
-      await client.broadcast.emit("shopCategoryDataTransfer", shopCategory)
+      await client.emit("shopCategoryDataTransfer", shopCategory)
 
       let dbData = await dbo.collection("shop").find().toArray()
-      await client.broadcast.emit("dataTransfer", dbData)
+      await client.emit("dataTransfer", dbData)
 
       let lastUpdated = await dbo.collection("log").find().toArray()
-      await client.broadcast.emit("last-updated", lastUpdated[lastUpdated.length - 1])
+      await client.emit("last-updated", lastUpdated[lastUpdated.length - 1])
     }
   })
 
   await client.on("get-total-shop", async function () {
-    await client.broadcast.emit("total-shop", total_shop)
+    await client.emit("total-shop", total_shop)
   })
 
   await client.on("step1", async function () {
-    await client.broadcast.emit("total-shop", total_shop)
+    await client.emit("total-shop", total_shop)
   })
 
 
   await client.on("get_listing_shop_id", async function (shop_id) {
     let result = await makeRequest("GET", `https://openapi.etsy.com/v2/shops/${shop_id}/listings/active?api_key=${api_key}`)
     result = JSON.parse(result).results
-    await client.broadcast.emit("listingDataTransfer", result)
+    await client.emit("listingDataTransfer", result)
   })
 
   await client.on("get_user_by_user_id", async function (user_id) {
     let result = await makeRequest("GET", `https://openapi.etsy.com/v2/users/${user_id}/profile?api_key=${api_key}`)
     result = JSON.parse(result).results
-    await client.broadcast.emit("userDataTransfer", result[0])
+    await client.emit("userDataTransfer", result[0])
   })
 
   await client.on("shop-tracking", async function (shop_id) {
     let dbData = await dbo.collection("shopTracking").find({ shop_id: { "$eq": shop_id } }).toArray()
-    await client.broadcast.emit("shop-tracking-data", dbData)
+    await client.emit("shop-tracking-data", dbData)
   })
 
   await client.on("find-shop-by-name", async function (shopName) {
     let response = await makeRequest("GET", `https://openapi.etsy.com/v2/shops/${shopName}?api_key=${api_key}`)
     if (response == 0) {
-      await client.broadcast.emit("return-find-shop-by-name", response)
+      await client.emit("return-find-shop-by-name", response)
       return
     }
     response = JSON.parse(response).results
 
     siteUrl = "https://www.etsy.com/shop/" + shopName
     response[0]["total_sales"] = await getTotalSalesAndImgFromWeb()
-    await client.broadcast.emit("return-find-shop-by-name", response)
+    await client.emit("return-find-shop-by-name", response)
   })
 
   await client.on("product-tracking-join", async function () {
     if (isUpdate) {
-      await client.broadcast.emit("updating")
+      await client.emit("updating")
     } else {
       let dbData = await dbo.collection("listing").find().toArray()
-      await client.broadcast.emit("return-product-tracking-join", dbData)
+      await client.emit("return-product-tracking-join", dbData)
     }
   })
 
@@ -507,15 +507,15 @@ io.on("connection", async function (client) {
     // trackData.push(trackObj)
 
     console.log('send data to etsy')
-    await client.broadcast.emit("track-order-return", trackData)
+    await client.emit("track-order-return", trackData)
   })
 
   await client.on("track-order-step1", async function (data) {
-    await client.broadcast.emit("track-order-step2", data)
+    await client.emit("track-order-step2", data)
   })
 
   await client.on("track-order-step3", async function (name) {
-    await client.broadcast.emit("track-order-step4", name)
+    await client.emit("track-order-step4", name)
   })
 
   await client.on("track-order-step5", async function (data) {
