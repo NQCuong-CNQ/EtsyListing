@@ -52,17 +52,23 @@ $('#7d-filter-listing-creation-date').on('click', async function () {
   $('#filter-listing-creation-date').text('Last 7 days')
 })
 
-$('#custom-filter-listing-creation-date').daterangepicker({
-  "showDropdowns": true,
-  "minYear": 2010,
-  "maxYear": 2023,
-  "startDate": "12/21/2020",
-  "opens": "center"
-}, function (start, end, label) {
-  filterByDateOption = 'custom'
-  $('#filter-listing-creation-date').text(start.format('MM-DD-YYYY') + ' to ' + end.format('MM-DD-YYYY'))
+$('#14d-filter-listing-creation-date').on('click', async function () {
+  filterByDateOption = 14
   searchOrFilterData()
+  $('#filter-listing-creation-date').text('Last 14 days')
 })
+
+// $('#custom-filter-listing-creation-date').daterangepicker({
+//   "showDropdowns": true,
+//   "minYear": 2010,
+//   "maxYear": 2023,
+//   "startDate": "12/21/2020",
+//   "opens": "center"
+// }, function (start, end, label) {
+//   filterByDateOption = 'custom'
+//   $('#filter-listing-creation-date').text(start.format('MM-DD-YYYY') + ' to ' + end.format('MM-DD-YYYY'))
+//   searchOrFilterData()
+// })
 
 $('#sort-by-view-listing').on('click', async function () {
   sortOption = 1
@@ -131,7 +137,7 @@ function searchOrFilterData() {
   }
 
   if (filterByDateOption == 'custom') {
-    dataFilter = filterByCustomDate(dataFilter)
+    // dataFilter = filterByCustomDate(dataFilter)
   } else if (filterByDateOption == 0) {
   } else {
     dataFilter = filterByDate(dataFilter, filterByDateOption)
@@ -206,8 +212,8 @@ function updateData(dataFilter = listingData) {
               <p class="col-4 p-0"><i class="fas fa-heartbeat mr-1"></i>${dataFilter[i].percent_favor}%</p>
           </div>  
           <div class="row pl-3 pr-2">
-            <p class="col-6 p-0"><i class="fas fa-cart-plus mr-1"></i>${dataFilter[i].sales_day}</p>
-            <p class="col-6 p-0"><i class="fas fa-calendar-alt mr-1"></i>${getEpochTime(dataFilter[i].original_creation_tsz)}</p>
+            <p class="col-4 p-0"><i class="fas fa-cart-plus mr-1"></i>${dataFilter[i].sales_day}</p>
+            <p class="col-4 p-0"><i class="fas fa-calendar-alt mr-1"></i>${getEpochTime(dataFilter[i].original_creation_tsz)}</p>
           </div>
       </div>
     `)
@@ -223,6 +229,7 @@ function updateData(dataFilter = listingData) {
 let listingLocalData = window.localStorage.getItem('listing-data')
 if (listingLocalData != null) {
   listingData = JSON.parse(listingLocalData)
+
   handleDuplicates()
   searchOrFilterData()
   toastr.clear()
@@ -233,7 +240,7 @@ if (listingLocalData != null) {
 
 socket.emit("product-tracking-join")
 
-socket.on("updating", function (data) {
+socket.on("updating", function () {
   toastr.clear()
   toastr.warning('Data Server is updating, cannot get new information!')
 })
@@ -281,8 +288,6 @@ function handleDuplicates() {
   for (let i = 0; i < dataDupById.length; i++) {
     dataDupPos[`${dataDupById[i]}`] = dataDupPos[`${dataDupById[i]}`].replace(/undefined/g, '')
   }
-  console.log(dataDupPos)
-  console.log(dataDupById)
 
   let newData = []
   let temp
@@ -304,12 +309,18 @@ function handleDuplicates() {
     temp['is_digital'] = listingData[lastPos].is_digital
     temp['percent_favor'] = listingData[lastPos].percent_favor
     temp['sales_day'] = 0
+
     if (arrPos.length > 2) {
       let numDays = (listingData[lastPos].original_creation_tsz - listingData[arrPos[0]].original_creation_tsz) / 86400
       if (numDays > 1) {
-        let totalCount
-        for (let j = 0; j < arrPos.length; j++) {
-          totalCount = listingData[lastPos].quantity - listingData[arrPos[0]].quantity
+        let totalCount = 0
+        let diff = 0
+        for (let j = arrPos.length - 1; j = 1; j--) {
+          diff = listingData[arrPos[j]].quantity - listingData[arrPos[j - 1]].quantity
+          if (diff < 0) {
+            diff = 0
+          }
+          totalCount += diff
         }
         temp['sales_day'] = (totalCount / numDays).toFixed(2)
       }
@@ -317,12 +328,15 @@ function handleDuplicates() {
     newData.push(temp)
   }
   listingData = newData
-  console.log(listingData)
 }
 
 /* ------------------------------------------------END SOCKET SECTION------------------------------------------------ */
 
 /* ------------------------------------------------ADDITIONAL SECTION------------------------------------------------ */
+
+$('#find-product-by-keyword').trigger('keypress', function(){
+  $('#find-product-by-keyword-button').click()
+})
 
 // $('.grid-view-listing').on('click', async function () {
 //   if (isGridView) {
@@ -478,21 +492,21 @@ function checkSearchTaxonomy(keyword, index) {
   }
 }
 
-function filterByCustomDate(data) {
-  let filterData = []
-  let dateRange = $('#filter-listing-creation-date').text().split(' to ')
+// function filterByCustomDate(data) {
+//   let filterData = []
+//   let dateRange = $('#filter-listing-creation-date').text().split(' to ')
 
-  let dateFrom = new Date(dateRange[0]).getTime()
-  let dateTo = new Date(dateRange[1]).getTime()
+//   let dateFrom = new Date(dateRange[0]).getTime()
+//   let dateTo = new Date(dateRange[1]).getTime()
 
-  for (let i = 0; i < data.length; i++) {
-    if (data[i].original_creation_tsz >= Math.floor(dateFrom / 1000) && data[i].original_creation_tsz <= Math.floor(dateTo / 1000)) {
-      filterData.push(data[i])
-    }
-  }
+//   for (let i = 0; i < data.length; i++) {
+//     if (data[i].original_creation_tsz >= Math.floor(dateFrom / 1000) && data[i].original_creation_tsz <= Math.floor(dateTo / 1000)) {
+//       filterData.push(data[i])
+//     }
+//   }
 
-  return filterData
-}
+//   return filterData
+// }
 
 function filterByDate(data, days) {
   let filterData = []
@@ -506,11 +520,11 @@ function filterByDate(data, days) {
 
 function searchByKeyword(keyword, data = listingData) {
   let dataSearch = []
-  if(keyword.includes("father's day") || keyword.includes("fathers day") || keyword.includes("father day")){
+  if (keyword.includes("father's day") || keyword.includes("fathers day") || keyword.includes("father day")) {
 
   }
   keyword = keyword.split(' ')
-  
+
   for (var i = 0; i < data.length; i++) {
     if (checkSearchByKeyword(keyword, i)) {
       dataSearch.push(data[i])

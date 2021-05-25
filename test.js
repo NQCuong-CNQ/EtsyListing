@@ -29,8 +29,9 @@
 
 
 // server.listen(8080)
-let listingData = 'sfas'
-let newData = []
-newData[`${listingData}`] += 5+','
+let listingData = 0
 
-console.log(newData.sfas)
+// let newData = []
+// newData[`${listingData}`] += 5+','
+
+console.log(listingData / 55)
