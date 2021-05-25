@@ -34,6 +34,8 @@ async function addTracking() {
 socket.on("track-order-step4", async function (name) {
     console.log('step 4' + name)
     if (name == shopName) {
+        $('.position-absolute.position-bottom .flag-img button.btn-orange').click()
+        
         trackData['time_add_tracking'] = Math.floor(new Date().getTime() / 1000)
         await socket.emit("track-order-step5", trackData)
         console.log('saved history' + trackData)
@@ -58,8 +60,6 @@ async function addTrackingAction(id, number) {
     trackData['name'] = shopName
     trackData['id'] = id
     trackData['number_tracking'] = number
-
-    $('[placeholder="Enter tracking number (recommended)"]:eq(0)').hover()
 
     await socket.emit("track-order-step1", trackData)
 }
