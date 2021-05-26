@@ -508,11 +508,6 @@ io.on("connection", async function (client) {
       }
     }
 
-    // trackObj = new Object
-    // trackObj['pro_ID'] = '2064278993'
-    // trackObj['track_number'] = '9261290278835117649912'
-    // trackData.push(trackObj)
-
     console.log('send data to etsy')
     await client.emit("track-order-return", trackData)
   })

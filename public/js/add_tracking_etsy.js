@@ -10,7 +10,7 @@ let trackData
 
 setInterval(scheduleUpdate, 43200000) // 12h
 function scheduleUpdate() {
-  location.reload()
+    location.reload()
 }
 
 main()
@@ -22,6 +22,7 @@ async function main() {
 
 socket.on("track-order-return", async function (dataReceive) {
     data = dataReceive
+    console.log('receive data: ' + data)
     await addTracking()
 })
 
@@ -72,5 +73,5 @@ async function addTrackingAction(id, number) {
 async function sleep(ms) {
     return new Promise(
         resolve => setTimeout(resolve, ms)
-    );
+    )
 }
