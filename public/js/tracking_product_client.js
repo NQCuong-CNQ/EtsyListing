@@ -114,14 +114,14 @@ function searchOrFilterData() {
   $('#loading').css('display', 'block')
   dataFilter = listingData
 
-  let keyword = $('#find-product-by-keyword').val().trim().toLowerCase().replace(/ +(?= )/g, '')
-  if (keyword == '') {
-    isSearch = false
-  }
+  // let keyword = $('#find-product-by-keyword').val().trim().toLowerCase().replace(/ +(?= )/g, '')
+  // if (keyword == '') {
+  //   isSearch = false
+  // }
 
-  if (isSearch) {
-    dataFilter = searchByKeyword(keyword)
-  }
+  // if (isSearch) {
+  //   dataFilter = searchByKeyword(keyword)
+  // }
 
   // if (filterByTypeOption == 0) {
   //   dataFilter = filterByType(dataFilter)
@@ -347,11 +347,9 @@ $('#find-product-by-keyword').on('keypress',function(e) {
   }
 })
 
-
-$('.js-example-basic-multiple').select2({
+$('#find-product-by-keyword').select2({
   placeholder: "Keyword"
 })
-
 
 // $('.grid-view-listing').on('click', async function () {
 //   if (isGridView) {
