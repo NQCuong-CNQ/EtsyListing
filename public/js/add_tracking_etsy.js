@@ -8,9 +8,9 @@ var index = 0
 var shopName
 let trackData
 
-setInterval(scheduleUpdate, 43200000) // 12h
+setInterval(scheduleUpdate, 21600000) // 6h
 function scheduleUpdate() {
-    location.reload()
+    location.href = 'https://www.etsy.com/your/orders/sold'
 }
 
 main()

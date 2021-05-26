@@ -341,35 +341,87 @@ function handleDuplicates() {
 
 /* ------------------------------------------------ADDITIONAL SECTION------------------------------------------------ */
 
-$('#find-product-by-keyword').on('keypress',function(e) {
-  if(e.key == 'Enter') {
+$('#find-product-by-keyword').on('keypress', function (e) {
+  if (e.key == 'Enter') {
     $('#find-product-by-keyword-button').trigger('click')
   }
 })
 
-
 var dataSelect = [
   {
-      id: 0,
-      text: 'enhancement'
+    id: "Father's Day",
+    text: "Father's Day"
   },
   {
-      id: 1,
-      text: 'bug'
+    id: "Pride Month",
+    text: "Pride Month"
   },
   {
-      id: 2,
-      text: 'duplicate'
+    id: "Independence Day",
+    text: "Independence Day"
   },
   {
-      id: 3,
-      text: 'invalid'
+    id: "Canvas",
+    text: "Canvas"
   },
   {
-      id: 4,
-      text: 'wontfix'
+    id: "Art Print",
+    text: "Art Print"
+  },
+  {
+    id: "Shirt",
+    text: "Shirt"
+  },
+  {
+    id: "Mug",
+    text: "Mug"
+  },
+  {
+    id: "Blanket",
+    text: "Blanket"
+  },
+  {
+    id: "Mother's Day",
+    text: "Mother's Day"
+  },
+  {
+    id: "Valentine's Day",
+    text: "Valentine's Day"
+  },
+  {
+    id: "Patrick's Day",
+    text: "Patrick's Day"
+  },
+  {
+    id: "Wedding's Day",
+    text: "Wedding's Day"
+  },
+  {
+    id: "New Year's Day",
+    text: "New Year's Day"
+  },
+  {
+    id: "Memorial Day",
+    text: "Memorial Day"
+  },
+  {
+    id: "Thanksgiving",
+    text: "Thanksgiving"
+  },
+  {
+    id: "Christmas",
+    text: "Christmas"
+  },
+  {
+    id: "Halloween",
+    text: "Halloween"
+  },
+  {
+    id: "Personalize",
+    text: "Personalize"
   }
 ]
+
 $('#find-product-by-keyword').select2({
   placeholder: "Keyword",
   data: dataSelect,
@@ -564,7 +616,7 @@ function filterByDate(data, days) {
 function searchByKeyword(keyword, data = listingData) {
   let dataSearch = []
 
-  getSearchLvl1(keyword)
+  getSearchLevel(keyword)
 
   for (var i = 0; i < data.length; i++) {
     if (checkSearchByKeyword(keyword, i)) {
@@ -574,15 +626,22 @@ function searchByKeyword(keyword, data = listingData) {
   return dataSearch
 }
 
-function getSearchLevel(keyword){
+function getSearchLevel(keyword) {
   let searchData = []
   let level1 = ["Father's Day", "Fride Month", "Independence Day", "Mother's Day", "Valentine's Day", "Patrick's Day", "Wedding's Day", "New Year's Day",
-  "Memorial Day", "Thanksgiving", "Christmas", "Presidents' Day", "Easter", "Halloween"]
+    "Memorial Day", "Thanksgiving", "Christmas", "Presidents' Day", "Easter", "Halloween"]
   let level2 = ["Canvas", "Art Print", "Mug", "Shirt", "Blanket", "Tumbler"]
-  let level3 = ["Personalize"]
+  // let level3 = ["Personalize"]
   for (let i = 0; i < keyword.length; i++) {
-    if(keyword[i])   {} 
+    if (level1.includes(keyword[i])) {
+      searchData['lv1'].push(keyword[i])
+    } else if (level2.includes(keyword[i])) {
+      searchData['lv2'].push(keyword[i])
+    } else {
+      searchData['lv3'].push(keyword[i])
+    }
   }
+  return searchData
 }
 
 /* ------------------------------------------------END FILTER SECTION------------------------------------------------ */
