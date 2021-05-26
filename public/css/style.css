@@ -21,10 +21,10 @@ th, td {
   color: black;
   margin: 0;
 }
-.select2-results__option--selected{
+/* .select2-results__option--selected{
   display: none;
   pointer-events: none !important;
-}
+} */
 .select2-results__option{
   transition: 0.2s;
 }

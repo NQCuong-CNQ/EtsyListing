@@ -352,6 +352,10 @@ $('#find-product-by-keyword').select2({
   data: dataSelect,
 })
 
+$('#find-product-by-keyword').on('change', function (e) {
+  $('.select2-results__option--selected').on('unbind')
+})
+
 var dataSelect = [
   {
       id: 0,
