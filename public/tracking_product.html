@@ -13,6 +13,7 @@
     <link href="css/style.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="css/daterangepicker.css" media="print" onload="this.media='all'" />
     <link rel="stylesheet" type="text/css" href="css/toastr.min.css" />
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 </head>
 
 <body>
@@ -113,7 +114,20 @@
                     <div class="d-flex justify-content-between">
                         <div class="filter-list-container">
                             <input id="find-product-by-keyword" placeholder='Keyword'>
+
+
                             <button class='button-primary' id="find-product-by-keyword-button">Search</button>
+
+                            <select class="js-example-basic-multiple" name="states[]" multiple="multiple">
+                                <option value="AL">Alabama</option>
+                                <option value="asd">align-self</option>
+                                <option value="AL">asdf</option>
+                                <option value="AL">Alaasgagbama</option>
+                                <option value="AL">asdg</option>
+                                <option value="AL">Alaxzvbama</option>
+                                <option value="AL">zxcv</option>
+                                <option value="WY">Wyoming</option>
+                              </select>
 
                             <!-- <h5 style="margin-right: 0.5rem; margin-left: 1.5rem; align-self: flex-end;">Type
                             </h5>
@@ -234,6 +248,7 @@
 <script type="text/javascript" src="js/extension/moment.min.js"></script>
 <script type="text/javascript" src="js/extension/daterangepicker.min.js"></script>
 <script type="text/javascript" src="js/extension/toastr.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script type="text/javascript" src="js/tracking_product_client.js"></script>
 <script defer type="text/javascript" src="js/extension/app.js"></script>
 <script defer type="text/javascript" src="js/extension/fontawesome.min.js"></script>

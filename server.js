@@ -384,7 +384,10 @@ io.on("connection", async function (client) {
 
     response[0]['imgs_listing'] = shopData.imgs
     response[0]['total_sales'] = shopData.totalSales
-    console.log(response)
+
+    
+
+
     await client.emit("return-find-shop-by-name", response)
   })
 

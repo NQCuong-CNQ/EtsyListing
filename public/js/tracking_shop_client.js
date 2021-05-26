@@ -33,8 +33,13 @@ $('#find-shop-by-name-button').on('click', async function () {
 
   let shop = searchLocalShop(shopName)
   if (shop == 0) {
-    $('#loading').css('display', 'block')
-    await socket.emit("find-shop-by-name", shopName)
+    if (gettingData) {
+      toastr.clear()
+      toastr.warning('Please wait until data is updated!')
+    } else {
+      $('#loading').css('display', 'block')
+      await socket.emit("find-shop-by-name", shopName)
+    }
   } else {
     updateData(shop)
   }
@@ -280,11 +285,11 @@ socket.on("return-shop-data", async function (data) {
 })
 
 socket.on("return-find-shop-by-name", function (data) {
-  console.log(data)
   $('#loading').css('display', 'none')
   if (data != 0) {
     updateData(data)
   } else {
+    toastr.clear()
     toastr.error('This shop is not available')
     $('#find-shop-by-name').val('')
   }

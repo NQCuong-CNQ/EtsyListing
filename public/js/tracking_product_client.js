@@ -347,6 +347,10 @@ $('#find-product-by-keyword').on('keypress',function(e) {
   }
 })
 
+
+$('.js-example-basic-multiple').select2()
+
+
 // $('.grid-view-listing').on('click', async function () {
 //   if (isGridView) {
 //     isGridView = false
@@ -530,7 +534,7 @@ function filterByDate(data, days) {
 function searchByKeyword(keyword, data = listingData) {
   let dataSearch = []
   if (keyword.includes("father's day") || keyword.includes("fathers day") || keyword.includes("father day")) {
-
+    
   }
   keyword = keyword.split(' ')
 
