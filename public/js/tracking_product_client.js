@@ -58,6 +58,11 @@ $('#14d-filter-listing-creation-date').on('click', async function () {
   $('#filter-listing-creation-date').text('Last 14 days')
 })
 
+$('#14d-filter-listing-creation-date').on('click', async function () {
+  filterByDateOption = 30
+  searchOrFilterData()
+  $('#filter-listing-creation-date').text('Last 30 days')
+})
 // $('#custom-filter-listing-creation-date').daterangepicker({
 //   "showDropdowns": true,
 //   "minYear": 2010,

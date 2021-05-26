@@ -3,6 +3,7 @@ var socket = io.connect("https://giftsvk.com", {
     reconnect: true
 })
 
+$('#loading').css('display', 'block')
 socket.emit("tracking-history-join")
 
 socket.on("tracking-history-return-data", async function (data) {
@@ -26,6 +27,7 @@ function updateData(data) {
         pageLength: 25,
         order: [[0, "desc"]],
     })
+    $('#loading').css('display', 'none')
 }
 function getEpochTime(input) {
     var date = new Date(0)
