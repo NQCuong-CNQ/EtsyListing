@@ -40,12 +40,19 @@ async function addTracking() {
 socket.on("track-order-step4", async function (name) {
     console.log('step 4' + name)
     if (name == shopName) {
-        $('.position-absolute.position-bottom .flag-img button.btn-orange').click()
+        let numCarrier = $('[for="Select shipping carrier..."]').val()
+        let nameCarrier = $(`[for="Select shipping carrier..."] option[value="${numCarrier}"]`).text()
+        if(nameCarrier == 'Other'){
+            nameCarrier = $('input[placeholder="Shipping carrier"]').val()
+        }
 
+        trackData['carrier_name'] = nameCarrier
+        $('.position-absolute.position-bottom .flag-img button.btn-orange').trigger('click')
         trackData['time_add_tracking'] = Math.floor(new Date().getTime() / 1000)
+
         await socket.emit("track-order-step5", trackData)
         console.log('saved history' + trackData)
-        await sleep(5000)
+        await sleep(6000)
         await addTracking()
     }
 })
