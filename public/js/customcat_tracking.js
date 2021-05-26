@@ -24,9 +24,9 @@ async function getData() {
 
     if(location.href.includes("https://app.customcat.com/signin")){
         $('#signin-form button').trigger('click')
-        await sleep(3000)
+    } else if(location.href.includes("https://app.customcat.com/account/dashboard")){
         location.href = 'https://app.customcat.com/app/122009/main/vieworders'
-        await sleep(5000)
+        return
     }
 
     $.ajax({
