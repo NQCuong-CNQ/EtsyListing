@@ -106,6 +106,7 @@ $('#sort-by-sale-day-listing').on('click', async function () {
 })
 
 $('#find-product-by-keyword-button').on('click', async function () {
+  console.log($('#find-product-by-keyword').val())
   isSearch = true
   searchOrFilterData()
 })

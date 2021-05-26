@@ -14,14 +14,20 @@ th, td {
   border: 1px solid;
 }
 #find-product-by-keyword{
-  width: 300px;
+  width: 300;
 }
 .dropdown p {
   font-size: 16px;
   color: black;
   margin: 0;
 }
-
+.select2-results__option--selected{
+  display: none;
+  pointer-events: none;
+}
+.select2-results__option{
+  transition: 0.2s;
+}
 .dropdown p:hover {
   color: white !important;
 }
