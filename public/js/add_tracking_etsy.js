@@ -45,7 +45,7 @@ socket.on("track-order-step4", async function (name) {
         trackData['time_add_tracking'] = Math.floor(new Date().getTime() / 1000)
         await socket.emit("track-order-step5", trackData)
         console.log('saved history' + trackData)
-        await sleep(3000)
+        await sleep(5000)
         await addTracking()
     }
 })
