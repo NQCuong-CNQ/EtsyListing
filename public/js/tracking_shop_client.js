@@ -158,9 +158,9 @@ function updateData(data = shopData) {
         <td>${data[i].total_sales.toLocaleString()}</td>
         <td>${data[i].num_favorers.toLocaleString()}</td>
         <td>${getEpochTime(data[i].creation_tsz)}</td>
-        <td>${data[i].currency_code}</td>
         <td>${data[i].listing_active_count.toLocaleString()}</td>
         <td>${data[i].digital_listing_count.toLocaleString()}</td>
+        <td>${data[i].currency_code}</td>
         <td>${data[i].languages}</td>
         <td>${data[i].shop_id}</td>
     </tr>`)
@@ -241,14 +241,14 @@ if (categoryLocalData != null) {
   $('#loading').css('display', 'block')
 }
 
-socket.emit("join")
+socket.emit("shop-tracking-join")
 
 socket.on("updating", function (data) {
   toastr.clear()
   toastr.warning('Data Server is updating, cannot get new information!')
 })
 
-socket.on("dataTransfer", async function (data) {
+socket.on("return-shop-data", async function (data) {
   shopData = data
   gettingData = 0
   $('#loading').css('display', 'none')
@@ -263,11 +263,11 @@ socket.on("dataTransfer", async function (data) {
     temp['url'] = data[i].url
     temp['imgs_listing'] = data[i].imgs_listing
     temp['total_sales'] = data[i].total_sales
+    temp['num_favorers'] = data[i].num_favorers
     temp['creation_tsz'] = data[i].creation_tsz
-    temp['currency_code'] = data[i].currency_code
     temp['digital_listing_count'] = data[i].digital_listing_count
     temp['listing_active_count'] = data[i].listing_active_count
-    temp['num_favorers'] = data[i].num_favorers
+    temp['currency_code'] = data[i].currency_code
     temp['shop_id'] = data[i].shop_id
     temp['languages'] = data[i].languages
     tempData[i] = temp
@@ -284,7 +284,8 @@ socket.on("return-find-shop-by-name", function (data) {
   if (data != 0) {
     updateData(data)
   } else {
-    alert('This shop is not available')
+    toastr.error('This shop is not available')
+    $('#find-shop-by-name').val('')
   }
 })
 
@@ -382,12 +383,12 @@ socket.on("shop-tracking-data", function (data) {
   })
 })
 
-socket.on("shopCategoryDataTransfer", function (data) {
+socket.on("return-shop-category-data", function (data) {
   shopCategory = data
   window.localStorage.setItem('listing-shop-category', JSON.stringify(shopCategory))
 })
 
-socket.on("userDataTransfer", function (data) {
+socket.on("return-user-data", function (data) {
   $('#loading').css('display', 'none')
   $('#user_img').attr('src', data.image_url_75x75)
   $('#user_id').text(data.user_id)
@@ -406,7 +407,7 @@ socket.on("userDataTransfer", function (data) {
   $('#user_sold_count').text(data.transaction_sold_count.toLocaleString())
 })
 
-socket.on("listingDataTransfer", function (data) {
+socket.on("return-listing-data", function (data) {
   $('#loading').css('display', 'none')
   $('#table_id-list').DataTable().clear().destroy()
   for (var i = 0; i < data.length; i++) {

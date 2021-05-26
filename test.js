@@ -29,29 +29,12 @@
 
 
 // server.listen(8080)
-getEpochTime()
-function getEpochTime() {
-    var date = new Date(0)
-    date.setUTCSeconds(1621997752)
-    time = String(date)
-    time = time.split(' ')
-    time = time[4] + ' ' + time[2] +'/'+convertMonthInString(time[1])
-    console.log(time)
-  }
+let date = new Date().getTime() / 1000
+console.log(date - 1620908495 + '/' + 86400 * 30)
+console.log(60*60*24)
 
-  function convertMonthInString(month) {
-    switch (month) {
-      case 'Jan': return '01'
-      case 'Feb': return '02'
-      case 'Mar': return '03'
-      case 'Apr': return '04'
-      case 'May': return '05'
-      case 'Jun': return '06'
-      case 'Jul': return '07'
-      case 'Aug': return '08'
-      case 'Sep': return '09'
-      case 'Oct': return '10'
-      case 'Nov': return '11'
-      case 'Dec': return '12'
-    }
-  }
+
+ date = new Date(0)
+date.setUTCSeconds(1313337709)
+time = String(date)
+console.log(time)
