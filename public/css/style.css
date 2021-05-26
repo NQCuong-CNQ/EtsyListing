@@ -13,7 +13,9 @@ th, td {
 .dropdown button {
   border: 1px solid;
 }
-
+#find-product-by-keyword{
+  width: 300px;
+}
 .dropdown p {
   font-size: 16px;
   color: black;

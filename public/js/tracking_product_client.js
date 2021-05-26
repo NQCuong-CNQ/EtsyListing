@@ -348,7 +348,9 @@ $('#find-product-by-keyword').on('keypress',function(e) {
 })
 
 
-$('.js-example-basic-multiple').select2()
+$('.js-example-basic-multiple').select2({
+  placeholder: "Keyword"
+})
 
 
 // $('.grid-view-listing').on('click', async function () {
