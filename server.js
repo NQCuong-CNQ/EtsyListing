@@ -643,8 +643,7 @@ async function makeRequest(method, url) {
 async function getTotalShop() {
   let result = await makeRequest("GET", `https://openapi.etsy.com/v2/shops?api_key=${api_key}&limit=1&offset=1`)
   result = JSON.parse(result).results
-  total_shop = result[0].shop_id
-  return total_shop
+  return result[0].shop_id
 }
 
 server.listen(443)
