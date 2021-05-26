@@ -134,7 +134,12 @@ async function getListing() {
         listingTracking['img_url'] = resultImgs.url_570xN
         listingTracking['img_url_original'] = resultImgs.url_fullxfull
 
-        let percentFavor = (listings.num_favorers / listings.views) * 100
+        let percentFavor
+        if(listings.views > 0){
+          percentFavor = (listings.num_favorers / listings.views) * 100
+        } else {
+          percentFavor = 0
+        }
         percentFavor = percentFavor.toFixed(0)
         listingTracking['percent_favor'] = percentFavor
 
