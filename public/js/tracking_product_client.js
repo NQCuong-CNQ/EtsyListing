@@ -119,9 +119,9 @@ function searchOrFilterData() {
     isSearch = false
   }
 
-  if (isSearch) {
-    dataFilter = searchByKeyword(keyword)
-  }
+  // if (isSearch) {
+  //   dataFilter = searchByKeyword(keyword)
+  // }
 
   // if (filterByTypeOption == 0) {
   //   dataFilter = filterByType(dataFilter)
@@ -576,7 +576,7 @@ function getSearchLevel(keyword){
   let level2 = ["Canvas", "Art Print", "Mug", "Shirt", "Blanket", "Tumbler"]
   let level3 = ["Personalize"]
   for (let i = 0; i < keyword.length; i++) {
-    if(keyword[i])    
+    if(keyword[i])   {} 
   }
 }
 
