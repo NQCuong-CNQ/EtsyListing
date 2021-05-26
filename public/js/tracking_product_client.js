@@ -347,14 +347,6 @@ $('#find-product-by-keyword').on('keypress',function(e) {
   }
 })
 
-$('#find-product-by-keyword').select2({
-  placeholder: "Keyword",
-  data: dataSelect,
-})
-
-$('#find-product-by-keyword').on('change', function (e) {
-  $('.select2-results__option--selected').on('unbind')
-})
 
 var dataSelect = [
   {
@@ -377,7 +369,16 @@ var dataSelect = [
       id: 4,
       text: 'wontfix'
   }
-];
+]
+$('#find-product-by-keyword').select2({
+  placeholder: "Keyword",
+  data: dataSelect,
+})
+
+$('#find-product-by-keyword').on('change', function (e) {
+  $('.select2-results__option--selected').on('unbind')
+})
+
 
 
 // $('.grid-view-listing').on('click', async function () {
