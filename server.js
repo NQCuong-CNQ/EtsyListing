@@ -493,7 +493,7 @@ io.on("connection", async function (client) {
   })
 
   await client.on("track-order-join", async function (data) {
-    console.log('getting data success!')
+    console.log('getting data success! ' + data.length)
     let trackData = []
     let temp = data.split('\n')
 
@@ -508,16 +508,16 @@ io.on("connection", async function (client) {
       }
     }
 
-    console.log('send data to etsy')
-    await client.emit("track-order-return", trackData)
+    console.log('send data to etsy' + trackData.length)
+    await client.broadcast.emit("track-order-return", trackData)
   })
 
   await client.on("track-order-step1", async function (data) {
-    await client.emit("track-order-step2", data)
+    await client.broadcast.emit("track-order-step2", data)
   })
 
   await client.on("track-order-step3", async function (name) {
-    await client.emit("track-order-step4", name)
+    await client.broadcast.emit("track-order-step4", name)
   })
 
   await client.on("track-order-step5", async function (data) {
