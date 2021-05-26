@@ -379,12 +379,12 @@ io.on("connection", async function (client) {
     }
     response = JSON.parse(response).results
 
-
     siteUrl = "https://www.etsy.com/shop/" + shopName
     let shopData = await getTotalSalesAndImgFromWeb()
 
     response['imgs_listing'] = shopData.imgs
     response['total_sales'] = shopData.totalSales
+    console.log(response)
     await client.emit("return-find-shop-by-name", response)
   })
 
