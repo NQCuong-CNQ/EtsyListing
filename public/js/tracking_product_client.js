@@ -106,7 +106,6 @@ $('#sort-by-sale-day-listing').on('click', async function () {
 })
 
 $('#find-product-by-keyword-button').on('click', async function () {
-  console.log($('#find-product-by-keyword').val())
   isSearch = true
   searchOrFilterData()
 })
@@ -115,14 +114,14 @@ function searchOrFilterData() {
   $('#loading').css('display', 'block')
   dataFilter = listingData
 
-  // let keyword = $('#find-product-by-keyword').val().trim().toLowerCase().replace(/ +(?= )/g, '')
-  // if (keyword == '') {
-  //   isSearch = false
-  // }
+  let keyword = $('#find-product-by-keyword').val()
+  if (keyword == '') {
+    isSearch = false
+  }
 
-  // if (isSearch) {
-  //   dataFilter = searchByKeyword(keyword)
-  // }
+  if (isSearch) {
+    dataFilter = searchByKeyword(keyword)
+  }
 
   // if (filterByTypeOption == 0) {
   //   dataFilter = filterByType(dataFilter)
@@ -349,8 +348,33 @@ $('#find-product-by-keyword').on('keypress',function(e) {
 })
 
 $('#find-product-by-keyword').select2({
-  placeholder: "Keyword"
+  placeholder: "Keyword",
+  data: dataSelect,
 })
+
+var dataSelect = [
+  {
+      id: 0,
+      text: 'enhancement'
+  },
+  {
+      id: 1,
+      text: 'bug'
+  },
+  {
+      id: 2,
+      text: 'duplicate'
+  },
+  {
+      id: 3,
+      text: 'invalid'
+  },
+  {
+      id: 4,
+      text: 'wontfix'
+  }
+];
+
 
 // $('.grid-view-listing').on('click', async function () {
 //   if (isGridView) {
@@ -534,10 +558,8 @@ function filterByDate(data, days) {
 
 function searchByKeyword(keyword, data = listingData) {
   let dataSearch = []
-  if (keyword.includes("father's day") || keyword.includes("fathers day") || keyword.includes("father day")) {
-    
-  }
-  keyword = keyword.split(' ')
+
+  getSearchLvl1(keyword)
 
   for (var i = 0; i < data.length; i++) {
     if (checkSearchByKeyword(keyword, i)) {
@@ -545,6 +567,17 @@ function searchByKeyword(keyword, data = listingData) {
     }
   }
   return dataSearch
+}
+
+function getSearchLevel(keyword){
+  let searchData = []
+  let level1 = ["Father's Day", "Fride Month", "Independence Day", "Mother's Day", "Valentine's Day", "Patrick's Day", "Wedding's Day", "New Year's Day",
+  "Memorial Day", "Thanksgiving", "Christmas", "Presidents' Day", "Easter", "Halloween"]
+  let level2 = ["Canvas", "Art Print", "Mug", "Shirt", "Blanket", "Tumbler"]
+  let level3 = ["Personalize"]
+  for (let i = 0; i < keyword.length; i++) {
+    if(keyword[i])    
+  }
 }
 
 /* ------------------------------------------------END FILTER SECTION------------------------------------------------ */

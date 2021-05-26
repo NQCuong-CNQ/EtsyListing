@@ -14,7 +14,7 @@ th, td {
   border: 1px solid;
 }
 #find-product-by-keyword{
-  width: 300;
+  width: 300px;
 }
 .dropdown p {
   font-size: 16px;
@@ -23,7 +23,7 @@ th, td {
 }
 .select2-results__option--selected{
   display: none;
-  pointer-events: none;
+  pointer-events: none !important;
 }
 .select2-results__option{
   transition: 0.2s;
