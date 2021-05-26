@@ -119,9 +119,10 @@ function searchOrFilterData() {
     isSearch = false
   }
 
-  // if (isSearch) {
-  //   dataFilter = searchByKeyword(keyword)
-  // }
+  if (isSearch) {
+    // dataFilter = searchByKeyword(keyword)
+    searchByKeyword(keyword)
+  }
 
   // if (filterByTypeOption == 0) {
   //   dataFilter = filterByType(dataFilter)
@@ -616,7 +617,7 @@ function filterByDate(data, days) {
 function searchByKeyword(keyword, data = listingData) {
   let dataSearch = []
 
-  getSearchLevel(keyword)
+  console.log(getSearchLevel(keyword))
 
   for (var i = 0; i < data.length; i++) {
     if (checkSearchByKeyword(keyword, i)) {

@@ -8,7 +8,7 @@ console.log('Getting data...')
 var options = { year: 'numeric', month: '2-digit', day: '2-digit' };
 var date = new Date()
 var end = date.toLocaleDateString("en-US", options)
-date.setDate(date.getDate() - 5)    
+date.setDate(date.getDate() - 5)
 var start = date.toLocaleDateString("en-US", options)
 
 console.log(end + start)
@@ -16,11 +16,19 @@ getData()
 
 setInterval(scheduleUpdate, 3600000) // 1h
 function scheduleUpdate() {
-  location.reload()
+    location.href = 'https://app.customcat.com/app/122009/main/vieworders'
 }
 
 async function getData() {
-    await sleep(3000)
+    await sleep(5000)
+
+    if(location.href.includes("https://app.customcat.com/signin")){
+        $('#signin-form button').trigger('click')
+        await sleep(3000)
+        location.href = 'https://app.customcat.com/app/122009/main/vieworders'
+        await sleep(5000)
+    }
+
     $.ajax({
         url: `https://app.customcat.com/app/122009/order/exportorders?start_date=${start}&end_date=${end}`,
         success: async function (result) {
