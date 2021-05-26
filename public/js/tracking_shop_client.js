@@ -280,6 +280,7 @@ socket.on("return-shop-data", async function (data) {
 })
 
 socket.on("return-find-shop-by-name", function (data) {
+  console.log(data)
   $('#loading').css('display', 'none')
   if (data != 0) {
     updateData(data)
