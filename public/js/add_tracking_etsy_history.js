@@ -17,8 +17,8 @@ function updateData(data) {
             <td>${i}</td>
             <td>${data[i].id}</td>
             <td>${formatShopName(data[i].name)}</td>
-            <td>${data[i].customer_name}</td>
-            <td>${formatCustomerEmail(data[i].customer_email)}</td>
+            <td>${formatCustomerName(data[i].customer_name)}</td>
+            <td>---</td>
             <td>${getCarrierCode(data[i].number_tracking)}</td>
             <td>${getCarrierCode(data[i].actual_input)}</td>
             <td>${getCarrierName(data[i].carrier_name)}</td>
@@ -27,12 +27,18 @@ function updateData(data) {
             <td>${getEpochTime(data[i].time_add_tracking)}</td>
       </tr>`)
     }
-
+//${formatCustomerEmail(data[i].customer_email)}
     $('#table_id-tracking-history').DataTable({
         pageLength: 25,
         order: [[0, "desc"]],
     })
     $('#loading').css('display', 'none')
+}
+
+function formatCustomerName(name){
+    if (name == undefined) {
+        return '---'
+    }
 }
 
 function formatOrderStatus(status){
