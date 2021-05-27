@@ -16,26 +16,35 @@ function updateData(data) {
         $('#table_id-tracking-history-body').append(`<tr>
             <td>${i}</td>
             <td>${data[i].id}</td>
-            <td>${data[i].name}</td>
+            <td>${formatShopName(data[i].name)}</td>
             <td>${data[i].customer_name}</td>
             <td>${getCarrierName(data[i].carrier_name)}</td>
             <td>${getCarrierCode(data[i].number_tracking)}</td>
-            <td>${data[i].order_date}</td>
+            <td>${getCarrierCode(data[i].actual_input)}</td>
+            <td>${formatOrderDate(data[i].order_date)}</td>
             <td>${data[i].order_status}</td>
             <td>${getEpochTime(data[i].time_add_tracking)}</td>
       </tr>`)
     }
-//<td>${getCarrierCode(data[i].actual_input)}</td>
+
     $('#table_id-tracking-history').DataTable({
         pageLength: 25,
         order: [[0, "desc"]],
     })
     $('#loading').css('display', 'none')
 }
+function formatShopName(shopName){
+    if( shopName == undefined){
+        return '---'
+    }
+}
+function formatOrderDate(date){
+    return date.substring(5).split('.')[0].replace('-','/')
+}
 
 function getCarrierCode(code) {
     if (code == undefined) {
-        return 'Not saved yet'
+        return '---'
     } else if (code.startsWith('9')) {
         return `<a href='https://tools.usps.com/go/TrackConfirmAction?tRef=fullpage&tLc=2&text28777=&tLabels=${code}' target='_blank'>${code}</a>`
     } else if (code.startsWith('1Z') || code.startsWith('8')) {
@@ -44,6 +53,9 @@ function getCarrierCode(code) {
 }
 
 function getEpochTime(input) {
+    if (input == undefined) {
+        return '--/--/--'
+    }
     var date = new Date(0)
     date.setUTCSeconds(input)
     time = String(date)
@@ -54,7 +66,7 @@ function getEpochTime(input) {
 
 function getCarrierName(name) {
     if (name == undefined) {
-        return 'Not saved yet'
+        return '---'
     } return name
 }
 
