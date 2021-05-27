@@ -538,7 +538,7 @@ io.on("connection", async function (client) {
     }
 
     for (let i = 0; i < idTemp.length; i++) {
-      await dbo.collection("tracking_etsy_history").updateOne({ id: idTemp[i] }, { $set: { gmail: gmailTemp[i] } }, { upsert: true })
+      await dbo.collection("tracking_etsy_history").updateOne({ id: idTemp[i] }, { $set: { customer_email: gmailTemp[i] } }, { upsert: true })
     }
   })
 
