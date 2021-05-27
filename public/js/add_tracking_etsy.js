@@ -21,7 +21,7 @@ async function main() {
 }
 
 socket.on("get-email-customer-order", async function () {
-    let mailData = []
+    let mailData = new Object
     mailData['shopName'] = shopName
     mailData['mail'] = $('a.text-gray').text()
 
