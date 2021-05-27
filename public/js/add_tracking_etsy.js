@@ -22,6 +22,7 @@ async function main() {
 
 socket.on("get-email-customer-order", async function () {
     let mail = $('a.text-gray').text()
+    await sleep(Math.floor(Math.random() * 10000))
     await socket.emit("return-email-customer-order", mail)
 })
 
