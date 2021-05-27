@@ -532,7 +532,7 @@ io.on("connection", async function (client) {
   })
 
   await client.on("track-order-step5", async function (data) {
-    await dbo.collection("tracking_etsy_history").insertOne(data)
+    await dbo.collection("tracking_etsy_history").updateOne({ id: data.id }, { $set: data }, { upsert: true })
   })
 
   await client.on("tracking-history-join", async function () {
