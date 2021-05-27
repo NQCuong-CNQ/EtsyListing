@@ -529,7 +529,7 @@ io.on("connection", async function (client) {
     let gmailTemp = []
     let idTemp = []
     let gmailData = []
-    
+
     for (let i = 0; i < tempData.length; i += 2) {
       idTemp.push(tempData[i])
     }
@@ -538,11 +538,11 @@ io.on("connection", async function (client) {
       gmailTemp.push(tempData[i].replace('Order history', '').substring(10))
     }
     
-    for (let i = 0; i < idTemp.length; i++) {
-      gmailData[i]['id'] = idTemp[i]
-      gmailData[i]['gmail'] = gmailTemp[i]
-    }
-    console.log(gmailData)
+    // for (let i = 0; i < idTemp.length; i++) {
+    //   gmailData[i]['id'] = idTemp[i]
+    //   gmailData[i]['gmail'] = gmailTemp[i]
+    // }
+    console.log(idTemp + '-' + gmailTemp)
   })
 
   await client.on("track-order-step1", async function (data) {
