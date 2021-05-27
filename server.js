@@ -500,6 +500,7 @@ io.on("connection", async function (client) {
     let temp = data.split('\n')
 
     let trackObj
+    let trackDataForSave
     for (let i = 1; i < temp.length - 1; i++) {
       trackObj = new Object
       trackObj['pro_ID'] = temp[i].split(',')[0].replace(/[^0-9]/g, '')
@@ -508,6 +509,14 @@ io.on("connection", async function (client) {
       if (trackObj['track_number'] != '') {
         trackData.push(trackObj)
       }
+
+      // trackDataForSave = new Object
+      // trackDataForSave['pro_ID'] = trackObj['pro_ID']
+      // trackDataForSave['track_number'] = trackObj['track_number']
+      // trackDataForSave['order_date'] = temp[i].split(',')[2].replace(/"/g, '')
+      // trackDataForSave['order_status'] = temp[i].split(',')[3].replace(/[^0-9a-zA-Z]/g, '')
+      // trackDataForSave['customer_name'] = temp[i].split(',')[12].replace(/[^0-9a-zA-Z]/g, '')
+      // await dbo.collection("tracking_etsy_history").updateOne({ pro_ID: trackDataForSave['pro_ID'] }, { $set: trackDataForSave }, { upsert: true })
     }
 
     console.log('send data to etsy' + trackData.length)

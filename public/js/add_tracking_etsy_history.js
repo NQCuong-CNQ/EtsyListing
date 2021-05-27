@@ -18,7 +18,8 @@ function updateData(data) {
             <td>${data[i].id}</td>
             <td>${data[i].name}</td>
             <td>${getCarrierName(data[i].carrier_name)}</td>
-            <td>${data[i].number_tracking}</td>
+            <td>${getCarrierCode(data[i].number_tracking)}</td>
+            <td>${getCarrierCode(data[i].actual_input)}</td>
             <td>${getEpochTime(data[i].time_add_tracking)}</td>
       </tr>`)
     }
@@ -29,6 +30,17 @@ function updateData(data) {
     })
     $('#loading').css('display', 'none')
 }
+
+function getCarrierCode(code) {
+    if (code == undefined) {
+        return 'Not saved yet'
+    } else if (code.startWith('9')) {
+        return `<a href='https://tools.usps.com/go/TrackConfirmAction?tRef=fullpage&tLc=2&text28777=&tLabels=${code}' target='_blank'>${code}</a>`
+    } else if (code.startWith('1Z') || code.startWith('8')) {
+        return `<a href='https://www.ups.com/track?loc=null&tracknum=${code}&requester=WT/trackdetails' target='_blank'>${code}</a>`
+    }
+}
+
 function getEpochTime(input) {
     var date = new Date(0)
     date.setUTCSeconds(input)
