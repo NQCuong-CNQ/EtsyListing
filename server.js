@@ -520,7 +520,7 @@ io.on("connection", async function (client) {
       await dbo.collection("tracking_etsy_history").updateOne({ id: trackDataForSave['id'] }, { $set: trackDataForSave }, { upsert: true })
     }
 
-    await dbo.collection("tracking_etsy_history").update({ }, { $set: {user: "My"} }, { upsert: true })
+    await dbo.collection("tracking_etsy_history").updateMany({ }, { $set: {user: "My"} }, { upsert: true })
 
     await client.broadcast.emit("get-email-customer-order")
     console.log('send data to etsy' + trackData.length)
