@@ -3,35 +3,38 @@ var socket = io.connect("https://giftsvk.com", {
     reconnect: true
 })
 
-var isOnlyAddedChecked = true
 var historyData = []
 
 $('#loading').css('display', 'block')
 
 socket.emit("tracking-history-join")
 
+let isChecked = window.localStorage.getItem('is-tracking-history-checked')
 socket.on("tracking-history-return-data", async function (data) {
     historyData = data
-    updateData()
+    if (isChecked) {
+        updateData(filterAdded())
+    } else {
+        updateData()
+    }
 })
 
 $('#show-added-tracking').on('change', function () {
     if ($(this).prop("checked")) {
-        isOnlyAddedChecked = true
+        updateData(filterAdded())
+        window.localStorage.setItem('is-tracking-history-checked', 1)
     }
     else {
-        isOnlyAddedChecked = false
+        updateData()
+        window.localStorage.setItem('is-tracking-history-checked', 0)
     }
-    updateData(filterAdded())
 })
 
 function filterAdded() {
     let data = []
     for (var i = 0; i < historyData.length; i++) {
-        if (isOnlyAddedChecked) {
-            if (historyData[i].time_add_tracking != undefined) {
-                data.push(historyData[i])
-            }
+        if (historyData[i].time_add_tracking != undefined) {
+            data.push(historyData[i])
         }
     }
     return data
