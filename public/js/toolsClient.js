@@ -44,6 +44,7 @@ $('#submit-shop-button').on('click', async function () {
 socket.on("return-add-shop-braumstar", function (data) {
     $('#loading').css('display', 'none')
     if (data == 1) {
+        toastr.clear()
         toastr.success('Thêm thành công')
         $('#input-shop-name').val('')
     }
@@ -67,6 +68,7 @@ $('#submit-shop-die-button').on('click', async function () {
 socket.on("return-delete-shop-braumstar", function (data) {
     $('#loading').css('display', 'none')
     if (data == 1) {
+        toastr.clear()
         toastr.success('Xóa thành công')
         $('#input-shop-die-name').val('')
     }
