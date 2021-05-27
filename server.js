@@ -534,7 +534,6 @@ io.on("connection", async function (client) {
     for (let i = 1; i < tempData.length; i++) {
       if(i%2==1){
         idTemp.push(tempData[i])
-        console.log('id'+tempData[i])
       }
     }
 
@@ -549,7 +548,7 @@ io.on("connection", async function (client) {
       dataStore = new Object
       dataStore['id'] = idTemp[i]
       dataStore['gmail'] = gmailTemp[i]
-      gmailData.push(gmailData)
+      gmailData.push(dataStore)
     }
 
     console.log(gmailData)
