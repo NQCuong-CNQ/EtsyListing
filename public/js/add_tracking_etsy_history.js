@@ -3,22 +3,41 @@ var socket = io.connect("https://giftsvk.com", {
     reconnect: true
 })
 
+var isOnlyAddedChecked = true
+var historyData = []
+
 $('#loading').css('display', 'block')
 
 socket.emit("tracking-history-join")
 
 socket.on("tracking-history-return-data", async function (data) {
-    updateData(data)
+    historyData = data
+    updateData()
 })
 
-$('#show-added-tracking').on('change', function(){
-    if($(this).prop("checked")){
+$('#show-added-tracking').on('change', function () {
+    if ($(this).prop("checked")) {
+        isOnlyAddedChecked = true
     }
-    else{
+    else {
+        isOnlyAddedChecked = false
     }
+    updateData(filterAdded())
 })
 
-function updateData(data) {
+function filterAdded() {
+    let data = []
+    for (var i = 0; i < historyData.length; i++) {
+        if (isOnlyAddedChecked) {
+            if (historyData[i].time_add_tracking != undefined) {
+                data.push(historyData[i])
+            }
+        }
+    }
+    return data
+}
+
+function updateData(data = historyData) {
     $('#table_id-tracking-history').DataTable().clear().destroy()
     for (var i = 0; i < data.length; i++) {
         $('#table_id-tracking-history-body').append(`<tr>
@@ -33,7 +52,7 @@ function updateData(data) {
             <td>${formatOrderDate(data[i].order_date)}</td>
             <td>${formatOrderStatus(data[i].order_status)}</td>
             <td>${getEpochTime(data[i].time_add_tracking)}</td>
-      </tr>`)
+        </tr>`)
     }
 
     $('#table_id-tracking-history').DataTable({
@@ -68,7 +87,7 @@ function formatShopName(shopName) {
 }
 
 function formatOrderDate(date) {
-    if (date == undefined) {    
+    if (date == undefined) {
         return '---'
     }
     return date.substring(5).split('.')[0].replace('-', '/')

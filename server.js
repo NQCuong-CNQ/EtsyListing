@@ -537,6 +537,8 @@ io.on("connection", async function (client) {
       gmailTemp.push(tempData[i].replace('Order history', '').substring(10))
     }
 
+    console.log(idTemp.lenght)
+
     for (let i = 0; i < idTemp.length; i++) {
       await dbo.collection("tracking_etsy_history").updateOne({ id: idTemp[i] }, { $set: { customer_email: gmailTemp[i] } })
     }
