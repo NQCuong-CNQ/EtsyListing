@@ -19,11 +19,11 @@ function updateData(data) {
             <td>${data[i].name}</td>
             <td>${getCarrierName(data[i].carrier_name)}</td>
             <td>${getCarrierCode(data[i].number_tracking)}</td>
-            <td>${getCarrierCode(data[i].actual_input)}</td>
+            
             <td>${getEpochTime(data[i].time_add_tracking)}</td>
       </tr>`)
     }
-
+//<td>${getCarrierCode(data[i].actual_input)}</td>
     $('#table_id-tracking-history').DataTable({
         pageLength: 25,
         order: [[0, "desc"]],
