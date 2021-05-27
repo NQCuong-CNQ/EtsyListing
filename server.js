@@ -495,9 +495,9 @@ io.on("connection", async function (client) {
   })
 
   await client.on("track-order-join", async function (data) {
-    console.log('getting data success! ' + data.length)
+    console.log('getting data success! ' + data['data'].length)
     let trackData = []
-    let temp = data.split('\n')
+    let temp = data['data'].split('\n')
 
     let trackObj
     let trackDataForSave
@@ -516,8 +516,11 @@ io.on("connection", async function (client) {
       trackDataForSave['order_date'] = temp[i].split(',')[2].replace(/"/g, '')
       trackDataForSave['order_status'] = temp[i].split(',')[3].replace(/[^0-9a-zA-Z]/g, '')
       trackDataForSave['customer_name'] = temp[i].split(',')[12].replace(/[^0-9a-zA-Z]/g, '')
+      trackDataForSave['user'] = data['name']
       await dbo.collection("tracking_etsy_history").updateOne({ id: trackDataForSave['id'] }, { $set: trackDataForSave }, { upsert: true })
     }
+
+    await dbo.collection("tracking_etsy_history").update({ }, { $set: {user: "My"} }, { upsert: true })
 
     await client.broadcast.emit("get-email-customer-order")
     console.log('send data to etsy' + trackData.length)

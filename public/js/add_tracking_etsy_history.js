@@ -10,15 +10,15 @@ $('#loading').css('display', 'block')
 socket.emit("tracking-history-join")
 
 let isChecked = window.localStorage.getItem('is-tracking-history-checked')
-if (isChecked) {
+if (isChecked == '1') {
     $('#show-added-tracking').prop("checked", true)
-} else{
+} else if (isChecked == '0'){
     $('#show-added-tracking').prop("checked", false)
 }
 
 socket.on("tracking-history-return-data", async function (data) {
     historyData = data
-    if (isChecked) {
+    if (isChecked == '1') {
         updateData(filterAdded())
     } else {
         updateData()
@@ -28,11 +28,11 @@ socket.on("tracking-history-return-data", async function (data) {
 $('#show-added-tracking').on('change', function () {
     if ($(this).prop("checked")) {
         updateData(filterAdded())
-        window.localStorage.setItem('is-tracking-history-checked', 1)
+        window.localStorage.setItem('is-tracking-history-checked', '1')
     }
     else {
         updateData()
-        window.localStorage.setItem('is-tracking-history-checked', 0)
+        window.localStorage.setItem('is-tracking-history-checked', '0')
     }
 })
 
