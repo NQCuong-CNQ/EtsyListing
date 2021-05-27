@@ -11,11 +11,11 @@ socket.on("tracking-history-return-data", async function (data) {
     updateData(data)
 })
 
-$('#show-added-tracking').on('click', function(){
-    if($(this).prop("checked") == true){
+$('#show-added-tracking').on('change', function(){
+    if($(this).prop("checked")){
         console.log("checked")
     }
-    else if($(this).prop("checked") == false){
+    else{
         console.log("not")
     }
 })
