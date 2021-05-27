@@ -27,16 +27,16 @@ socket.on("tracking-history-return-data", async function (data) {
 function filterData(){
     let filterData = historyData
 
-    if(isAddedChecked){
-        filterData = filterAdded(filterData)
-    }
-
     if(isMyAccount){
-        filterData = filterMyAccount(filterData)
+        filterData = filterMyAccount(historyData)
     }
 
     if(isTrangAccount){
-        filterData = filterTrangAccount(filterData)
+        filterData = filterTrangAccount(historyData)
+    }
+
+    if(isAddedChecked){
+        filterData = filterAdded(filterData)
     }
 
     updateData(filterData)
