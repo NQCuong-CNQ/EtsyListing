@@ -13,10 +13,8 @@ socket.on("tracking-history-return-data", async function (data) {
 
 $('#show-added-tracking').on('change', function(){
     if($(this).prop("checked")){
-        console.log("checked")
     }
     else{
-        console.log("not")
     }
 })
 
@@ -37,7 +35,7 @@ function updateData(data) {
             <td>${getEpochTime(data[i].time_add_tracking)}</td>
       </tr>`)
     }
-    
+
     $('#table_id-tracking-history').DataTable({
         pageLength: 25,
         order: [[0, "desc"]],
