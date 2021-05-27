@@ -60,14 +60,14 @@ function formatShopName(shopName) {
 }
 
 function formatOrderDate(date) {
-    if (date == undefined) {
+    if (date == undefined) {    
         return '---'
     }
     return date.substring(5).split('.')[0].replace('-', '/')
 }
 
 function getCarrierCode(code) {
-    if (code == undefined) {
+    if (code == undefined || code == '') {
         return '---'
     } else if (code.startsWith('9')) {
         return `<a href='https://tools.usps.com/go/TrackConfirmAction?tRef=fullpage&tLc=2&text28777=&tLabels=${code}' target='_blank'>${code}</a>`

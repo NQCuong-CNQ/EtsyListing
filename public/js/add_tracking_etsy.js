@@ -20,6 +20,11 @@ async function main() {
     console.log(shopName)
 }
 
+socket.on("get-email-customer-order", async function () {
+    let mail = $('a.text-gray').text()
+    await socket.emit("return-email-customer-order", mail)
+})
+
 socket.on("track-order-return", async function (dataReceive) {
     data = dataReceive
     console.log('receive data: ' + data)

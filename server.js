@@ -517,10 +517,24 @@ io.on("connection", async function (client) {
       trackDataForSave['order_status'] = temp[i].split(',')[3].replace(/[^0-9a-zA-Z]/g, '')
       trackDataForSave['customer_name'] = temp[i].split(',')[12].replace(/[^0-9a-zA-Z]/g, '')
       await dbo.collection("tracking_etsy_history").updateOne({ id: trackDataForSave['id'] }, { $set: trackDataForSave }, { upsert: true })
+      await client.broadcast.emit("get-email-customer-order")
     }
 
     console.log('send data to etsy' + trackData.length)
     await client.broadcast.emit("track-order-return", trackData)
+  })
+
+  await client.on("return-email-customer-order", async function (data) {
+    let tempData = data.split('#')
+    let gmailData = []
+    for (let i = 0; i < tempData.length; i++) {
+      if (i % 2 == 0) {
+        gmailData['id'] = tempData[i]
+      } else {
+        gmailData['gmail'] = tempData[i].replace('Order history', '').substring(10)
+      }
+    }
+    console.log(gmailData)
   })
 
   await client.on("track-order-step1", async function (data) {
