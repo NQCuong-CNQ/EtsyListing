@@ -17,9 +17,11 @@ function updateData(data) {
             <td>${i}</td>
             <td>${data[i].id}</td>
             <td>${data[i].name}</td>
+            <td>${data[i].customer_name}</td>
             <td>${getCarrierName(data[i].carrier_name)}</td>
             <td>${getCarrierCode(data[i].number_tracking)}</td>
-            
+            <td>${data[i].order_date}</td>
+            <td>${data[i].order_status}</td>
             <td>${getEpochTime(data[i].time_add_tracking)}</td>
       </tr>`)
     }
