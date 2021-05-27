@@ -526,12 +526,14 @@ io.on("connection", async function (client) {
 
   await client.on("return-email-customer-order", async function (data) {
     let tempData = data.split('#')
+    let gmailTemp = []
     let gmailData = []
     for (let i = 0; i < tempData.length; i++) {
       if (i % 2 == 0) {
-        gmailData['id'] = tempData[i]
+        gmailTemp['id'] = tempData[i]
       } else {
-        gmailData['gmail'] = tempData[i].replace('Order history', '').substring(10)
+        gmailTemp['gmail'] = tempData[i].replace('Order history', '').substring(10)
+        gmailData.push(gmailTemp)
       }
     }
     console.log(gmailData)
