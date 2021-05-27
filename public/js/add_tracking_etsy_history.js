@@ -34,9 +34,9 @@ function updateData(data) {
 function getCarrierCode(code) {
     if (code == undefined) {
         return 'Not saved yet'
-    } else if (code.startWith('9')) {
+    } else if (code.startsWith('9')) {
         return `<a href='https://tools.usps.com/go/TrackConfirmAction?tRef=fullpage&tLc=2&text28777=&tLabels=${code}' target='_blank'>${code}</a>`
-    } else if (code.startWith('1Z') || code.startWith('8')) {
+    } else if (code.startsWith('1Z') || code.startsWith('8')) {
         return `<a href='https://www.ups.com/track?loc=null&tracknum=${code}&requester=WT/trackdetails' target='_blank'>${code}</a>`
     }
 }
