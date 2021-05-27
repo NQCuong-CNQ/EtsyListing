@@ -12,10 +12,10 @@ $('#loading').css('display', 'block')
 
 socket.emit("tracking-history-join")
 
-let isAddedChecked = window.localStorage.getItem('is-tracking-history-checked')
-if (isAddedChecked == '1') {
+let isAddedCheckedStorage = window.localStorage.getItem('is-tracking-history-checked')
+if (isAddedCheckedStorage == '1') {
     $('#show-added-tracking').prop("checked", true)
-} else if (isAddedChecked == '0'){
+} else if (isAddedCheckedStorage == '0'){
     $('#show-added-tracking').prop("checked", false)
 }
 
