@@ -18,11 +18,12 @@ function updateData(data) {
             <td>${data[i].id}</td>
             <td>${formatShopName(data[i].name)}</td>
             <td>${data[i].customer_name}</td>
-            <td>${getCarrierName(data[i].carrier_name)}</td>
+            <td>${formatCustomerEmail(data[i].customer_email)}</td>
             <td>${getCarrierCode(data[i].number_tracking)}</td>
             <td>${getCarrierCode(data[i].actual_input)}</td>
+            <td>${getCarrierName(data[i].carrier_name)}</td>
             <td>${formatOrderDate(data[i].order_date)}</td>
-            <td>${data[i].order_status}</td>
+            <td>${formatOrderStatus(data[i].order_status)}</td>
             <td>${getEpochTime(data[i].time_add_tracking)}</td>
       </tr>`)
     }
@@ -32,6 +33,18 @@ function updateData(data) {
         order: [[0, "desc"]],
     })
     $('#loading').css('display', 'none')
+}
+
+function formatOrderStatus(status){
+    if (status == undefined) {
+        return '---'
+    }
+}
+
+function formatCustomerEmail(email){
+    if (email == undefined) {
+        return '---'
+    }
 }
 
 function formatShopName(shopName) {
@@ -59,7 +72,7 @@ function getCarrierCode(code) {
 
 function getEpochTime(input) {
     if (input == undefined) {
-        return '--/--/--'
+        return '-- / -- / --'
     }
     var date = new Date(0)
     date.setUTCSeconds(input)
