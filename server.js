@@ -526,6 +526,8 @@ io.on("connection", async function (client) {
 
   await client.on("return-email-customer-order", async function (data) {
     let tempData = data.split('#')
+    console.log(tempData)
+    console.log(tempData.length)
     let gmailTemp = []
     let idTemp = []
     let gmailData = []
