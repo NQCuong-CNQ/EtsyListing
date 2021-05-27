@@ -33,13 +33,18 @@ function updateData(data) {
     })
     $('#loading').css('display', 'none')
 }
-function formatShopName(shopName){
-    if( shopName == undefined){
+
+function formatShopName(shopName) {
+    if (shopName == undefined) {
         return '---'
     }
 }
-function formatOrderDate(date){
-    return date.substring(5).split('.')[0].replace('-','/')
+
+function formatOrderDate(date) {
+    if (date == undefined) {
+        return '---'
+    }
+    return date.substring(5).split('.')[0].replace('-', '/')
 }
 
 function getCarrierCode(code) {
