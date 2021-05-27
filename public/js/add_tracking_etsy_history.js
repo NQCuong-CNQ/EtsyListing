@@ -27,7 +27,7 @@ function updateData(data) {
             <td>${getEpochTime(data[i].time_add_tracking)}</td>
       </tr>`)
     }
-//${formatCustomerEmail(data[i].customer_email)}
+    //${formatCustomerEmail(data[i].customer_email)}
     $('#table_id-tracking-history').DataTable({
         pageLength: 25,
         order: [[0, "desc"]],
@@ -35,28 +35,28 @@ function updateData(data) {
     $('#loading').css('display', 'none')
 }
 
-function formatCustomerName(name){
+function formatCustomerName(name) {
     if (name == undefined) {
         return '---'
-    }
+    } return name
 }
 
-function formatOrderStatus(status){
+function formatOrderStatus(status) {
     if (status == undefined) {
         return '---'
-    }
+    } return status
 }
 
-function formatCustomerEmail(email){
+function formatCustomerEmail(email) {
     if (email == undefined) {
         return '---'
-    }
+    } return email
 }
 
 function formatShopName(shopName) {
     if (shopName == undefined) {
         return '---'
-    }
+    } return shopName
 }
 
 function formatOrderDate(date) {
@@ -73,7 +73,7 @@ function getCarrierCode(code) {
         return `<a href='https://tools.usps.com/go/TrackConfirmAction?tRef=fullpage&tLc=2&text28777=&tLabels=${code}' target='_blank'>${code}</a>`
     } else if (code.startsWith('1Z') || code.startsWith('8')) {
         return `<a href='https://www.ups.com/track?loc=null&tracknum=${code}&requester=WT/trackdetails' target='_blank'>${code}</a>`
-    }
+    } return code
 }
 
 function getEpochTime(input) {
@@ -108,5 +108,5 @@ function convertMonthInString(month) {
         case 'Oct': return '10'
         case 'Nov': return '11'
         case 'Dec': return '12'
-    }
+    } return month
 }
