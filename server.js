@@ -528,30 +528,18 @@ io.on("connection", async function (client) {
     let tempData = data.split('#')
     let gmailTemp = []
     let idTemp = []
-    let gmailData = []
-    let dataStore
 
-    for (let i = 1; i < tempData.length; i++) {
-      if(i%2==1){
-        idTemp.push(tempData[i])
-      }
+    for (let i = 1; i < tempData.length; i += 2) {
+      idTemp.push(tempData[i])
     }
 
-    for (let i = 0; i < tempData.length; i++) {
-      if(i%2==0){
-        let temp = tempData[i].replace('Order history', '').substring(10)
-        gmailTemp.push(temp)
-      }
+    for (let i = 0; i < tempData.length; i += 2) {
+      gmailTemp.push(tempData[i].replace('Order history', '').substring(10))
     }
-    
+
     for (let i = 0; i < idTemp.length; i++) {
-      dataStore = new Object
-      dataStore['id'] = idTemp[i]
-      dataStore['gmail'] = gmailTemp[i]
-      gmailData.push(dataStore)
+      await dbo.collection("tracking_etsy_history").updateOne({ id: idTemp[i] }, { $set: { gmail: gmailTemp[i] } }, { upsert: true })
     }
-
-    console.log(gmailData)
   })
 
   await client.on("track-order-step1", async function (data) {
