@@ -4,46 +4,113 @@ var socket = io.connect("https://giftsvk.com", {
 })
 
 var historyData = []
+var isAddedChecked = true
+var isMyAccount = true
+var isTrangAccount = false
 
 $('#loading').css('display', 'block')
 
 socket.emit("tracking-history-join")
 
-let isChecked = window.localStorage.getItem('is-tracking-history-checked')
-if (isChecked == '1') {
+let isAddedChecked = window.localStorage.getItem('is-tracking-history-checked')
+if (isAddedChecked == '1') {
     $('#show-added-tracking').prop("checked", true)
-} else if (isChecked == '0'){
+} else if (isAddedChecked == '0'){
     $('#show-added-tracking').prop("checked", false)
 }
 
 socket.on("tracking-history-return-data", async function (data) {
     historyData = data
-    if (isChecked == '1') {
-        updateData(filterAdded())
-    } else {
-        updateData()
-    }
+    filterData()
 })
+
+function filterData(){
+    let filterData = historyData
+
+    if(isAddedChecked){
+        filterData = filterAdded(filterData)
+    }
+
+    if(isMyAccount){
+        filterData = filterMyAccount(filterData)
+    }
+
+    if(isTrangAccount){
+        filterData = filterMyAccount(filterData)
+    }
+
+    updateData(filterData)
+}
+
+function filterTrangAccount(data){
+    let dataFilter = []
+    for (var i = 0; i < data.length; i++) {
+        if (data[i].user == 'Trang') {
+            dataFilter.push(data[i])
+        }
+    }
+    return dataFilter
+}
+
+function filterMyAccount(data){
+    let dataFilter = []
+    for (var i = 0; i < data.length; i++) {
+        if (data[i].user == 'My') {
+            dataFilter.push(data[i])
+        }
+    }
+    return dataFilter
+}
 
 $('#show-added-tracking').on('change', function () {
     if ($(this).prop("checked")) {
-        updateData(filterAdded())
+        isAddedChecked = true
+        filterData()
         window.localStorage.setItem('is-tracking-history-checked', '1')
     }
     else {
-        updateData()
+        isAddedChecked = false
+        filterData()
         window.localStorage.setItem('is-tracking-history-checked', '0')
     }
 })
 
-function filterAdded() {
-    let data = []
-    for (var i = 0; i < historyData.length; i++) {
-        if (historyData[i].time_add_tracking != undefined) {
-            data.push(historyData[i])
+
+$('#show-my-account-tracking').on('change', function () {
+    if ($(this).prop("checked")) {
+        isMyAccount = true
+        filterData()
+        // window.localStorage.setItem('is-tracking-history-checked', '1')
+    }
+    else {
+        isMyAccount = false
+        filterData()
+        // window.localStorage.setItem('is-tracking-history-checked', '0')
+    }
+})
+
+
+$('#show-trang-account-tracking').on('change', function () {
+    if ($(this).prop("checked")) {
+        isTrangAccount = true
+        filterData()
+        // window.localStorage.setItem('is-tracking-history-checked', '1')
+    }
+    else {
+        isTrangAccount = false
+        filterData()
+        // window.localStorage.setItem('is-tracking-history-checked', '0')
+    }
+})
+
+function filterAdded(data) {
+    let dataFilter = []
+    for (var i = 0; i < data.length; i++) {
+        if (data[i].time_add_tracking != undefined) {
+            dataFilter.push(data[i])
         }
     }
-    return data
+    return dataFilter
 }
 
 function updateData(data = historyData) {
