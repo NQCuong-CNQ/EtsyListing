@@ -530,14 +530,20 @@ io.on("connection", async function (client) {
     let idTemp = []
     let gmailData = []
 
-    for (let i = 0; i < tempData.length; i += 2) {
-      idTemp.push(tempData[i])
-      console.log(tempData[i])
+    for (let i = 0; i < tempData.length; i++) {
+      if(i%2==0){
+        idTemp.push(tempData[i])
+        console.log(tempData[i])
+      }
     }
 
-    for (let i = 1; i < tempData.length; i += 2) {
-      gmailTemp.push(tempData[i].replace('Order history', '').substring(10))
-      console.log(tempData[i].replace('Order history', '').substring(10))
+    for (let i = 1; i < tempData.length; i++) {
+      if(i%2==1){
+        console.log(tempData[i].substring(10))
+        let temp = tempData[i].replace('Order history', '').substring(10)
+        gmailTemp.push(temp)
+        console.log(temp)
+      }
     }
     
     // for (let i = 0; i < idTemp.length; i++) {
