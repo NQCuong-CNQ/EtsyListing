@@ -36,7 +36,7 @@ function filterData(){
     }
 
     if(isTrangAccount){
-        filterData = filterMyAccount(filterData)
+        filterData = filterTrangAccount(filterData)
     }
 
     updateData(filterData)
