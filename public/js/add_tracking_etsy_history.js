@@ -4,10 +4,20 @@ var socket = io.connect("https://giftsvk.com", {
 })
 
 $('#loading').css('display', 'block')
+
 socket.emit("tracking-history-join")
 
 socket.on("tracking-history-return-data", async function (data) {
     updateData(data)
+})
+
+$('#show-added-tracking').on('click', function(){
+    if($(this).prop("checked") == true){
+        console.log("checked")
+    }
+    else if($(this).prop("checked") == false){
+        console.log("not")
+    }
 })
 
 function updateData(data) {
