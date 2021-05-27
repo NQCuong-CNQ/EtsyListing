@@ -517,9 +517,9 @@ io.on("connection", async function (client) {
       trackDataForSave['order_status'] = temp[i].split(',')[3].replace(/[^0-9a-zA-Z]/g, '')
       trackDataForSave['customer_name'] = temp[i].split(',')[12].replace(/[^0-9a-zA-Z]/g, '')
       await dbo.collection("tracking_etsy_history").updateOne({ id: trackDataForSave['id'] }, { $set: trackDataForSave }, { upsert: true })
-      await client.broadcast.emit("get-email-customer-order")
     }
 
+    await client.broadcast.emit("get-email-customer-order")
     console.log('send data to etsy' + trackData.length)
     await client.broadcast.emit("track-order-return", trackData)
   })
