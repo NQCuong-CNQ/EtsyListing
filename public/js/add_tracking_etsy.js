@@ -46,7 +46,10 @@ socket.on("track-order-step4", async function (name) {
             nameCarrier = $('input[placeholder="Shipping carrier"]').val()
         }
 
+        let actualInput = $('input[placeholder="Enter tracking number (recommended)"]').val()
+
         trackData['carrier_name'] = nameCarrier
+        trackData['actual_input'] = actualInput
         $('.position-absolute.position-bottom .flag-img button.btn-orange').trigger('click')
         trackData['time_add_tracking'] = Math.floor(new Date().getTime() / 1000)
 
