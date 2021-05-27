@@ -529,6 +529,7 @@ io.on("connection", async function (client) {
     let gmailTemp = []
     let idTemp = []
     let gmailData = []
+    let dataStore
 
     for (let i = 1; i < tempData.length; i++) {
       if(i%2==1){
@@ -545,8 +546,10 @@ io.on("connection", async function (client) {
     }
     
     for (let i = 0; i < idTemp.length; i++) {
-      gmailData[i]['id'] = idTemp[i]
-      gmailData[i]['gmail'] = gmailTemp[i]
+      dataStore = new Object
+      dataStore['id'] = idTemp[i]
+      dataStore['gmail'] = gmailTemp[i]
+      gmailData.push(gmailData)
     }
 
     console.log(gmailData)
