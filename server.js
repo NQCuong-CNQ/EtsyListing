@@ -533,7 +533,7 @@ io.on("connection", async function (client) {
     for (let i = 0; i < tempData.length; i++) {
       if(i%2==0){
         idTemp.push(tempData[i])
-        console.log(tempData[i])
+        console.log('id'+tempData[i])
       }
     }
 
@@ -542,7 +542,7 @@ io.on("connection", async function (client) {
         console.log(tempData[i].substring(10))
         let temp = tempData[i].replace('Order history', '').substring(10)
         gmailTemp.push(temp)
-        console.log(temp)
+        console.log('gmail'+temp)
       }
     }
     
