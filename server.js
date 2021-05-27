@@ -526,25 +526,25 @@ io.on("connection", async function (client) {
 
   await client.on("return-email-customer-order", async function (data) {
     let tempData = data.split('#')
-    console.log(tempData)
-    console.log(tempData.length)
     let gmailTemp = []
     let idTemp = []
     let gmailData = []
 
     for (let i = 0; i < tempData.length; i += 2) {
       idTemp.push(tempData[i])
+      console.log(tempData[i])
     }
 
     for (let i = 1; i < tempData.length; i += 2) {
       gmailTemp.push(tempData[i].replace('Order history', '').substring(10))
+      console.log(tempData[i].replace('Order history', '').substring(10))
     }
     
     // for (let i = 0; i < idTemp.length; i++) {
     //   gmailData[i]['id'] = idTemp[i]
     //   gmailData[i]['gmail'] = gmailTemp[i]
     // }
-    console.log(idTemp + '-' + gmailTemp)
+    // console.log(idTemp + '-' + gmailTemp)
   })
 
   await client.on("track-order-step1", async function (data) {
