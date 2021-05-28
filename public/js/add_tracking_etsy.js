@@ -72,6 +72,7 @@ socket.on("track-order-step4", async function (name) {
         trackData['carrier_name'] = nameCarrier
         trackData['actual_input'] = actualInput
         $('.position-absolute.position-bottom .flag-img button.btn-orange').trigger('click')
+        trackData['time_add_tracking'] = Math.floor(new Date().getTime() / 1000)
 
         await socket.emit("track-order-step5", trackData)
         console.log('saved history' + trackData)

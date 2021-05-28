@@ -139,6 +139,7 @@ function updateData(data = historyData) {
     $('#table_id-tracking-history').DataTable().clear().destroy()
     for (var i = 0; i < data.length; i++) {
         $('#table_id-tracking-history-body').append(`<tr>
+            <td>${i}</td>
             <td>${data[i].id}</td>
             <td>${formatShopName(data[i].name)}</td>
             <td>${formatCustomerName(data[i].customer_name)}</td>
@@ -154,7 +155,6 @@ function updateData(data = historyData) {
 
     $('#table_id-tracking-history').DataTable({
         pageLength: 25,
-        bSort: false,
     })
     $('#loading').css('display', 'none')
 }
