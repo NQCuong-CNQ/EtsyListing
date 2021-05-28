@@ -245,7 +245,7 @@ if (listingLocalData != null) {
   $('#loading').css('display', 'block')
 }
 
-socket.emit("product-tracking-join")
+// socket.emit("product-tracking-join")
 
 socket.on("updating", function () {
   toastr.clear()
@@ -322,10 +322,12 @@ function handleDuplicates() {
     if (arrPos.length > 2) {
       let numDays = listingData[lastPos].date_update - Math.floor(listingData[lastPos].original_creation_tsz / 86400)
       if (numDays > 1) {
+        console.log('arrPos.length'+arrPos.length)
         let totalCount = 0
         let diff = 0
         for (let j = arrPos.length - 1; j = 1; j--) {
           diff = listingData[arrPos[j]].quantity - listingData[arrPos[j - 1]].quantity
+          console.log('diff'+diff)
           if (diff < 0) {
             diff = 0
           }
