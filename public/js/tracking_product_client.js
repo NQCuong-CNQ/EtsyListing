@@ -292,19 +292,19 @@ function handleDuplicates() {
   let dataDupById
 
   for (let i = 0; i < listingData.length; i++) {
+    dataDupPos[`${listingData[i].listing_id}`] = ''
+  }
+
+  for (let i = 0; i < listingData.length; i++) {
     dataDupPos[`${listingData[i].listing_id}`] += i + ','
   }
 
   dataDupById = Object.keys(dataDupPos)
-  for (let i = 0; i < dataDupById.length; i++) {
-    dataDupPos[`${dataDupById[i]}`] = dataDupPos[`${dataDupById[i]}`].replace(/undefined/g, '')
-  }
-
   let newData = []
   let temp
   for (let i = 0; i < dataDupById.length; i++) {
-    let arrPos = dataDupPos[dataDupById[i]].split(',')
-    let lastPos = arrPos[arrPos.length - 2]
+    let arrPos = dataDupPos[dataDupById[i]].slice(0, -1).split(',')
+    let lastPos = arrPos[arrPos.length - 1]
 
     temp = new Object()
     temp['listing_id'] = listingData[lastPos].listing_id
@@ -322,24 +322,24 @@ function handleDuplicates() {
     temp['percent_favor'] = listingData[lastPos].percent_favor
     temp['sales_day'] = 0
 
-    if (arrPos.length > 2) {
-      let numDays = listingData[lastPos].date_update - Math.floor(listingData[lastPos].original_creation_tsz / 86400)
-      if (numDays > 1) {
-        console.log('arrPos.length'+arrPos.length)
-        let totalCount = 0
-        let diff = 0
-        for (let j = arrPos.length - 1; j = 1; j--) {
-          diff = listingData[arrPos[j]].quantity - listingData[arrPos[j - 1]].quantity
-          console.log('diff'+diff)
-          if (diff < 0) {
-            diff = 0
-          }
-          totalCount += diff
-        }
-        console.log('totalCount'+totalCount +'-'+numDays)
-        temp['sales_day'] = (totalCount / numDays).toFixed(2)
-      }
-    }
+    // if (arrPos.length > 1) {
+    //   let numDays = listingData[lastPos].date_update - Math.floor(listingData[lastPos].original_creation_tsz / 86400)
+    //   if (numDays > 1) {
+    //     console.log('arrPos.length'+arrPos.length)
+    //     let totalCount = 0
+    //     let diff = 0
+    //     for (let j = arrPos.length - 1; j <= 1; j--) {
+    //       diff = listingData[arrPos[j]].quantity - listingData[arrPos[j - 1]].quantity
+    //       console.log('diff'+diff)
+    //       if (diff < 0) {
+    //         diff = 0
+    //       }
+    //       totalCount += diff
+    //     }
+    //     console.log('totalCount'+totalCount +'-'+numDays)
+    //     temp['sales_day'] = (totalCount / numDays).toFixed(2)
+    //   }
+    // }
     newData.push(temp)
   }
   listingData = newData
