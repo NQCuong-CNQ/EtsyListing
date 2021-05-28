@@ -301,7 +301,7 @@ function handleDuplicates() {
   let temp
   for (let i = 0; i < dataDupById.length; i++) {
     let arrPos = dataDupPos[dataDupById[i]].split(',')
-    console.log(dataDupPos)
+    console.log(arrPos)
     let lastPos = arrPos[arrPos.length - 2]
 
     temp = new Object()
@@ -327,7 +327,7 @@ function handleDuplicates() {
         let diff = 0
         for (let j = arrPos.length - 1; j = 1; j--) {
           diff = listingData[arrPos[j]].quantity - listingData[arrPos[j - 1]].quantity
-          console.log('diff'+diff)
+          console.log('diff'+diff)  
           if (diff < 0) {
             diff = 0
           }
