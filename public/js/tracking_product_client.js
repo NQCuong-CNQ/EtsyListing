@@ -321,7 +321,7 @@ function handleDuplicates() {
 
     if (arrPos.length > 2) {
       let numDays = Math.floor(listingData[lastPos].original_creation_tsz / 86400) - listingData[lastPos].date_update
-      console.log('numDays'+numDays)  
+      console.log('numDays'+Math.floor(listingData[lastPos].original_creation_tsz / 86400) + '/'+ listingData[lastPos].date_update)  
       if (numDays > 1) {
         let totalCount = 0
         let diff = 0
