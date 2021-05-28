@@ -32,7 +32,7 @@ const url = "mongodb://localhost:27017/trackingdb"
 setInterval(scheduleUpdate, 2700000) // 45p
 async function scheduleUpdate() {
   let date_ob = new Date()
-  if (date_ob.getHours() == 6) {
+  if (date_ob.getHours() == 12) {
     await updateData()
   }
 }
