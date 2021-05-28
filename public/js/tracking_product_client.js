@@ -224,6 +224,7 @@ function updateData(dataFilter = listingData) {
       </div>
     `)
   }
+
   $('#loading').css('display', 'none')
   scrollToTop()
 }
@@ -325,11 +326,13 @@ function handleDuplicates() {
         let diff = 0
         for (let j = arrPos.length - 1; j = 1; j--) {
           diff = listingData[arrPos[j]].quantity - listingData[arrPos[j - 1]].quantity
+          console.log('diff'+diff)
           if (diff < 0) {
             diff = 0
           }
           totalCount += diff
         }
+        console.log('totalCount'+totalCount +'-'+numDays)
         temp['sales_day'] = (totalCount / numDays).toFixed(2)
       }
     }
