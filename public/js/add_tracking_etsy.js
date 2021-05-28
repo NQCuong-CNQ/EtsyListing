@@ -56,6 +56,12 @@ socket.on("track-order-step4", async function (name) {
         }
 
         let actualInput = $('input[placeholder="Enter tracking number (recommended)"]').val()
+        if(actualInput == ''){
+            return
+        }
+        if((nameCarrier == 'USPS' && !actualInput.startsWith('9')) || nameCarrier == 'UPS' && (!actualInput.startsWith('1Z') || !actualInput.startsWith('8'))){
+            return
+        }
 
         trackData['carrier_name'] = nameCarrier
         trackData['actual_input'] = actualInput
