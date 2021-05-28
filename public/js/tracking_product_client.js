@@ -237,7 +237,7 @@ let listingLocalData = window.localStorage.getItem('listing-data')
 if (listingLocalData != null) {
   listingData = JSON.parse(listingLocalData)
 
-  // handleDuplicates()
+  handleDuplicates()
   searchOrFilterData()
   toastr.clear()
   toastr.info('Updating data...')
@@ -245,7 +245,7 @@ if (listingLocalData != null) {
   $('#loading').css('display', 'block')
 }
 
-socket.emit("product-tracking-join")
+// socket.emit("product-tracking-join")
 
 socket.on("updating", function () {
   toastr.clear()
