@@ -278,6 +278,9 @@ socket.on("return-product-tracking-join", function (data) {
     temp['taxonomy_path'] = data[i].taxonomy_path
     temp['is_digital'] = data[i].is_digital
     temp['percent_favor'] = data[i].percent_favor
+    temp['date_update'] = data[i].date_update
+
+
     tempData[i] = temp
   }
 
