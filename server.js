@@ -507,7 +507,7 @@ io.on("connection", async function (client) {
       trackObj['track_number'] = temp[i].split(',')[19].replace(/[^0-9a-zA-Z]/g, '')
       trackObj['order_status'] = temp[i].split(',')[3].replace(/[^0-9a-zA-Z]/g, '')
 
-      console.log(trackObj['order_status'])
+      console.log(trackObj['pro_ID']  + '/' +trackObj['order_status'])
 
       if (trackObj['track_number'] != '' && trackObj['order_status'] == 'Shipped') {
         trackData.push(trackObj)
