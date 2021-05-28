@@ -8,14 +8,14 @@ var index = 0
 var shopName
 let trackData
 
-setInterval(scheduleUpdate, 21600000) // 6h
+//setInterval(scheduleUpdate, 21600000) // 6h
 function scheduleUpdate() {
     location.href = 'https://www.etsy.com/your/orders/sold'
 }
 
 main()
 async function main() {
-    await sleep(5000)
+    await sleep(6000)
     shopName = $('[data-tour-anchor="etsy-channel"] [data-test-id="unsanitize"]').text().trim()
     console.log(shopName)
 }
@@ -36,6 +36,7 @@ socket.on("track-order-return", async function (dataReceive) {
 })
 
 async function addTracking() {
+    await sleep(2000)
     console.log(index + '/' + data.length)
     if (index == data.length) {
         index = 0
