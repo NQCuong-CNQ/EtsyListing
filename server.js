@@ -555,6 +555,7 @@ io.on("connection", async function (client) {
   })
 
   await client.on("track-order-step5", async function (data) {
+    data['time_add_tracking'] = Math.floor(new Date().getTime() / 1000)
     await dbo.collection("tracking_etsy_history").updateOne({ id: data.id }, { $set: data }, { upsert: true })
   })
 
