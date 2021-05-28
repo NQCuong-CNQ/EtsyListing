@@ -255,7 +255,7 @@ socket.on("updating", function () {
 socket.on("return-product-tracking-join", function (data) {
   listingData = data
 
-  handleDuplicates()
+  // handleDuplicates()
   searchOrFilterData()
   toastr.clear()
   toastr.success('Data Updated')
