@@ -515,7 +515,7 @@ io.on("connection", async function (client) {
       trackDataForSave['id'] = trackObj['pro_ID']
       trackDataForSave['number_tracking'] = trackObj['track_number']
       trackDataForSave['order_date'] = temp[i].split(',')[2].replace(/"/g, '')
-      trackDataForSave['order_status'] = temp[i].split(',')[3].replace(/[^0-9a-zA-Z]/g, '')
+      trackDataForSave['order_status'] = trackObj['order_status']
       trackDataForSave['customer_name'] = temp[i].split(',')[12].replace(/[^0-9a-zA-Z]/g, '')
       trackDataForSave['user'] = data['name']
       await dbo.collection("tracking_etsy_history").updateOne({ id: trackDataForSave['id'] }, { $set: trackDataForSave }, { upsert: true })
