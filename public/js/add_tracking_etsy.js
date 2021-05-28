@@ -51,17 +51,17 @@ socket.on("track-order-step4", async function (name) {
     if (name == shopName) {
         let numCarrier = $('[for="Select shipping carrier..."]').val()
         let nameCarrier = $(`[for="Select shipping carrier..."] option[value="${numCarrier}"]`).text()
-        if(nameCarrier == 'Other'){
+        if (nameCarrier == 'Other') {
             nameCarrier = $('input[placeholder="Shipping carrier"]').val()
         }
 
         let actualInput = $('input[placeholder="Enter tracking number (recommended)"]').val()
-        if(actualInput == ''){
+        if (actualInput == '') {
             return
         }
-        if((nameCarrier == 'USPS' && !actualInput.startsWith('9')) || (nameCarrier == 'UPS' && (!actualInput.startsWith('1Z') || !actualInput.startsWith('8')))){
-            return
-        }
+        if ((nameCarrier == 'USPS' && actualInput.startsWith('9')) || (nameCarrier == 'UPS' && (actualInput.startsWith('1Z') || actualInput.startsWith('8')))) {
+
+        } else { return }
 
         trackData['carrier_name'] = nameCarrier
         trackData['actual_input'] = actualInput
