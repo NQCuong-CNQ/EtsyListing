@@ -505,8 +505,9 @@ io.on("connection", async function (client) {
       trackObj = new Object
       trackObj['pro_ID'] = temp[i].split(',')[0].replace(/[^0-9]/g, '')
       trackObj['track_number'] = temp[i].split(',')[19].replace(/[^0-9a-zA-Z]/g, '')
+      trackObj['order_status'] = temp[i].split(',')[3].replace(/[^0-9a-zA-Z]/g, '')
 
-      if (trackObj['track_number'] != '') {
+      if (trackObj['track_number'].length > 10) {
         trackData.push(trackObj)
       }
 
