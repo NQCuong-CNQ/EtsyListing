@@ -289,7 +289,7 @@ socket.on("return-product-tracking-join", function (data) {
 
 function handleDuplicates() {
 
-  let  = ''
+  let  test= ''
   for (let i = 0; i < listingData.length; i++) {
     // console.log(listingData[i].listing_id)
     test += listingData[i].quantity
