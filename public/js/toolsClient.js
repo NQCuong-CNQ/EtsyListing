@@ -70,7 +70,7 @@ socket.on("return-delete-shop-braumstar", function (data) {
     if (data == 1) {
         toastr.clear()
         toastr.success('Xóa thành công')
-        $('#input-shop-die-name').val('')
+        $('#input-shop-die-name').val('') 
     }
     else {
         toastr.clear()
