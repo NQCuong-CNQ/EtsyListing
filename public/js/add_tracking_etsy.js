@@ -36,7 +36,7 @@ socket.on("track-order-return", async function (dataReceive) {
 })
 
 async function addTracking() {
-    await sleep(2000)
+    
     console.log(index + '/' + data.length)
     if (index == data.length) {
         index = 0
@@ -76,7 +76,7 @@ socket.on("track-order-step4", async function (name) {
 
         await socket.emit("track-order-step5", trackData)
         console.log('saved history' + trackData)
-        await sleep(6000)
+        await sleep(8000)
         await addTracking()
     }
 })
