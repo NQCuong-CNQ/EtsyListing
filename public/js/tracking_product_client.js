@@ -301,6 +301,7 @@ function handleDuplicates() {
   let temp
   for (let i = 0; i < dataDupById.length; i++) {
     let arrPos = dataDupPos[dataDupById[i]].split(',')
+    console.log(dataDupPos)
     let lastPos = arrPos[arrPos.length - 2]
 
     temp = new Object()
@@ -319,7 +320,7 @@ function handleDuplicates() {
     temp['percent_favor'] = listingData[lastPos].percent_favor
     temp['sales_day'] = 0
 
-    if (arrPos.length > 1) {
+    if (arrPos.length > 2) {
       let numDays = (listingData[lastPos].original_creation_tsz - listingData[arrPos[0]].original_creation_tsz) / 86400
       if (numDays > 1) {
         let totalCount = 0
