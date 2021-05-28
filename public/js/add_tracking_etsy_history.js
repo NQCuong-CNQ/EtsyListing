@@ -15,8 +15,28 @@ socket.emit("tracking-history-join")
 let isAddedCheckedStorage = window.localStorage.getItem('is-tracking-history-checked')
 if (isAddedCheckedStorage == '1') {
     $('#show-added-tracking').prop("checked", true)
-} else if (isAddedCheckedStorage == '0'){
+    isAddedChecked = true
+} else if (isAddedCheckedStorage == '0') {
     $('#show-added-tracking').prop("checked", false)
+    isAddedChecked = false
+}
+
+let isMyCheckedStorage = window.localStorage.getItem('is-my-account-checked')
+if (isMyCheckedStorage == '1') {
+    $('#show-my-account-tracking').prop("checked", true)
+    isMyAccount = true
+} else if (isMyCheckedStorage == '0') {
+    $('#show-my-account-tracking').prop("checked", false)
+    isMyAccount = false
+}
+
+let isTrangCheckedStorage = window.localStorage.getItem('is-trang-account-checked')
+if (isTrangCheckedStorage == '1') {
+    $('#show-trang-account-tracking').prop("checked", true)
+    isTrangAccount = true
+} else if (isTrangCheckedStorage == '0') {
+    $('#show-trang-account-tracking').prop("checked", false)
+    isTrangAccount = false
 }
 
 socket.on("tracking-history-return-data", async function (data) {
@@ -24,24 +44,27 @@ socket.on("tracking-history-return-data", async function (data) {
     filterData()
 })
 
-function filterData(){
+function filterData() {
     let filterData = historyData
 
-    if(isMyAccount && isTrangAccount){
-    } else if(isMyAccount){
+    if (isMyAccount && isTrangAccount) {
+    } else if (isMyAccount) {
         filterData = filterMyAccount(filterData)
-    } else if(isTrangAccount){
+    } else if (isTrangAccount) {
         filterData = filterTrangAccount(filterData)
+    } else {
+        filterData = []
     }
 
-    if(isAddedChecked){
+    if (isAddedChecked) {
         filterData = filterAdded(filterData)
     }
 
+    filterData.sort(compareDay)
     updateData(filterData)
 }
 
-function filterTrangAccount(data){
+function filterTrangAccount(data) {
     let dataFilter = []
     for (var i = 0; i < data.length; i++) {
         if (data[i].user == 'Trang') {
@@ -51,7 +74,7 @@ function filterTrangAccount(data){
     return dataFilter
 }
 
-function filterMyAccount(data){
+function filterMyAccount(data) {
     let dataFilter = []
     for (var i = 0; i < data.length; i++) {
         if (data[i].user == 'My') {
@@ -79,12 +102,12 @@ $('#show-my-account-tracking').on('change', function () {
     if ($(this).prop("checked")) {
         isMyAccount = true
         filterData()
-        // window.localStorage.setItem('is-tracking-history-checked', '1')
+        window.localStorage.setItem('is-my-account-checked', '1')
     }
     else {
         isMyAccount = false
         filterData()
-        // window.localStorage.setItem('is-tracking-history-checked', '0')
+        window.localStorage.setItem('is-my-account-checked', '0')
     }
 })
 
@@ -93,12 +116,12 @@ $('#show-trang-account-tracking').on('change', function () {
     if ($(this).prop("checked")) {
         isTrangAccount = true
         filterData()
-        // window.localStorage.setItem('is-tracking-history-checked', '1')
+        window.localStorage.setItem('is-trang-account-checked', '1')
     }
     else {
         isTrangAccount = false
         filterData()
-        // window.localStorage.setItem('is-tracking-history-checked', '0')
+        window.localStorage.setItem('is-trang-account-checked', '0')
     }
 })
 
@@ -116,7 +139,6 @@ function updateData(data = historyData) {
     $('#table_id-tracking-history').DataTable().clear().destroy()
     for (var i = 0; i < data.length; i++) {
         $('#table_id-tracking-history-body').append(`<tr>
-            <td>${i}</td>
             <td>${data[i].id}</td>
             <td>${formatShopName(data[i].name)}</td>
             <td>${formatCustomerName(data[i].customer_name)}</td>
@@ -132,7 +154,6 @@ function updateData(data = historyData) {
 
     $('#table_id-tracking-history').DataTable({
         pageLength: 25,
-        order: [[0, "desc"]],
     })
     $('#loading').css('display', 'none')
 }
@@ -176,6 +197,24 @@ function getCarrierCode(code) {
     } else if (code.startsWith('1Z') || code.startsWith('8')) {
         return `<a href='https://www.ups.com/track?loc=null&tracknum=${code}&requester=WT/trackdetails' target='_blank'>${code}</a>`
     } return code
+}
+
+function compareDay(a, b) {
+    const bandA = a.time_add_tracking
+    const bandB = b.time_add_tracking
+    return compareAction(bandA, bandB)
+}
+
+function compareAction(bandA, bandB) {
+    bandA = parseFloat(bandA)
+    bandB = parseFloat(bandB)
+    let comparison = 0;
+    if (bandA > bandB) {
+        comparison = 1;
+    } else if (bandA < bandB) {
+        comparison = -1;
+    }
+    return comparison * -1;
 }
 
 function getEpochTime(input) {
