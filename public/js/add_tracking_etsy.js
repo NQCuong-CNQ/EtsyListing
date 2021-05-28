@@ -86,7 +86,7 @@ async function addTrackingAction(id, number) {
     console.log(id + '/ ' + number)
     index++
 
-    if (document.querySelector(`[href="/your/orders/sold?order_id=${id}"]`) == null) {
+    if (document.querySelector(`[href="/your/orders/sold?order_id=${id}"]`) == null || number.length < 10) {
         await addTracking()
         return
     }
