@@ -107,6 +107,9 @@ async function getListing() {
 
   idListings = [...new Set(idListings)]
   console.log(idListings.length)
+  if(idListings.length > 4000){
+    idListings.slice(0, idListings.length - 4000)
+  }
 
   let listings
   let listingTracking

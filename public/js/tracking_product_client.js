@@ -288,6 +288,13 @@ socket.on("return-product-tracking-join", function (data) {
 })
 
 function handleDuplicates() {
+
+  for (let i = 0; i < listingData.length; i++) {
+    console.log(listingData[i].listing_id)
+    console.log(listingData[i].quantity)
+    
+  }
+
   let dataDupPos = new Object
   let dataDupById
 
@@ -329,8 +336,8 @@ function handleDuplicates() {
         let totalCount = 0
         let diff = 0
         for (let j = arrPos.length - 1; j <= 1; j--) {
-          diff = listingData[arrPos[j]].quantity - listingData[arrPos[j - 1]].quantity
-          console.log('diff'+diff)
+          // diff = listingData[arrPos[j]].quantity - listingData[arrPos[j - 1]].quantity
+          // console.log('diff'+diff)
     //       if (diff < 0) {
     //         diff = 0
     //       }
