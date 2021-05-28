@@ -59,9 +59,14 @@ socket.on("track-order-step4", async function (name) {
         if (actualInput == '') {
             return
         }
-        if ((nameCarrier == 'USPS' && actualInput.startsWith('9')) || (nameCarrier == 'UPS' && (actualInput.startsWith('1Z') || actualInput.startsWith('8')))) {
 
-        } else { return }
+        if (nameCarrier == 'USPS' && !actualInput.startsWith('9')) {
+            return
+        } 
+        
+        if (nameCarrier == 'UPS' && !(actualInput.startsWith('1Z') || actualInput.startsWith('8'))){
+            return
+        }
 
         trackData['carrier_name'] = nameCarrier
         trackData['actual_input'] = actualInput
