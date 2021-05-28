@@ -97,7 +97,7 @@ async function getListing() {
 
   let dblisting = await dbo.collection("listing").find().toArray()
   for (let i = 0; i < dblisting.length; i++) {
-    if ((date - dblisting[i].original_creation_tsz) > (86400 * 45)) {
+    if ((date - dblisting[i].original_creation_tsz) > (86400 * 30)) {
       await dbo.collection("listingBlackList").updateOne({ listing_id: dblisting[i].listing_id }, { $set: { listing_id: dblisting[i].listing_id } }, { upsert: true })
       await dbo.collection("listing").deleteMany({ listing_id: dblisting[i].listing_id })
     } else {
@@ -125,7 +125,7 @@ async function getListing() {
       if (listings.state != 'active') {
         await dbo.collection("listing").deleteMany({ listing_id: listings.listing_id })
       }
-      if (listings.toString().includes('does not exist') || ((date - listings.original_creation_tsz) > (86400 * 45)) || listings.state != 'active') {
+      if (listings.toString().includes('does not exist') || ((date - listings.original_creation_tsz) > (86400 * 30)) || listings.state != 'active') {
         await dbo.collection("listingBlackList").updateOne({ listing_id: listings.listing_id }, { $set: { listing_id: listings.listing_id } }, { upsert: true })
       } else {
         let resultImgs = await makeRequest("GET", `https://openapi.etsy.com/v2/listings/${idListings[i]}/images?api_key=${api_key}`)
