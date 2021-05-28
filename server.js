@@ -507,8 +507,6 @@ io.on("connection", async function (client) {
       trackObj['track_number'] = temp[i].split(',')[19].replace(/[^0-9a-zA-Z]/g, '')
       trackObj['order_status'] = temp[i].split(',')[3].replace(/[^0-9a-zA-Z]/g, '')
 
-      console.log(trackObj['pro_ID']  + '/' +trackObj['order_status'])
-
       if (trackObj['track_number'] != '' && trackObj['order_status'] == 'Shipped') {
         trackData.push(trackObj)
       }
@@ -538,7 +536,7 @@ io.on("connection", async function (client) {
     }
 
     for (let i = 0; i < tempData.length; i += 2) {
-      gmailTemp.push(tempData[i].replace('Order history', '').substring(10))
+      gmailTemp.push(tempData[i].replace('Order history', '').replace('Message history1', '').substring(10))
     }
 
     for (let i = 0; i < idTemp.length; i++) {

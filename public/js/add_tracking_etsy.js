@@ -8,7 +8,7 @@ var index = 0
 var shopName
 let trackData
 
-//setInterval(scheduleUpdate, 21600000) // 6h
+setInterval(scheduleUpdate, 43200000) // 12h
 function scheduleUpdate() {
     location.href = 'https://www.etsy.com/your/orders/sold'
 }
@@ -29,6 +29,10 @@ socket.on("get-email-customer-order", async function () {
     await socket.emit("return-email-customer-order", mailData)
 })
 
+socket.on("reload-etsy", function () {
+    location.href = 'https://www.etsy.com/your/orders/sold'
+})
+
 socket.on("track-order-return", async function (dataReceive) {
     data = dataReceive
     console.log('receive data: ' + data)
@@ -36,7 +40,6 @@ socket.on("track-order-return", async function (dataReceive) {
 })
 
 async function addTracking() {
-    
     console.log(index + '/' + data.length)
     if (index == data.length) {
         index = 0
@@ -48,7 +51,6 @@ async function addTracking() {
 }
 
 socket.on("track-order-step4", async function (name) {
-    console.log('step 4' + name)
     if (name == shopName) {
         let numCarrier = $('[for="Select shipping carrier..."]').val()
         let nameCarrier = $(`[for="Select shipping carrier..."] option[value="${numCarrier}"]`).text()
