@@ -145,7 +145,7 @@ function updateData(data = historyData) {
             <td>${formatCustomerName(data[i].customer_name)}</td>
             <td>${formatCustomerEmail(data[i].customer_email)}</td>
             <td>${getCarrierCode(data[i].number_tracking)}</td>
-            <td>${getCarrierCode(data[i].actual_input)}</td>
+            <td>${getActualCarrierCode(data[i].number_tracking, data[i].actual_input)}</td>
             <td>${getCarrierName(data[i].carrier_name)}</td>
             <td>${formatOrderDate(data[i].order_date)}</td>
             <td>${formatOrderStatus(data[i].order_status)}</td>
@@ -155,7 +155,7 @@ function updateData(data = historyData) {
 
     $('#table_id-tracking-history').DataTable({
         pageLength: 25,
-        order: [[ 0, "desc" ]]
+        order: [[0, "desc"]]
     })
     $('#loading').css('display', 'none')
 }
@@ -189,6 +189,15 @@ function formatOrderDate(date) {
         return '---'
     }
     return date.substring(5).split('.')[0].replace('-', '/')
+}
+
+function getActualCarrierCode(code, actualCode) {
+    if (actualCode == undefined || actualCode == '') {
+        return '---'
+    } else if (code == actualCode) {
+        return 'same'
+    }
+    return actualCode
 }
 
 function getCarrierCode(code) {
@@ -232,7 +241,7 @@ function getEpochTime(input) {
 }
 
 function getCarrierName(name) {
-    if (name == undefined) {
+    if (name == undefined || name == '') {
         return '---'
     } return name
 }
