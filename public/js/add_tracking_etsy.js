@@ -62,9 +62,9 @@ socket.on("track-order-step4", async function (name) {
 
         if (nameCarrier == 'USPS' && !actualInput.startsWith('9')) {
             return
-        } 
-        
-        if (nameCarrier == 'UPS' && !(actualInput.startsWith('1Z') || actualInput.startsWith('8'))){
+        }
+
+        if (nameCarrier == 'UPS' && !(actualInput.startsWith('1Z') || actualInput.startsWith('8'))) {
             return
         }
 
@@ -89,7 +89,11 @@ async function addTrackingAction(id, number) {
         return
     }
     let element = document.querySelector(`[href="/your/orders/sold?order_id=${id}"]`).closest('.flag')
-    $(element).find(".wt-tooltip.wt-tooltip--bottom button")[1].click()
+    if (shopName == 'DennisGawlick') {
+        $(element).find(".wt-tooltip.wt-tooltip--bottom button")[0].click()
+    } else {
+        $(element).find(".wt-tooltip.wt-tooltip--bottom button")[1].click()
+    }
 
     await sleep(2000)
 
