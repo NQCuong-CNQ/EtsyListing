@@ -245,7 +245,7 @@ if (listingLocalData != null) {
   $('#loading').css('display', 'block')
 }
 
-// socket.emit("product-tracking-join")
+socket.emit("product-tracking-join")
 
 socket.on("updating", function () {
   toastr.clear()
@@ -255,7 +255,7 @@ socket.on("updating", function () {
 socket.on("return-product-tracking-join", function (data) {
   listingData = data
 
-  // handleDuplicates()
+  handleDuplicates()
   searchOrFilterData()
   toastr.clear()
   toastr.success('Data Updated')
@@ -280,10 +280,8 @@ socket.on("return-product-tracking-join", function (data) {
     temp['percent_favor'] = data[i].percent_favor
     temp['date_update'] = data[i].date_update
 
-
     tempData[i] = temp
   }
-
   window.localStorage.setItem('listing-data', JSON.stringify(tempData))
 })
 
@@ -323,21 +321,17 @@ function handleDuplicates() {
     temp['sales_day'] = 0
 
     if (arrPos.length > 1) {
-      let numDays = listingData[lastPos].date_update - Math.floor(listingData[arrPos[0]].date_update / 86400)
+      let numDays = listingData[lastPos].date_update - listingData[arrPos[0]].date_update
       if (numDays > 1) {
-        console.log('arrPos.length'+arrPos.length)
         let totalCount = 0
         let diff = 0
-
         for (let j = arrPos.length - 1; j >= 1; j--) {
           diff = listingData[arrPos[j]].quantity - listingData[arrPos[j - 1]].quantity
-          console.log('diff'+diff)
           if (diff < 0) {
             diff = 0
           }
           totalCount += diff
         }
-        console.log('totalCount'+totalCount +'-'+numDays)
         temp['sales_day'] = (totalCount / numDays).toFixed(2)
       }
     }
