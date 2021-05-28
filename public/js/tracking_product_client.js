@@ -323,16 +323,17 @@ function handleDuplicates() {
     if (arrPos.length > 1) {
       let numDays = listingData[lastPos].date_update - listingData[arrPos[0]].date_update
       if (numDays > 1) {
-        let totalCount = 0
-        let diff = 0
-        for (let j = arrPos.length - 1; j >= 1; j--) {
-          diff = listingData[arrPos[j]].quantity - listingData[arrPos[j - 1]].quantity
-          if (diff < 0) {
-            diff = 0 
+        let totalCount = listingData[arrPos[0]].quantity - listingData[lastPos].quantity
+        if(totalCount < 0){
+          let diff = 0
+          for (let j = arrPos.length - 1; j >= 1; j--) {
+            diff = listingData[arrPos[j]].quantity - listingData[arrPos[j - 1]].quantity
+            if (diff < 0) {
+              diff = 0 
+            }
+            totalCount += diff
           }
-          totalCount += diff
         }
-        console.log(listingData[lastPos].quantity+ " -- " +listingData[arrPos[0]].quantity+ " -- " +totalCount + " -- " + numDays)
         temp['sales_day'] = (totalCount / numDays).toFixed(2)
       }
     }
