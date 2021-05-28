@@ -301,9 +301,8 @@ function handleDuplicates() {
   let temp
   for (let i = 0; i < dataDupById.length; i++) {
     let arrPos = dataDupPos[dataDupById[i]].split(',')
-    console.log('arrPos'+arrPos)
     let lastPos = arrPos[arrPos.length - 2]
-    console.log('lastPos'+lastPos)
+
     temp = new Object()
     temp['listing_id'] = listingData[lastPos].listing_id
     temp['title'] = listingData[lastPos].title
@@ -321,13 +320,13 @@ function handleDuplicates() {
     temp['sales_day'] = 0
 
     if (arrPos.length > 2) {
-      let numDays = (listingData[lastPos].original_creation_tsz - listingData[arrPos[0]].original_creation_tsz) / 86400
+      let numDays = Math.floor(listingData[lastPos].original_creation_tsz / 86400) - listingData[lastPos].date_update
+      console.log('numDays'+numDays)  
       if (numDays > 1) {
         let totalCount = 0
         let diff = 0
         for (let j = arrPos.length - 1; j = 1; j--) {
           diff = listingData[arrPos[j]].quantity - listingData[arrPos[j - 1]].quantity
-          console.log('diff'+diff)  
           if (diff < 0) {
             diff = 0
           }
