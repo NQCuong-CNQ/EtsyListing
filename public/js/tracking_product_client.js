@@ -237,7 +237,7 @@ let listingLocalData = window.localStorage.getItem('listing-data')
 if (listingLocalData != null) {
   listingData = JSON.parse(listingLocalData)
 
-  handleDuplicates()
+  // handleDuplicates()
   searchOrFilterData()
   toastr.clear()
   toastr.info('Updating data...')
