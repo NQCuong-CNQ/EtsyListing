@@ -13,28 +13,28 @@ $('#loading').css('display', 'block')
 socket.emit("tracking-history-join")
 
 let isAddedCheckedStorage = window.localStorage.getItem('is-tracking-history-checked')
-if (isAddedCheckedStorage == '1') {
+if (isAddedCheckedStorage) {
     $('#show-added-tracking').prop("checked", true)
     isAddedChecked = true
-} else if (isAddedCheckedStorage == '0') {
+} else {
     $('#show-added-tracking').prop("checked", false)
     isAddedChecked = false
 }
 
 let isMyCheckedStorage = window.localStorage.getItem('is-my-account-checked')
-if (isMyCheckedStorage == '1') {
+if (isMyCheckedStorage) {
     $('#show-my-account-tracking').prop("checked", true)
     isMyAccount = true
-} else if (isMyCheckedStorage == '0') {
+} else {
     $('#show-my-account-tracking').prop("checked", false)
     isMyAccount = false
 }
 
 let isTrangCheckedStorage = window.localStorage.getItem('is-trang-account-checked')
-if (isTrangCheckedStorage == '1') {
+if (isTrangCheckedStorage) {
     $('#show-trang-account-tracking').prop("checked", true)
     isTrangAccount = true
-} else if (isTrangCheckedStorage == '0') {
+} else {
     $('#show-trang-account-tracking').prop("checked", false)
     isTrangAccount = false
 }
@@ -88,12 +88,12 @@ $('#show-added-tracking').on('change', function () {
     if ($(this).prop("checked")) {
         isAddedChecked = true
         filterData()
-        window.localStorage.setItem('is-tracking-history-checked', '1')
+        window.localStorage.setItem('is-tracking-history-checked', 1)
     }
     else {
         isAddedChecked = false
         filterData()
-        window.localStorage.setItem('is-tracking-history-checked', '0')
+        window.localStorage.setItem('is-tracking-history-checked', 0)
     }
 })
 
@@ -102,12 +102,12 @@ $('#show-my-account-tracking').on('change', function () {
     if ($(this).prop("checked")) {
         isMyAccount = true
         filterData()
-        window.localStorage.setItem('is-my-account-checked', '1')
+        window.localStorage.setItem('is-my-account-checked', 1)
     }
     else {
         isMyAccount = false
         filterData()
-        window.localStorage.setItem('is-my-account-checked', '0')
+        window.localStorage.setItem('is-my-account-checked', 0)
     }
 })
 
@@ -116,12 +116,12 @@ $('#show-trang-account-tracking').on('change', function () {
     if ($(this).prop("checked")) {
         isTrangAccount = true
         filterData()
-        window.localStorage.setItem('is-trang-account-checked', '1')
+        window.localStorage.setItem('is-trang-account-checked', 1)
     }
     else {
         isTrangAccount = false
         filterData()
-        window.localStorage.setItem('is-trang-account-checked', '0')
+        window.localStorage.setItem('is-trang-account-checked', 0)
     }
 })
 
@@ -214,7 +214,7 @@ function compareAction(bandA, bandB) {
     } else if (bandA < bandB) {
         comparison = -1;
     }
-    return comparison * -1;
+    return comparison;
 }
 
 function getEpochTime(input) {
