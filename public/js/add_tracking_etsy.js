@@ -59,7 +59,7 @@ socket.on("track-order-step4", async function (name) {
         if(actualInput == ''){
             return
         }
-        if((nameCarrier == 'USPS' && !actualInput.startsWith('9')) || nameCarrier == 'UPS' && (!actualInput.startsWith('1Z') || !actualInput.startsWith('8'))){
+        if((nameCarrier == 'USPS' && !actualInput.startsWith('9')) || (nameCarrier == 'UPS' && (!actualInput.startsWith('1Z') || !actualInput.startsWith('8')))){
             return
         }
 
