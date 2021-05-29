@@ -566,6 +566,7 @@ io.on("connection", async function (client) {
   })
 
   await client.on("fix-tracking-history", async function (data) {
+    console.log(data)
     await dbo.collection("tracking_etsy_history").updateOne({ id: data.id}, { $set: data }, { upsert: true })
     await client.emit("return-fix-tracking-history")
   })

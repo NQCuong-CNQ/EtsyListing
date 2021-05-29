@@ -292,11 +292,12 @@ $('#submit-fix-btn').on('click', async function () {
         fixData['carrier'] = $('#input-carrier-tracking-history').val()
     }
 
-    if (fixData['code'] == '' && fixData['carrier'] == '') {
+    if (fixData['code'] == undefined && fixData['carrier'] == undefined) {
         toastr.clear()
         toastr.warning('Vui lòng nhập Code hoặc Carrier!')
         return
     }
+    console.log(fixData)
 
     await socket.emit("fix-tracking-history", fixData)
 })
