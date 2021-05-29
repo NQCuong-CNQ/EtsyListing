@@ -273,3 +273,35 @@ $('#fix-tracking-history-btn').on('click', function () {
         content.style.display = "block"
     }
 })
+
+$('#submit-fix-btn').on('click', function () {
+    let fixData = new Object
+
+    fixData['id'] = $('#id-fix-tracking-history').val()
+    if (fixData['id'] == '') {
+        toastr.clear()
+        toastr.warning('Vui lòng nhập ID!')
+        return
+    }
+
+    if ($('#input-code-tracking-history').val() != '') {
+        fixData['code'] = $('#input-code-tracking-history').val()
+    }
+
+    if ($('#input-carrier-tracking-history').val() != '') {
+        fixData['carrier'] = $('#input-carrier-tracking-history').val()
+    }
+
+    if (fixData['code'] == '' && fixData['carrier'] == '') {
+        toastr.clear()
+        toastr.warning('Vui lòng nhập Code hoặc Carrier!')
+        return
+    }
+
+    await socket.emit("fix-tracking-history", fixData)
+})
+
+socket.on("return-fix-tracking-history", async function (data) {
+    toastr.clear()
+    toastr.success('Thành công!')
+})

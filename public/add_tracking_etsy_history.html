@@ -12,6 +12,7 @@
     <link rel="stylesheet" type="text/css" href="css/app.css" />
     <link rel="stylesheet" type="text/css" href="css/style.css" />
     <link rel="stylesheet" type="text/css" href="css/dataTables.css" />
+    <link rel="stylesheet" type="text/css" href="css/toastr.min.css"/>
 
 </head>
 
@@ -136,15 +137,15 @@
                         <tbody id="table_id-tracking-history-body">
                         </tbody>
                     </table>
-                </div>
 
-                <button type="button" id="fix-tracking-history-btn">Fix</button>
-                <div class="fix-tracking-history">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
-                        labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                        laboris nisi ut aliquip ex ea commodo consequat.</p>
+                    <button type="button" id="fix-tracking-history-btn">Fix</button>
+                    <div class="fix-tracking-history">
+                        <input type="text" id="id-fix-tracking-history">
+                        <input class="ml-2" type="text" id="input-code-tracking-history">
+                        <input class="ml-2" type="text" id="input-carrier-tracking-history">
+                        <button class="ml-2" id="submit-fix-btn">Submit</button>
+                    </div>
                 </div>
-
             </main>
         </div>
     </div>
@@ -154,6 +155,7 @@
 <script type="text/javascript" src="js/extension/jquery.js"></script>
 <script type="text/javascript" src="js/extension/socket.io.js"></script>
 <script type="text/javascript" src="js/extension/dataTables.js"></script>
+<script type="text/javascript" src="js/extension/toastr.min.js"></script>
 <script type="text/javascript" src="js/add_tracking_etsy_history.js"></script>
 <script type="text/javascript" src="js/extension/app.js"></script>
 
