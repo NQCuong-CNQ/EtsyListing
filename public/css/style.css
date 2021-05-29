@@ -388,6 +388,7 @@ html {
 }
 .active, #fix-tracking-history-btn:hover {
   color: #0081ff;
+  background-color: none !important;
 }
 .fix-tracking-history {
   margin-top: 1rem;
