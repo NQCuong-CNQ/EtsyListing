@@ -274,7 +274,7 @@ $('#fix-tracking-history-btn').on('click', function () {
     }
 })
 
-$('#submit-fix-btn').on('click', function () {
+$('#submit-fix-btn').on('click', async function () {
     let fixData = new Object
 
     fixData['id'] = $('#id-fix-tracking-history').val()
