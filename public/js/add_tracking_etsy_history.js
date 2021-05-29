@@ -285,14 +285,14 @@ $('#submit-fix-btn').on('click', async function () {
     }
 
     if ($('#input-code-tracking-history').val() != '') {
-        fixData['code'] = $('#input-code-tracking-history').val().trim()
+        fixData['actual_input'] = $('#input-code-tracking-history').val().trim()
     }
 
     if ($('#input-carrier-tracking-history').val() != '') {
-        fixData['carrier'] = $('#input-carrier-tracking-history').val().trim()
+        fixData['carrier_name'] = $('#input-carrier-tracking-history').val().trim()
     }
 
-    if (fixData['code'] == undefined && fixData['carrier'] == undefined) {
+    if (fixData['actual_input'] == undefined && fixData['carrier_name'] == undefined) {
         toastr.clear()
         toastr.warning('Vui lòng nhập Code hoặc Carrier !')
         return

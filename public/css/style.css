@@ -387,11 +387,11 @@ html {
   font-size: 15px;
 }
 .active, #fix-tracking-history-btn:hover {
-  background-color: #555;
+  color: #0081ff;
 }
 .fix-tracking-history {
-  padding: 0 18px;
+  margin-top: 1rem;
   display: none;
+  transition: 0.3s;
   overflow: hidden;
-  background-color: #f1f1f1;
 }
