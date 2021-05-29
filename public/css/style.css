@@ -386,13 +386,12 @@ html {
   cursor: pointer;
   font-size: 15px;
 }
-.active, #fix-tracking-history-btn:hover {
+.active-fix-tracking, #fix-tracking-history-btn:hover {
   color: #0081ff;
-  background-color: none !important;
+  background-color: none;
 }
 .fix-tracking-history {
-  margin-top: 1rem;
+  margin-top: 0.5rem;
   display: none;
-  transition: 0.3s;
   overflow: hidden;
 }
