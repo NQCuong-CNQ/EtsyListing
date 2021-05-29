@@ -277,27 +277,26 @@ $('#fix-tracking-history-btn').on('click', function () {
 $('#submit-fix-btn').on('click', async function () {
     let fixData = new Object
 
-    fixData['id'] = $('#id-fix-tracking-history').val()
+    fixData['id'] = $('#id-fix-tracking-history').val().trim()
     if (fixData['id'] == '') {
         toastr.clear()
-        toastr.warning('Vui lòng nhập ID!')
+        toastr.warning('Vui lòng nhập ID !')
         return
     }
 
     if ($('#input-code-tracking-history').val() != '') {
-        fixData['code'] = $('#input-code-tracking-history').val()
+        fixData['code'] = $('#input-code-tracking-history').val().trim()
     }
 
     if ($('#input-carrier-tracking-history').val() != '') {
-        fixData['carrier'] = $('#input-carrier-tracking-history').val()
+        fixData['carrier'] = $('#input-carrier-tracking-history').val().trim()
     }
 
     if (fixData['code'] == undefined && fixData['carrier'] == undefined) {
         toastr.clear()
-        toastr.warning('Vui lòng nhập Code hoặc Carrier!')
+        toastr.warning('Vui lòng nhập Code hoặc Carrier !')
         return
     }
-    console.log(fixData)
 
     await socket.emit("fix-tracking-history", fixData)
 })

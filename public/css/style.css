@@ -383,19 +383,13 @@ html {
   color: green;
 }
 #fix-tracking-history-btn {
-  background-color: #777;
-  color: white;
   cursor: pointer;
-  padding: 18px;
-  border: none;
-  text-align: left;
-  outline: none;
   font-size: 15px;
 }
 .active, #fix-tracking-history-btn:hover {
   background-color: #555;
 }
-#fix-tracking-history {
+.fix-tracking-history {
   padding: 0 18px;
   display: none;
   overflow: hidden;
