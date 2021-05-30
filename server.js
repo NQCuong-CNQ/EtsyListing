@@ -574,6 +574,7 @@ io.on("connection", async function (client) {
     await client.emit("return-fix-tracking-history")
   })
 })
+
 fixTrackingHistory()
 async function fixTrackingHistory() {
   let clientDB = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -582,7 +583,7 @@ async function fixTrackingHistory() {
   for (let i = 0; i < dbdata.length; i++) {
     if (dbdata[i].customer_email.includes('Message history1')) {
       dbdata[i].customer_email = dbdata[i].customer_email.replace('Message history1', '')
-      await dbo.collection("tracking_etsy_history").updateMany({ id: dbdata[i].id }, { $set: { customer_email: dbdata[i].mail } }, { upsert: true })
+      await dbo.collection("tracking_etsy_history").updateOne({ id: dbdata[i].id }, { $set: { customer_email: dbdata[i].mail } }, { upsert: true })
     }
   }
 }
