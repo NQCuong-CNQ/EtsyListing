@@ -576,6 +576,8 @@ io.on("connection", async function (client) {
 })
 fixTrackingHistory()
 async function fixTrackingHistory() {
+  let clientDB = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
+  var dbo = clientDB.db("trackingdb")
   let dbdata = await dbo.collection("tracking_etsy_history").find().toArray()
   for (let i = 0; i < dbdata.length; i++) {
     if (dbdata[i].mail.includes('Message history1')) {
