@@ -107,7 +107,7 @@ async function getListing() {
 
   idListings = [...new Set(idListings)]
   console.log(idListings.length)
-  if(idListings.length > 4000){
+  if (idListings.length > 4000) {
     idListings.slice(0, idListings.length - 4000)
   }
 
@@ -540,7 +540,7 @@ io.on("connection", async function (client) {
 
     for (let i = 0; i < tempData.length; i += 2) {
       let temp = tempData[i].replace('Order history', '').replace('Message history1', '').substring(10)
-      if(temp.length < 10){
+      if (temp.length < 10) {
         temp = tempData[i].replace('Order history', '').replace('Message history1', '')
       }
       gmailTemp.push(temp)
@@ -570,10 +570,20 @@ io.on("connection", async function (client) {
   })
 
   await client.on("fix-tracking-history", async function (data) {
-    await dbo.collection("tracking_etsy_history").updateOne({ id: data.id}, { $set: data }, { upsert: true })
+    await dbo.collection("tracking_etsy_history").updateOne({ id: data.id }, { $set: data }, { upsert: true })
     await client.emit("return-fix-tracking-history")
   })
 })
+fixTrackingHistory()
+async function fixTrackingHistory() {
+  let dbdata = await dbo.collection("tracking_etsy_history").find().toArray()
+  for (let i = 0; i < dbdata.length; i++) {
+    if (dbdata[i].mail.includes('Message history1')) {
+      dbdata[i].mail = dbdata[i].mail.replace('Message history1', '')
+      await dbo.collection("tracking_etsy_history").updateMany({ id: dbdata[i].id }, { $set: { mail: dbdata[i].mail } }, { upsert: true })
+    }
+  }
+}
 
 async function getSearchProductFromWeb() {
   await sleep(100)
