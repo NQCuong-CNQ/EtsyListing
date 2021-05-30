@@ -282,7 +282,11 @@ socket.on("return-product-tracking-join", function (data) {
 
     tempData[i] = temp
   }
-  window.localStorage.setItem('listing-data', JSON.stringify(tempData))
+  let tempDataString = JSON.stringify(tempData)
+  if (tempDataString.length >= 5242878) {
+    tempDataString.slice(0, 5242877)
+  }
+  window.localStorage.setItem('listing-data', tempDataString)
 })
 
 function handleDuplicates() {
