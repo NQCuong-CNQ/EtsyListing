@@ -583,10 +583,10 @@ async function fixTrackingHistory() {
   for (let i = 0; i < dbdata.length; i++) {
     if (dbdata[i].customer_email == undefined) {
     } else {
-      console.log(dbdata[i].customer_email)
-      if (dbdata[i].customer_email.indexOf('Message history1') > 0) {
+      if (dbdata[i].customer_email.includes('Message history1')) {
+        console.log(dbdata[i].customer_email)
         dbdata[i].customer_email = dbdata[i].customer_email.replace('Message history1', '')
-        await dbo.collection("tracking_etsy_history").updateOne({ id: dbdata[i].id }, { $set: { customer_email: dbdata[i].mail } }, { upsert: true })
+        await dbo.collection("tracking_etsy_history").updateOne({ id: dbdata[i].id }, { $set: { customer_email: dbdata[i].customer_email } }, { upsert: true })
       }
     }
   }
