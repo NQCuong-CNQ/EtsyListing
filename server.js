@@ -539,7 +539,11 @@ io.on("connection", async function (client) {
     }
 
     for (let i = 0; i < tempData.length; i += 2) {
-      gmailTemp.push(tempData[i].replace('Order history', '').replace('Message history1', '').substring(10))
+      let temp = tempData[i].replace('Order history', '').replace('Message history1', '').substring(10)
+      if(temp.length < 10){
+        temp = tempData[i].replace('Order history', '').replace('Message history1', '')
+      }
+      gmailTemp.push(temp)
     }
 
     for (let i = 0; i < idTemp.length; i++) {
@@ -566,7 +570,6 @@ io.on("connection", async function (client) {
   })
 
   await client.on("fix-tracking-history", async function (data) {
-    console.log(data)
     await dbo.collection("tracking_etsy_history").updateOne({ id: data.id}, { $set: data }, { upsert: true })
     await client.emit("return-fix-tracking-history")
   })
