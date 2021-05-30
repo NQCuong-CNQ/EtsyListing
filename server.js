@@ -581,13 +581,13 @@ async function fixTrackingHistory() {
   var dbo = clientDB.db("trackingdb")
   let dbdata = await dbo.collection("tracking_etsy_history").find().toArray()
   for (let i = 0; i < dbdata.length; i++) {
-    if (dbdata[i].customer_email != '' || dbdata[i].customer_email != undefined) {
-      console.log(dbdata[i].customer_email)
-      if (dbdata[i].customer_email.indexOf('Message history1') > 0) {
-        dbdata[i].customer_email = dbdata[i].customer_email.replace('Message history1', '')
-        await dbo.collection("tracking_etsy_history").updateOne({ id: dbdata[i].id }, { $set: { customer_email: dbdata[i].mail } }, { upsert: true })
-      }
-    }
+    if (dbdata[i].customer_email == undefined) {
+      
+      // if (dbdata[i].customer_email.indexOf('Message history1') > 0) {
+      //   dbdata[i].customer_email = dbdata[i].customer_email.replace('Message history1', '')
+      //   await dbo.collection("tracking_etsy_history").updateOne({ id: dbdata[i].id }, { $set: { customer_email: dbdata[i].mail } }, { upsert: true })
+      // }
+    } else {console.log(dbdata[i].customer_email)}
 
   }
 }
