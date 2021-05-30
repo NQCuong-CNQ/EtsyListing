@@ -580,9 +580,9 @@ async function fixTrackingHistory() {
   var dbo = clientDB.db("trackingdb")
   let dbdata = await dbo.collection("tracking_etsy_history").find().toArray()
   for (let i = 0; i < dbdata.length; i++) {
-    if (dbdata[i].mail.includes('Message history1')) {
-      dbdata[i].mail = dbdata[i].mail.replace('Message history1', '')
-      await dbo.collection("tracking_etsy_history").updateMany({ id: dbdata[i].id }, { $set: { mail: dbdata[i].mail } }, { upsert: true })
+    if (dbdata[i].customer_email.includes('Message history1')) {
+      dbdata[i].customer_email = dbdata[i].customer_email.replace('Message history1', '')
+      await dbo.collection("tracking_etsy_history").updateMany({ id: dbdata[i].id }, { $set: { customer_email: dbdata[i].mail } }, { upsert: true })
     }
   }
 }
