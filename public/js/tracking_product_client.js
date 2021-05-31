@@ -395,11 +395,11 @@ function handleDuplicates() {
 
 /* ------------------------------------------------ADDITIONAL SECTION------------------------------------------------ */
 
-$("body").on('click', function (e) {
-  if (e.target.className != "popup-analytic-container") {
-    $(".popup-analytic-container").css('display', 'none')
-  }
-})
+// $("body").on('click', function (e) {
+//   if (e.target.className != "popup-analytic-container") {
+//     $(".popup-analytic-container").css('display', 'none')
+//   }
+// })
 
 function showAnalytic(id) {
   if (isGettingData) {
