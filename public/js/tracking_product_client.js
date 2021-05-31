@@ -13,7 +13,7 @@ var pagLenght = 30
 var pagStart = 0
 var pagEnd = pagLenght
 var isGridView = true
-var analyticData = new Object
+var dataOriginal = []
 
 /* ------------------------------------------------MAIN SECTION------------------------------------------------ */
 
@@ -296,7 +296,7 @@ socket.on("updating", function () {
 
 socket.on("return-product-tracking-join", function (data) {
   listingData = data
-
+  dataOriginal = data
   handleDuplicates()
   searchOrFilterData()
   toastr.clear()
@@ -315,7 +315,6 @@ function handleDuplicates() {
     dataDupPos[`${listingData[i].listing_id}`] += i + ','
   }
 
-  analyticData = dataDupPos
   dataDupById = Object.keys(dataDupPos)
   let newData = []
   let temp
@@ -397,9 +396,96 @@ function handleDuplicates() {
 function showAnalytic(id){
   console.log(id)
   $('.popup-analytic-container').css('display', 'block')
-  let idd = analyticData[id].split(',')
-  console.log(idd)
-  $('#id-analytic-popup').text(idd)
+
+  let tempData = []
+  for (let i = 0; i < dataOriginal.length; i++) {
+    if(dataOriginal[i].listing_id = id){
+      tempData.push(dataOriginal[i])
+    }
+  }
+
+  var ctx = document.getElementById("chart-total-sales").getContext("2d")
+  var gradientblue = ctx.createLinearGradient(0, 0, 0, 225)
+  gradientblue.addColorStop(0, "rgba(6,91,249,0.3)")
+  gradientblue.addColorStop(1, "rgba(6,91,249, 0)")
+  var gradientred = ctx.createLinearGradient(0, 0, 0, 225)
+  gradientred.addColorStop(0, "rgba(255,0,40,0.3)")
+  gradientred.addColorStop(1, "rgba(255,0,40, 0)")
+  var gradientgreen = ctx.createLinearGradient(0, 0, 0, 225)
+  gradientgreen.addColorStop(0, "rgba(47,208,87,0.3)")
+  gradientgreen.addColorStop(1, "rgba(47,208,87, 0)")
+
+  let label = []
+  let total_sales = []
+  let num_favorers = []
+  let listing_active_count = []
+
+  for (let index = 0; index < tempData.length; index++) {
+    label.push(tempData[index].original_creation_tsz)
+    total_sales.push(tempData[index].quantity)
+    num_favorers.push(tempData[index].num_favorers)
+    listing_active_count.push(tempData[index].views)
+  }
+  new Chart(document.getElementById("chart-total-sales"), {
+    type: "line",
+    data: {
+      labels: label,
+      datasets: [{
+        label: "Total Sales",
+        fill: true,
+        backgroundColor: gradientblue,
+        borderColor: window.theme.primary,
+        data: total_sales,
+      }, {
+        label: "Num Favorers",
+        fill: true,
+        backgroundColor: gradientred,
+        borderColor: 'red',
+        data: num_favorers,
+      }, {
+        label: "Listing Active Count",
+        fill: true,
+        backgroundColor: gradientgreen,
+        borderColor: 'green',
+        data: listing_active_count,
+      }]
+    },
+    options: {
+      maintainAspectRatio: false,
+      legend: {
+        display: false
+      },
+      tooltips: {
+        intersect: false
+      },
+      hover: {
+        intersect: true
+      },
+      plugins: {
+        filler: {
+          propagate: false
+        }
+      },
+      scales: {
+        xAxes: [{
+          reverse: true,
+          gridLines: {
+            color: "rgba(0,0,0,0.0)"
+          }
+        }],
+        yAxes: [{
+          ticks: {
+            stepSize: 1000
+          },
+          display: true,
+          borderDash: [3, 3],
+          gridLines: {
+            color: "rgba(0,0,0,0.0)"
+          }
+        }]
+      }
+    }
+  })
 }
 
 $('#find-product-by-keyword').on('keypress', function (e) {
