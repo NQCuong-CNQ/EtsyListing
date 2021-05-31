@@ -245,7 +245,7 @@ function updateData(dataFilter = listingData) {
           <div class="product-img-container">
               <div class="hover-product-container">
                   <a href="${dataFilter[i].img_url_original}" target="_blank"><button id="img-product-btn"><i class="fas fa-image"></i></button></a>
-                  <button onclick="test()" data-id-subject="${dataFilter[i].listing_id}" id="analytic-product-btn"><i class="fas fa-chart-bar"></i></button>
+                  <button onclick="test(dataFilter[i].listing_id)" data-id-subject="${dataFilter[i].listing_id}" id="analytic-product-btn"><i class="fas fa-chart-bar"></i></button>
               </div>
               <img src="${dataFilter[i].img_url}" alt="" width="100%" loading='lazy'>
           </div>
@@ -271,9 +271,9 @@ function updateData(dataFilter = listingData) {
   scrollToTop()
 }
 
-function test(){
-  console.log($('#analytic-product-btn').attr('data-id-subject'))
-  
+function test(id){
+  console.log(id)
+
 }
 /* ------------------------------------------------END MAIN SECTION------------------------------------------------ */
 
