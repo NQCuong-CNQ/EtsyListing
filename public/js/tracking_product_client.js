@@ -272,7 +272,8 @@ function updateData(dataFilter = listingData) {
 }
 
 function test(){
-  console.log($('#analytic-product-btn').data('data-id-subject'))
+  console.log($('#analytic-product-btn').attr('data-id-subject'))
+  
 }
 /* ------------------------------------------------END MAIN SECTION------------------------------------------------ */
 
