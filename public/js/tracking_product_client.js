@@ -404,6 +404,8 @@ function showAnalytic(id){
     }
   }
 
+  console.log(tempData)
+
   var ctx = document.getElementById("chart-total-sales").getContext("2d")
   var gradientblue = ctx.createLinearGradient(0, 0, 0, 225)
   gradientblue.addColorStop(0, "rgba(6,91,249,0.3)")
@@ -420,11 +422,11 @@ function showAnalytic(id){
   let num_favorers = []
   let listing_active_count = []
 
-  for (let index = 0; index < tempData.length; index++) {
-    label.push(tempData[index].original_creation_tsz)
-    total_sales.push(tempData[index].quantity)
-    num_favorers.push(tempData[index].num_favorers)
-    listing_active_count.push(tempData[index].views)
+  for (let i = 0; i < tempData.length; i++) {
+    label.push(tempData[i].original_creation_tsz)
+    total_sales.push(tempData[i].quantity)
+    num_favorers.push(tempData[i].num_favorers)
+    listing_active_count.push(tempData[i].views)
   }
   new Chart(document.getElementById("chart-total-sales"), {
     type: "line",
