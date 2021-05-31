@@ -214,14 +214,14 @@ main.content {
   margin-block: auto;
 }
 
-/* .filter-list-container {
+.filter-list-container {
   display: flex;
   align-items: center;
 }
 
 .filter-list-container h5 {
   margin-block: auto;
-} */
+}
 
 #product-list img {
   height: 200px;
