@@ -498,38 +498,39 @@ io.on("connection", async function (client) {
   })
 
   await client.on("track-order-join", async function (data) {
+    console.log('getting data success! ' + data['data'])
     console.log('getting data success! ' + data['data'].length)
     let trackData = []
     let temp = data['data'].split('\n')
 
     let trackObj
     let trackDataForSave
-    for (let i = 1; i < temp.length - 1; i++) {
-      trackObj = new Object
-      trackObj['pro_ID'] = temp[i].split(',')[0].replace(/[^0-9]/g, '')
-      trackObj['track_number'] = temp[i].split(',')[19].replace(/[^0-9a-zA-Z]/g, '')
-      trackObj['order_status'] = temp[i].split(',')[3].replace(/[^0-9a-zA-Z]/g, '')
+    // for (let i = 1; i < temp.length - 1; i++) {
+    //   trackObj = new Object
+    //   trackObj['pro_ID'] = temp[i].split(',')[0].replace(/[^0-9]/g, '')
+    //   trackObj['track_number'] = temp[i].split(',')[19].replace(/[^0-9a-zA-Z]/g, '')
+    //   trackObj['order_status'] = temp[i].split(',')[3].replace(/[^0-9a-zA-Z]/g, '')
 
-      if (trackObj['track_number'] != '' && trackObj['order_status'] == 'Shipped') {
-        trackData.push(trackObj)
-      }
+    //   if (trackObj['track_number'] != '' && trackObj['order_status'] == 'Shipped') {
+    //     trackData.push(trackObj)
+    //   }
 
-      trackDataForSave = new Object
-      trackDataForSave['id'] = trackObj['pro_ID']
-      trackDataForSave['number_tracking'] = trackObj['track_number']
-      trackDataForSave['order_date'] = temp[i].split(',')[2].replace(/"/g, '')
-      trackDataForSave['order_status'] = trackObj['order_status']
-      trackDataForSave['customer_name'] = temp[i].split(',')[12].replace(/[^0-9a-zA-Z]/g, '')
-      trackDataForSave['user'] = data['name']
-      await dbo.collection("tracking_etsy_history").updateOne({ id: trackDataForSave['id'] }, { $set: trackDataForSave }, { upsert: true })
-    }
+    //   trackDataForSave = new Object
+    //   trackDataForSave['id'] = trackObj['pro_ID']
+    //   trackDataForSave['number_tracking'] = trackObj['track_number']
+    //   trackDataForSave['order_date'] = temp[i].split(',')[2].replace(/"/g, '')
+    //   trackDataForSave['order_status'] = trackObj['order_status']
+    //   trackDataForSave['customer_name'] = temp[i].split(',')[12].replace(/[^0-9a-zA-Z]/g, '')
+    //   trackDataForSave['user'] = data['name']
+    //   await dbo.collection("tracking_etsy_history").updateOne({ id: trackDataForSave['id'] }, { $set: trackDataForSave }, { upsert: true })
+    // }
 
-    await client.broadcast.emit("get-email-customer-order")
-    console.log('reload etsy')
-    await client.broadcast.emit("reload-etsy")
-    await sleep(15000)
-    console.log('send data to etsy' + trackData.length)
-    await client.broadcast.emit("track-order-return", trackData)
+    // await client.broadcast.emit("get-email-customer-order")
+    // console.log('reload etsy')
+    // await client.broadcast.emit("reload-etsy")
+    // await sleep(15000)
+    // console.log('send data to etsy' + trackData.length)
+    // await client.broadcast.emit("track-order-return", trackData)
   })
 
   await client.on("return-email-customer-order", async function (data) {
