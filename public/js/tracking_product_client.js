@@ -9,7 +9,7 @@ var filterByDateOption = 14
 // var filterByTypeOption = 0
 var isSearch = false
 var sortOption = 5
-var pagLenght = 24
+var pagLenght = 30
 var pagStart = 0
 var pagEnd = pagLenght
 var isGridView = true
@@ -66,6 +66,7 @@ $('#30d-filter-listing-creation-date').on('click', async function () {
 
 $('#show-15-entries-listing').on('click', async function () {
   pagLenght = 15
+  pagStart = 0
   pagEnd = pagLenght
   searchOrFilterData()
   $('#show-entries-listing').text('15')
@@ -73,6 +74,7 @@ $('#show-15-entries-listing').on('click', async function () {
 
 $('#show-30-entries-listing').on('click', async function () {
   pagLenght = 30
+  pagStart = 0
   pagEnd = pagLenght
   searchOrFilterData()
   $('#show-entries-listing').text('30')
@@ -80,6 +82,7 @@ $('#show-30-entries-listing').on('click', async function () {
 
 $('#show-50-entries-listing').on('click', async function () {
   pagLenght = 50
+  pagStart = 0
   pagEnd = pagLenght
   searchOrFilterData()
   $('#show-entries-listing').text('50')
@@ -87,6 +90,7 @@ $('#show-50-entries-listing').on('click', async function () {
 
 $('#show-100-entries-listing').on('click', async function () {
   pagLenght = 100
+  pagStart = 0
   pagEnd = pagLenght
   searchOrFilterData()
   $('#show-entries-listing').text('100')
