@@ -237,7 +237,6 @@ let listingLocalData = window.localStorage.getItem('listing-data')
 if (listingLocalData != null) {
   listingData = JSON.parse(listingLocalData)
 
-  handleDuplicates()
   searchOrFilterData()
   toastr.clear()
   toastr.info('Updating data...')
@@ -259,34 +258,6 @@ socket.on("return-product-tracking-join", function (data) {
   searchOrFilterData()
   toastr.clear()
   toastr.success('Data Updated')
-
-  let temp
-  let tempData = []
-
-  for (let i = 0; i < data.length; i++) {
-    temp = new Object()
-    temp['listing_id'] = data[i].listing_id
-    temp['title'] = data[i].title
-    temp['url'] = data[i].url
-    temp['img_url'] = data[i].img_url
-    temp['img_url_original'] = data[i].img_url_original
-    temp['views'] = data[i].views
-    temp['num_favorers'] = data[i].num_favorers
-    temp['price'] = data[i].price
-    temp['quantity'] = data[i].quantity
-    temp['original_creation_tsz'] = data[i].original_creation_tsz
-    temp['taxonomy_path'] = data[i].taxonomy_path
-    temp['is_digital'] = data[i].is_digital
-    temp['percent_favor'] = data[i].percent_favor
-    temp['date_update'] = data[i].date_update
-
-    tempData[i] = temp
-  }
-  let tempDataString = JSON.stringify(tempData)
-  if (tempDataString.length >= 5242878) {
-    tempDataString.slice(0, 5242877)
-  }
-  window.localStorage.setItem('listing-data', tempDataString)
 })
 
 function handleDuplicates() {
@@ -304,6 +275,7 @@ function handleDuplicates() {
   dataDupById = Object.keys(dataDupPos)
   let newData = []
   let temp
+
   for (let i = 0; i < dataDupById.length; i++) {
     let arrPos = dataDupPos[dataDupById[i]].slice(0, -1).split(',')
     let lastPos = arrPos[arrPos.length - 1]
@@ -324,6 +296,7 @@ function handleDuplicates() {
     temp['percent_favor'] = listingData[lastPos].percent_favor
     temp['sales_day'] = 0
 
+    //caculate sales fer day
     if (arrPos.length > 1) {
       let numDays = listingData[lastPos].date_update - listingData[arrPos[0]].date_update
       if (numDays > 1) {
@@ -336,6 +309,7 @@ function handleDuplicates() {
               diff = 0 
             }
             totalCount += diff
+            console.log(temp['title'] + totalCount)
           }
         }
         temp['sales_day'] = (totalCount / numDays).toFixed(2)
@@ -344,6 +318,32 @@ function handleDuplicates() {
     newData.push(temp)
   }
   listingData = newData
+
+  // handle for saving data to local
+  let tempForSave
+  let tempDataForSave = []
+
+  for (let i = 0; i < listingData.length; i++) {
+    tempForSave = new Object()
+    tempForSave['listing_id'] = listingData[i].listing_id
+    tempForSave['title'] = listingData[i].title
+    tempForSave['url'] = listingData[i].url
+    tempForSave['img_url'] = listingData[i].img_url
+    tempForSave['img_url_original'] = listingData[i].img_url_original
+    tempForSave['views'] = listingData[i].views
+    tempForSave['num_favorers'] = listingData[i].num_favorers
+    tempForSave['price'] = listingData[i].price
+    tempForSave['quantity'] = listingData[i].quantity
+    tempForSave['original_creation_tsz'] = listingData[i].original_creation_tsz
+    tempForSave['taxonomy_path'] = listingData[i].taxonomy_path
+    tempForSave['is_digital'] = listingData[i].is_digital
+    tempForSave['percent_favor'] = listingData[i].percent_favor
+    tempForSave['date_update'] = listingData[i].date_update
+    tempForSave['sales_day'] = listingData[i].sales_day
+
+    tempDataForSave[i] = tempForSave
+  }
+  window.localStorage.setItem('listing-data', JSON.stringify(tempDataForSave))
 }
 
 /* ------------------------------------------------END SOCKET SECTION------------------------------------------------ */
