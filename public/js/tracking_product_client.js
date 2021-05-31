@@ -392,9 +392,9 @@ function handleDuplicates() {
 
 /* ------------------------------------------------ADDITIONAL SECTION------------------------------------------------ */
 
-$('.list-product-search-container').on('hover', function(){
-  $('.hover-product-container').css('height', '-webkit-fill-available')
-})
+// $('.list-product-search-container').on('hover', function(){
+//   $('.hover-product-container').css('height', '-webkit-fill-available')
+// })
 
 $('#find-product-by-keyword').on('keypress', function (e) {
   if (e.key == 'Enter') {

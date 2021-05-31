@@ -419,3 +419,6 @@ html {
   background-color: rgb(255, 30, 236);
   color: white;
 }
+.list-product-search-container:hover .hover-product-container{
+  height: -webkit-fill-available; 
+}
