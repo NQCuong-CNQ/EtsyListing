@@ -13,21 +13,26 @@ th, td {
 .dropdown button {
   border: 1px solid;
 }
-#find-product-by-keyword{
+
+#find-product-by-keyword {
   width: 300px;
 }
+
 .dropdown p {
   font-size: 16px;
   color: black;
   margin: 0;
 }
-.select2-results__option--selected{
+
+.select2-results__option--selected {
   display: none;
   pointer-events: none !important;
 }
-.select2-results__option{
+
+.select2-results__option {
   transition: 0.2s;
 }
+
 .dropdown p:hover {
   color: white !important;
 }
@@ -376,37 +381,47 @@ html {
 .grid-view-listing svg {
   font-size: 1.5rem;
 }
-.fa-cart-plus{
+
+.fa-cart-plus {
   color: rgb(0, 132, 255);
 }
-.fa-calendar-alt{
+
+.fa-calendar-alt {
   color: green;
 }
+
 #fix-tracking-history-btn {
   cursor: pointer;
   font-size: 15px;
 }
+
 .active-fix-tracking, #fix-tracking-history-btn:hover {
   color: #0081ff;
   background-color: none;
 }
+
 .fix-tracking-history {
   margin-top: 0.5rem;
   display: none;
   overflow: hidden;
 }
-.hover-product-container{
-  background-color: rgba(255, 255, 255, 0.616); 
-  position: absolute; 
-  width: 100%; 
-  z-index: 2; 
-  height: 0; 
+
+.hover-product-container {
+  background-color: rgba(255, 255, 255, 0.616);
+  position: absolute;
+  width: 100%;
+  z-index: 2;
+  height: 0;
   display: flex;
   transition: height 0.2s;
   align-items: center;
   justify-content: center;
 }
-#analytic-product-btn{
+
+#analytic-product-btn {
+  height: 40px;
+  width: 40px;
+  font-size: 1.3rem;
   display: none;
   border-width: 0;
   margin-left: 1rem;
@@ -414,19 +429,31 @@ html {
   background-color: dodgerblue;
   color: white;
 }
-#img-product-btn{
+
+#img-product-btn {
+  height: 40px;
+  width: 40px;
+  font-size: 1.3rem;
   display: none;
   border-width: 0;
   border-radius: 50%;
   background-color: rgb(255, 30, 236);
   color: white;
 }
-.list-product-search-container:hover .hover-product-container{
-  height: -webkit-fill-available; 
+
+.list-product-search-container:hover .hover-product-container {
+  height: 100%;
 }
-.list-product-search-container:hover #analytic-product-btn{
+
+.list-product-search-container:hover #analytic-product-btn {
   display: block;
 }
-.list-product-search-container:hover #img-product-btn{
+
+.list-product-search-container:hover #img-product-btn {
   display: block;
+}
+
+.product-img-container{
+  position: relative;
+  overflow: hidden;
 }

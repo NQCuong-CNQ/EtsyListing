@@ -242,7 +242,7 @@ function updateData(dataFilter = listingData) {
   for (var i = pagStart; i < pagEnd; i++) {
     $('#product-list').append(`
         <div class="list-product-search-container">
-          <div style="position: relative;">
+          <div class="product-img-container">
               <div class="hover-product-container">
                   <button id="img-product-btn"><i class="fas fa-image"></i></button>
                   <button id="analytic-product-btn"><i class="fas fa-chart-bar"></i></button>
