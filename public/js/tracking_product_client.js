@@ -242,8 +242,15 @@ function updateData(dataFilter = listingData) {
   for (var i = pagStart; i < pagEnd; i++) {
     $('#product-list').append(`
         <div class="list-product-search-container">
-          <a href="${dataFilter[i].img_url_original}" target="_blank"><img src="${dataFilter[i].img_url}"
-              alt="" width="100%" loading='lazy'></a>
+          <div style="position: relative;">
+              <div class="hover-product-container">
+                  <button id="img-product-btn"><i class="fas fa-image"></i></button>
+                  <button id="analytic-product-btn"><i class="fas fa-chart-bar"></i></button>
+              </div>
+              <img src="https://i.etsystatic.com/26000166/r/il/5327b4/3094370496/il_fullxfull.3094370496_etfq.jpg"
+              alt="" width="100%" loading='lazy'>
+          </div>
+          
           <a class="mt-2" href="${dataFilter[i].url}" target="_blank">${dataFilter[i].title}</a>
           <div class="row pl-3 pr-2">
               <p class="col-4 p-0"><i class="fas fa-eye mr-1"></i>${dataFilter[i].views}</p>
@@ -257,6 +264,9 @@ function updateData(dataFilter = listingData) {
       </div>
     `)
   }
+
+  // <a href="${dataFilter[i].img_url_original}" target="_blank"><img src="${dataFilter[i].img_url}"
+  //             alt="" width="100%" loading='lazy'></a>
 
   $('#loading').css('display', 'none')
   scrollToTop()

@@ -395,3 +395,26 @@ html {
   display: none;
   overflow: hidden;
 }
+.hover-product-container{
+  background-color: rgba(255, 255, 255, 0.616); 
+  position: absolute; 
+  width: 100%; 
+  z-index: 2; 
+  height: -webkit-fill-available; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#analytic-product-btn{
+  border-width: 0;
+  margin-left: 1rem;
+  border-radius: 50%;
+  background-color: dodgerblue;
+  color: white;
+}
+#img-product-btn{
+  border-width: 0;
+  border-radius: 50%;
+  background-color: rgb(255, 30, 236);
+  color: white;
+}
