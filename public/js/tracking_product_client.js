@@ -13,6 +13,7 @@ var pagLenght = 30
 var pagStart = 0
 var pagEnd = pagLenght
 var isGridView = true
+var analyticData = new Object
 
 /* ------------------------------------------------MAIN SECTION------------------------------------------------ */
 
@@ -314,6 +315,7 @@ function handleDuplicates() {
     dataDupPos[`${listingData[i].listing_id}`] += i + ','
   }
 
+  analyticData = dataDupPos
   dataDupById = Object.keys(dataDupPos)
   let newData = []
   let temp
@@ -395,6 +397,9 @@ function handleDuplicates() {
 function showAnalytic(id){
   console.log(id)
   $('.popup-analytic-container').css('display', 'block')
+  let idd = analyticData[id].split(',')
+  console.log(idd)
+  $('#id-analytic-popup').text(idd)
 }
 
 $('#find-product-by-keyword').on('keypress', function (e) {

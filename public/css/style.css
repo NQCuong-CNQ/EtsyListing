@@ -465,10 +465,11 @@ html {
   position: absolute;
   width: 60vW;
   height: 60vh;
-  background-color: #fff;
+  background-color: rgb(165, 46, 46);
   opacity: 0.5;
   display: none;
   left: 50%;
+  top: 10vh;
   z-index: 2;
   transform: translate(-50%, 0);
 }
