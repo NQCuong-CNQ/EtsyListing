@@ -438,7 +438,7 @@ function showAnalytic(id) {
       views.push(tempData[i].views)
     }
 
-    new Chart(document.getElementById("chart-analytic-product"), {
+    let chart = new Chart(document.getElementById("chart-analytic-product"), {
       type: "line",
       data: {
         labels: label,
@@ -497,6 +497,11 @@ function showAnalytic(id) {
           }]
         }
       }
+    })
+
+    $('#btn-close-chart').on('click', function(){
+      $('.popup-analytic-container').css('display', 'none')
+      chart.destroy()
     })
   }
 }

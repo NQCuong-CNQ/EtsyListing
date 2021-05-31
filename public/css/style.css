@@ -463,14 +463,15 @@ html {
 
 .popup-analytic-container{
   position: absolute;
+  box-shadow: 0 6px 8px 4px rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%);
   width: 60vW;
-  background-color: rgba(255, 255, 255, 0.925);
+  background-color: rgba(255, 255, 255, 0.95);
   display: none;
   left: 50%;
   top: 10vh;
   z-index: 2;
   text-align: center;
-  padding: 1.5rem 1rem;
+  padding: 0 1.5rem 1rem 1rem;
   transform: translate(-50%, 0);
 }
 #chart-analytic-product{
