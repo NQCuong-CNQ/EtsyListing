@@ -397,14 +397,15 @@ function showAnalytic(id){
   console.log(id)
   $('.popup-analytic-container').css('display', 'block')
 
+  // console.log(dataOriginal.length)
   let tempData = []
   for (let i = 0; i < dataOriginal.length; i++) {
-    if(dataOriginal[i].listing_id = id){
+    if(dataOriginal[i].listing_id == id){
       tempData.push(dataOriginal[i])
     }
   }
 
-  console.log(tempData)
+  console.log(tempData.length)
 
   var ctx = document.getElementById("chart-total-sales").getContext("2d")
   var gradientblue = ctx.createLinearGradient(0, 0, 0, 225)
