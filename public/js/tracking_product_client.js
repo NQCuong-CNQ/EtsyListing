@@ -397,15 +397,12 @@ function showAnalytic(id){
   console.log(id)
   $('.popup-analytic-container').css('display', 'block')
 
-  // console.log(dataOriginal.length)
   let tempData = []
   for (let i = 0; i < dataOriginal.length; i++) {
     if(dataOriginal[i].listing_id == id){
       tempData.push(dataOriginal[i])
     }
   }
-
-  console.log(tempData.length)
 
   var ctx = document.getElementById("chart-total-sales").getContext("2d")
   var gradientblue = ctx.createLinearGradient(0, 0, 0, 225)
@@ -419,26 +416,26 @@ function showAnalytic(id){
   gradientgreen.addColorStop(1, "rgba(47,208,87, 0)")
 
   let label = []
-  let total_sales = []
+  let quantity = []
   let num_favorers = []
-  let listing_active_count = []
+  let views = []
 
   for (let i = 0; i < tempData.length; i++) {
-    label.push(tempData[i].original_creation_tsz)
-    total_sales.push(tempData[i].quantity)
+    label.push(getEpochTime(tempData[i].original_creation_tsz))
+    quantity.push(tempData[i].quantity)
     num_favorers.push(tempData[i].num_favorers)
-    listing_active_count.push(tempData[i].views)
+    views.push(tempData[i].views)
   }
   new Chart(document.getElementById("chart-total-sales"), {
     type: "line",
     data: {
       labels: label,
       datasets: [{
-        label: "Total Sales",
+        label: "Quantity",
         fill: true,
         backgroundColor: gradientblue,
         borderColor: window.theme.primary,
-        data: total_sales,
+        data: quantity,
       }, {
         label: "Num Favorers",
         fill: true,
@@ -446,11 +443,11 @@ function showAnalytic(id){
         borderColor: 'red',
         data: num_favorers,
       }, {
-        label: "Listing Active Count",
+        label: "Views",
         fill: true,
         backgroundColor: gradientgreen,
         borderColor: 'green',
-        data: listing_active_count,
+        data: views,
       }]
     },
     options: {
