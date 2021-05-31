@@ -395,6 +395,12 @@ function handleDuplicates() {
 
 /* ------------------------------------------------ADDITIONAL SECTION------------------------------------------------ */
 
+$("body").on('click', function (e) {
+  if (e.target.className != "popup-analytic-container") {
+    $(".popup-analytic-container").css('display', 'none')
+  }
+})
+
 function showAnalytic(id) {
   if (isGettingData) {
     toastr.clear()
@@ -425,11 +431,13 @@ function showAnalytic(id) {
     let views = []
 
     for (let i = 0; i < tempData.length; i++) {
-      label.push(getEpochTime(tempData[i].original_creation_tsz))
+      console.log(tempData[i].date_update)
+      label.push(getEpochTime(tempData[i].date_update))
       quantity.push(tempData[i].quantity)
       num_favorers.push(tempData[i].num_favorers)
       views.push(tempData[i].views)
     }
+
     new Chart(document.getElementById("chart-analytic-product"), {
       type: "line",
       data: {
