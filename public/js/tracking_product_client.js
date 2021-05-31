@@ -394,9 +394,7 @@ function handleDuplicates() {
 /* ------------------------------------------------ADDITIONAL SECTION------------------------------------------------ */
 
 function showAnalytic(id){
-  console.log(id)
   $('.popup-analytic-container').css('display', 'block')
-
   let tempData = []
   for (let i = 0; i < dataOriginal.length; i++) {
     if(dataOriginal[i].listing_id == id){
@@ -404,7 +402,7 @@ function showAnalytic(id){
     }
   }
 
-  var ctx = document.getElementById("chart-total-sales").getContext("2d")
+  var ctx = document.getElementById("chart-analytic-product").getContext("2d")
   var gradientblue = ctx.createLinearGradient(0, 0, 0, 225)
   gradientblue.addColorStop(0, "rgba(6,91,249,0.3)")
   gradientblue.addColorStop(1, "rgba(6,91,249, 0)")
@@ -426,7 +424,7 @@ function showAnalytic(id){
     num_favorers.push(tempData[i].num_favorers)
     views.push(tempData[i].views)
   }
-  new Chart(document.getElementById("chart-total-sales"), {
+  new Chart(document.getElementById("chart-analytic-product"), {
     type: "line",
     data: {
       labels: label,
