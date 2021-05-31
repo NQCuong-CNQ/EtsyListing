@@ -9,7 +9,7 @@ var filterByDateOption = 14
 // var filterByTypeOption = 0
 var isSearch = false
 var sortOption = 5
-var pagLenght = 50
+var pagLenght = 24
 var pagStart = 0
 var pagEnd = pagLenght
 var isGridView = true
@@ -63,6 +63,31 @@ $('#30d-filter-listing-creation-date').on('click', async function () {
   searchOrFilterData()
   $('#filter-listing-creation-date').text('Last 30 days')
 })
+
+$('#show-15-entries-listing').on('click', async function () {
+  pagLenght = 15
+  searchOrFilterData()
+  $('#show-entries-listing').text('15')
+})
+
+$('#show-30-entries-listing').on('click', async function () {
+  pagLenght = 30
+  searchOrFilterData()
+  $('#show-entries-listing').text('30')
+})
+
+$('#show-50-entries-listing').on('click', async function () {
+  pagLenght = 50
+  searchOrFilterData()
+  $('#show-entries-listing').text('50')
+})
+
+$('#show-100-entries-listing').on('click', async function () {
+  pagLenght = 100
+  searchOrFilterData()
+  $('#show-entries-listing').text('100')
+})
+
 // $('#custom-filter-listing-creation-date').daterangepicker({
 //   "showDropdowns": true,
 //   "minYear": 2010,
@@ -309,7 +334,7 @@ function handleDuplicates() {
               diff = 0 
             }
             totalCount += diff
-            console.log(temp['title'] + totalCount)
+            // console.log(temp['title'] + totalCount)
           }
         }
         temp['sales_day'] = (totalCount / numDays).toFixed(2)
