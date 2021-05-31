@@ -407,6 +407,7 @@ html {
   justify-content: center;
 }
 #analytic-product-btn{
+  display: none;
   border-width: 0;
   margin-left: 1rem;
   border-radius: 50%;
@@ -414,6 +415,7 @@ html {
   color: white;
 }
 #img-product-btn{
+  display: none;
   border-width: 0;
   border-radius: 50%;
   background-color: rgb(255, 30, 236);
@@ -421,4 +423,10 @@ html {
 }
 .list-product-search-container:hover .hover-product-container{
   height: -webkit-fill-available; 
+}
+.list-product-search-container:hover #analytic-product-btn{
+  display: block;
+}
+.list-product-search-container:hover #img-product-btn{
+  display: block;
 }
