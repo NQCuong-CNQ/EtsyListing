@@ -247,8 +247,7 @@ function updateData(dataFilter = listingData) {
                   <button id="img-product-btn"><i class="fas fa-image"></i></button>
                   <button id="analytic-product-btn"><i class="fas fa-chart-bar"></i></button>
               </div>
-              <img src="https://i.etsystatic.com/26000166/r/il/5327b4/3094370496/il_fullxfull.3094370496_etfq.jpg"
-              alt="" width="100%" loading='lazy'>
+              <img src="${dataFilter[i].img_url}" alt="" width="100%" loading='lazy'>
           </div>
           
           <a class="mt-2" href="${dataFilter[i].url}" target="_blank">${dataFilter[i].title}</a>
@@ -392,6 +391,10 @@ function handleDuplicates() {
 /* ------------------------------------------------END SOCKET SECTION------------------------------------------------ */
 
 /* ------------------------------------------------ADDITIONAL SECTION------------------------------------------------ */
+
+$('.list-product-search-container').on('hover', function(){
+  $('.hover-product-container').css('height', '100%')
+})
 
 $('#find-product-by-keyword').on('keypress', function (e) {
   if (e.key == 'Enter') {

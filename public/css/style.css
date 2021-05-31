@@ -398,10 +398,11 @@ html {
 .hover-product-container{
   background-color: rgba(255, 255, 255, 0.616); 
   position: absolute; 
-  width: 100%; 
+  width: 0; 
   z-index: 2; 
   height: -webkit-fill-available; 
   display: flex;
+  transition: 0.2s;
   align-items: center;
   justify-content: center;
 }
