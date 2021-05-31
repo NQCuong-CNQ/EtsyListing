@@ -94,7 +94,12 @@ socket.on("track-order-step4", async function (name) {
 
         trackData['carrier_name'] = nameCarrier
         trackData['actual_input'] = actualInput
-        $('.position-absolute.position-bottom .flag-img button.btn-orange').trigger('click')
+
+        if(actualInput == trackData['number_tracking']){
+            $('.position-absolute.position-bottom .flag-img button.btn-orange').trigger('click')
+        } else {
+            return
+        }
 
         await socket.emit("track-order-step5", trackData)
         console.log('saved history' + trackData)
