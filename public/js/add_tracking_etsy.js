@@ -8,11 +8,6 @@ var index = 0
 var shopName
 let trackData
 
-setInterval(scheduleUpdate, 43200000) // 12h
-function scheduleUpdate() {
-    location.href = 'https://www.etsy.com/your/orders/sold'
-}
-
 main()
 async function main() {
     await sleep(6000)
