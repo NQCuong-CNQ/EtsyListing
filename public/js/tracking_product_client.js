@@ -66,25 +66,28 @@ $('#30d-filter-listing-creation-date').on('click', async function () {
 
 $('#show-15-entries-listing').on('click', async function () {
   pagLenght = 15
-  console.log(pagLenght)
+  pagEnd = pagLenght
   searchOrFilterData()
   $('#show-entries-listing').text('15')
 })
 
 $('#show-30-entries-listing').on('click', async function () {
   pagLenght = 30
+  pagEnd = pagLenght
   searchOrFilterData()
   $('#show-entries-listing').text('30')
 })
 
 $('#show-50-entries-listing').on('click', async function () {
   pagLenght = 50
+  pagEnd = pagLenght
   searchOrFilterData()
   $('#show-entries-listing').text('50')
 })
 
 $('#show-100-entries-listing').on('click', async function () {
   pagLenght = 100
+  pagEnd = pagLenght
   searchOrFilterData()
   $('#show-entries-listing').text('100')
 })
@@ -231,10 +234,6 @@ function updateData(dataFilter = listingData) {
 
   $('#number-entries').text('Showing ' + pagStart + ' - ' + pagEnd + ' of ' + dataFilter.length + ' listing')
   $('#pagination-number').text(pagStart / pagLenght + 1)
-
-  console.log('pagLenght'+ pagLenght)
-  console.log('pagStart'+ pagStart)
-  console.log('pagEnd'+ pagEnd)
 
   for (var i = pagStart; i < pagEnd; i++) {
     $('#product-list').append(`
