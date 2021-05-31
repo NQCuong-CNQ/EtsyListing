@@ -66,6 +66,7 @@ $('#30d-filter-listing-creation-date').on('click', async function () {
 
 $('#show-15-entries-listing').on('click', async function () {
   pagLenght = 15
+  console.log(pagLenght)
   searchOrFilterData()
   $('#show-entries-listing').text('15')
 })
@@ -230,6 +231,10 @@ function updateData(dataFilter = listingData) {
 
   $('#number-entries').text('Showing ' + pagStart + ' - ' + pagEnd + ' of ' + dataFilter.length + ' listing')
   $('#pagination-number').text(pagStart / pagLenght + 1)
+
+  console.log('pagLenght'+ pagLenght)
+  console.log('pagStart'+ pagStart)
+  console.log('pagEnd'+ pagEnd)
 
   for (var i = pagStart; i < pagEnd; i++) {
     $('#product-list').append(`
@@ -464,8 +469,6 @@ $('#find-product-by-keyword').select2({
 $('#find-product-by-keyword').on('change', function (e) {
   $('.select2-results__option--selected').on('unbind')
 })
-
-
 
 // $('.grid-view-listing').on('click', async function () {
 //   if (isGridView) {
