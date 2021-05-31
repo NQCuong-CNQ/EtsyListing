@@ -29,7 +29,7 @@ const MongoClient = require('mongodb').MongoClient;
 const { Console } = require('console');
 const url = "mongodb://localhost:27017/trackingdb"
 
-setInterval(scheduleUpdate, 2700000) // 45p
+// setInterval(scheduleUpdate, 2700000) // 45p
 async function scheduleUpdate() {
   let date_ob = new Date()
   if (date_ob.getHours() == 12) {
