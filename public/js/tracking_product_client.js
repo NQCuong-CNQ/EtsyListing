@@ -245,7 +245,7 @@ function updateData(dataFilter = listingData) {
           <div class="product-img-container">
               <div class="hover-product-container">
                   <a href="${dataFilter[i].img_url_original}" target="_blank"><button id="img-product-btn"><i class="fas fa-image"></i></button></a>
-                  <button onclick="test(dataFilter[${i}].listing_id)" data-id-subject="${dataFilter[i].listing_id}" id="analytic-product-btn"><i class="fas fa-chart-bar"></i></button>
+                  <button onclick="showAnalytic(dataFilter[${i}].listing_id)" id="analytic-product-btn"><i class="fas fa-chart-bar"></i></button>
               </div>
               <img src="${dataFilter[i].img_url}" alt="" width="100%" loading='lazy'>
           </div>
@@ -271,10 +271,6 @@ function updateData(dataFilter = listingData) {
   scrollToTop()
 }
 
-function test(id){
-  console.log(id)
-
-}
 /* ------------------------------------------------END MAIN SECTION------------------------------------------------ */
 
 /* ------------------------------------------------SOCKET SECTION------------------------------------------------ */
@@ -396,14 +392,10 @@ function handleDuplicates() {
 
 /* ------------------------------------------------ADDITIONAL SECTION------------------------------------------------ */
 
-// $('.list-product-search-container').on('hover', function(){
-//   $('.hover-product-container').css('height', '-webkit-fill-available')
-// })
-
-// $('#analytic-product-btn').on('click', function(){
-//   alert('sfgd')
-//   alert($('#analytic-product-btn').data('data'))
-// })
+function showAnalytic(id){
+  console.log(id)
+  $('.popup-analytic-container').css('display', 'block')
+}
 
 $('#find-product-by-keyword').on('keypress', function (e) {
   if (e.key == 'Enter') {

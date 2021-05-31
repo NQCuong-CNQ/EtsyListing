@@ -142,6 +142,7 @@ main.content {
 
 .container-fluid {
   padding: 1.5rem;
+  position: relative;
 }
 
 .lds-ellipsis {
@@ -269,9 +270,7 @@ main.content {
   transition-duration: 0.5s;
 }
 
-.list-product-search-container img:hover {
-  transform: scale(1.2);
-}
+
 
 .daterangepicker {
   top: 120px !important;
@@ -456,4 +455,17 @@ html {
 .product-img-container{
   position: relative;
   overflow: hidden;
+}
+
+.list-product-search-container:hover img {
+  transform: scale(1.2);
+}
+
+.popup-analytic-container{
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  background-color: #fff;
+  opacity: 0.5;
+  display: none;
 }
