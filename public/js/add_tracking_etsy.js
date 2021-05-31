@@ -84,11 +84,11 @@ socket.on("track-order-step4", async function (name) {
             return
         }
 
-        if (nameCarrier == 'USPS' && !actualInput.startsWith('9')) {
+        if (nameCarrier == 'USPS' && !trackData['number_tracking'].startsWith('9')) {
             return
         }
 
-        if (nameCarrier == 'UPS' && !(actualInput.startsWith('1Z') || actualInput.startsWith('8'))) {
+        if (nameCarrier == 'UPS' && !(trackData['number_tracking'].startsWith('1Z') || trackData['number_tracking'].startsWith('8'))) {
             return
         }
 

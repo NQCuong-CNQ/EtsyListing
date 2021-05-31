@@ -539,11 +539,14 @@ io.on("connection", async function (client) {
     }
 
     for (let i = 0; i < tempData.length; i += 2) {
-      let temp = tempData[i].replace('Order history', '').replace('Message history1', '').substring(10)
-      if (temp.length < 10) {
-        temp = tempData[i].replace('Order history', '').replace('Message history1', '')
-      }
+      let temp = tempData[i].replace('Order history', '').replace('Message history1', '')
       gmailTemp.push(temp)
+    }
+
+    for (let i = 0; i < idTemp.length; i++) {
+      if(gmailTemp[i].includes(idTemp[i])){
+        gmailTemp[i] = gmailTemp[i].substring(10)
+      }
     }
 
     for (let i = 0; i < idTemp.length; i++) {

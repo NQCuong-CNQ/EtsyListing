@@ -140,7 +140,7 @@ function updateData(data = historyData) {
     for (var i = 0; i < data.length; i++) {
         // if(data[i].number_tracking == data[i].actual_input && isCorrectCarrier(data[i].number_tracking, ))
         $('#table_id-tracking-history-body').append(`<tr>
-            <td>${i}</td>
+            <td>${i+1}</td>
             <td>${data[i].id}</td>
             <td>${formatShopName(data[i].name)}</td>
             <td>${formatCustomerName(data[i].customer_name)}</td>
