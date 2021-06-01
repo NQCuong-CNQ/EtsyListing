@@ -471,14 +471,26 @@ html {
   top: 10vh;
   z-index: 2;
   text-align: center;
-  padding: 0 1.5rem 1rem 1rem;
   transform: translate(-50%, 0);
 }
 #chart-analytic-product{
   height: 400px;
+  padding: 0 1rem 2rem 1rem;
 }
 .title-chart-analytic-product{
   margin-top: 0.5rem;
   color: #0081ff;
   
+}
+#btn-close-chart{
+  font-size: 1.3rem;
+  border-width: 0;
+  color: #bf0000;
+  width: -webkit-fill-available;
+  background: none;
+  text-align: end;
+  transition: 0.3s;
+}
+#btn-close-chart:hover{
+  color: red;
 }

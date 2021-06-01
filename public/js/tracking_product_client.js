@@ -431,8 +431,7 @@ function showAnalytic(id) {
     let views = []
 
     for (let i = 0; i < tempData.length; i++) {
-      console.log(tempData[i].date_update)
-      label.push(getEpochTime(tempData[i].date_update))
+      label.push(getEpochTime(tempData[i].date_update * 86400))
       quantity.push(tempData[i].quantity)
       num_favorers.push(tempData[i].num_favorers)
       views.push(tempData[i].views)
@@ -499,7 +498,7 @@ function showAnalytic(id) {
       }
     })
 
-    $('#btn-close-chart').on('click', function(){
+    $('#btn-close-chart').on('click', function () {
       $('.popup-analytic-container').css('display', 'none')
       chart.destroy()
     })
