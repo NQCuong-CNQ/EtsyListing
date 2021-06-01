@@ -793,6 +793,8 @@ function searchByKeyword(keyword, data = listingData) {
 
   console.log(getSearchLevel(keyword))
 
+  
+
   for (var i = 0; i < data.length; i++) {
     if (checkSearchByKeyword(keyword, i)) {
       dataSearch.push(data[i])
@@ -803,22 +805,22 @@ function searchByKeyword(keyword, data = listingData) {
 
 function getSearchLevel(keyword) {
   let searchData = []
-  searchData['level1'] = ''
-  searchData['level2'] = ''
-  searchData['level3'] = ''
+  searchData['level1'] = []
+  searchData['level2'] = []
+  searchData['level3'] = []
 
-  let level1 = ["Father's Day", "Fride Month", "Independence Day", "Mother's Day", "Valentine's Day", "Patrick's Day", "Wedding's Day", "New Year's Day",
+  let level1 = ["Father's Day", "Pride Month", "Independence Day", "Mother's Day", "Valentine's Day", "Patrick's Day", "Wedding's Day", "New Year's Day",
     "Memorial Day", "Thanksgiving", "Christmas", "Presidents' Day", "Easter", "Halloween"]
   let level2 = ["Canvas", "Art Print", "Mug", "Shirt", "Blanket", "Tumbler"]
-  // let level3 = ["Personalize"]
+  let level3 = ["Personalize"]
 
   for (let i = 0; i < keyword.length; i++) {
     if (level1.includes(keyword[i])) {
-      searchData['level1'] += (keyword[i])
+      searchData['level1'].push(keyword[i])
     } else if (level2.includes(keyword[i])) {
-      searchData['level2'] += (keyword[i])
+      searchData['level2'].push(keyword[i])
     } else {
-      searchData['level3'] += (keyword[i])
+      searchData['level3'].push(keyword[i])
     }
   }
   return searchData
