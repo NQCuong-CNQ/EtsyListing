@@ -433,13 +433,11 @@ html {
 #analytic-product-btn:hover{
   height: 50px;
   width: 50px;
-  font-size: 1.4rem;
 }
 
 #img-product-btn:hover{
   height: 50px;
   width: 50px;
-  font-size: 1.4rem;
 }
 
 #img-product-btn {
@@ -486,6 +484,7 @@ html {
   z-index: 2;
   text-align: center;
   transform: translate(-50%, 0);
+  transition: height 0.2s;
 }
 #chart-analytic-product{
   height: 400px;

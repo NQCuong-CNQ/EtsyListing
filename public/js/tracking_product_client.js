@@ -504,13 +504,13 @@ function showAnalytic(id) {
     })
 
     $('#btn-close-chart').on('click', function () {
-      $('.popup-analytic-container').css('height', 'auto')
+      $('.popup-analytic-container').css('height', '0')
       $('.popup-analytic-background').css('display', 'none')
       chart.destroy()
     })
 
     $('.popup-analytic-background').on('click', function () {
-      $('.popup-analytic-container').css('height', 'auto')
+      $('.popup-analytic-container').css('height', '0')
       $('.popup-analytic-background').css('display', 'none')
       chart.destroy()
     })
