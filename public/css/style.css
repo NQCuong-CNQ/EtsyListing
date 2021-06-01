@@ -427,6 +427,19 @@ html {
   border-radius: 50%;
   background-color: dodgerblue;
   color: white;
+  transition: 0.2s;
+}
+
+#analytic-product-btn:hover{
+  height: 50px;
+  width: 50px;
+  font-size: 1.4rem;
+}
+
+#img-product-btn:hover{
+  height: 50px;
+  width: 50px;
+  font-size: 1.4rem;
 }
 
 #img-product-btn {
@@ -438,6 +451,7 @@ html {
   border-radius: 50%;
   background-color: rgb(255, 30, 236);
   color: white;
+  transition: 0.2s;
 }
 
 .list-product-search-container:hover .hover-product-container {
@@ -465,8 +479,8 @@ html {
   position: fixed;
   box-shadow: 0 6px 8px 4px rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%);
   width: 60vW;
+  height: 0;
   background-color: rgba(255, 255, 255, 0.95);
-  display: none;
   left: 50%;
   top: 20vh;
   z-index: 2;

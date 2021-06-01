@@ -406,7 +406,7 @@ function showAnalytic(id) {
     toastr.clear()
     toastr.warning('Please wait until data is updated!')
   } else {
-    $('.popup-analytic-container').css('display', 'block')
+    $('.popup-analytic-container').css('height', 'auto')
     $('.popup-analytic-background').css('display', 'block')
     let tempData = []
     for (let i = 0; i < dataOriginal.length; i++) {
@@ -504,13 +504,13 @@ function showAnalytic(id) {
     })
 
     $('#btn-close-chart').on('click', function () {
-      $('.popup-analytic-container').css('display', 'none')
+      $('.popup-analytic-container').css('height', 'auto')
       $('.popup-analytic-background').css('display', 'none')
       chart.destroy()
     })
 
     $('.popup-analytic-background').on('click', function () {
-      $('.popup-analytic-container').css('display', 'none')
+      $('.popup-analytic-container').css('height', 'auto')
       $('.popup-analytic-background').css('display', 'none')
       chart.destroy()
     })
