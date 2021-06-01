@@ -150,15 +150,6 @@ function searchOrFilterData() {
   $('#loading').css('display', 'block')
   dataFilter = listingData
 
-  let keyword = $('#find-product-by-keyword').val()
-  if (keyword == '') {
-    isSearch = false
-  }
-
-  if (isSearch) {
-    dataFilter = searchByKeyword(keyword)
-  }
-
   // if (filterByTypeOption == 0) {
   //   dataFilter = filterByType(dataFilter)
   // } else if (filterByTypeOption == 1) {
@@ -182,6 +173,15 @@ function searchOrFilterData() {
   } else if (filterByDateOption == 0) {
   } else {
     dataFilter = filterByDate(dataFilter, filterByDateOption)
+  }
+
+  let keyword = $('#find-product-by-keyword').val()
+  if (keyword == '') {
+    isSearch = false
+  }
+
+  if (isSearch) {
+    dataFilter = searchByKeyword(keyword)
   }
 
   if (dataFilter.length == 0) {
@@ -793,9 +793,15 @@ function searchByKeyword(keyword, data = listingData) {
   let searchKeyData = getSearchLevel(keyword)
   console.log(searchKeyData)
 
-  dataSearch = searchByLevel(searchKeyData['level1'], dataSearch)
-  dataSearch = searchByLevelCate(searchKeyData['level2'], dataSearch)
-  dataSearch = searchByLevel(searchKeyData['level3'], dataSearch)
+  if (searchKeyData['level1'].length > 0) {
+    dataSearch = searchByLevel(searchKeyData['level1'], dataSearch)
+  }
+  if (searchKeyData['level1'].length > 0) {
+    dataSearch = searchByLevelCate(searchKeyData['level2'], dataSearch)
+  }
+  if (searchKeyData['level1'].length > 0) {
+    dataSearch = searchByLevel(searchKeyData['level3'], dataSearch)
+  }
 
   // for (var i = 0; i < data.length; i++) {
   //   if (checkSearchByKeyword(keyword, i)) {
@@ -832,7 +838,7 @@ function searchByLevel(key, data) {
   let searchData = []
   for (let i = 0; i < data.length; i++) {
     for (let j = 0; j < key.length; j++) {
-      if (data[i].title.includes(key[j])){
+      if (data[i].title.includes(key[j])) {
         searchData.push(data[i])
       }
     }
@@ -844,10 +850,10 @@ function searchByLevelCate(key, data) {
   let searchData = []
   for (let i = 0; i < data.length; i++) {
     for (let j = 0; j < key.length; j++) {
-      if (data[i].title.toLowerCase().indexOf(key[j])){
+      if (data[i].title.toLowerCase().indexOf(key[j])) {
         searchData.push(data[i])
-      } 
-      if(data[i].taxonomy_path[data[i].taxonomy_path.length -1].toLowerCase().indexOf(key[j])){
+      }
+      if (data[i].taxonomy_path[data[i].taxonomy_path.length - 1].toLowerCase().indexOf(key[j])) {
         searchData.push(data[i])
       }
     }
