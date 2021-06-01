@@ -787,8 +787,9 @@ function filterByDate(data, days) {
   return filterData
 }
 
-function searchByKeyword(keyword, data = listingData) {
+function searchByKeyword(keyword, data) {
   let dataSearch = data
+  console.log(dataSearch.length)
 
   let searchKeyData = getSearchLevel(keyword)
 
