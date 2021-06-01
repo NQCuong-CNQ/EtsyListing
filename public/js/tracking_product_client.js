@@ -353,16 +353,11 @@ function handleDuplicates() {
             diff = listingData[arrPos[j]].quantity - listingData[arrPos[j - 1]].quantity
             if (diff < 0) {
               diff = 0
-              numDays--
             }
             totalCount += diff
-            // console.log(temp['title'] + totalCount)
           }
+          numDays--
         }
-        if(numDays < 1){
-          console.log(numDays)
-        }
-        
         temp['sales_day'] = (totalCount / numDays).toFixed(2)
       }
     }
