@@ -360,6 +360,11 @@ function handleDuplicates() {
         temp['sales_day'] = (totalCount / numDays).toFixed(2)
       }
     }
+
+    if(listingData[i].listing_id == '1021841773'){
+      console.log(listingData[i].quantity)
+    }
+
     newData.push(temp)
   }
   listingData = newData
@@ -439,6 +444,9 @@ function showAnalytic(id) {
         num_favorers.push(tempData[i].num_favorers)
         views.push(tempData[i].views)
         tempdate = tempData[i].date_update
+        if(tempData[i].listing_id == '1021841773'){
+          console.log(tempData[i].quantity)
+        }
       }
     }
 
