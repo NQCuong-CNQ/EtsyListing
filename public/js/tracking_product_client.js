@@ -306,6 +306,13 @@ socket.on("return-product-tracking-join", function (data) {
 })
 
 function handleDuplicates() {
+
+  for (let index = 0; index < listingData.length; index++) {
+    if(listingData[index].listing_id == '1021841773'){
+      console.log(listingData[index].quantity)
+    }
+    
+  }
   let dataDupPos = new Object
   let dataDupById
 
@@ -361,9 +368,7 @@ function handleDuplicates() {
       }
     }
 
-    if(listingData[i].listing_id == '1021841773'){
-      console.log(listingData[i].quantity)
-    }
+    
 
     newData.push(temp)
   }
