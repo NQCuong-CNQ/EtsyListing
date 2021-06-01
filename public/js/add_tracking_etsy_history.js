@@ -14,7 +14,7 @@ $('#loading').css('display', 'block')
 socket.emit("tracking-history-join")
 
 let isAddedCheckedStorage = window.localStorage.getItem('is-tracking-history-checked')
-if (isAddedCheckedStorage) {
+if (isAddedCheckedStorage == 1) {
     $('#show-added-tracking').prop("checked", true)
     isAddedChecked = true
 } else {
@@ -23,7 +23,7 @@ if (isAddedCheckedStorage) {
 }
 
 let isMyCheckedStorage = window.localStorage.getItem('is-my-account-checked')
-if (isMyCheckedStorage) {
+if (isMyCheckedStorage == 1) {
     $('#show-my-account-tracking').prop("checked", true)
     isMyAccount = true
 } else {
@@ -32,7 +32,7 @@ if (isMyCheckedStorage) {
 }
 
 let isTrangCheckedStorage = window.localStorage.getItem('is-trang-account-checked')
-if (isTrangCheckedStorage) {
+if (isTrangCheckedStorage == 1) {
     $('#show-trang-account-tracking').prop("checked", true)
     isTrangAccount = true
 } else {
