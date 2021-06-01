@@ -406,7 +406,7 @@ function showAnalytic(id) {
     toastr.clear()
     toastr.warning('Please wait until data is updated!')
   } else {
-    $('.popup-analytic-container').css('height', 'auto')
+    $('.popup-analytic-container').css('display', 'none')
     $('.popup-analytic-background').css('display', 'block')
     let tempData = []
     for (let i = 0; i < dataOriginal.length; i++) {
@@ -504,13 +504,13 @@ function showAnalytic(id) {
     })
 
     $('#btn-close-chart').on('click', function () {
-      $('.popup-analytic-container').css('height', '0')
+      $('.popup-analytic-container').css('display', 'none')
       $('.popup-analytic-background').css('display', 'none')
       chart.destroy()
     })
 
     $('.popup-analytic-background').on('click', function () {
-      $('.popup-analytic-container').css('height', '0')
+      $('.popup-analytic-container').css('display', 'none')
       $('.popup-analytic-background').css('display', 'none')
       chart.destroy()
     })
@@ -861,7 +861,7 @@ function searchByLevelCate(key, data) {
 }
 
 function formatForSearch(string){
-  string = string.replace(/[^0-9a-zA-Z ]/g, '').toLowerCase()
+  string = string.replace(/[^0-9a-zA-Z ]/g, '').replace(/s /g, '').toLowerCase()
   return string
 }
 /* ------------------------------------------------END FILTER SECTION------------------------------------------------ */
