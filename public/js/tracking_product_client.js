@@ -432,11 +432,15 @@ function showAnalytic(id) {
     let num_favorers = []
     let views = []
 
+    let tempdate = 0
     for (let i = 0; i < tempData.length; i++) {
-      label.push(getEpochTime(tempData[i].date_update * 86400))
-      quantity.push(tempData[i].quantity)
-      num_favorers.push(tempData[i].num_favorers)
-      views.push(tempData[i].views)
+      if(tempdate != tempData[i].date_update){
+        label.push(getEpochTime(tempData[i].date_update * 86400))
+        quantity.push(tempData[i].quantity)
+        num_favorers.push(tempData[i].num_favorers)
+        views.push(tempData[i].views)
+        tempdate = tempData[i].date_update
+      }
     }
 
     let chart = new Chart(document.getElementById("chart-analytic-product"), {
@@ -469,7 +473,7 @@ function showAnalytic(id) {
           display: true
         },
         tooltips: {
-          intersect: true
+          intersect: false
         },
         hover: {
           intersect: true
