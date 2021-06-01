@@ -349,8 +349,8 @@ function handleDuplicates() {
         let totalCount = listingData[arrPos[0]].quantity - listingData[lastPos].quantity
         if (totalCount < 0) {
           let diff = 0
-          for (let j = arrPos.length - 1; j >= 1; j--) {
-            diff = listingData[arrPos[j]].quantity - listingData[arrPos[j - 1]].quantity
+          for (let j = 0; j < arrPos.length - 1; j++) {
+            diff = listingData[arrPos[j]].quantity - listingData[arrPos[j + 1]].quantity
             if (diff < 0) {
               diff = 0
             }
@@ -434,7 +434,7 @@ function showAnalytic(id) {
 
     let tempdate = 0
     for (let i = 0; i < tempData.length; i++) {
-      if(tempdate != tempData[i].date_update){
+      if (tempdate != tempData[i].date_update) {
         label.push(getEpochTime(tempData[i].date_update * 86400))
         quantity.push(tempData[i].quantity)
         num_favorers.push(tempData[i].num_favorers)
