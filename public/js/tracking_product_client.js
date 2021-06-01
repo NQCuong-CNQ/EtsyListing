@@ -357,7 +357,9 @@ function handleDuplicates() {
           }
         }
       }
-      temp['sales_day'] = (totalCount / numDays).toFixed(2)
+      if(totalCount > 0){
+        temp['sales_day'] = (totalCount / numDays).toFixed(2)
+      } 
     }
     newData.push(temp)
   }
