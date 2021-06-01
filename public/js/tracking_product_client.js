@@ -344,22 +344,18 @@ function handleDuplicates() {
 
     //caculate sales fer day
     if (arrPos.length > 1) {
-      let numDays = listingData[lastPos].date_update - listingData[arrPos[0]].date_update
-      if (numDays > 1) {
-        let totalCount = listingData[arrPos[0]].quantity - listingData[lastPos].quantity
-        if (totalCount < 0) {
-          let diff = 0
-          for (let j = 0; j < arrPos.length - 1; j++) {
-            diff = listingData[arrPos[j]].quantity - listingData[arrPos[j + 1]].quantity
-            if (diff < 0) {
-              diff = 0
-            }
-            totalCount += diff
-          }
-          numDays--
+      let numDays = 0
+      let totalCount = 0
+      let diff = 0
+      
+      for (let j = 0; j < arrPos.length - 1; j++) {
+        diff = listingData[arrPos[j]].quantity - listingData[arrPos[j + 1]].quantity
+        if (diff >= 0) {
+          numDays ++
+          totalCount += diff
         }
-        temp['sales_day'] = (totalCount / numDays).toFixed(2)
       }
+      temp['sales_day'] = (totalCount / numDays).toFixed(2)
     }
     newData.push(temp)
   }
