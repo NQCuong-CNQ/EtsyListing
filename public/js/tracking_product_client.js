@@ -823,11 +823,11 @@ function getSearchLevel(keyword) {
 
   for (let i = 0; i < keyword.length; i++) {
     if (level1.includes(keyword[i])) {
-      searchData['level1'].push(keyword[i].toLowerCase())
+      searchData['level1'].push(formatForSearch(keyword[i]))
     } else if (level2.includes(keyword[i])) {
-      searchData['level2'].push(keyword[i].toLowerCase())
-    } else {
-      searchData['level3'].push(keyword[i].toLowerCase())
+      searchData['level2'].push(formatForSearch(keyword[i]))
+    } else if (level3.includes(keyword[i])) {
+      searchData['level3'].push(formatForSearch(keyword[i]))
     }
   }
   return searchData
@@ -837,7 +837,7 @@ function searchByLevel(key, data) {
   let searchData = []
   for (let i = 0; i < data.length; i++) {
     for (let j = 0; j < key.length; j++) {
-      if (data[i].title.toLowerCase().indexOf(key[j]) != -1) {
+      if (formatForSearch(data[i].title).indexOf(key[j]) != -1) {
         searchData.push(data[i])
       }
     }
@@ -849,10 +849,10 @@ function searchByLevelCate(key, data) {
   let searchData = []
   for (let i = 0; i < data.length; i++) {
     for (let j = 0; j < key.length; j++) {
-      if (data[i].title.toLowerCase().indexOf(key[j]) != -1) {
+      if (formatForSearch(data[i].title).indexOf(key[j]) != -1) {
         searchData.push(data[i])
       }
-      if (data[i].taxonomy_path[data[i].taxonomy_path.length - 1].toLowerCase().indexOf(key[j]) != -1) {
+      if (formatForSearch(data[i].taxonomy_path[data[i].taxonomy_path.length - 1]).indexOf(key[j]) != -1) {
         searchData.push(data[i])
       }
     }
@@ -860,5 +860,9 @@ function searchByLevelCate(key, data) {
   return searchData
 }
 
+function formatForSearch(string){
+  string = string.replace(/[^0-9a-zA-Z ]/g, '').toLowerCase()
+  return string
+}
 /* ------------------------------------------------END FILTER SECTION------------------------------------------------ */
 
