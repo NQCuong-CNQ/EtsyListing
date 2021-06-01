@@ -181,7 +181,7 @@ function searchOrFilterData() {
   }
 
   if (isSearch) {
-    dataFilter = searchByKeyword(keyword)
+    dataFilter = searchByKeyword(keyword, dataFilter)
   }
 
   if (dataFilter.length == 0) {
@@ -795,12 +795,15 @@ function searchByKeyword(keyword, data = listingData) {
 
   if (searchKeyData['level1'].length > 0) {
     dataSearch = searchByLevel(searchKeyData['level1'], dataSearch)
+    console.log(dataSearch.length)
   }
   if (searchKeyData['level1'].length > 0) {
     dataSearch = searchByLevelCate(searchKeyData['level2'], dataSearch)
+    console.log(dataSearch.length)
   }
   if (searchKeyData['level1'].length > 0) {
     dataSearch = searchByLevel(searchKeyData['level3'], dataSearch)
+    console.log(dataSearch.length)
   }
 
   // for (var i = 0; i < data.length; i++) {
@@ -808,6 +811,8 @@ function searchByKeyword(keyword, data = listingData) {
   //     dataSearch.push(data[i])
   //   }
   // }
+  console.log(dataSearch)
+
   return dataSearch
 }
 
