@@ -347,10 +347,9 @@ function handleDuplicates() {
       let numDays = 0
       let totalCount = 0
       let diff = 0
-      let tempdate = 0
 
       for (let j = 0; j < arrPos.length - 1; j++) {
-        if (tempdate != tempData[i].date_update) {
+        if (listingData[arrPos[j]].quantity != listingData[arrPos[j + 1]].quantity) {
           diff = listingData[arrPos[j]].quantity - listingData[arrPos[j + 1]].quantity
           if (diff >= 0) {
             numDays++
