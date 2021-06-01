@@ -156,8 +156,7 @@ function searchOrFilterData() {
   }
 
   if (isSearch) {
-    // dataFilter = searchByKeyword(keyword)
-    searchByKeyword(keyword)
+    dataFilter = searchByKeyword(keyword)
   }
 
   // if (filterByTypeOption == 0) {
@@ -792,6 +791,7 @@ function searchByKeyword(keyword, data = listingData) {
   let dataSearch = data
 
   let searchKeyData = getSearchLevel(keyword)
+  console.log(searchKeyData)
 
   dataSearch = searchByLevel(searchKeyData['level1'], dataSearch)
   dataSearch = searchByLevelCate(searchKeyData['level2'], dataSearch)
