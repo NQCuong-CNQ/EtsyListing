@@ -352,6 +352,7 @@ function handleDuplicates() {
             diff = listingData[arrPos[j]].quantity - listingData[arrPos[j - 1]].quantity
             if (diff < 0) {
               diff = 0
+              numDays --
             }
             totalCount += diff
             // console.log(temp['title'] + totalCount)
@@ -407,6 +408,7 @@ function showAnalytic(id) {
     toastr.warning('Please wait until data is updated!')
   } else {
     $('.popup-analytic-container').css('display', 'block')
+    $('.popup-analytic-background').css('display', 'block')
     let tempData = []
     for (let i = 0; i < dataOriginal.length; i++) {
       if (dataOriginal[i].listing_id == id) {
@@ -500,6 +502,13 @@ function showAnalytic(id) {
 
     $('#btn-close-chart').on('click', function () {
       $('.popup-analytic-container').css('display', 'none')
+      $('.popup-analytic-background').css('display', 'block')
+      chart.destroy()
+    })
+
+    $('.popup-analytic-background').on('click', function () {
+      $('.popup-analytic-container').css('display', 'none')
+      $('.popup-analytic-background').css('display', 'none')
       chart.destroy()
     })
   }
