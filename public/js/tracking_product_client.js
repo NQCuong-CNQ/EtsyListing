@@ -791,10 +791,6 @@ function searchByKeyword(keyword, data = listingData) {
   let dataSearch = data
 
   let searchKeyData = getSearchLevel(keyword)
-  console.log(searchKeyData)
-  console.log(searchKeyData['level1'].length)
-  console.log(searchKeyData['level2'].length)
-  console.log(searchKeyData['level3'].length)
 
   if (searchKeyData['level1'].length > 0) {
     dataSearch = searchByLevel(searchKeyData['level1'], dataSearch)
@@ -846,8 +842,9 @@ function searchByLevel(key, data) {
   let searchData = []
   for (let i = 0; i < data.length; i++) {
     for (let j = 0; j < key.length; j++) {
-      if (data[i].title.includes(key[j])) {
+      if (data[i].title.toLowerCase().indexOf(key[j])) {
         searchData.push(data[i])
+        console.log(data[i].title)
       }
     }
   }
