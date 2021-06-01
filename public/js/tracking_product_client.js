@@ -357,9 +357,9 @@ function handleDuplicates() {
           }
         }
       }
-      if(totalCount > 0){
+      if (totalCount > 0) {
         temp['sales_day'] = (totalCount / numDays).toFixed(2)
-      } 
+      }
     }
     newData.push(temp)
   }
@@ -743,24 +743,24 @@ function updatePaginationBtn(data) {
 //   return filterData
 // }
 
-function checkSearchByKeyword(keyword, index) {
-  if (keyword.length == 1 && checkSearchTaxonomy(keyword, index)) {
-    return true
-  }
+// function checkSearchByKeyword(keyword, index) {
+//   if (keyword.length == 1 && checkSearchTaxonomy(keyword, index)) {
+//     return true
+//   }
 
-  for (let j = 0; j < keyword.length; j++) {
-    if (listingData[index].title.toLowerCase().indexOf(keyword[j]) !== -1) {
-    } else { return false }
-  } return true
-}
+//   for (let j = 0; j < keyword.length; j++) {
+//     if (listingData[index].title.toLowerCase().indexOf(keyword[j]) !== -1) {
+//     } else { return false }
+//   } return true
+// }
 
-function checkSearchTaxonomy(keyword, index) {
-  for (var i = 0; i < listingData[index].taxonomy_path.length; i++) {
-    if (listingData[index].taxonomy_path[i].toLowerCase().indexOf(keyword[0]) !== -1) {
-      return true
-    }
-  }
-}
+// function checkSearchTaxonomy(keyword, index) {
+//   for (var i = 0; i < listingData[index].taxonomy_path.length; i++) {
+//     if (listingData[index].taxonomy_path[i].toLowerCase().indexOf(keyword[0]) !== -1) {
+//       return true
+//     }
+//   }
+// }
 
 // function filterByCustomDate(data) {
 //   let filterData = []
@@ -789,17 +789,19 @@ function filterByDate(data, days) {
 }
 
 function searchByKeyword(keyword, data = listingData) {
-  let dataSearch = []
+  let dataSearch = data
 
-  console.log(getSearchLevel(keyword))
+  let searchKeyData = getSearchLevel(keyword)
 
-  
+  dataSearch = searchByLevel(searchKeyData['level1'], dataSearch)
+  dataSearch = searchByLevelCate(searchKeyData['level2'], dataSearch)
+  dataSearch = searchByLevel(searchKeyData['level3'], dataSearch)
 
-  for (var i = 0; i < data.length; i++) {
-    if (checkSearchByKeyword(keyword, i)) {
-      dataSearch.push(data[i])
-    }
-  }
+  // for (var i = 0; i < data.length; i++) {
+  //   if (checkSearchByKeyword(keyword, i)) {
+  //     dataSearch.push(data[i])
+  //   }
+  // }
   return dataSearch
 }
 
@@ -816,11 +818,38 @@ function getSearchLevel(keyword) {
 
   for (let i = 0; i < keyword.length; i++) {
     if (level1.includes(keyword[i])) {
-      searchData['level1'].push(keyword[i])
+      searchData['level1'].push(keyword[i].toLowerCase())
     } else if (level2.includes(keyword[i])) {
-      searchData['level2'].push(keyword[i])
+      searchData['level2'].push(keyword[i].toLowerCase())
     } else {
-      searchData['level3'].push(keyword[i])
+      searchData['level3'].push(keyword[i].toLowerCase())
+    }
+  }
+  return searchData
+}
+
+function searchByLevel(key, data) {
+  let searchData = []
+  for (let i = 0; i < data.length; i++) {
+    for (let j = 0; j < key.length; j++) {
+      if (data[i].title.includes(key[j])){
+        searchData.push(data[i])
+      }
+    }
+  }
+  return searchData
+}
+
+function searchByLevelCate(key, data) {
+  let searchData = []
+  for (let i = 0; i < data.length; i++) {
+    for (let j = 0; j < key.length; j++) {
+      if (data[i].title.toLowerCase().indexOf(key[j])){
+        searchData.push(data[i])
+      } 
+      if(data[i].taxonomy_path[data[i].taxonomy_path.length -1].toLowerCase().indexOf(key[j])){
+        searchData.push(data[i])
+      }
     }
   }
   return searchData
