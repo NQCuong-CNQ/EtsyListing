@@ -404,7 +404,7 @@ function handleDuplicates() {
 function showAnalytic(id) {
   if (isGettingData) {
     toastr.clear()
-    toastr.warning('Please wait until data is updated!')
+    toastr.warning('Please wait until data is updated!', {timeOut: 0})
   } else {
     $('.popup-analytic-container').css('display', 'block')
     $('.popup-analytic-background').css('display', 'block')

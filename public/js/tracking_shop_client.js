@@ -36,7 +36,7 @@ $('#find-shop-by-name-button').on('click', async function () {
   if (shop == 0) {
     if (gettingData) {
       toastr.clear()
-      toastr.warning('Please wait until data is updated!')
+      toastr.warning('Please wait until data is updated!', {timeOut: 0})
     } else {
       $('#loading').css('display', 'block')
       await socket.emit("find-shop-by-name", shopName)

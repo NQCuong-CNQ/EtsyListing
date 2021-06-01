@@ -40,6 +40,8 @@ if (isTrangCheckedStorage) {
     isTrangAccount = false
 }
 
+console.log(isAddedCheckedStorage + '/' +isMyCheckedStorage+ '/' +isTrangCheckedStorage)
+
 socket.on("tracking-history-return-data", async function (data) {
     historyData = data
     filterData()
