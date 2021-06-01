@@ -51,22 +51,22 @@ socket.on("track-order-step4", async function (name) {
         let numCarrier = $('[for="Select shipping carrier..."]').val()
         let nameCarrier = $(`[for="Select shipping carrier..."] option[value="${numCarrier}"]`).text()
 
-        if(numCarrier == undefined || numCarrier == ''){
+        if(numCarrier === undefined || numCarrier == ''){
             numCarrier = $('[for="Select delivery carrier..."]').val()
             nameCarrier = $(`[for="Select delivery carrier..."] option[value="${numCarrier}"]`).text()
         }
 
-        if(numCarrier == undefined || numCarrier == ''){
+        if(numCarrier === undefined || numCarrier == ''){
             numCarrier = $('[for="Select delivery company..."]').val()
             nameCarrier = $(`[for="Select delivery company..."] option[value="${numCarrier}"]`).text()
         }
 
-        if (nameCarrier == 'Other'|| nameCarrier == '') {
+        if (nameCarrier === 'Other'|| nameCarrier == '') {
             nameCarrier = $('input[placeholder="Shipping carrier"]').val()
-            if(nameCarrier == undefined || nameCarrier == ''){
+            if(nameCarrier === undefined || nameCarrier == ''){
                 nameCarrier = $('input[placeholder="Delivery carrier"]').val()
             }
-            if(nameCarrier == undefined || nameCarrier == ''){
+            if(nameCarrier === undefined || nameCarrier == ''){
                 nameCarrier = $('input[placeholder="Delivery company"]').val()
             }
         }

@@ -129,7 +129,7 @@ $('#show-trang-account-tracking').on('change', function () {
 function filterAdded(data) {
     let dataFilter = []
     for (var i = 0; i < data.length; i++) {
-        if (data[i].time_add_tracking != undefined) {
+        if (data[i].time_add_tracking !== undefined) {
             dataFilter.push(data[i])
         }
     }
@@ -164,38 +164,38 @@ function updateData(data = historyData) {
 }
 
 function formatCustomerName(name) {
-    if (name == undefined) {
+    if (name === undefined) {
         return '---'
     } return name
 }
 
 function formatOrderStatus(status) {
-    if (status == undefined) {
+    if (status === undefined) {
         return '---'
     } return status
 }
 
 function formatCustomerEmail(email) {
-    if (email == undefined) {
+    if (email === undefined) {
         return '---'
     } return email
 }
 
 function formatShopName(shopName) {
-    if (shopName == undefined) {
+    if (shopName === undefined) {
         return '---'
     } return shopName
 }
 
 function formatOrderDate(date) {
-    if (date == undefined) {
+    if (date === undefined) {
         return '---'
     }
     return date.substring(5).split('.')[0].replace('-', '/')
 }
 
 function getActualCarrierCode(code, actualCode) {
-    if (actualCode == undefined || actualCode == '') {
+    if (actualCode === undefined || actualCode == '') {
         return '---'
     } else if (code == actualCode) {
         return 'same'
@@ -204,7 +204,7 @@ function getActualCarrierCode(code, actualCode) {
 }
 
 function getCarrierCode(code) {
-    if (code == undefined || code == '') {
+    if (code === undefined || code == '') {
         return '---'
     } else if (code.startsWith('9')) {
         return `<a href='https://tools.usps.com/go/TrackConfirmAction?tRef=fullpage&tLc=2&text28777=&tLabels=${code}' target='_blank'>${code}</a>`
@@ -232,7 +232,7 @@ function compareAction(bandA, bandB) {
 }
 
 function getEpochTime(input) {
-    if (input == undefined) {
+    if (input === undefined) {
         return '-- / -- / --'
     }
     var date = new Date(0)
@@ -244,7 +244,7 @@ function getEpochTime(input) {
 }
 
 function getCarrierName(name) {
-    if (name == undefined || name == '') {
+    if (name === undefined || name == '') {
         return '---'
     } return name
 }
@@ -294,7 +294,7 @@ $('#submit-fix-btn').on('click', async function () {
         fixData['carrier_name'] = $('#input-carrier-tracking-history').val().trim()
     }
 
-    if (fixData['actual_input'] == undefined && fixData['carrier_name'] == undefined) {
+    if (fixData['actual_input'] === undefined && fixData['carrier_name'] === undefined) {
         toastr.clear()
         toastr.warning('Vui lòng nhập Code hoặc Carrier !')
         return

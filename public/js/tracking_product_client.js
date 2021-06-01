@@ -789,21 +789,16 @@ function filterByDate(data, days) {
 
 function searchByKeyword(keyword, data) {
   let dataSearch = data
-  console.log(dataSearch.length)
-
   let searchKeyData = getSearchLevel(keyword)
 
   if (searchKeyData['level1'].length > 0) {
     dataSearch = searchByLevel(searchKeyData['level1'], dataSearch)
-    console.log(dataSearch.length)
   }
   if (searchKeyData['level2'].length > 0) {
     dataSearch = searchByLevelCate(searchKeyData['level2'], dataSearch)
-    console.log(dataSearch.length)
   }
   if (searchKeyData['level3'].length > 0) {
     dataSearch = searchByLevel(searchKeyData['level3'], dataSearch)
-    console.log(dataSearch.length)
   }
 
   // for (var i = 0; i < data.length; i++) {
@@ -811,7 +806,6 @@ function searchByKeyword(keyword, data) {
   //     dataSearch.push(data[i])
   //   }
   // }
-  console.log(dataSearch)
 
   return dataSearch
 }
@@ -843,9 +837,8 @@ function searchByLevel(key, data) {
   let searchData = []
   for (let i = 0; i < data.length; i++) {
     for (let j = 0; j < key.length; j++) {
-      if (data[i].title.toLowerCase().indexOf(key[j])) {
+      if (data[i].title.toLowerCase().indexOf(key[j]) != -1) {
         searchData.push(data[i])
-        console.log(data[i].title)
       }
     }
   }
@@ -856,10 +849,10 @@ function searchByLevelCate(key, data) {
   let searchData = []
   for (let i = 0; i < data.length; i++) {
     for (let j = 0; j < key.length; j++) {
-      if (data[i].title.toLowerCase().indexOf(key[j])) {
+      if (data[i].title.toLowerCase().indexOf(key[j]) != -1) {
         searchData.push(data[i])
       }
-      if (data[i].taxonomy_path[data[i].taxonomy_path.length - 1].toLowerCase().indexOf(key[j])) {
+      if (data[i].taxonomy_path[data[i].taxonomy_path.length - 1].toLowerCase().indexOf(key[j]) != -1) {
         searchData.push(data[i])
       }
     }
