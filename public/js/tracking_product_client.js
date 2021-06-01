@@ -792,16 +792,19 @@ function searchByKeyword(keyword, data = listingData) {
 
   let searchKeyData = getSearchLevel(keyword)
   console.log(searchKeyData)
+  console.log(searchKeyData['level1'].length)
+  console.log(searchKeyData['level2'].length)
+  console.log(searchKeyData['level3'].length)
 
   if (searchKeyData['level1'].length > 0) {
     dataSearch = searchByLevel(searchKeyData['level1'], dataSearch)
     console.log(dataSearch.length)
   }
-  if (searchKeyData['level1'].length > 0) {
+  if (searchKeyData['level2'].length > 0) {
     dataSearch = searchByLevelCate(searchKeyData['level2'], dataSearch)
     console.log(dataSearch.length)
   }
-  if (searchKeyData['level1'].length > 0) {
+  if (searchKeyData['level3'].length > 0) {
     dataSearch = searchByLevel(searchKeyData['level3'], dataSearch)
     console.log(dataSearch.length)
   }
