@@ -1,6 +1,7 @@
 var socket = io.connect("https://giftsvk.com", {
     port: 443,
-    reconnect: true
+    reconnect: true,
+    transports: ['websocket']
 })
 
 $('#submit-user-button').on('click', async function () {

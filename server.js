@@ -16,7 +16,8 @@ var server = https.createServer({
 var io = require("socket.io")(server, {
   cors: {
     origin: '*',
-  }
+  },
+  transports: ['websocket']
 })
 
 const limit = 100
