@@ -466,10 +466,10 @@ function showAnalytic(id) {
       options: {
         maintainAspectRatio: false,
         legend: {
-          display: false
+          display: true
         },
         tooltips: {
-          intersect: false
+          intersect: true
         },
         hover: {
           intersect: true
@@ -502,7 +502,7 @@ function showAnalytic(id) {
 
     $('#btn-close-chart').on('click', function () {
       $('.popup-analytic-container').css('display', 'none')
-      $('.popup-analytic-background').css('display', 'block')
+      $('.popup-analytic-background').css('display', 'none')
       chart.destroy()
     })
 
