@@ -307,12 +307,7 @@ socket.on("return-product-tracking-join", function (data) {
 
 function handleDuplicates() {
 
-  for (let index = 0; index < listingData.length; index++) {
-    if(listingData[index].listing_id == '1021841773'){
-      console.log(listingData[index].quantity)
-    }
-    
-  }
+
   let dataDupPos = new Object
   let dataDupById
 
@@ -361,6 +356,9 @@ function handleDuplicates() {
             numDays++
             totalCount += diff
           }
+        }
+        if(listingData[arrPos[j]].quantity == '1021841773'){
+          console.log(listingData[arrPos[j]].quantity + '/'+ listingData[arrPos[j]].date_update)
         }
       }
       if (totalCount > 0) {
@@ -450,7 +448,7 @@ function showAnalytic(id) {
         views.push(tempData[i].views)
         tempdate = tempData[i].date_update
         if(tempData[i].listing_id == '1021841773'){
-          console.log(tempData[i].quantity + '/'+ tempData[i].date_update)
+          console.log("chart"+tempData[i].quantity + '/'+ tempData[i].date_update)
         }
       }
     }
