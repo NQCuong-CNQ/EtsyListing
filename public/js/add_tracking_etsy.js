@@ -26,10 +26,10 @@ socket.on("get-email-customer-order", async function () {
 })
 
 socket.on("reload-etsy", function () {
-    if (shopName == 'lynnaustinLL') {
-        location.href = 'https://www.etsy.com/your/orders/sold?page=2'
-        return
-    }
+    // if (shopName == 'lynnaustinLL') {
+    //     location.href = 'https://www.etsy.com/your/orders/sold?page=2'
+    //     return
+    // }
     location.href = 'https://www.etsy.com/your/orders/sold'
 
 })
@@ -113,28 +113,28 @@ async function addTrackingAction(id, number) {
     console.log(id + '/ ' + number)
     index++
 
-    if(shopName == 'lynnaustinLL'){
-        if (document.querySelector(`[href="/your/orders/sold?page=2&order_id=${id}"]`) == null || number.length < 10) {
-            await addTracking()
-            return
-        }
-        let element = document.querySelector(`[href="/your/orders/sold?page=2&order_id=${id}"]`).closest('.flag')
-        if (shopName == 'DennisGawlick') {
-            $(element).find(".wt-tooltip.wt-tooltip--bottom button")[0].click()
-        } else {
-            $(element).find(".wt-tooltip.wt-tooltip--bottom button")[1].click()
-        }
+    // if(shopName == 'lynnaustinLL'){
+    //     if (document.querySelector(`[href="/your/orders/sold?page=2&order_id=${id}"]`) == null || number.length < 10) {
+    //         await addTracking()
+    //         return
+    //     }
+    //     let element = document.querySelector(`[href="/your/orders/sold?page=2&order_id=${id}"]`).closest('.flag')
+    //     if (shopName == 'DennisGawlick') {
+    //         $(element).find(".wt-tooltip.wt-tooltip--bottom button")[0].click()
+    //     } else {
+    //         $(element).find(".wt-tooltip.wt-tooltip--bottom button")[1].click()
+    //     }
     
-        await sleep(2000)
+    //     await sleep(2000)
     
-        trackData = new Object
-        trackData['name'] = shopName
-        trackData['id'] = id
-        trackData['number_tracking'] = number
+    //     trackData = new Object
+    //     trackData['name'] = shopName
+    //     trackData['id'] = id
+    //     trackData['number_tracking'] = number
     
-        await socket.emit("track-order-step1", trackData)
-        return
-    }
+    //     await socket.emit("track-order-step1", trackData)
+    //     return
+    // }
 
     if (document.querySelector(`[href="/your/orders/sold?order_id=${id}"]`) == null || number.length < 10) {
         await addTracking()
