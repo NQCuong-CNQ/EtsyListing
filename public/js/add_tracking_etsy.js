@@ -21,7 +21,7 @@ socket.on("get-email-customer-order", async function () {
     mailData['shopName'] = shopName
     mailData['mail'] = $('a.text-gray').text()
 
-    await sleep(Math.floor(Math.random() * 10000))
+    await sleep(Math.floor(Math.random() * 2500))
     await socket.emit("return-email-customer-order", mailData)
 })
 
