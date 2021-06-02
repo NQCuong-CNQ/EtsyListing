@@ -547,12 +547,16 @@ io.on("connection", async function (client) {
       gmailTemp.push(temp)
     }
 
-    for (let i = 0; i < idTemp.length; i++) {
+    console.log('idTemp'+idTemp)
+    console.log('gmailTemp'+gmailTemp)
+
+
+    for (let i = 0; i < gmailTemp.length; i++) {
       if(gmailTemp[i].includes(idTemp[i])){
         gmailTemp[i] = gmailTemp[i].substring(10)
       }
     }
-
+    console.log('gmail'+gmailTemp)
     for (let i = 0; i < idTemp.length; i++) {
       await dbo.collection("tracking_etsy_history").updateOne({ id: idTemp[i] }, { $set: { customer_email: gmailTemp[i], name: data['shopName'] } })
     }
