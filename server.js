@@ -527,6 +527,7 @@ io.on("connection", async function (client) {
     }
 
     await client.broadcast.emit("get-email-customer-order")
+    await sleep(2000)
     console.log('reload etsy')
     await client.broadcast.emit("reload-etsy")
     await sleep(25000)
@@ -550,7 +551,6 @@ io.on("connection", async function (client) {
 
     console.log('idTemp' + idTemp)
     console.log('gmailTemp' + gmailTemp)
-
 
     for (let i = 0; i < gmailTemp.length; i++) {
       if (gmailTemp[i].includes(idTemp[i])) {
