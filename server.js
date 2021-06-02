@@ -32,8 +32,9 @@ const url = "mongodb://localhost:27017/trackingdb"
 
 setInterval(scheduleUpdate, 3600000) // 1h
 async function scheduleUpdate() {
-  let date_ob = new Date()
-  if (date_ob.getHours() == 12) {
+  var date = new Date().getTime()
+  date = Math.floor(date / 3600000)
+  if (date % 26 == 0) {
     await updateData()
   }
 }
@@ -65,10 +66,19 @@ async function getListing() {
   let idListings = []
   let date = new Date().getTime() / 1000
   let dateCount = Math.floor(date / 86400)
-  let listKeyWord = ["father's day canvas", "father's day tshirt", "father's day art print", "father's day mug", "father's day blanket",
+  let listKeyWord = ["mug", "blanket", "tshirt", "canvas", "art print poster", "father's day canvas", "father's day tshirt", "father's day art print", "father's day mug", "father's day blanket",
     "pride month tshirt", "pride month canvas", "pride month art print", "pride month mug", "pride month blanket",
     "independence day tshirt", "independence day canvas", "independence day art print", "independence day mug", "independence day blanket",
-    "tshirt", "canvas", "art print poster", "mug", "blanket"]
+  ]
+
+  for (let i = 1; i <= 1; i++) {
+    siteUrl = `https://www.etsy.com/search?q=tumbler&page=${i}&ref=pagination`
+    let data = await getSearchProductFromWeb()
+    console.log(i)
+    for (let j = 0; j < data.length; j++) {
+      idListings.push(data[j])
+    }
+  }
 
   for (let i = 0; i < listKeyWord.length; i++) {
     console.log(listKeyWord[i])
@@ -83,21 +93,12 @@ async function getListing() {
     }
   }
 
-  for (let i = 1; i <= 1; i++) {
-    siteUrl = `https://www.etsy.com/search?q=tumbler&page=${i}&ref=pagination`
-    let data = await getSearchProductFromWeb()
-    console.log(i)
-    for (let j = 0; j < data.length; j++) {
-      idListings.push(data[j])
-    }
-  }
-
   let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
   var dbo = client.db("trackingdb")
 
   let dblisting = await dbo.collection("listing").find().toArray()
   for (let i = 0; i < dblisting.length; i++) {
-    if ((date - dblisting[i].original_creation_tsz) > (86400 * 30)) {
+    if ((date - dblisting[i].original_creation_tsz) > (86400 * 20)) {
       await dbo.collection("listingBlackList").updateOne({ listing_id: dblisting[i].listing_id }, { $set: { listing_id: dblisting[i].listing_id } }, { upsert: true })
       await dbo.collection("listing").deleteMany({ listing_id: dblisting[i].listing_id })
     } else {
@@ -107,12 +108,11 @@ async function getListing() {
 
   idListings = [...new Set(idListings)]
   console.log(idListings.length)
-  if (idListings.length > 4000) {
-    idListings.slice(0, idListings.length - 4000)
+  if (idListings.length > 4500) {
+    idListings = idListings.slice(0, idListings.length - 4500)
   }
   console.log(idListings.length)
-  return
-  
+
   let listings
   let listingTracking
   for (let i = 0; i < idListings.length; i++) {
@@ -127,7 +127,7 @@ async function getListing() {
       if (listings.state != 'active') {
         await dbo.collection("listing").deleteMany({ listing_id: listings.listing_id })
       }
-      if (listings.toString().includes('does not exist') || ((date - listings.original_creation_tsz) > (86400 * 30)) || listings.state != 'active') {
+      if (listings.toString().includes('does not exist') || ((date - listings.original_creation_tsz) > (86400 * 20)) || listings.state != 'active') {
         await dbo.collection("listingBlackList").updateOne({ listing_id: listings.listing_id }, { $set: { listing_id: listings.listing_id } }, { upsert: true })
       } else {
         let resultImgs = await makeRequest("GET", `https://openapi.etsy.com/v2/listings/${idListings[i]}/images?api_key=${api_key}`)
@@ -548,16 +548,16 @@ io.on("connection", async function (client) {
       gmailTemp.push(temp)
     }
 
-    console.log('idTemp'+idTemp)
-    console.log('gmailTemp'+gmailTemp)
+    console.log('idTemp' + idTemp)
+    console.log('gmailTemp' + gmailTemp)
 
 
     for (let i = 0; i < gmailTemp.length; i++) {
-      if(gmailTemp[i].includes(idTemp[i])){
+      if (gmailTemp[i].includes(idTemp[i])) {
         gmailTemp[i] = gmailTemp[i].substring(10)
       }
     }
-    console.log('gmail'+gmailTemp)
+    console.log('gmail' + gmailTemp)
     for (let i = 0; i < idTemp.length; i++) {
       await dbo.collection("tracking_etsy_history").updateOne({ id: idTemp[i] }, { $set: { customer_email: gmailTemp[i], name: data['shopName'] } })
     }
