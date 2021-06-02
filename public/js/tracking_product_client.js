@@ -348,7 +348,7 @@ function handleDuplicates() {
       let diff = 0
 
       for (let j = 0; j < arrPos.length - 1; j++) {
-        if (listingData[arrPos[j]].quantity != listingData[arrPos[j + 1]].quantity) {
+        if (listingData[arrPos[j]].listing_id != listingData[arrPos[j + 1]].listing_id) {
           diff = listingData[arrPos[j]].quantity - listingData[arrPos[j + 1]].quantity
           if (diff >= 0) {
             numDays++
@@ -361,6 +361,7 @@ function handleDuplicates() {
       }
       if (totalCount > 0) {
         temp['sales_day'] = (totalCount / numDays).toFixed(2)
+        console.log(numDays)
       }
     }
     newData.push(temp)
