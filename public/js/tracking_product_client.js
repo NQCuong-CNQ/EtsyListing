@@ -432,7 +432,7 @@ function showAnalytic(id) {
     let views = []
 
     for (let i = 0; i < tempData.length; i++) {
-      if (tempData[i].date_update != tempData[i+1].date_update) {
+      if (tempData[i].date_update !== tempData[i+1].date_update) {
         label.push(getEpochTime(tempData[i].date_update * 86400))
         quantity.push(tempData[i].quantity)
         num_favorers.push(tempData[i].num_favorers)
