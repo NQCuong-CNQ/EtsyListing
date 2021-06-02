@@ -40,8 +40,6 @@ if (isTrangCheckedStorage == 1) {
     isTrangAccount = false
 }
 
-console.log(isAddedCheckedStorage + '/' +isMyCheckedStorage+ '/' +isTrangCheckedStorage)
-
 socket.on("tracking-history-return-data", async function (data) {
     historyData = data
     filterData()
@@ -141,7 +139,6 @@ function filterAdded(data) {
 function updateData(data = historyData) {
     $('#table_id-tracking-history').DataTable().clear().destroy()
     for (var i = 0; i < data.length; i++) {
-        // if(data[i].number_tracking == data[i].actual_input && isCorrectCarrier(data[i].number_tracking, ))
         $('#table_id-tracking-history-body').append(`<tr>
             <td>${i+1}</td>
             <td>${data[i].id}</td>

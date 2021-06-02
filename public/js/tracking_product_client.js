@@ -450,7 +450,7 @@ function showAnalytic(id) {
         views.push(tempData[i].views)
         tempdate = tempData[i].date_update
         if(tempData[i].listing_id == '1021841773'){
-          console.log(tempData[i].quantity)
+          console.log(tempData[i].quantity + '/'+ tempData[i].date_update)
         }
       }
     }
