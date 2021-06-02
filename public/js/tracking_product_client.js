@@ -306,8 +306,6 @@ socket.on("return-product-tracking-join", function (data) {
 })
 
 function handleDuplicates() {
-
-
   let dataDupPos = new Object
   let dataDupById
 
@@ -350,14 +348,14 @@ function handleDuplicates() {
       let diff = 0
 
       for (let j = 0; j < arrPos.length - 1; j++) {
-        if (listingData[arrPos[j]].quantity != listingData[arrPos[j + 1]].quantity) {
+        // if (listingData[arrPos[j]].quantity != listingData[arrPos[j + 1]].quantity) {
           diff = listingData[arrPos[j]].quantity - listingData[arrPos[j + 1]].quantity
           if (diff >= 0) {
             numDays++
             totalCount += diff
           }
-        }
-        if(listingData[arrPos[j]].quantity == '1021841773'){
+        // }
+        if(listingData[arrPos[j]].listing_id == '1021841773'){
           console.log(listingData[arrPos[j]].quantity + '/'+ listingData[arrPos[j]].date_update)
         }
       }
@@ -365,9 +363,6 @@ function handleDuplicates() {
         temp['sales_day'] = (totalCount / numDays).toFixed(2)
       }
     }
-
-    
-
     newData.push(temp)
   }
   listingData = newData
