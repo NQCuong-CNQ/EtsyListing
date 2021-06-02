@@ -26,7 +26,7 @@ socket.on("get-email-customer-order", async function () {
 })
 
 socket.on("reload-etsy", function () {
-    location.href = 'https://www.etsy.com/your/orders/sold?page=2'
+    location.href = 'https://www.etsy.com/your/orders/sold'
 })
 
 socket.on("track-order-return", async function (dataReceive) {
@@ -108,11 +108,11 @@ async function addTrackingAction(id, number) {
     console.log(id + '/ ' + number)
     index++
 
-    if (document.querySelector(`[href="/your/orders/sold?page=2&order_id=${id}"]`) == null || number.length < 10) {
+    if (document.querySelector(`[href="/your/orders/sold?order_id=${id}"]`) == null || number.length < 10) {
         await addTracking()
         return
     }
-    let element = document.querySelector(`[href="/your/orders/sold?page=2&order_id=${id}"]`).closest('.flag')
+    let element = document.querySelector(`[href="/your/orders/sold?order_id=${id}"]`).closest('.flag')
     if (shopName == 'DennisGawlick') {
         $(element).find(".wt-tooltip.wt-tooltip--bottom button")[0].click()
     } else {
