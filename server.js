@@ -34,9 +34,9 @@ setInterval(scheduleUpdate, 3600000) // 1h
 async function scheduleUpdate() {
   var date = new Date().getTime()
   date = Math.floor(date / 3600000)
-  if (date % 26 == 0) {
-    await updateData()
-  }
+  // if (date % 26 == 0) {
+    // await updateData()
+  // }
 }
 
 async function updateCate() {
@@ -50,11 +50,11 @@ async function updateCate() {
   await dbo.collection("category").insertOne(category)
 }
 
-updateData()
+// updateData()
 async function updateData() {
   isUpdate = true
   // await updateCate()
-  await getListing()
+  // await getListing()
   // await getShopName()
   // await updateShopInfo()
   await completeUpdate()
@@ -553,7 +553,7 @@ io.on("connection", async function (client) {
     console.log('gmailTemp' + gmailTemp)
 
     for (let i = 0; i < gmailTemp.length; i++) {
-      if (gmailTemp[i].includes(idTemp[i])) {
+      if (Number.isInteger(parseInt(gmailTemp[i].slice(0,10)))) {
         gmailTemp[i] = gmailTemp[i].substring(10)
       }
     }
@@ -587,22 +587,28 @@ io.on("connection", async function (client) {
   })
 })
 
-// fixTrackingHistory()
-// async function fixTrackingHistory() {
-//   let clientDB = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
-//   var dbo = clientDB.db("trackingdb")
-//   let dbdata = await dbo.collection("tracking_etsy_history").find().toArray()
-//   for (let i = 0; i < dbdata.length; i++) {
-//     if (dbdata[i].customer_email == undefined) {
-//     } else {
-//       if (dbdata[i].customer_email.includes('Message history1')) {
-//         console.log(dbdata[i].customer_email)
-//         dbdata[i].customer_email = dbdata[i].customer_email.replace('Message history1', '')
-//         await dbo.collection("tracking_etsy_history").updateOne({ id: dbdata[i].id }, { $set: { customer_email: dbdata[i].customer_email } }, { upsert: true })
-//       }
-//     }
-//   }
-// }
+fixTrackingHistory()
+async function fixTrackingHistory() {
+  let clientDB = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
+  var dbo = clientDB.db("trackingdb")
+  let dbdata = await dbo.collection("tracking_etsy_history").find().toArray()
+  for (let i = 0; i < dbdata.length; i++) {
+    if (dbdata[i].customer_email == undefined) {
+    } else {
+
+      if (Number.isInteger(parseInt(dbdata[i].customer_email.slice(0,10)))) {
+        dbdata[i].customer_email = dbdata[i].customer_email.substring(10)
+        await dbo.collection("tracking_etsy_history").updateOne({ id: dbdata[i].id }, { $set: { customer_email: dbdata[i].customer_email } }, { upsert: true })
+      }
+
+      // if (dbdata[i].customer_email.includes('Message history1')) {
+      //   console.log(dbdata[i].customer_email)
+      //   dbdata[i].customer_email = dbdata[i].customer_email.replace('Message history1', '')
+      //   await dbo.collection("tracking_etsy_history").updateOne({ id: dbdata[i].id }, { $set: { customer_email: dbdata[i].customer_email } }, { upsert: true })
+      // }
+    }
+  }
+}
 
 async function getSearchProductFromWeb() {
   await sleep(100)

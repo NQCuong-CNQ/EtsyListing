@@ -2,12 +2,16 @@
 // date = Math.floor(date / 3600000)
 // console.log(date%26)
 
-let arr = ['b', 'd', 'd', 'd', 'd', 'd', 'd', 'd', 'd', 'd', 'd', 'd', 'd', 'a']
-console.log(arr.length)
+// let arr = ['b', 'd', 'd', 'd', 'd', 'd', 'd', 'd', 'd', 'd', 'd', 'd', 'd', 'a']
+// console.log(arr.length)
 
 
-if (arr.length > 10) {
-    arr = arr.slice(0 , arr.length  )
-}
-console.log(arr.length)
-console.log(arr)
+// if (arr.length > 10) {
+//     arr = arr.slice(0 , arr.length  )
+// }
+// console.log(arr.length)
+// console.log(arr)
+
+let str = '432536asdfsaddv'
+console.log(str.slice(0,4))
+console.log(Number.isInteger(parseInt(str.slice(0,4))))
