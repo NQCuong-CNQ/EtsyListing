@@ -354,14 +354,10 @@ function handleDuplicates() {
             numDays++
             totalCount += diff
           }
-          if(listingData[arrPos[j]].listing_id == '1021841773'){
-            console.log(listingData[arrPos[j]].quantity + '/'+ listingData[arrPos[j]].date_update)
-          }
         }
       }
       if (totalCount > 0) {
         temp['sales_day'] = (totalCount / numDays).toFixed(2)
-        console.log(numDays)
       }
     }
     newData.push(temp)
@@ -435,17 +431,12 @@ function showAnalytic(id) {
     let num_favorers = []
     let views = []
 
-    let tempdate = 0
     for (let i = 0; i < tempData.length; i++) {
-      if (tempdate != tempData[i].date_update) {
+      if (tempData[i].date_update != tempData[i+1].date_update) {
         label.push(getEpochTime(tempData[i].date_update * 86400))
         quantity.push(tempData[i].quantity)
         num_favorers.push(tempData[i].num_favorers)
         views.push(tempData[i].views)
-        tempdate = tempData[i].date_update
-        if(tempData[i].listing_id == '1021841773'){
-          console.log("chart"+tempData[i].quantity + '/'+ tempData[i].date_update)
-        }
       }
     }
 
