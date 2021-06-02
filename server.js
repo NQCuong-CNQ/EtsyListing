@@ -30,7 +30,7 @@ const MongoClient = require('mongodb').MongoClient;
 const { Console } = require('console');
 const url = "mongodb://localhost:27017/trackingdb"
 
-// setInterval(scheduleUpdate, 2700000) // 45p
+setInterval(scheduleUpdate, 3600000) // 1h
 async function scheduleUpdate() {
   let date_ob = new Date()
   if (date_ob.getHours() == 12) {
@@ -49,13 +49,13 @@ async function updateCate() {
   await dbo.collection("category").insertOne(category)
 }
 
-//updateData()
+updateData()
 async function updateData() {
   isUpdate = true
   // await updateCate()
   await getListing()
-  await getShopName()
-  await updateShopInfo()
+  // await getShopName()
+  // await updateShopInfo()
   await completeUpdate()
 
   isUpdate = false
