@@ -72,7 +72,7 @@ async function getListing() {
 
   for (let i = 0; i < listKeyWord.length; i++) {
     console.log(listKeyWord[i])
-    for (let j = 1; j <= 4; j++) {
+    for (let j = 1; j <= 3; j++) {
       siteUrl = `https://www.etsy.com/search?q=${listKeyWord[i]}&page=${j}&ref=pagination`
       let data = await getSearchProductFromWeb()
       console.log(j)
@@ -83,7 +83,6 @@ async function getListing() {
     }
   }
 
-  console.log(idListings.length)
   for (let i = 1; i <= 1; i++) {
     siteUrl = `https://www.etsy.com/search?q=tumbler&page=${i}&ref=pagination`
     let data = await getSearchProductFromWeb()
@@ -111,7 +110,9 @@ async function getListing() {
   if (idListings.length > 4000) {
     idListings.slice(0, idListings.length - 4000)
   }
-
+  console.log(idListings.length)
+  return
+  
   let listings
   let listingTracking
   for (let i = 0; i < idListings.length; i++) {
