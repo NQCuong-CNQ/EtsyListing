@@ -527,7 +527,7 @@ io.on("connection", async function (client) {
     }
 
     await client.broadcast.emit("get-email-customer-order")
-    await sleep(2000)
+    await sleep(3000)
     console.log('reload etsy')
     await client.broadcast.emit("reload-etsy")
     await sleep(25000)
@@ -549,15 +549,12 @@ io.on("connection", async function (client) {
       gmailTemp.push(temp)
     }
 
-    console.log('idTemp' + idTemp)
-    console.log('gmailTemp' + gmailTemp)
-
     for (let i = 0; i < gmailTemp.length; i++) {
       if (Number.isInteger(parseInt(gmailTemp[i].slice(0,10)))) {
         gmailTemp[i] = gmailTemp[i].substring(10)
       }
     }
-    console.log('gmail' + gmailTemp)
+
     for (let i = 0; i < idTemp.length; i++) {
       await dbo.collection("tracking_etsy_history").updateOne({ id: idTemp[i] }, { $set: { customer_email: gmailTemp[i], name: data['shopName'] } })
     }
@@ -587,28 +584,28 @@ io.on("connection", async function (client) {
   })
 })
 
-fixTrackingHistory()
-async function fixTrackingHistory() {
-  let clientDB = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
-  var dbo = clientDB.db("trackingdb")
-  let dbdata = await dbo.collection("tracking_etsy_history").find().toArray()
-  for (let i = 0; i < dbdata.length; i++) {
-    if (dbdata[i].customer_email == undefined) {
-    } else {
+// fixTrackingHistory()
+// async function fixTrackingHistory() {
+//   let clientDB = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
+//   var dbo = clientDB.db("trackingdb")
+//   let dbdata = await dbo.collection("tracking_etsy_history").find().toArray()
+//   for (let i = 0; i < dbdata.length; i++) {
+//     if (dbdata[i].customer_email == undefined) {
+//     } else {
 
-      if (Number.isInteger(parseInt(dbdata[i].customer_email.slice(0,10)))) {
-        dbdata[i].customer_email = dbdata[i].customer_email.substring(10)
-        await dbo.collection("tracking_etsy_history").updateOne({ id: dbdata[i].id }, { $set: { customer_email: dbdata[i].customer_email } }, { upsert: true })
-      }
+//       if (Number.isInteger(parseInt(dbdata[i].customer_email.slice(0,10)))) {
+//         dbdata[i].customer_email = dbdata[i].customer_email.substring(10)
+//         await dbo.collection("tracking_etsy_history").updateOne({ id: dbdata[i].id }, { $set: { customer_email: dbdata[i].customer_email } }, { upsert: true })
+//       }
 
       // if (dbdata[i].customer_email.includes('Message history1')) {
       //   console.log(dbdata[i].customer_email)
       //   dbdata[i].customer_email = dbdata[i].customer_email.replace('Message history1', '')
       //   await dbo.collection("tracking_etsy_history").updateOne({ id: dbdata[i].id }, { $set: { customer_email: dbdata[i].customer_email } }, { upsert: true })
       // }
-    }
-  }
-}
+//     }
+//   }
+// }
 
 async function getSearchProductFromWeb() {
   await sleep(100)

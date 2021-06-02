@@ -345,7 +345,7 @@ function handleDuplicates() {
         if (listingData[arrPos[j]].date_update != listingData[arrPos[j + 1]].date_update) {
           diff = listingData[arrPos[j]].quantity - listingData[arrPos[j + 1]].quantity
           if (diff >= 0) {
-            numDays++
+            numDays += listingData[arrPos[j + 1]].date_update - listingData[arrPos[j]].date_update
             totalCount += diff
           }
         }
