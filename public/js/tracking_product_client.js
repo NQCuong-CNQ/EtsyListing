@@ -404,7 +404,7 @@ function handleDuplicates() {
 function showAnalytic(id) {
   if (isGettingData) {
     toastr.clear()
-    toastr.warning('Please wait until data is updated!', {timeOut: 0})
+    toastr.warning('Please wait until data is updated!', { timeOut: 0 })
   } else {
     $('.popup-analytic-container').css('display', 'block')
     $('.popup-analytic-background').css('display', 'block')
@@ -431,14 +431,19 @@ function showAnalytic(id) {
     let num_favorers = []
     let views = []
 
-    for (let i = 0; i < tempData.length; i++) {
-      if (tempData[i].date_update !== tempData[i+1].date_update) {
+    for (let i = 0; i < tempData.length - 1; i++) {
+      if (tempData[i].date_update != tempData[i + 1].date_update) {
         label.push(getEpochTime(tempData[i].date_update * 86400))
         quantity.push(tempData[i].quantity)
         num_favorers.push(tempData[i].num_favorers)
         views.push(tempData[i].views)
       }
     }
+
+    label.push(getEpochTime(tempData[tempData.length - 1].date_update * 86400))
+    quantity.push(tempData[tempData.length - 1].quantity)
+    num_favorers.push(tempData[tempData.length - 1].num_favorers)
+    views.push(tempData[tempData.length - 1].views)
 
     let chart = new Chart(document.getElementById("chart-analytic-product"), {
       type: "line",
@@ -858,7 +863,7 @@ function searchByLevelCate(key, data) {
   return searchData
 }
 
-function formatForSearch(string){
+function formatForSearch(string) {
   string = string.replace(/[^0-9a-zA-Z ]/g, '').replace(/s /g, '').toLowerCase()
   return string
 }
