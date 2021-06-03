@@ -25,6 +25,9 @@ const limitPage = 5
 const api_key = '2mlnbmgdqv6esclz98opmmuq'
 var siteUrl
 var isUpdate = false
+var minTotalSales = 100
+var maxTotalSales = 5000
+var maxDateShop = 90
 
 const MongoClient = require('mongodb').MongoClient;
 const { Console } = require('console');
@@ -55,7 +58,7 @@ async function updateData() {
   isUpdate = true
   // await updateCate()
   // await getListing()
-  // await getShopName()
+  await getShopName()
   await updateShopInfo()
   // await completeUpdate()
 
@@ -234,7 +237,7 @@ async function saveShopNameToDB(dataShopName, shopCategory) {
     let imgs = shopData.imgs
 
     console.log(shopName[index].shop_name + ":" + total_sales)
-    if (total_sales >= 100 && total_sales <= 5000) {
+    if (total_sales >= minTotalSales && total_sales <= maxTotalSales) {
       await dbo.collection("shopName").updateOne({ shop_name: shopName[index].shop_name }, { $set: { total_sales: total_sales, imgs_listing: imgs } }, { upsert: true })
     } else {
       await deleteShop(dbo, shopName[index].shop_name)
@@ -255,7 +258,7 @@ async function updateShopInfo() {
   let dbData = await dbo.collection("shopName").find().toArray()
 
   let date = new Date().getTime()
-  let dateCount = Math.floor(date / 1000) - (90 * 86400)
+  let dateCount = Math.floor(date / 1000) - (maxDateShop * 86400)
 
   for (let index = 0; index < dbData.length; index++) {
     let response = await makeRequest("GET", `https://openapi.etsy.com/v2/shops/${dbData[index].shop_name}?api_key=${api_key}`)
@@ -263,7 +266,7 @@ async function updateShopInfo() {
     } else {
       response = JSON.parse(response).results
 
-      if (response[0]['creation_tsz'] < dateCount || (dbData[index].total_sales > 5000 && dbData[index].total_sales < 100)) {
+      if (response[0]['creation_tsz'] < dateCount || (dbData[index].total_sales > maxTotalSales && dbData[index].total_sales < minTotalSales)) {
         await deleteShop(dbo, response[0]['shop_name'])
       } else {
         console.log('updateShopInfo: ' + response[0].shop_id)
