@@ -333,6 +333,10 @@ app.get("/add_tracking_history", function (req, res, next) {
   res.sendFile(__dirname + "/public/add_tracking_etsy_history.html")
 })
 
+app.get("/undefined", function (req, res, next) {
+  res.send('null')
+})
+
 app.use(express.static("public"))
 
 io.on("connection", async function (client) {

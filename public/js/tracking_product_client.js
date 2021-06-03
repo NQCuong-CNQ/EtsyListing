@@ -858,7 +858,7 @@ function searchByLevelCate(key, data) {
 }
 
 function formatForSearch(string) {
-  string = string.replace(/[^0-9a-zA-Z ]/g, '').replace(/s /g, '').toLowerCase()
+  string = string.replace(/[^0-9a-zA-Z ]/g, '').replace(/s /g, ' ').toLowerCase()
   return string
 }
 /* ------------------------------------------------END FILTER SECTION------------------------------------------------ */
