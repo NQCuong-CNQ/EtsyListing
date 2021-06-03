@@ -231,7 +231,11 @@ async function saveShopNameToDB(dataShopName, shopCategory) {
 
     total_sales = parseInt(total_sales)
     console.log(shopName[index].shop_name + ":" + total_sales)
-    await dbo.collection("shopName").updateOne({ shop_name: shopName[index].shop_name }, { $set: { total_sales: total_sales, imgs_listing: imgs } }, { upsert: true })
+    if (total_sales >= 100 && total_sales <= 5000) {
+      await dbo.collection("shopName").updateOne({ shop_name: shopName[index].shop_name }, { $set: { total_sales: total_sales, imgs_listing: imgs } }, { upsert: true })
+    } else {
+      await dbo.collection("shopBlackList").updateOne({ shop_name: shopName[index].shop_name }, { $set: { shop_name: shopName[index].shop_name } }, { upsert: true })
+    }
   }
   await sleep(100)
 }
@@ -249,13 +253,13 @@ async function updateShopInfo() {
   let date = new Date().getTime()
   let dateCount = Math.floor(date / 1000) - (90 * 86400)
 
-  let dbDataForDel = await dbo.collection("shop").find({ total_sales: { $lt: 100, $gt: 5000 } }).toArray()
+  let dbDataForDel = await dbo.collection("shop").find({ creation_tsz: { $gte: dateCount } }).toArray()
   // await dbo.collection("shop").deleteMany({ total_sales: { $lt: 100, $gt: 5000 }, creation_tsz: { $gte: dateCount } })
-  
+
   console.log(dbDataForDel)
 
 
-return
+  return
   let dbData = await dbo.collection("shopName").find({ total_sales: { $gte: 100, $lte: 5000 } }).toArray()
 
   for (let index = 0; index < dbData.length; index++) {
