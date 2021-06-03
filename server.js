@@ -35,7 +35,7 @@ async function scheduleUpdate() {
   var date = new Date().getTime()
   date = Math.floor(date / 3600000)
   // if (date % 26 == 0) {
-    // await updateData()
+  // await updateData()
   // }
 }
 
@@ -50,22 +50,22 @@ async function updateCate() {
   await dbo.collection("category").insertOne(category)
 }
 
-// updateData()
+updateData()
 async function updateData() {
   isUpdate = true
   // await updateCate()
   // await getListing()
   // await getShopName()
-  // await updateShopInfo()
-  await completeUpdate()
+  await updateShopInfo()
+  // await completeUpdate()
 
   isUpdate = false
 }
 
 async function getListing() {
   let idListings = []
-  let date = new Date().getTime() / 1000
-  let dateCount = Math.floor(date / 86400)
+  let date = new Date().getTime()
+  let dateCount = Math.floor(date / 86400000)
   let listKeyWord = ["mug", "blanket", "tshirt", "canvas", "art print poster", "father's day canvas", "father's day tshirt", "father's day art print", "father's day mug", "father's day blanket",
     "pride month tshirt", "pride month canvas", "pride month art print", "pride month mug", "pride month blanket",
     "independence day tshirt", "independence day canvas", "independence day art print", "independence day mug", "independence day blanket",
@@ -245,6 +245,15 @@ async function sleep(ms) {
 async function updateShopInfo() {
   let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
   var dbo = client.db("trackingdb")
+
+  let date = new Date().getTime()
+  let dateCount = Math.floor(date / 1000) - (90 * 86400)
+
+  let dbDataForDel = await dbo.collection("shop").find({ total_sales: { $lt: 100, $gt: 5000 }, creation_tsz: { $gte: dateCount } }).toArray()
+  await dbo.collection("shop").deleteMany({ total_sales: { $lt: 100, $gt: 5000 }, creation_tsz: { $gte: dateCount } }).toArray()
+  
+  console.log(dbDataForDel)
+return
   let dbData = await dbo.collection("shopName").find({ total_sales: { $gte: 100, $lte: 5000 } }).toArray()
 
   for (let index = 0; index < dbData.length; index++) {
@@ -334,7 +343,7 @@ app.get("/add_tracking_history", function (req, res, next) {
 })
 
 app.get("/undefined", function (req, res, next) {
-  res.sendFile('https://www.google.com/url?sa=i&url=https%3A%2F%2Fdzogame.vn%2Ftag%2Fcu-hanh.html&psig=AOvVaw2bnv071Aup4-c1Q_NE0ESv&ust=1622776144636000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCKDr9bS--vACFQAAAAAdAAAAABAD')
+  res.send('null')
 })
 
 app.use(express.static("public"))
@@ -554,7 +563,7 @@ io.on("connection", async function (client) {
     }
 
     for (let i = 0; i < gmailTemp.length; i++) {
-      if (Number.isInteger(parseInt(gmailTemp[i].slice(0,10)))) {
+      if (Number.isInteger(parseInt(gmailTemp[i].slice(0, 10)))) {
         gmailTemp[i] = gmailTemp[i].substring(10)
       }
     }
@@ -602,11 +611,11 @@ io.on("connection", async function (client) {
 //         await dbo.collection("tracking_etsy_history").updateOne({ id: dbdata[i].id }, { $set: { customer_email: dbdata[i].customer_email } }, { upsert: true })
 //       }
 
-      // if (dbdata[i].customer_email.includes('Message history1')) {
-      //   console.log(dbdata[i].customer_email)
-      //   dbdata[i].customer_email = dbdata[i].customer_email.replace('Message history1', '')
-      //   await dbo.collection("tracking_etsy_history").updateOne({ id: dbdata[i].id }, { $set: { customer_email: dbdata[i].customer_email } }, { upsert: true })
-      // }
+// if (dbdata[i].customer_email.includes('Message history1')) {
+//   console.log(dbdata[i].customer_email)
+//   dbdata[i].customer_email = dbdata[i].customer_email.replace('Message history1', '')
+//   await dbo.collection("tracking_etsy_history").updateOne({ id: dbdata[i].id }, { $set: { customer_email: dbdata[i].customer_email } }, { upsert: true })
+// }
 //     }
 //   }
 // }

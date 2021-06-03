@@ -12,6 +12,10 @@
 // console.log(arr.length)
 // console.log(arr)
 
-let str = '432536asdfsaddv'
-console.log(str.slice(0,4))
-console.log(Number.isInteger(parseInt(str.slice(0,4))))
+// let str = '432536asdfsaddv'
+// console.log(str.slice(0,4))
+// console.log(Number.isInteger(parseInt(str.slice(0,4))))
+
+let date = new Date().getTime()
+let dateCount = Math.floor(date /1000) - (90 *  86400)
+console.log(dateCount)
