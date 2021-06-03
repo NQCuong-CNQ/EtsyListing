@@ -180,21 +180,9 @@ async function getShopName() {
   let categoryLink = category.CategoryLink.split('|')
   client.close()
 
-  // for (let index = 0; index < categoryList.length; index++) {
-  //   console.log('category: ' + categoryList[index])
-  //   for (let i = 0; i < limitPage; i++) {
-  //     let siteUrlPage = categoryLink[index] + (i + 1)
-  //     console.log('siteUrlPage: ' + siteUrlPage)
-
-  //     let dataShopName = await getShopNameFromWeb(siteUrlPage)
-  //     console.log('page: ' + i)
-  //     await saveShopNameToDB(dataShopName, categoryList[index])
-  //   }
-  // }
-
-  for (let index = 0; index < 1; index++) {
+  for (let index = 0; index < categoryList.length; index++) {
     console.log('category: ' + categoryList[index])
-    for (let i = 0; i < 1; i++) {
+    for (let i = 0; i < limitPage; i++) {
       let siteUrlPage = categoryLink[index] + (i + 1)
       console.log('siteUrlPage: ' + siteUrlPage)
 
@@ -203,6 +191,7 @@ async function getShopName() {
       await saveShopNameToDB(dataShopName, categoryList[index])
     }
   }
+
   client.close()
 }
 
