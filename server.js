@@ -68,7 +68,7 @@ async function updateData() {
 async function getListing() {
   let idListings = []
   let date = new Date().getTime()
-  let dateCount = Math.floor(date / 86400000)
+  date = Math.floor(date / 1000)
   let listKeyWord = ["mug", "blanket", "tshirt", "canvas", "art print poster", "father's day canvas", "father's day tshirt", "father's day art print", "father's day mug", "father's day blanket",
     "pride month tshirt", "pride month canvas", "pride month art print", "pride month mug", "pride month blanket",
     "independence day tshirt", "independence day canvas", "independence day art print", "independence day mug", "independence day blanket",
@@ -98,8 +98,8 @@ async function getListing() {
 
   let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
   var dbo = client.db("trackingdb")
-
   let dblisting = await dbo.collection("listing").find().toArray()
+  
   for (let i = 0; i < dblisting.length; i++) {
     if ((date - dblisting[i].original_creation_tsz) > (86400 * 20)) {
       await dbo.collection("listingBlackList").updateOne({ listing_id: dblisting[i].listing_id }, { $set: { listing_id: dblisting[i].listing_id } }, { upsert: true })
@@ -159,7 +159,7 @@ async function getListing() {
         listingTracking['quantity'] = listings.quantity
         listingTracking['views'] = listings.views
         listingTracking['num_favorers'] = listings.num_favorers
-        listingTracking['date_update'] = dateCount
+        listingTracking['date_update'] = Math.floor(date / 86400)
         listingTracking['price'] = listings.price
         listingTracking['is_digital'] = listings.is_digital
 
