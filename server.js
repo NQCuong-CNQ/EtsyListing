@@ -250,9 +250,11 @@ async function updateShopInfo() {
   let dateCount = Math.floor(date / 1000) - (90 * 86400)
 
   let dbDataForDel = await dbo.collection("shop").find({ total_sales: { $lt: 100, $gt: 5000 }, creation_tsz: { $gte: dateCount } }).toArray()
-  await dbo.collection("shop").deleteMany({ total_sales: { $lt: 100, $gt: 5000 }, creation_tsz: { $gte: dateCount } })
+  // await dbo.collection("shop").deleteMany({ total_sales: { $lt: 100, $gt: 5000 }, creation_tsz: { $gte: dateCount } })
   
   console.log(dbDataForDel)
+
+
 return
   let dbData = await dbo.collection("shopName").find({ total_sales: { $gte: 100, $lte: 5000 } }).toArray()
 
