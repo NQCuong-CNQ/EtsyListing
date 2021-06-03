@@ -213,7 +213,7 @@ async function saveShopNameToDB(dataShopName, shopCategory) {
 
   for (let i = 0; i < dataShopName.length; i++) {
     if (shopBlackList.includes(dataShopName[i])) {
-
+      console.log('black list: '+ dataShopName[i])
     } else {
       await dbo.collection("shopName").updateOne({ shop_name: dataShopName[i] }, { $set: { shop_name: dataShopName[i] } }, { upsert: true })
 
