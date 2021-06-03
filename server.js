@@ -209,8 +209,7 @@ async function getShopName() {
 async function saveShopNameToDB(dataShopName, shopCategory) {
   let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
   let dbo = client.db("trackingdb")
-  let shopName = await dbo.collection("shopName").find({}).toArray()
-  let shopBlackList = await dbo.collection("shopBlackList").find({}).toArray()
+  let shopBlackList = await dbo.collection("shopBlackList").find().toArray()
 
   for (let i = 0; i < dataShopName.length; i++) {
     if (shopBlackList.includes(dataShopName[i])) {
@@ -240,6 +239,7 @@ async function saveShopNameToDB(dataShopName, shopCategory) {
     }
   }
 
+  let shopName = await dbo.collection("shopName").find().toArray()
   for (let index = 0; index < shopName.length; index++) {
     siteUrl = "https://www.etsy.com/shop/" + shopName[index].shop_name
     let shopData = await getTotalSalesAndImgFromWeb()
