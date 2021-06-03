@@ -27,7 +27,7 @@ var siteUrl
 var isUpdate = false
 var minTotalSales = 100
 var maxTotalSales = 5000
-var maxDateShop = 182
+var maxDateShop = 365
 
 const MongoClient = require('mongodb').MongoClient;
 const { Console } = require('console');
