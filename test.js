@@ -17,5 +17,5 @@
 // console.log(Number.isInteger(parseInt(str.slice(0,4))))
 
 let date = new Date().getTime()
-let dateCount = Math.floor(date /1000) - (90 *  86400)
+let dateCount = Math.floor(date /1000)
 console.log(dateCount)

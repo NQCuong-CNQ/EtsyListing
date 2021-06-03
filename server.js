@@ -194,24 +194,30 @@ async function getShopName() {
 async function saveShopNameToDB(dataShopName, shopCategory) {
   let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
   let dbo = client.db("trackingdb")
+  let shopName = await dbo.collection("shopName").find({}).toArray()
+  let shopBlackList = await dbo.collection("shopBlackList").find({}).toArray()
 
   for (let i = 0; i < dataShopName.length; i++) {
-    await dbo.collection("shopName").updateOne({ shop_name: dataShopName[i] }, { $set: { shop_name: dataShopName[i] } }, { upsert: true })
+    if (shopBlackList.includes(dataShopName[i])) {
 
-    let currentVal = await dbo.collection("shopCategory").findOne({ shop_name: dataShopName[i] })
-    let currCate = ''
-    let newshopCategory = shopCategory
-    if (currentVal != '') {
-      try {
-        currCate = currentVal.category
-      } catch (e) {
-      }
-      if (currCate == '') {
-      } else {
-        if (currCate.includes(shopCategory)) {
-          newshopCategory = currCate
+    } else {
+      await dbo.collection("shopName").updateOne({ shop_name: dataShopName[i] }, { $set: { shop_name: dataShopName[i] } }, { upsert: true })
+
+      let currentVal = await dbo.collection("shopCategory").findOne({ shop_name: dataShopName[i] })
+      let currCate = ''
+      let newshopCategory = shopCategory
+      if (currentVal != '') {
+        try {
+          currCate = currentVal.category
+        } catch (e) {
+        }
+        if (currCate == '') {
         } else {
-          newshopCategory = currCate + ',' + shopCategory
+          if (currCate.includes(shopCategory)) {
+            newshopCategory = currCate
+          } else {
+            newshopCategory = currCate + ',' + shopCategory
+          }
         }
       }
     }
@@ -219,22 +225,19 @@ async function saveShopNameToDB(dataShopName, shopCategory) {
     console.log('shop cate: ' + newshopCategory)
     await dbo.collection("shopCategory").updateOne({ shop_name: dataShopName[i] }, { $set: { shop_name: dataShopName[i], category: newshopCategory } }, { upsert: true })
   }
-  console.log('save all shop name success')
-  let shopName = await dbo.collection("shopName").find({}).toArray()
 
   for (let index = 0; index < shopName.length; index++) {
     siteUrl = "https://www.etsy.com/shop/" + shopName[index].shop_name
     let shopData = await getTotalSalesAndImgFromWeb()
 
-    let total_sales = shopData.totalSales
+    let total_sales = parseInt(shopData.totalSales)
     let imgs = shopData.imgs
 
-    total_sales = parseInt(total_sales)
     console.log(shopName[index].shop_name + ":" + total_sales)
     if (total_sales >= 100 && total_sales <= 5000) {
       await dbo.collection("shopName").updateOne({ shop_name: shopName[index].shop_name }, { $set: { total_sales: total_sales, imgs_listing: imgs } }, { upsert: true })
     } else {
-      await dbo.collection("shopBlackList").updateOne({ shop_name: shopName[index].shop_name }, { $set: { shop_name: shopName[index].shop_name } }, { upsert: true })
+      await deleteShop(dbo, shopName[index].shop_name)
     }
   }
   await sleep(100)
@@ -249,18 +252,10 @@ async function sleep(ms) {
 async function updateShopInfo() {
   let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
   var dbo = client.db("trackingdb")
+  let dbData = await dbo.collection("shopName").find().toArray()
 
   let date = new Date().getTime()
   let dateCount = Math.floor(date / 1000) - (90 * 86400)
-
-  let dbDataForDel = await dbo.collection("shop").find({ creation_tsz: { $gte: dateCount } }).toArray()
-  // await dbo.collection("shop").deleteMany({ total_sales: { $lt: 100, $gt: 5000 }, creation_tsz: { $gte: dateCount } })
-
-  console.log(dbDataForDel)
-
-
-  return
-  let dbData = await dbo.collection("shopName").find({ total_sales: { $gte: 100, $lte: 5000 } }).toArray()
 
   for (let index = 0; index < dbData.length; index++) {
     let response = await makeRequest("GET", `https://openapi.etsy.com/v2/shops/${dbData[index].shop_name}?api_key=${api_key}`)
@@ -268,49 +263,56 @@ async function updateShopInfo() {
     } else {
       response = JSON.parse(response).results
 
-      console.log('updateShopInfo: ' + response[0].shop_id)
-      response[0]['total_sales'] = dbData[index].total_sales
-      response[0]['imgs_listing'] = dbData[index].imgs_listing
-      await dbo.collection("shop").updateOne({ shop_id: response[0].shop_id }, {
-        $set: {
-          shop_id: response[0].shop_id,
-          imgs_listing: response[0]['imgs_listing'],
-          total_sales: response[0]['total_sales'],
-          shop_name: response[0]['shop_name'],
-          url: response[0]['url'],
-          creation_tsz: response[0]['creation_tsz'],
-          num_favorers: response[0]['num_favorers'],
-          currency_code: response[0]['currency_code'],
-          listing_active_count: response[0]['listing_active_count'],
-          digital_listing_count: response[0]['digital_listing_count'],
-          languages: response[0]['languages'],
-        }
-      }, { upsert: true })
+      if (response[0]['creation_tsz'] < dateCount || (dbData[index].total_sales > 5000 && dbData[index].total_sales < 100)) {
+        await deleteShop(dbo, response[0]['shop_name'])
+      } else {
+        console.log('updateShopInfo: ' + response[0].shop_id)
+        response[0]['total_sales'] = dbData[index].total_sales
+        response[0]['imgs_listing'] = dbData[index].imgs_listing
+        await dbo.collection("shop").updateOne({ shop_id: response[0].shop_id }, {
+          $set: {
+            shop_id: response[0].shop_id,
+            imgs_listing: response[0]['imgs_listing'],
+            total_sales: response[0]['total_sales'],
+            shop_name: response[0]['shop_name'],
+            url: response[0]['url'],
+            creation_tsz: response[0]['creation_tsz'],
+            num_favorers: response[0]['num_favorers'],
+            currency_code: response[0]['currency_code'],
+            listing_active_count: response[0]['listing_active_count'],
+            digital_listing_count: response[0]['digital_listing_count'],
+            languages: response[0]['languages'],
+          }
+        }, { upsert: true })
 
-      let timeNow = getDateTimeNow()
-      await dbo.collection("shopTracking").insertOne({
-        'shop_id': response[0].shop_id,
-        'total_sales': dbData[index].total_sales,
-        'listing_active_count': response[0].listing_active_count,
-        'num_favorers': response[0].num_favorers,
-        'time_update': timeNow
-      })
+        let timeNow = getDateTimeNow()
+        await dbo.collection("shopTracking").insertOne({
+          'shop_id': response[0].shop_id,
+          'shop_name': response[0].shop_name,
+          'total_sales': dbData[index].total_sales,
+          'listing_active_count': response[0].listing_active_count,
+          'num_favorers': response[0].num_favorers,
+          'time_update': timeNow
+        })
+      }
       await sleep(100)
     }
   }
   client.close()
 }
 
+async function deleteShop(dbo, shopName){
+  await dbo.collection("shopBlackList").updateOne({ shop_name: shopName }, { $set: { shop_name: shopName } }, { upsert: true })
+  await dbo.collection("shopName").deleteMany({ shop_name: shopName })
+  await dbo.collection("shopCategory").deleteMany({ shop_name: shopName })
+  await dbo.collection("shop").deleteMany({ shop_name: shopName })
+  await dbo.collection("shopTracking").deleteMany({ shop_name: shopName })
+}
+
 function getDateTimeNow() {
-  let date_ob = new Date()
-  let date = ("0" + date_ob.getDate()).slice(-2)
-  let month = ("0" + (date_ob.getMonth() + 1)).slice(-2)
-  let year = date_ob.getFullYear()
-  let hours = ("0" + date_ob.getHours()).slice(-2)
-  let minutes = ("0" + date_ob.getMinutes()).slice(-2)
-  let seconds = ("0" + date_ob.getSeconds()).slice(-2)
-  let timeNow = year + "-" + month + "-" + date + " " + hours + ":" + minutes + ":" + seconds
-  return timeNow
+  let date = new Date().getTime()
+  let time = Math.floor(date /1000)
+  return time
 }
 
 async function completeUpdate() {
