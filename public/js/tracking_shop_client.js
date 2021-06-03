@@ -5,7 +5,7 @@ var socket = io.connect("https://giftsvk.com", {
 })
 
 var shopData
-var category = 'Canvas'
+var category = 'All'
 var shopCategory
 var timeCreatedShopFilter = 0
 var filterType = 0

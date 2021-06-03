@@ -27,7 +27,7 @@ var siteUrl
 var isUpdate = false
 var minTotalSales = 100
 var maxTotalSales = 5000
-var maxDateShop = 90
+var maxDateShop = 182
 
 const MongoClient = require('mongodb').MongoClient;
 const { Console } = require('console');
@@ -57,9 +57,9 @@ updateData()
 async function updateData() {
   isUpdate = true
   // await updateCate()
-  // await getListing()
-  await getShopName()
-  await updateShopInfo()
+  await getListing()
+  // await getShopName()
+  // await updateShopInfo()
   // await completeUpdate()
 
   isUpdate = false
