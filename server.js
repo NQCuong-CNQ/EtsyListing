@@ -250,6 +250,7 @@ async function saveShopNameToDB(dataShopName, shopCategory) {
     console.log(shopName[index].shop_name + ":" + total_sales)
     if (total_sales >= minTotalSales && total_sales <= maxTotalSales) {
       await dbo.collection("shopName").updateOne({ shop_name: shopName[index].shop_name }, { $set: { total_sales: total_sales, imgs_listing: imgs } }, { upsert: true })
+      console.log('ok')
     } else {
       await deleteShop(dbo, shopName[index].shop_name)
     }
@@ -279,6 +280,7 @@ async function updateShopInfo() {
 
       if (response[0]['creation_tsz'] < dateCount || (dbData[index].total_sales > maxTotalSales && dbData[index].total_sales < minTotalSales)) {
         await deleteShop(dbo, response[0]['shop_name'])
+        console.log('removed ' + dbData[index].total_sales + " - " + response[0]['creation_tsz'] +'<'+ dateCount)
       } else {
         console.log('updateShopInfo: ' + response[0].shop_id)
         response[0]['total_sales'] = dbData[index].total_sales
