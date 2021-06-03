@@ -223,10 +223,9 @@ async function saveShopNameToDB(dataShopName, shopCategory) {
           }
         }
       }
+      console.log('shop cate: ' + newshopCategory)
+      await dbo.collection("shopCategory").updateOne({ shop_name: dataShopName[i] }, { $set: { shop_name: dataShopName[i], category: newshopCategory } }, { upsert: true })
     }
-
-    console.log('shop cate: ' + newshopCategory)
-    await dbo.collection("shopCategory").updateOne({ shop_name: dataShopName[i] }, { $set: { shop_name: dataShopName[i], category: newshopCategory } }, { upsert: true })
   }
 
   for (let index = 0; index < shopName.length; index++) {
