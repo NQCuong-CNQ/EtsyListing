@@ -1,27 +1,27 @@
-// var date = new Date().getTime()
-// date = Math.floor(date / 3600000)
-// console.log(date%26)
+var date = new Date().getTime()
+date = Math.floor(date / 3600000)
+console.log(date%26)
 
-let arr = [
-    {
-        id: '1',
-        str: 'safs'
-    },
-    {
-        id: '2',
-        str: 'cx'
-    },
-    {
-        id: '3',
-        str: 'sfg'
-    },
-    {
-        id: '4',
-        str: 'sef'
-    }
-]
-arr= arr.map(({str}) => str)
-console.log(arr)
+// let arr = [
+//     {
+//         id: '1',
+//         str: 'safs'
+//     },
+//     {
+//         id: '2',
+//         str: 'cx'
+//     },
+//     {
+//         id: '3',
+//         str: 'sfg'
+//     },
+//     {
+//         id: '4',
+//         str: 'sef'
+//     }
+// ]
+// arr= arr.map(({str}) => str)
+// console.log(arr)
 
 
 // if (arr.length > 10) {
