@@ -210,10 +210,11 @@ async function saveShopNameToDB(dataShopName, shopCategory) {
   let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
   let dbo = client.db("trackingdb")
   let shopBlackList = await dbo.collection("shopBlackList").find().toArray()
+  shopBlackList = shopBlackList.map(({ shop_name }) => shop_name)
 
   for (let i = 0; i < dataShopName.length; i++) {
     if (shopBlackList.includes(dataShopName[i])) {
-      console.log('black list: '+ dataShopName[i])
+      console.log('black list: ' + dataShopName[i])
     } else {
       await dbo.collection("shopName").updateOne({ shop_name: dataShopName[i] }, { $set: { shop_name: dataShopName[i] } }, { upsert: true })
 
@@ -280,7 +281,7 @@ async function updateShopInfo() {
 
       if (response[0]['creation_tsz'] < dateCount || (dbData[index].total_sales > maxTotalSales && dbData[index].total_sales < minTotalSales)) {
         await deleteShop(dbo, response[0]['shop_name'])
-        console.log('removed ' + dbData[index].total_sales + " - " + response[0]['creation_tsz'] +'<'+ dateCount)
+        console.log('removed ' + dbData[index].total_sales + " - " + response[0]['creation_tsz'] + '<' + dateCount)
       } else {
         console.log('updateShopInfo: ' + response[0].shop_id)
         response[0]['total_sales'] = dbData[index].total_sales
@@ -317,7 +318,7 @@ async function updateShopInfo() {
   client.close()
 }
 
-async function deleteShop(dbo, shopName){
+async function deleteShop(dbo, shopName) {
   await dbo.collection("shopBlackList").updateOne({ shop_name: shopName }, { $set: { shop_name: shopName } }, { upsert: true })
   await dbo.collection("shopName").deleteMany({ shop_name: shopName })
   await dbo.collection("shopCategory").deleteMany({ shop_name: shopName })
@@ -327,7 +328,7 @@ async function deleteShop(dbo, shopName){
 
 function getDateTimeNow() {
   let date = new Date().getTime()
-  let time = Math.floor(date /1000)
+  let time = Math.floor(date / 1000)
   return time
 }
 
