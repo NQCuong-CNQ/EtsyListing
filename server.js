@@ -334,7 +334,7 @@ app.get("/add_tracking_history", function (req, res, next) {
 })
 
 app.get("/undefined", function (req, res, next) {
-  res.send('null')
+  res.sendFile('https://www.google.com/url?sa=i&url=https%3A%2F%2Fdzogame.vn%2Ftag%2Fcu-hanh.html&psig=AOvVaw2bnv071Aup4-c1Q_NE0ESv&ust=1622776144636000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCKDr9bS--vACFQAAAAAdAAAAABAD')
 })
 
 app.use(express.static("public"))
