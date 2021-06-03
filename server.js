@@ -247,9 +247,9 @@ async function updateShopInfo() {
   var dbo = client.db("trackingdb")
 
   let date = new Date().getTime()
-  let dateCount = Math.floor(date / 1000) - (365 * 86400)
+  let dateCount = Math.floor(date / 1000) - (90 * 86400)
 
-  let dbDataForDel = await dbo.collection("shop").find({ total_sales: { $lt: 100, $gt: 5000 }, creation_tsz: { $gte: dateCount } }).toArray()
+  let dbDataForDel = await dbo.collection("shop").find({ total_sales: { $lt: 100, $gt: 5000 } }).toArray()
   // await dbo.collection("shop").deleteMany({ total_sales: { $lt: 100, $gt: 5000 }, creation_tsz: { $gte: dateCount } })
   
   console.log(dbDataForDel)
