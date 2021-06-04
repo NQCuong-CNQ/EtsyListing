@@ -531,21 +531,21 @@ $('#all-time-created-shop-filter').on('click', async function () {
   searchOrFilterData()
 })
 
-$('#7d-time-created-shop-filter').on('click', async function () {
-  timeCreatedShopFilter = 1
-  $('#dropdown-filter-shop-time-created').text('In 7 days')
-  searchOrFilterData()
-})
-
-$('#14d-time-created-shop-filter').on('click', async function () {
-  timeCreatedShopFilter = 2
-  $('#dropdown-filter-shop-time-created').text('In 14 days')
-  searchOrFilterData()
-})
-
 $('#1m-time-created-shop-filter').on('click', async function () {
-  timeCreatedShopFilter = 3
+  timeCreatedShopFilter = 1
   $('#dropdown-filter-shop-time-created').text('In 1 months')
+  searchOrFilterData()
+})
+
+$('#3m-time-created-shop-filter').on('click', async function () {
+  timeCreatedShopFilter = 2
+  $('#dropdown-filter-shop-time-created').text('In 3 months')
+  searchOrFilterData()
+})
+
+$('#6m-time-created-shop-filter').on('click', async function () {
+  timeCreatedShopFilter = 3
+  $('#dropdown-filter-shop-time-created').text('In 6 months')
   searchOrFilterData()
 })
 
@@ -566,11 +566,11 @@ function timeCreatedShopFilterAction(dataFilter) {
   let daysInTime = 0
 
   if (timeCreatedShopFilter == 1) {
-    daysInTime = 7
-  } else if (timeCreatedShopFilter == 2) {
-    daysInTime = 14
-  } else if (timeCreatedShopFilter == 3) {
     daysInTime = 30
+  } else if (timeCreatedShopFilter == 2) {
+    daysInTime = 91
+  } else if (timeCreatedShopFilter == 3) {
+    daysInTime = 182
   }
 
   for (let i = 0; i < dataFilter.length; i++) {

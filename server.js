@@ -33,7 +33,7 @@ const MongoClient = require('mongodb').MongoClient;
 const { Console } = require('console');
 const url = "mongodb://localhost:27017/trackingdb"
 
-// setInterval(scheduleUpdate, 3600000) // 1h
+setInterval(scheduleUpdate, 3600000) // 1h
 async function scheduleUpdate() {
   var date = new Date().getTime()
   date = Math.floor(date / 3600000)
@@ -53,7 +53,7 @@ async function updateCate() {
   await dbo.collection("category").insertOne(category)
 }
 
-updateData()
+// updateData()
 async function updateData() {
   isUpdate = true
   // await updateCate()

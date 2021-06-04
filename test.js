@@ -1,6 +1,11 @@
 var date = new Date().getTime()
 date = Math.floor(date / 3600000)
-console.log(date%26)
+// for (let i = 0; i < 1000; i++) {
+//     console.log(i%26)
+    
+// }
+console.log(date+1)
+console.log((date+1)%26)
 
 // let arr = [
 //     {
