@@ -143,7 +143,7 @@ function updateData(data = shopData) {
   $('#table-shop').DataTable().clear().destroy()
   for (var i = 0; i < data.length; i++) {
     $('#table-shop-body').append(`<tr>
-        <td onclick="getShopDetail(${i})"><i class="fas fa-info-circle pointer"></i></td>
+        <td onclick="getShopDetail(${data[i]})"><i class="fas fa-info-circle pointer"></i></td>
         <td>
           <a href="${data[i].url}" target="_blank">${data[i].shop_name}
             <div> 
@@ -179,27 +179,27 @@ function updateData(data = shopData) {
   })
 }
 
-async function getShopDetail(i) {
+async function getShopDetail(shop) {
   if (gettingData) {
     toastr.clear()
     toastr.warning('Please wait until data is updated!')
   } else {
-    await socket.emit("shop-tracking", shopData[i].shop_id)
-    console.log(shopData[i].shop_id)
+    await socket.emit("shop-tracking", shop.shop_id)
+    console.log(shop.shop_id)
     $('#loading').css('display', 'block')
-    $('#shop-name-chart').text(`${shopData[i].shop_name} Analytics`)
+    $('#shop-name-chart').text(`${shop.shop_name} Analytics`)
 
     $('#listing-option-button').on('click', async function () {
-      await getListingOption(i)
+      await getListingOption(shop)
     })
     $('#user-option-button').on('click', async function () {
-      await getUserOption(i)
+      await getUserOption(shop)
     })
   }
 }
 
-async function getListingOption(i) {
-  await socket.emit("get_listing_shop_id", shopData[i].shop_id)
+async function getListingOption(shop) {
+  await socket.emit("get_listing_shop_id", shop.shop_id)
   $('#loading').css('display', 'block')
   $('#title-page').text('Listing Detail')
 
@@ -209,8 +209,8 @@ async function getListingOption(i) {
   $('#user-shop-section').css("display", "none")
 }
 
-async function getUserOption(i) {
-  await socket.emit("get_user_by_user_id", shopData[i].user_id)
+async function getUserOption(shop) {
+  await socket.emit("get_user_by_user_id", shop.user_id)
   $('#loading').css('display', 'block')
   $('#title-page').text('User Detail')
 

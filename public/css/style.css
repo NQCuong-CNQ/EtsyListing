@@ -270,8 +270,6 @@ main.content {
   transition-duration: 0.5s;
 }
 
-
-
 .daterangepicker {
   top: 120px !important;
   left: 460px !important;
@@ -431,12 +429,12 @@ html {
   transition: 0.2s;
 }
 
-#analytic-product-btn:hover{
+#analytic-product-btn:hover {
   height: 50px;
   width: 50px;
 }
 
-#img-product-btn:hover{
+#img-product-btn:hover {
   height: 50px;
   width: 50px;
 }
@@ -465,7 +463,7 @@ html {
   display: block;
 }
 
-.product-img-container{
+.product-img-container {
   position: relative;
   overflow: hidden;
 }
@@ -474,7 +472,7 @@ html {
   transform: scale(1.2);
 }
 
-.popup-analytic-container{
+.popup-analytic-container {
   position: fixed;
   box-shadow: 0 6px 8px 4px rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%);
   width: 60vW;
@@ -486,16 +484,23 @@ html {
   text-align: center;
   transform: translate(-50%, 0);
 }
-#chart-analytic-product{
+
+#chart-total-sales {
   height: 400px;
   padding: 0 1rem 2rem 1rem;
 }
-.title-chart-analytic-product{
+
+#chart-analytic-product {
+  height: 400px;
+  padding: 0 1rem 2rem 1rem;
+}
+
+.title-chart-analytic-product {
   margin-top: 0.5rem;
   color: #0081ff;
-  
 }
-#btn-close-chart{
+
+#btn-close-chart {
   font-size: 1.3rem;
   border-width: 0;
   color: #9e0101;
@@ -504,10 +509,12 @@ html {
   text-align: end;
   transition: 0.3s;
 }
-#btn-close-chart:hover{
+
+#btn-close-chart:hover {
   color: red;
 }
-.popup-analytic-background{
+
+.popup-analytic-background {
   position: fixed;
   background-color: #1b1b1b59;
   top: 0;
