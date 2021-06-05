@@ -422,7 +422,7 @@ io.on("connection", async function (client) {
     await dbo.collection("shopTracking").insertOne({
       'shop_id': response[0].shop_id,
       'shop_name': response[0].shop_name,
-      'total_sales': dbData[index].total_sales,
+      'total_sales': response[0].total_sales,
       'listing_active_count': response[0].listing_active_count,
       'num_favorers': response[0].num_favorers,
       'time_update': timeNow
