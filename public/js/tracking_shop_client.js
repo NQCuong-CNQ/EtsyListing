@@ -186,14 +186,14 @@ async function getShopDetail(i) {
   } else {
     await socket.emit("shop-tracking", shopData[i].shop_id)
     $('#loading').css('display', 'block')
-    $('#title-page').text('Shop Detail')
+    // $('#title-page').text('Shop Detail')
 
-    $('#option-shop-section').css("display", "block")
-    $('#list-shop-section').css("display", "none")
-    $('#listing-shop-section').css("display", "none")
-    $('#user-shop-section').css("display", "none")
+    // $('#option-shop-section').css("display", "block")
+    // $('#list-shop-section').css("display", "none")
+    // $('#listing-shop-section').css("display", "none")
+    // $('#user-shop-section').css("display", "none")
 
-    $('#shop-name-option-section').text('Shop name: ' + shopData[i].shop_name)
+    // $('#shop-name-option-section').text('Shop name: ' + shopData[i].shop_name)
     $('#listing-option-button').on('click', async function () {
       await getListingOption(i)
     })
@@ -295,13 +295,13 @@ socket.on("return-find-shop-by-name", function (data) {
 
     if (data[0].creation_tsz < date) {
       toastr.clear()
-      toastr.warning(`Can not save for tracking! \n Shop ${data[0].shop_name} has creation time more than 1 years`)
+      toastr.warning(`Can not save for tracking! \n Shop ${data[0].shop_name} has creation time more than 1 years`, { timeOut: 8000 })
     } else if (data[0].total_sales < 100) {
       toastr.clear()
-      toastr.warning(`Can not save for tracking! \n Shop ${data[0].shop_name} has total sales less than 100`)
+      toastr.warning(`Can not save for tracking! \n Shop ${data[0].shop_name} has total sales less than 100`, { timeOut: 8000 })
     } else if (data[0].total_sales > 5000) {
       toastr.clear()
-      toastr.warning(`Can not save for tracking! \n Shop ${data[0].shop_name} has total sales more than 5000`)
+      toastr.warning(`Can not save for tracking! \n Shop ${data[0].shop_name} has total sales more than 5000`, { timeOut: 8000 })
     } else {
       toastr.clear()
       toastr.success(`Save ${data[0].shop_name} for tracking!`)

@@ -300,6 +300,7 @@ main.content {
 .fa-info-circle {
   color: #58baff;
   transition: 0.2s;
+  font-size: 1.1rem;
 }
 
 .fa-info-circle:hover {
