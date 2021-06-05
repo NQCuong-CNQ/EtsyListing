@@ -184,17 +184,17 @@ async function getShopDetail(shop) {
     toastr.clear()
     toastr.warning('Please wait until data is updated!')
   } else {
-    await socket.emit("shop-tracking", shop.shop_id)
+    // await socket.emit("shop-tracking", shop.shop_id)
     console.log(shop.shop_id)
-    $('#loading').css('display', 'block')
-    $('#shop-name-chart').text(`${shop.shop_name} Analytics`)
+    // $('#loading').css('display', 'block')
+    // $('#shop-name-chart').text(`${shop.shop_name} Analytics`)
 
-    $('#listing-option-button').on('click', async function () {
-      await getListingOption(shop)
-    })
-    $('#user-option-button').on('click', async function () {
-      await getUserOption(shop)
-    })
+    // $('#listing-option-button').on('click', async function () {
+    //   await getListingOption(shop)
+    // })
+    // $('#user-option-button').on('click', async function () {
+    //   await getUserOption(shop)
+    // })
   }
 }
 
