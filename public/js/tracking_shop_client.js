@@ -143,7 +143,7 @@ function updateData(data = shopData) {
   $('#table-shop').DataTable().clear().destroy()
   for (var i = 0; i < data.length; i++) {
     $('#table-shop-body').append(`<tr>
-        <td onclick="getShopDetail(${data[i]})"><i class="fas fa-info-circle pointer"></i></td>
+        <td onclick="getShopDetail(${data}, ${i})"><i class="fas fa-info-circle pointer"></i></td>
         <td>
           <a href="${data[i].url}" target="_blank">${data[i].shop_name}
             <div> 
