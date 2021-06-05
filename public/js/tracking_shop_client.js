@@ -293,9 +293,15 @@ socket.on("return-find-shop-by-name", function (data) {
     var date = new Date().getTime()
     date = Math.floor(date / 1000) - (365 * 86400)
 
-    if (data[0].creation_tsz < date){
+    if (data[0].creation_tsz < date) {
       toastr.clear()
-      toastr.warning(`Can not save for tracking! \n Shop ${data[0].shop_name} has creation time greater than 1 years`)
+      toastr.warning(`Can not save for tracking! \n Shop ${data[0].shop_name} has creation time more than 1 years`)
+    } else if (data[0].total_sales < 100) {
+      toastr.clear()
+      toastr.warning(`Can not save for tracking! \n Shop ${data[0].shop_name} has total sales less than 100`)
+    } else if (data[0].total_sales > 5000) {
+      toastr.clear()
+      toastr.warning(`Can not save for tracking! \n Shop ${data[0].shop_name} has total sales more than 5000`)
     } else {
       toastr.clear()
       toastr.success(`Save ${data[0].shop_name} for tracking!`)

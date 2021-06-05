@@ -99,7 +99,7 @@ async function getListing() {
   let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
   var dbo = client.db("trackingdb")
   let dblisting = await dbo.collection("listing").find().toArray()
-  
+
   for (let i = 0; i < dblisting.length; i++) {
     if ((date - dblisting[i].original_creation_tsz) > (86400 * 20)) {
       await dbo.collection("listingBlackList").updateOne({ listing_id: dblisting[i].listing_id }, { $set: { listing_id: dblisting[i].listing_id } }, { upsert: true })
@@ -416,34 +416,38 @@ io.on("connection", async function (client) {
     response[0]['imgs_listing'] = shopData.imgs
     response[0]['total_sales'] = shopData.totalSales
 
-    await dbo.collection("shopName").updateOne({ shop_name: response[0].shop_name }, { $set: { shop_name: response[0].shop_name, total_sales: response[0]['total_sales'], imgs_listing: response[0]['imgs_listing'] } }, { upsert: true })
-    
-    let timeNow = getDateTimeNow()
-    await dbo.collection("shopTracking").insertOne({
-      'shop_id': response[0].shop_id,
-      'shop_name': response[0].shop_name,
-      'total_sales': response[0].total_sales,
-      'listing_active_count': response[0].listing_active_count,
-      'num_favorers': response[0].num_favorers,
-      'time_update': timeNow
-    })
+    var date = new Date().getTime()
+    date = Math.floor(date / 1000) - (365 * 86400)
 
-    await dbo.collection("shop").updateOne({ shop_id: response[0].shop_id }, {
-      $set: {
-        shop_id: response[0].shop_id,
-        imgs_listing: response[0]['imgs_listing'],
-        total_sales: response[0]['total_sales'],
-        shop_name: response[0]['shop_name'],
-        url: response[0]['url'],
-        creation_tsz: response[0]['creation_tsz'],
-        num_favorers: response[0]['num_favorers'],
-        currency_code: response[0]['currency_code'],
-        listing_active_count: response[0]['listing_active_count'],
-        digital_listing_count: response[0]['digital_listing_count'],
-        languages: response[0]['languages'],
-      }
-    }, { upsert: true })
+    if (shopData.totalSales <= 5000 && shopData.totalSales >= 100 && response[0].creation_tsz >= date) {
+      await dbo.collection("shopName").updateOne({ shop_name: response[0].shop_name }, { $set: { shop_name: response[0].shop_name, total_sales: response[0]['total_sales'], imgs_listing: response[0]['imgs_listing'] } }, { upsert: true })
 
+      let timeNow = getDateTimeNow()
+      await dbo.collection("shopTracking").insertOne({
+        'shop_id': response[0].shop_id,
+        'shop_name': response[0].shop_name,
+        'total_sales': response[0].total_sales,
+        'listing_active_count': response[0].listing_active_count,
+        'num_favorers': response[0].num_favorers,
+        'time_update': timeNow
+      })
+
+      await dbo.collection("shop").updateOne({ shop_id: response[0].shop_id }, {
+        $set: {
+          shop_id: response[0].shop_id,
+          imgs_listing: response[0]['imgs_listing'],
+          total_sales: response[0]['total_sales'],
+          shop_name: response[0]['shop_name'],
+          url: response[0]['url'],
+          creation_tsz: response[0]['creation_tsz'],
+          num_favorers: response[0]['num_favorers'],
+          currency_code: response[0]['currency_code'],
+          listing_active_count: response[0]['listing_active_count'],
+          digital_listing_count: response[0]['digital_listing_count'],
+          languages: response[0]['languages'],
+        }
+      }, { upsert: true })
+    }
 
     await client.emit("return-find-shop-by-name", response)
   })
