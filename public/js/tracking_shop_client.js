@@ -36,7 +36,7 @@ $('#find-shop-by-name-button').on('click', async function () {
   if (shop == 0) {
     if (gettingData) {
       toastr.clear()
-      toastr.warning('Please wait until data is updated!', {timeOut: 0})
+      toastr.warning('Please wait until data is updated!', { timeOut: 0 })
     } else {
       $('#loading').css('display', 'block')
       await socket.emit("find-shop-by-name", shopName)
@@ -289,6 +289,17 @@ socket.on("return-find-shop-by-name", function (data) {
   $('#loading').css('display', 'none')
   if (data != 0) {
     updateData(data)
+
+    var date = new Date().getTime()
+    date = Math.floor(date / 1000) - (365 * 86400)
+
+    if (data[0].creation_tsz < date){
+      toastr.clear()
+      toastr.warning(`Can not save for tracking! \n Shop ${data[0].creation_tsz} has creation time greater than 1 years`)
+    } else {
+      toastr.clear()
+      toastr.success(`Save ${data[0].creation_tsz} for tracking!`)
+    }
   } else {
     toastr.clear()
     toastr.error('This shop is not available')
