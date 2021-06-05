@@ -185,6 +185,7 @@ async function getShopDetail(i) {
     toastr.warning('Please wait until data is updated!')
   } else {
     await socket.emit("shop-tracking", shopData[i].shop_id)
+    console.log(shopData[i].shop_id)
     $('#loading').css('display', 'block')
     // $('#title-page').text('Shop Detail')
 
@@ -339,8 +340,7 @@ socket.on("shop-tracking-data", function (data) {
   let num_favorers = []
   let listing_active_count = []
   for (let index = 0; index < data.length; index++) {
-    let time = data[index].time_update.split('-')
-    label.push(time[2].substr(0, 2).trim() + '/' + time[1])
+    label.push(data[index].time_update)
     total_sales.push(data[index].total_sales)
     num_favorers.push(data[index].num_favorers)
     listing_active_count.push(data[index].listing_active_count)
