@@ -187,14 +187,8 @@ async function getShopDetail(i) {
     await socket.emit("shop-tracking", shopData[i].shop_id)
     console.log(shopData[i].shop_id)
     $('#loading').css('display', 'block')
-    // $('#title-page').text('Shop Detail')
+    $('#shop-name-chart').text(`${shopData[i].shop_name} Analytics`)
 
-    // $('#option-shop-section').css("display", "block")
-    // $('#list-shop-section').css("display", "none")
-    // $('#listing-shop-section').css("display", "none")
-    // $('#user-shop-section').css("display", "none")
-
-    // $('#shop-name-option-section').text('Shop name: ' + shopData[i].shop_name)
     $('#listing-option-button').on('click', async function () {
       await getListingOption(i)
     })
@@ -324,6 +318,7 @@ socket.on("last-updated", function (data) {
 
 socket.on("shop-tracking-data", function (data) {
   $('#loading').css('display', 'none')
+
   $('.popup-analytic-container').css('display', 'block')
   $('.popup-analytic-background').css('display', 'block')
 
@@ -343,12 +338,12 @@ socket.on("shop-tracking-data", function (data) {
   let num_favorers = []
   let listing_active_count = []
   for (let index = 0; index < data.length; index++) {
-    label.push(data[index].time_update)
+    label.push(getEpochTimeChart(data[index].time_update))
     total_sales.push(data[index].total_sales)
     num_favorers.push(data[index].num_favorers)
     listing_active_count.push(data[index].listing_active_count)
   }
-  new Chart(document.getElementById("chart-total-sales"), {
+  let chart = new Chart(document.getElementById("chart-total-sales"), {
     type: "line",
     data: {
       labels: label,
@@ -502,6 +497,15 @@ function getEpochTime(input) {
   time = String(date)
   time = time.split(' ')
   time = time[2] + '-' + convertMonthInString(time[1]) + '-' + time[3]
+  return time
+}
+
+function getEpochTimeChart(input) {
+  var date = new Date(0)
+  date.setUTCSeconds(input)
+  time = String(date)
+  time = time.split(' ')
+  time = time[2] + '-' + convertMonthInString(time[1])
   return time
 }
 
