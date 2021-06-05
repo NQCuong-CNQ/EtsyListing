@@ -32,7 +32,7 @@ $('#find-shop-by-name-button').on('click', async function () {
     return
   }
 
-  let shop = searchLocalShop(shopName)
+  let shop = searchLocalShop(shopName.toLowerCase().trim())
   if (shop == 0) {
     if (gettingData) {
       toastr.clear()
@@ -49,7 +49,7 @@ $('#find-shop-by-name-button').on('click', async function () {
 function searchLocalShop(shopName) {
   let shop = []
   for (let i = 0; i < shopData.length; i++) {
-    if (shopData[i].shop_name.includes(shopName)) {
+    if (shopData[i].shop_name.toLowerCase().includes(shopName)) {
       shop.push(shopData[i])
     }
   } return shop
