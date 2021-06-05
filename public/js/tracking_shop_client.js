@@ -324,6 +324,9 @@ socket.on("last-updated", function (data) {
 
 socket.on("shop-tracking-data", function (data) {
   $('#loading').css('display', 'none')
+  $('.popup-analytic-container').css('display', 'block')
+  $('.popup-analytic-background').css('display', 'block')
+
   var ctx = document.getElementById("chart-total-sales").getContext("2d")
   var gradientblue = ctx.createLinearGradient(0, 0, 0, 225)
   gradientblue.addColorStop(0, "rgba(6,91,249,0.3)")
@@ -404,6 +407,18 @@ socket.on("shop-tracking-data", function (data) {
         }]
       }
     }
+  })
+
+  $('#btn-close-chart').on('click', function () {
+    $('.popup-analytic-container').css('display', 'none')
+    $('.popup-analytic-background').css('display', 'none')
+    chart.destroy()
+  })
+
+  $('.popup-analytic-background').on('click', function () {
+    $('.popup-analytic-container').css('display', 'none')
+    $('.popup-analytic-background').css('display', 'none')
+    chart.destroy()
   })
 })
 
