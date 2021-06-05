@@ -295,10 +295,10 @@ socket.on("return-find-shop-by-name", function (data) {
 
     if (data[0].creation_tsz < date){
       toastr.clear()
-      toastr.warning(`Can not save for tracking! \n Shop ${data[0].creation_tsz} has creation time greater than 1 years`)
+      toastr.warning(`Can not save for tracking! \n Shop ${data[0].shop_name} has creation time greater than 1 years`)
     } else {
       toastr.clear()
-      toastr.success(`Save ${data[0].creation_tsz} for tracking!`)
+      toastr.success(`Save ${data[0].shop_name} for tracking!`)
     }
   } else {
     toastr.clear()
