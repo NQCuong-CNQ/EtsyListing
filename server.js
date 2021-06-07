@@ -20,6 +20,18 @@ var io = require("socket.io")(server, {
   transports: ['websocket']
 })
 
+app.use(function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*")
+  res.header('Access-Control-Allow-Methods', '*')
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
+  if ('OPTIONS' == req.method) {
+    res.sendStatus(200)
+  }
+  else {
+    next()
+  }
+})
+
 const limit = 100
 const limitPage = 5
 const api_key = '2mlnbmgdqv6esclz98opmmuq'
@@ -288,6 +300,7 @@ async function updateShopInfo() {
             listing_active_count: response[0]['listing_active_count'],
             digital_listing_count: response[0]['digital_listing_count'],
             languages: response[0]['languages'],
+            user_id: response[0]['user_id'],
           }
         }, { upsert: true })
 
