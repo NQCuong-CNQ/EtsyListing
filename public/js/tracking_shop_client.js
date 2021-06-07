@@ -143,7 +143,7 @@ function updateData(data = shopData) {
   $('#table-shop').DataTable().clear().destroy()
   for (var i = 0; i < data.length; i++) {
     $('#table-shop-body').append(`<tr>
-        <td onclick="getShopDetail(${data[i].shop_id}, ${data[i].user_id}, ${data[i].shop_name})"><i class="fas fa-info-circle pointer"></i></td>
+        <td onclick="getShopDetail(${data[i].shop_id})"><i class="fas fa-info-circle pointer"></i></td>
         <td>
           <a href="${data[i].url}" target="_blank">${data[i].shop_name}
             <div> 
@@ -179,7 +179,7 @@ function updateData(data = shopData) {
   })
 }
 
-async function getShopDetail(id, user, shop_name) {
+async function getShopDetail(id) {
   if (gettingData) {
     toastr.clear()
     toastr.warning('Please wait until data is updated!')
@@ -187,15 +187,33 @@ async function getShopDetail(id, user, shop_name) {
     await socket.emit("shop-tracking", id)
     console.log(id)
     $('#loading').css('display', 'block')
-    $('#shop-name-chart').text(shop_name + ` Analytics`)
+    $('#shop-name-chart').text(getShopNameByID(id) + ` Analytics`)
 
     $('#listing-option-button').on('click', async function () {
       await getListingOption(id)
     })
     $('#user-option-button').on('click', async function () {
-      await getUserOption(user)
+      await getUserOption(id)
     })
   }
+}
+
+function getShopNameByID(id){
+  for (let i = 0; i < shopData.length; i++) {
+    if(shopData[i].shop_id == id){
+      return shopData[i].shop_name
+    }
+  }
+  return 'Shop'
+}
+
+function getShopUserByID(id){
+  for (let i = 0; i < shopData.length; i++) {
+    if(shopData[i].shop_id == id){
+      return shopData[i].user_id
+    }
+  }
+  return null
 }
 
 async function getListingOption(id) {
@@ -208,8 +226,8 @@ async function getListingOption(id) {
   $('#user-shop-section').css("display", "none")
 }
 
-async function getUserOption(user) {
-  await socket.emit("get_user_by_user_id", user)
+async function getUserOption(id) {
+  await socket.emit("get_user_by_user_id", getShopUserByID(id))
   $('#loading').css('display', 'block')
   $('#title-page').text('User Detail')
 
@@ -217,6 +235,7 @@ async function getUserOption(user) {
   $('#listing-shop-section').css("display", "none")
   $('#user-shop-section').css("display", "block")
 }
+
 /* ------------------------------------------------END MAIN SECTION------------------------------------------------ */
 
 /* ------------------------------------------------SOCKET SECTION------------------------------------------------ */
