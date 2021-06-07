@@ -228,8 +228,8 @@ function getShopNameByID(id){
 }
 
 function getShopUserByID(id){
-  console.log(shopData.length)
   for (let i = 0; i < shopData.length; i++) {
+    shopData[i].user_id
     if(shopData[i].shop_id == id){
       return shopData[i].user_id
     }
