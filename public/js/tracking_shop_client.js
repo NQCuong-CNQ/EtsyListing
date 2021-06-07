@@ -18,6 +18,7 @@ $('#back_btn').on('click', async function () {
   $('#list-shop-section').css("display", "block")
   $('#listing-shop-section').css("display", "none")
   $('#user-shop-section').css("display", "none")
+  $('#table_id-list').DataTable().clear().destroy()
 })
 
 $('#pod-type-product-filter').on('click', async function () {
