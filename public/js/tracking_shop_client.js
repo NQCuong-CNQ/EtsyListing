@@ -10,8 +10,15 @@ var shopCategory
 var timeCreatedShopFilter = 0
 var filterType = 0
 var gettingData = 1
+var chart
 
 /* ------------------------------------------------MAIN SECTION------------------------------------------------ */
+
+$('#back_btn').on('click', async function () {
+  $('#list-shop-section').css("display", "block")
+  $('#listing-shop-section').css("display", "none")
+  $('#user-shop-section').css("display", "none")
+})
 
 $('#pod-type-product-filter').on('click', async function () {
   filterType = 0
@@ -185,15 +192,20 @@ async function getShopDetail(id) {
     toastr.warning('Please wait until data is updated!')
   } else {
     await socket.emit("shop-tracking", id)
-    console.log(id)
     $('#loading').css('display', 'block')
     $('#shop-name-chart').text(getShopNameByID(id) + ` Analytics`)
 
     $('#listing-option-button').on('click', async function () {
       await getListingOption(id)
+      $('.popup-analytic-container').css('display', 'none')
+      $('.popup-analytic-background').css('display', 'none')
+      chart.destroy()
     })
     $('#user-option-button').on('click', async function () {
       await getUserOption(id)
+      $('.popup-analytic-container').css('display', 'none')
+      $('.popup-analytic-background').css('display', 'none')
+      chart.destroy()
     })
   }
 }
@@ -227,6 +239,7 @@ async function getListingOption(id) {
 }
 
 async function getUserOption(id) {
+  console.log(getShopUserByID(id))
   await socket.emit("get_user_by_user_id", getShopUserByID(id))
   $('#loading').css('display', 'block')
   $('#title-page').text('User Detail')
@@ -360,7 +373,7 @@ socket.on("shop-tracking-data", function (data) {
     num_favorers.push(data[index].num_favorers)
     listing_active_count.push(data[index].listing_active_count)
   }
-  let chart = new Chart(document.getElementById("chart-total-sales"), {
+  chart = new Chart(document.getElementById("chart-total-sales"), {
     type: "line",
     data: {
       labels: label,
