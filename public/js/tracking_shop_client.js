@@ -209,6 +209,7 @@ async function getShopDetail(id) {
       chart.destroy()
     })
     $('#user-option-button').on('click', async function () {
+      
       await getUserOption(id)
       $('.popup-analytic-container').css('display', 'none')
       $('.popup-analytic-background').css('display', 'none')
@@ -227,6 +228,7 @@ function getShopNameByID(id){
 }
 
 function getShopUserByID(id){
+  console.log(shopData.length)
   for (let i = 0; i < shopData.length; i++) {
     if(shopData[i].shop_id == id){
       return shopData[i].user_id
@@ -247,6 +249,7 @@ async function getListingOption(id) {
 }
 
 async function getUserOption(id) {
+  console.log('id'+id)
   console.log(getShopUserByID(id))
   await socket.emit("get_user_by_user_id", getShopUserByID(id))
   $('#loading').css('display', 'block')
