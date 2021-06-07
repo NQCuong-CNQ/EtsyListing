@@ -403,8 +403,8 @@ io.on("connection", async function (client) {
     console.log(shop_id)
     let result = await makeRequest("GET", `https://openapi.etsy.com/v2/shops/${shop_id}/listings/active?api_key=${api_key}`)
     console.log('result' + result)
-    result = JSON.parse(result).results
-    await client.emit("return-listing-data", result)
+    // result = JSON.parse(result).results
+    // await client.emit("return-listing-data", result)
   })
 
   await client.on("get_user_by_user_id", async function (user_id) {
