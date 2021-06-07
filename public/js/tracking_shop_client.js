@@ -503,7 +503,7 @@ socket.on("return-listing-data", function (data) {
 
   $('#table_id-list').DataTable({
     scrollX: 400,
-    pageLength: 10
+    pageLength: 25
   })
 })
 
