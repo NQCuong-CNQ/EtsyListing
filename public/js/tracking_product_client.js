@@ -16,6 +16,7 @@ var pagEnd = pagLenght
 var isGridView = true
 var dataOriginal = []
 var isGettingData = true
+var chart
 
 /* ------------------------------------------------MAIN SECTION------------------------------------------------ */
 
@@ -439,7 +440,7 @@ function showAnalytic(id) {
     num_favorers.push(tempData[tempData.length - 1].num_favorers)
     views.push(tempData[tempData.length - 1].views)
 
-    let chart = new Chart(document.getElementById("chart-analytic-product"), {
+    chart = new Chart(document.getElementById("chart-analytic-product"), {
       type: "line",
       data: {
         labels: label,
@@ -499,20 +500,20 @@ function showAnalytic(id) {
         }
       }
     })
-
-    $('#btn-close-chart').on('click', function () {
-      $('.popup-analytic-container').css('display', 'none')
-      $('.popup-analytic-background').css('display', 'none')
-      chart.destroy()
-    })
-
-    $('.popup-analytic-background').on('click', function () {
-      $('.popup-analytic-container').css('display', 'none')
-      $('.popup-analytic-background').css('display', 'none')
-      chart.destroy()
-    })
   }
 }
+
+$('#btn-close-chart').on('click', function () {
+  $('.popup-analytic-container').css('display', 'none')
+  $('.popup-analytic-background').css('display', 'none')
+  chart.destroy()
+})
+
+$('.popup-analytic-background').on('click', function () {
+  $('.popup-analytic-container').css('display', 'none')
+  $('.popup-analytic-background').css('display', 'none')
+  chart.destroy()
+})
 
 $('#find-product-by-keyword').on('keypress', function (e) {
   if (e.key == 'Enter') {

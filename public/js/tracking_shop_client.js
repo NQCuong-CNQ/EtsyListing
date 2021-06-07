@@ -11,6 +11,7 @@ var timeCreatedShopFilter = 0
 var filterType = 0
 var gettingData = 1
 var chart
+var selected_shop 
 
 /* ------------------------------------------------MAIN SECTION------------------------------------------------ */
 
@@ -194,7 +195,7 @@ function updateData(data = shopData) {
 }
 
 async function getShopDetail(id) {
-  console.log('1')
+  selected_shop = id
   if (gettingData) {
     toastr.clear()
     toastr.warning('Please wait until data is updated!')
@@ -202,21 +203,22 @@ async function getShopDetail(id) {
     await socket.emit("shop-tracking", id)
     $('#loading').css('display', 'block')
     $('#shop-name-chart').text(getShopNameByID(id) + ` Analytics`)
-
-    $('#listing-option-button').on('click', async function () {
-      await getListingOption(id)
-      $('.popup-analytic-container').css('display', 'none')
-      $('.popup-analytic-background').css('display', 'none')
-      chart.destroy()
-    })
-    $('#user-option-button').on('click', async function () {
-      await getUserOption(id)
-      $('.popup-analytic-container').css('display', 'none')
-      $('.popup-analytic-background').css('display', 'none')
-      chart.destroy()
-    })
   }
 }
+
+$('#listing-option-button').on('click', async function () {
+  await getListingOption(selected_shop)
+  $('.popup-analytic-container').css('display', 'none')
+  $('.popup-analytic-background').css('display', 'none')
+  chart.destroy()
+})
+
+$('#user-option-button').on('click', async function () {
+  await getUserOption(selected_shop)
+  $('.popup-analytic-container').css('display', 'none')
+  $('.popup-analytic-background').css('display', 'none')
+  chart.destroy()
+})
 
 function getShopNameByID(id){
   for (let i = 0; i < shopData.length; i++) {
@@ -237,20 +239,18 @@ function getShopUserByID(id){
 }
 
 async function getListingOption(id) {
-  // await socket.emit("get_listing_shop_id", id)
+  await socket.emit("get_listing_shop_id", id)
   $('#loading').css('display', 'block')
   $('#title-page').text('Listing Detail')
-
   $('#list-shop-section').css("display", "none")
   $('#listing-shop-section').css("display", "block")
   $('#user-shop-section').css("display", "none")
 }
 
 async function getUserOption(id) {
-  // await socket.emit("get_user_by_user_id", getShopUserByID(id))
+  await socket.emit("get_user_by_user_id", getShopUserByID(id))
   $('#loading').css('display', 'block')
   $('#title-page').text('User Detail')
-
   $('#list-shop-section').css("display", "none")
   $('#listing-shop-section').css("display", "none")
   $('#user-shop-section').css("display", "block")
@@ -440,18 +440,18 @@ socket.on("shop-tracking-data", function (data) {
       }
     }
   })
+})
 
-  $('#btn-close-chart').on('click', function () {
-    $('.popup-analytic-container').css('display', 'none')
-    $('.popup-analytic-background').css('display', 'none')
-    chart.destroy()
-  })
+$('#btn-close-chart').on('click', function () {
+  $('.popup-analytic-container').css('display', 'none')
+  $('.popup-analytic-background').css('display', 'none')
+  chart.destroy()
+})
 
-  $('.popup-analytic-background').on('click', function () {
-    $('.popup-analytic-container').css('display', 'none')
-    $('.popup-analytic-background').css('display', 'none')
-    chart.destroy()
-  })
+$('.popup-analytic-background').on('click', function () {
+  $('.popup-analytic-container').css('display', 'none')
+  $('.popup-analytic-background').css('display', 'none')
+  chart.destroy()
 })
 
 socket.on("return-shop-category-data", function (data) {
