@@ -143,7 +143,7 @@ function updateData(data = shopData) {
   $('#table-shop').DataTable().clear().destroy()
   for (var i = 0; i < data.length; i++) {
     $('#table-shop-body').append(`<tr>
-        <td onclick="getShopDetail(${data[i].shop_id}, ${data[i].user_id})"><i class="fas fa-info-circle pointer"></i></td>
+        <td onclick="getShopDetail(${data[i].shop_id}, ${data[i].user_id}, ${data[i].shop_name})"><i class="fas fa-info-circle pointer"></i></td>
         <td>
           <a href="${data[i].url}" target="_blank">${data[i].shop_name}
             <div> 
@@ -179,7 +179,7 @@ function updateData(data = shopData) {
   })
 }
 
-async function getShopDetail(id) {
+async function getShopDetail(id, user, shop_name) {
   if (gettingData) {
     toastr.clear()
     toastr.warning('Please wait until data is updated!')
@@ -187,34 +187,32 @@ async function getShopDetail(id) {
     await socket.emit("shop-tracking", id)
     console.log(id)
     $('#loading').css('display', 'block')
-    $('#shop-name-chart').text(`${shopData[i].shop_name} Analytics`)
+    $('#shop-name-chart').text(`${shop_name} Analytics`)
 
     $('#listing-option-button').on('click', async function () {
       await getListingOption(id)
     })
     $('#user-option-button').on('click', async function () {
-      await getUserOption(id)
+      await getUserOption(user)
     })
   }
 }
 
-async function getListingOption(i) {
-  await socket.emit("get_listing_shop_id", shopData[i].shop_id)
+async function getListingOption(id) {
+  await socket.emit("get_listing_shop_id", id)
   $('#loading').css('display', 'block')
   $('#title-page').text('Listing Detail')
 
-  $('#option-shop-section').css("display", "none")
   $('#list-shop-section').css("display", "none")
   $('#listing-shop-section').css("display", "block")
   $('#user-shop-section').css("display", "none")
 }
 
-async function getUserOption(i) {
-  await socket.emit("get_user_by_user_id", shopData[i].user_id)
+async function getUserOption(user) {
+  await socket.emit("get_user_by_user_id", user)
   $('#loading').css('display', 'block')
   $('#title-page').text('User Detail')
 
-  $('#option-shop-section').css("display", "none")
   $('#list-shop-section').css("display", "none")
   $('#listing-shop-section').css("display", "none")
   $('#user-shop-section').css("display", "block")
@@ -505,7 +503,7 @@ function getEpochTimeChart(input) {
   date.setUTCSeconds(input)
   time = String(date)
   time = time.split(' ')
-  time = time[2] + '-' + convertMonthInString(time[1])
+  time = time[2] + '/' + convertMonthInString(time[1])
   return time
 }
 
