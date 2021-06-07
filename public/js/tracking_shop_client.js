@@ -187,7 +187,7 @@ async function getShopDetail(id, user, shop_name) {
     await socket.emit("shop-tracking", id)
     console.log(id)
     $('#loading').css('display', 'block')
-    $('#shop-name-chart').text(`${shop_name} Analytics`)
+    $('#shop-name-chart').text(shop_name + ` Analytics`)
 
     $('#listing-option-button').on('click', async function () {
       await getListingOption(id)
