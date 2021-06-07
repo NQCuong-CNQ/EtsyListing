@@ -209,7 +209,6 @@ async function getShopDetail(id) {
       chart.destroy()
     })
     $('#user-option-button').on('click', async function () {
-      
       await getUserOption(id)
       $('.popup-analytic-container').css('display', 'none')
       $('.popup-analytic-background').css('display', 'none')
@@ -228,6 +227,7 @@ function getShopNameByID(id){
 }
 
 function getShopUserByID(id){
+  console.log(shopData)
   for (let i = 0; i < shopData.length; i++) {
     console.log(shopData[i].user_id)
     
