@@ -194,6 +194,7 @@ function updateData(data = shopData) {
 }
 
 async function getShopDetail(id) {
+  console.log('1')
   if (gettingData) {
     toastr.clear()
     toastr.warning('Please wait until data is updated!')
@@ -227,12 +228,8 @@ function getShopNameByID(id){
 }
 
 function getShopUserByID(id){
-  console.log(shopData)
   for (let i = 0; i < shopData.length; i++) {
-    console.log(shopData[i].user_id)
-    
     if(shopData[i].shop_id == id){
-      console.log('shopData[i].user_id'+shopData[i].user_id)
       return shopData[i].user_id
     }
   }
@@ -240,8 +237,7 @@ function getShopUserByID(id){
 }
 
 async function getListingOption(id) {
-  console.log(id)
-  await socket.emit("get_listing_shop_id", id)
+  // await socket.emit("get_listing_shop_id", id)
   $('#loading').css('display', 'block')
   $('#title-page').text('Listing Detail')
 
@@ -251,8 +247,6 @@ async function getListingOption(id) {
 }
 
 async function getUserOption(id) {
-  console.log('id'+id)
-  console.log(getShopUserByID(id))
   // await socket.emit("get_user_by_user_id", getShopUserByID(id))
   $('#loading').css('display', 'block')
   $('#title-page').text('User Detail')
