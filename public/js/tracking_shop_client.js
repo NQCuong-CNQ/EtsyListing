@@ -230,6 +230,7 @@ function getShopUserByID(id){
 }
 
 async function getListingOption(id) {
+  console.log(id)
   await socket.emit("get_listing_shop_id", id)
   $('#loading').css('display', 'block')
   $('#title-page').text('Listing Detail')
