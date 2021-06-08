@@ -12,7 +12,7 @@ $('#submit-user-button').on('click', async function () {
     }
     $('#loading').css('display', 'block')
     let data = { userName: $('#input-user-name').val().trim(), pass: $('#input-user-pass').val().trim() }
-    await socket.emit("new-user-braumstar", data)
+    socket.emit("new-user-braumstar", data)
 })
 
 socket.on("return-new-user-braumstar", function (data) {
@@ -39,7 +39,7 @@ $('#submit-shop-button').on('click', async function () {
     }
     $('#loading').css('display', 'block')
     let data = { shopname: $('#input-shop-name').val(), user: $('#input-user-shop-name').val().trim(), country: $('#input-country-shop-name').val().trim() }
-    await socket.emit("add-shop-braumstar", data)
+    socket.emit("add-shop-braumstar", data)
 })
 
 socket.on("return-add-shop-braumstar", function (data) {
@@ -63,7 +63,7 @@ $('#submit-shop-die-button').on('click', async function () {
     }
     $('#loading').css('display', 'block')
     let data = { shopname: $('#input-shop-die-name').val() }
-    await socket.emit("delete-shop-braumstar", data)
+    socket.emit("delete-shop-braumstar", data)
 })
 
 socket.on("return-delete-shop-braumstar", function (data) {
@@ -88,7 +88,7 @@ $('#submit-shop-list-button').on('click', async function () {
     $('#loading').css('display', 'block')
 
     let data = $('#input-user-shop-list').val().trim()
-    await socket.emit("get-list-shop-braumstar", data)
+    socket.emit("get-list-shop-braumstar", data)
 })
 
 socket.on("list-shop-braumstar", function (data) {

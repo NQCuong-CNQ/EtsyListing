@@ -54,7 +54,7 @@ $('#find-shop-by-name-button').on('click', async function () {
       toastr.warning('Please wait until data is updated!', { timeOut: 0 })
     } else {
       $('#loading').css('display', 'block')
-      await socket.emit("find-shop-by-name", shopName)
+      socket.emit("find-shop-by-name", shopName)
     }
   } else {
     updateData(shop)
@@ -200,7 +200,7 @@ async function getShopDetail(id) {
     toastr.clear()
     toastr.warning('Please wait until data is updated!')
   } else {
-    await socket.emit("shop-tracking", id)
+    socket.emit("shop-tracking", id)
     $('#loading').css('display', 'block')
     $('#shop-name-chart').text(getShopNameByID(id) + ` Analytics`)
   }
@@ -239,7 +239,7 @@ function getShopUserByID(id){
 }
 
 async function getListingOption(id) {
-  await socket.emit("get_listing_shop_id", id)
+  socket.emit("get_listing_shop_id", id)
   $('#loading').css('display', 'block')
   $('#title-page').text('Listing Detail')
   $('#list-shop-section').css("display", "none")
@@ -248,7 +248,7 @@ async function getListingOption(id) {
 }
 
 async function getUserOption(id) {
-  await socket.emit("get_user_by_user_id", getShopUserByID(id))
+  socket.emit("get_user_by_user_id", getShopUserByID(id))
   $('#loading').css('display', 'block')
   $('#title-page').text('User Detail')
   $('#list-shop-section').css("display", "none")
@@ -314,7 +314,7 @@ socket.on("return-shop-data", async function (data) {
   toastr.clear()
   toastr.success('Data Updated')
   window.localStorage.setItem('listing-shop', JSON.stringify(tempData))
-  await socket.emit("get-total-shop")
+  socket.emit("get-total-shop")
 })
 
 socket.on("return-find-shop-by-name", function (data) {

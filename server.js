@@ -379,47 +379,47 @@ io.on("connection", async function (client) {
   let clientDB = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
   var dbo = clientDB.db("trackingdb")
 
-  await client.on("shop-tracking-join", async function () {
+  client.on("shop-tracking-join", async function () {
     if (isUpdate) {
-      await client.emit("updating")
+      client.emit("updating")
     } else {
       let shopCategory = await dbo.collection("shopCategory").find().toArray()
-      await client.emit("return-shop-category-data", shopCategory)
+      client.emit("return-shop-category-data", shopCategory)
 
       let dbData = await dbo.collection("shop").find().toArray()
-      await client.emit("return-shop-data", dbData)
+      client.emit("return-shop-data", dbData)
 
       let lastUpdated = await dbo.collection("log").find().toArray()
-      await client.emit("last-updated", lastUpdated[lastUpdated.length - 1])
+      client.emit("last-updated", lastUpdated[lastUpdated.length - 1])
     }
   })
 
-  await client.on("get-total-shop", async function () {
+  client.on("get-total-shop", async function () {
     let total_shop = await getTotalShop()
-    await client.emit("total-shop", total_shop)
+    client.emit("total-shop", total_shop)
   })
 
-  await client.on("get_listing_shop_id", async function (shop_id) {
+  client.on("get_listing_shop_id", async function (shop_id) {
     let result = await makeRequest("GET", `https://openapi.etsy.com/v2/shops/${shop_id}/listings/active?api_key=${api_key}`)
     result = JSON.parse(result).results
-    await client.emit("return-listing-data", result)
+    client.emit("return-listing-data", result)
   })
 
-  await client.on("get_user_by_user_id", async function (user_id) {
+  client.on("get_user_by_user_id", async function (user_id) {
     let result = await makeRequest("GET", `https://openapi.etsy.com/v2/users/${user_id}/profile?api_key=${api_key}`)
     result = JSON.parse(result).results
-    await client.emit("return-user-data", result[0])
+    client.emit("return-user-data", result[0])
   })
 
-  await client.on("shop-tracking", async function (shop_id) {
+  client.on("shop-tracking", async function (shop_id) {
     let dbData = await dbo.collection("shopTracking").find({ shop_id: { "$eq": shop_id } }).toArray()
-    await client.emit("shop-tracking-data", dbData)
+    client.emit("shop-tracking-data", dbData)
   })
 
-  await client.on("find-shop-by-name", async function (shopName) {
+  client.on("find-shop-by-name", async function (shopName) {
     let response = await makeRequest("GET", `https://openapi.etsy.com/v2/shops/${shopName}?api_key=${api_key}`)
     if (response == 0) {
-      await client.emit("return-find-shop-by-name", response)
+      client.emit("return-find-shop-by-name", response)
       return
     }
     response = JSON.parse(response).results
@@ -462,29 +462,29 @@ io.on("connection", async function (client) {
       }, { upsert: true })
     }
 
-    await client.emit("return-find-shop-by-name", response)
+    client.emit("return-find-shop-by-name", response)
   })
 
-  await client.on("product-tracking-join", async function () {
+  client.on("product-tracking-join", async function () {
     if (isUpdate) {
-      await client.emit("updating")
+      client.emit("updating")
     } else {
       let dbData = await dbo.collection("listing").find().toArray()
-      await client.emit("return-product-tracking-join", dbData)
+      client.emit("return-product-tracking-join", dbData)
     }
   })
 
-  await client.on("get-list-shop-braumstar", async function (dataUser) {
+  client.on("get-list-shop-braumstar", async function (dataUser) {
     clientDB.close()
     let clientDBBraumstar = await MongoClient.connect('mongodb://zic:Mynewpassword%400@braumstar.com:27020/zicDb?authSource=zicDb', { useNewUrlParser: true, useUnifiedTopology: true })
     var dboBraumstar = clientDBBraumstar.db("zicDb")
 
     let dbData = await dboBraumstar.collection("etsyAccounts").find({ username: dataUser }).toArray()
-    await client.emit("list-shop-braumstar", dbData)
+    client.emit("list-shop-braumstar", dbData)
     clientDBBraumstar.close()
   })
 
-  await client.on("new-user-braumstar", async function (dataUser) {
+  client.on("new-user-braumstar", async function (dataUser) {
     clientDB.close()
     let clientDBBraumstar = await MongoClient.connect('mongodb://zic:Mynewpassword%400@braumstar.com:27020/zicDb?authSource=zicDb', { useNewUrlParser: true, useUnifiedTopology: true })
     var dboBraumstar = clientDBBraumstar.db("zicDb")
@@ -504,7 +504,7 @@ io.on("connection", async function (client) {
     // }
     // else if (getOldUser.username == dataUser.userName) {
     //   isSuccess = -1
-    //   await client.emit("return-new-user-braumstar", isSuccess)
+    //   client.emit("return-new-user-braumstar", isSuccess)
     //   clientDBBraumstar.close()
     //   return
     // }
@@ -514,11 +514,11 @@ io.on("connection", async function (client) {
     // if (getNewUser != '') {
     //   isSuccess = 1
     // }
-    await client.emit("return-new-user-braumstar", 1)
+    client.emit("return-new-user-braumstar", 1)
     clientDBBraumstar.close()
   })
 
-  await client.on("add-shop-braumstar", async function (dataShop) {
+  client.on("add-shop-braumstar", async function (dataShop) {
     clientDB.close()
     let clientDBBraumstar = await MongoClient.connect('mongodb://zic:Mynewpassword%400@braumstar.com:27020/zicDb?authSource=zicDb', { useNewUrlParser: true, useUnifiedTopology: true })
     var dboBraumstar = clientDBBraumstar.db("zicDb")
@@ -551,11 +551,11 @@ io.on("connection", async function (client) {
       }
     }
 
-    await client.emit("return-add-shop-braumstar", isSuccess)
+    client.emit("return-add-shop-braumstar", isSuccess)
     clientDBBraumstar.close()
   })
 
-  await client.on("delete-shop-braumstar", async function (dataShop) {
+  client.on("delete-shop-braumstar", async function (dataShop) {
     clientDB.close()
     let clientDBBraumstar = await MongoClient.connect('mongodb://zic:Mynewpassword%400@braumstar.com:27020/zicDb?authSource=zicDb', { useNewUrlParser: true, useUnifiedTopology: true })
     var dboBraumstar = clientDBBraumstar.db("zicDb")
@@ -568,11 +568,11 @@ io.on("connection", async function (client) {
       }
     }
 
-    await client.emit("return-delete-shop-braumstar", 1)
+    client.emit("return-delete-shop-braumstar", 1)
     clientDBBraumstar.close()
   })
 
-  await client.on("track-order-join", async function (data) {
+  client.on("track-order-join", async function (data) {
     console.log('getting data success! ' + data['data'].length)
     let trackData = []
     let temp = data['data'].split('\n')
@@ -599,16 +599,16 @@ io.on("connection", async function (client) {
       await dbo.collection("tracking_etsy_history").updateOne({ id: trackDataForSave['id'] }, { $set: trackDataForSave }, { upsert: true })
     }
 
-    await client.broadcast.emit("get-email-customer-order")
+    client.broadcast.emit("get-email-customer-order")
     await sleep(3000)
     console.log('reload etsy')
-    await client.broadcast.emit("reload-etsy")
+    client.broadcast.emit("reload-etsy")
     await sleep(25000)
     console.log('send data to etsy' + trackData.length)
-    await client.broadcast.emit("track-order-return", trackData)
+    client.broadcast.emit("track-order-return", trackData)
   })
 
-  await client.on("return-email-customer-order", async function (data) {
+  client.on("return-email-customer-order", async function (data) {
     let tempData = data['mail'].split('#')
     let gmailTemp = []
     let idTemp = []
@@ -633,31 +633,31 @@ io.on("connection", async function (client) {
     }
   })
 
-  await client.on("track-order-step1", async function (data) {
-    await client.broadcast.emit("track-order-step2", data)
+  client.on("track-order-step1", async function (data) {
+    client.broadcast.emit("track-order-step2", data)
   })
 
-  await client.on("track-order-step3", async function (name) {
-    await client.broadcast.emit("track-order-step4", name)
+  client.on("track-order-step3", async function (name) {
+    client.broadcast.emit("track-order-step4", name)
   })
 
-  await client.on("track-order-step5", async function (data) {
+  client.on("track-order-step5", async function (data) {
     data['time_add_tracking'] = Math.floor(new Date().getTime() / 1000)
     await dbo.collection("tracking_etsy_history").updateOne({ id: data.id }, { $set: data }, { upsert: true })
   })
 
-  await client.on("tracking-history-join", async function () {
+  client.on("tracking-history-join", async function () {
     let dbdata = await dbo.collection("tracking_etsy_history").find().toArray()
-    await client.emit("tracking-history-return-data", dbdata)
+    client.emit("tracking-history-return-data", dbdata)
   })
 
-  await client.on("fix-tracking-history", async function (data) {
+  client.on("fix-tracking-history", async function (data) {
     await dbo.collection("tracking_etsy_history").updateOne({ id: data.id }, { $set: data }, { upsert: true })
-    await client.emit("return-fix-tracking-history")
+    client.emit("return-fix-tracking-history")
   })
 
-  await client.on("run-add-tracking", async function (user) {
-    await client.broadcast.emit("run-add-tracking-by-user", user)
+  client.on("run-add-tracking", async function (user) {
+    client.broadcast.emit("run-add-tracking-by-user", user)
   })
 })
 

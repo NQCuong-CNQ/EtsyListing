@@ -299,15 +299,15 @@ $('#submit-fix-btn').on('click', async function () {
         return
     }
 
-    await socket.emit("fix-tracking-history", fixData)
+    socket.emit("fix-tracking-history", fixData)
 })
 
 $('#run-add-tracking-my-btn').on('click', async function () {
-    await socket.emit("run-add-tracking", 'My')
+    socket.emit("run-add-tracking", 'My')
 })
 
 $('#run-add-tracking-trang-btn').on('click', async function () {
-    await socket.emit("run-add-tracking", 'Trang')
+    socket.emit("run-add-tracking", 'Trang')
 })
 
 socket.on("return-fix-tracking-history", async function (data) {

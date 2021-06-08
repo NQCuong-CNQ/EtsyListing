@@ -22,7 +22,7 @@ socket.on("get-email-customer-order", async function () {
     mailData['mail'] = $('a.text-gray').text()
 
     await sleep(Math.floor(Math.random() * 2500))
-    await socket.emit("return-email-customer-order", mailData)
+    socket.emit("return-email-customer-order", mailData)
 })
 
 socket.on("reload-etsy", function () {
@@ -104,7 +104,7 @@ socket.on("track-order-step4", async function (name) {
             return
         }
 
-        await socket.emit("track-order-step5", trackData)
+        socket.emit("track-order-step5", trackData)
         console.log('saved history' + trackData)
         await sleep(8000)
         await addTracking()
@@ -133,7 +133,7 @@ async function addTrackingAction(id, number) {
     trackData['id'] = id
     trackData['number_tracking'] = number
 
-    await socket.emit("track-order-step1", trackData)
+    socket.emit("track-order-step1", trackData)
 }
 
 async function sleep(ms) {
