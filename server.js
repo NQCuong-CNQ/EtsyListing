@@ -655,6 +655,10 @@ io.on("connection", async function (client) {
     await dbo.collection("tracking_etsy_history").updateOne({ id: data.id }, { $set: data }, { upsert: true })
     await client.emit("return-fix-tracking-history")
   })
+
+  await client.on("run-add-tracking", async function (user) {
+    await client.broadcast.emit("run-add-tracking-by-user", user)
+  })
 })
 
 // fixTrackingHistory()

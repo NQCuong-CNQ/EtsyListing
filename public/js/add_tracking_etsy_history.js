@@ -302,6 +302,14 @@ $('#submit-fix-btn').on('click', async function () {
     await socket.emit("fix-tracking-history", fixData)
 })
 
+$('#run-add-tracking-my-btn').on('click', async function () {
+    await socket.emit("run-add-tracking", 'My')
+})
+
+$('#run-add-tracking-trang-btn').on('click', async function () {
+    await socket.emit("run-add-tracking", 'Trang')
+})
+
 socket.on("return-fix-tracking-history", async function (data) {
     toastr.clear()
     toastr.success('Thành công!')

@@ -392,6 +392,7 @@ html {
 #fix-tracking-history-btn {
   cursor: pointer;
   font-size: 15px;
+  color: white;
 }
 
 .active-fix-tracking, #fix-tracking-history-btn:hover {
