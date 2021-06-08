@@ -10,6 +10,11 @@ th, td {
   margin: auto;
 }
 
+.dropdown {
+  display: flex;
+  align-items: center;
+}
+
 .dropdown button {
   border: 1px solid;
 }
