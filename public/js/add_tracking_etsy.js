@@ -62,10 +62,19 @@ socket.on("track-order-step4", async function (name) {
         }
 
         if (numCarrier === undefined || numCarrier == '') {
+            numCarrier = $('[htmlfor="Select shipping carrier..."]').val()
+            nameCarrier = $(`[htmlfor="Select shipping carrier..."] option[value="${numCarrier}"]`).text()
+        }
+
+        if (numCarrier === undefined || numCarrier == '') {
+            numCarrier = $('[htmlfor="Select delivery carrier..."]').val()
+            nameCarrier = $(`[htmlfor="Select delivery carrier..."] option[value="${numCarrier}"]`).text()
+        }
+
+        if (numCarrier === undefined || numCarrier == '') {
             numCarrier = $('[htmlfor="Select delivery company..."]').val()
             nameCarrier = $(`[htmlfor="Select delivery company..."] option[value="${numCarrier}"]`).text()
         }
-
         
         if (nameCarrier === 'Other' || nameCarrier == '') {
             nameCarrier = $('input[placeholder="Shipping carrier"]').val()
