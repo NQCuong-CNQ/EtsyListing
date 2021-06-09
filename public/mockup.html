@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="shortcut icon" href="img/icons/icon-48x48.png" />
+    <title>Etsy Tools</title>
+
+    <link rel="stylesheet" type="text/css" href="css/app.css" />
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <link rel="stylesheet" type="text/css" href="css/toastr.min.css" />
+
+</head>
+
+<body>
+    <div class="wrapper">
+        <nav id="sidebar" class="sidebar">
+            <div class="sidebar-content js-simplebar">
+                <a class="sidebar-brand" href="/">
+                    <span class="align-middle">Etsy Tools</span>
+                </a>
+                <ul class="sidebar-nav">
+                    <li class="sidebar-header">
+                        Pages
+                    </li>
+                    <li class="sidebar-item ">
+                        <a class="sidebar-link" href="/">
+                            <i class="align-middle" data-feather="sliders"></i> <span
+                                class="align-middle">Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-header">
+                        Tools & Components
+                    </li>
+                    <!-- <li class="sidebar-item ">
+                        <a class="sidebar-link" href="listing">
+                            <i class="align-middle" data-feather="coffee"></i> <span class="align-middle">Etsy
+                                Listing</span>
+                        </a>
+                    </li> -->
+                    <li class="sidebar-item ">
+                        <a data-target="#ui" data-toggle="collapse" class="sidebar-link collapsed">
+                            <i class="align-middle" data-feather="pie-chart"></i> <span
+                                class="align-middle">Tracking</span>
+                        </a>
+                        <ul id="ui" class="sidebar-dropdown list-unstyled collapse" data-parent="#sidebar">
+                            <li class="sidebar-item"><a class="sidebar-link" href="tracking-product">Products</a></li>
+                            <li class="sidebar-item"><a class="sidebar-link" href="tracking-shop">Shops</a></li>
+                        </ul>
+                    </li>
+                    <li class="sidebar-item active">
+                        <a class="sidebar-link" href="tools">
+                            <i class="align-middle" data-feather="settings"></i> <span class="align-middle">Tools</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="add_tracking_history">
+                            <i class="align-middle" data-feather="calendar"></i> <span class="align-middle">Add Tracking
+                                History</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <div class="main">
+            <nav class="navbar navbar-expand navbar-light navbar-bg">
+                <a class="sidebar-toggle d-flex">
+                    <i class="hamburger align-self-center"></i>
+                </a>
+
+                <div class="navbar-collapse collapse">
+                    <ul class="navbar-nav navbar-align">
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-icon dropdown-toggle d-inline-block d-sm-none" href="#"
+                                data-toggle="dropdown">
+                                <i class="align-middle" data-feather="settings"></i>
+                            </a>
+
+                            <a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#"
+                                data-toggle="dropdown">
+                                <img src="img/avatars/avatar.png" class="avatar img-fluid rounded mr-1"
+                                    alt="Charles Hall" /> <span class="text-dark">User</span>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item" href="#">Log out</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+            <main class="content">
+                <div id="loading">
+                    <div class="lds-ellipsis">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                </div>
+                <div class="container-fluid">
+                    <p>Image to use:</p>
+                    <img id="scream" width="220" height="277" src="http://www.codeproject.com/KB/GDI-plus/ImageProcessing2/img.jpg?w=144" alt="The Scream" crossorigin="Anonymous">
+
+                    <p>Canvas:</p>
+                    <canvas id="myCanvas" width="240" height="297" style="border:1px solid #d3d3d3;">
+                        Your browser does not support the HTML5 canvas tag.
+                    </canvas>
+                    <a id="download">Download as image</a>
+                </div>
+            </main>
+        </div>
+    </div>
+</body>
+
+<script type="text/javascript" src="js/extension/jquery.js"></script>
+<!-- <script type="text/javascript" src="js/extension/socket.io.js"></script> -->
+<script type="text/javascript" src="js/extension/toastr.min.js"></script>
+<script type="text/javascript" src="js/mockup.js"></script>
+<script type="text/javascript" src="js/extension/app.js"></script>
+
+</html>

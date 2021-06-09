@@ -70,7 +70,7 @@ async function updateData() {
   isUpdate = true
   // await updateCate()
   // await getListing()
-  await getShopName()
+  // await getShopName()
   await updateShopInfo()
   await completeUpdate()
 
@@ -281,7 +281,7 @@ async function updateShopInfo() {
 
   for (let index = 0; index < dbData.length; index++) {
     let response = await makeRequest("GET", `https://openapi.etsy.com/v2/shops/${dbData[index].shop_name}?api_key=${api_key}`)
-    if (IsJsonString(result)) {
+    if (IsJsonString(response)) {
       response = JSON.parse(response).results
 
       if (response[0]['creation_tsz'] < dateCount || (dbData[index].total_sales > maxTotalSales && dbData[index].total_sales < minTotalSales)) {
@@ -434,7 +434,7 @@ io.on("connection", async function (client) {
       client.emit("return-find-shop-by-name", response)
       return
     }
-    if (IsJsonString(result)) {
+    if (IsJsonString(response)) {
       response = JSON.parse(response).results
       siteUrl = "https://www.etsy.com/shop/" + shopName
       let shopData = await getTotalSalesAndImgFromWeb()
