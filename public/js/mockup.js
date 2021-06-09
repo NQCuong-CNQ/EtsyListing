@@ -9,8 +9,8 @@ var sources = {
 }
 
 loadImages(sources, function (images) {
-    context.drawImage(images.image1, 0, 0, 500, 500)
-    context.drawImage(images.image2, 350, 55, 93, 104)
+    context.drawImage(images.image1, 0, 0, 2000, 2000)
+    context.drawImage(images.image2, 100, 1000, 1600, 800)
 })
 
 function downloadCanvas(link, canvasId, filename) {
