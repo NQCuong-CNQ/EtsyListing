@@ -65,12 +65,12 @@ async function updateCate() {
   await dbo.collection("category").insertOne(category)
 }
 
-updateData()
+// updateData()
 async function updateData() {
   isUpdate = true
   // await updateCate()
-  // await getListing()
-  // await getShopName()
+  await getListing()
+  await getShopName()
   await updateShopInfo()
   await completeUpdate()
 
@@ -375,6 +375,10 @@ app.get("/add_tracking_history", function (req, res, next) {
 
 app.get("/undefined", function (req, res, next) {
   res.send('null')
+})
+
+app.get("/mockup", function (req, res, next) {
+  res.sendFile(__dirname + "/public/mockup.html")
 })
 
 app.use(express.static("public"))
