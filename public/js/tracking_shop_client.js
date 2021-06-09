@@ -263,10 +263,10 @@ async function getUserOption(id) {
 let shopLocalData = window.localStorage.getItem('listing-shop')
 let categoryLocalData = window.localStorage.getItem('listing-shop-category')
 
-if (categoryLocalData != null) {
+if (categoryLocalData != null && IsJsonString(categoryLocalData)) {
   shopCategory = JSON.parse(categoryLocalData)
 
-  if (shopLocalData != null) {
+  if (shopLocalData != null && IsJsonString(shopLocalData)) {
     shopData = JSON.parse(shopLocalData)
 
     searchOrFilterData()
@@ -561,6 +561,15 @@ function convertMonthInString(month) {
     case 'Nov': return '11'
     case 'Dec': return '12'
   }
+}
+
+function IsJsonString(str) {
+  try {
+    JSON.parse(str)
+  } catch (e) {
+    return false
+  }
+  return true
 }
 
 /* ------------------------------------------------END ADDITIONAL SECTION------------------------------------------------ */

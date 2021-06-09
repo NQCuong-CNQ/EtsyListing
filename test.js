@@ -1,11 +1,11 @@
-var date = new Date().getTime()
-date = Math.floor(date / 3600000)
+// var date = new Date().getTime()
+// date = Math.floor(date / 3600000)
 // for (let i = 0; i < 1000; i++) {
 //     console.log(i%26)
     
 // }
-console.log(date+1)
-console.log((date+1)%26)
+// console.log(date+1)
+// console.log((date+1)%26)
 
 // let arr = [
 //     {
@@ -42,3 +42,12 @@ console.log((date+1)%26)
 // let date = new Date().getTime()
 // let dateCount = Math.floor(date /1000)
 // console.log(dateCount)
+console.log(IsJsonString(`sadfsf`))
+function IsJsonString(str) {
+    try {
+        JSON.parse(str)
+    } catch (e) {
+        return false
+    }
+    return true
+  }

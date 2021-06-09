@@ -65,11 +65,11 @@ async function updateCate() {
   await dbo.collection("category").insertOne(category)
 }
 
-// updateData()
+updateData()
 async function updateData() {
   isUpdate = true
   // await updateCate()
-  await getListing()
+  // await getListing()
   await getShopName()
   await updateShopInfo()
   await completeUpdate()
@@ -136,46 +136,51 @@ async function getListing() {
       console.log('pass' + idBlackList)
     } else {
       let result = await makeRequest("GET", `https://openapi.etsy.com/v2/listings/${idListings[i]}?api_key=${api_key}`)
-      result = JSON.parse(result).results
-      listings = result[0]
 
-      if (listings.state != 'active') {
-        await dbo.collection("listing").deleteMany({ listing_id: listings.listing_id })
-      }
-      if (listings.toString().includes('does not exist') || ((date - listings.original_creation_tsz) > (86400 * 20)) || listings.state != 'active') {
-        await dbo.collection("listingBlackList").updateOne({ listing_id: listings.listing_id }, { $set: { listing_id: listings.listing_id } }, { upsert: true })
-      } else {
-        let resultImgs = await makeRequest("GET", `https://openapi.etsy.com/v2/listings/${idListings[i]}/images?api_key=${api_key}`)
-        resultImgs = JSON.parse(resultImgs).results[0]
+      if (IsJsonString(result)) {
+        result = JSON.parse(result).results
+        listings = result[0]
 
-        listingTracking = new Object
-        listingTracking['img_url'] = resultImgs.url_570xN
-        listingTracking['img_url_original'] = resultImgs.url_fullxfull
-
-        let percentFavor
-        if (listings.views > 0) {
-          percentFavor = (listings.num_favorers / listings.views) * 100
-        } else {
-          percentFavor = 0
+        if (listings.state != 'active') {
+          await dbo.collection("listing").deleteMany({ listing_id: listings.listing_id })
         }
-        percentFavor = percentFavor.toFixed(0)
-        listingTracking['percent_favor'] = percentFavor
+        if (listings.toString().includes('does not exist') || ((date - listings.original_creation_tsz) > (86400 * 20)) || listings.state != 'active') {
+          await dbo.collection("listingBlackList").updateOne({ listing_id: listings.listing_id }, { $set: { listing_id: listings.listing_id } }, { upsert: true })
+        } else {
+          listingTracking = new Object
+          let resultImgs = await makeRequest("GET", `https://openapi.etsy.com/v2/listings/${idListings[i]}/images?api_key=${api_key}`)
 
-        console.log(listings.listing_id)
+          if (IsJsonString(resultImgs)) {
+            resultImgs = JSON.parse(resultImgs).results[0]
+            listingTracking['img_url'] = resultImgs.url_570xN
+            listingTracking['img_url_original'] = resultImgs.url_fullxfull
+          }
 
-        listingTracking['listing_id'] = listings.listing_id
-        listingTracking['title'] = listings.title
-        listingTracking['taxonomy_path'] = listings.taxonomy_path
-        listingTracking['url'] = listings.url
-        listingTracking['original_creation_tsz'] = listings.original_creation_tsz
-        listingTracking['quantity'] = listings.quantity
-        listingTracking['views'] = listings.views
-        listingTracking['num_favorers'] = listings.num_favorers
-        listingTracking['date_update'] = Math.floor(date / 86400)
-        listingTracking['price'] = listings.price
-        listingTracking['is_digital'] = listings.is_digital
+          let percentFavor
+          if (listings.views > 0) {
+            percentFavor = (listings.num_favorers / listings.views) * 100
+          } else {
+            percentFavor = 0
+          }
+          percentFavor = percentFavor.toFixed(0)
+          listingTracking['percent_favor'] = percentFavor
 
-        await dbo.collection("listing").insertOne(listingTracking)
+          console.log(listings.listing_id)
+
+          listingTracking['listing_id'] = listings.listing_id
+          listingTracking['title'] = listings.title
+          listingTracking['taxonomy_path'] = listings.taxonomy_path
+          listingTracking['url'] = listings.url
+          listingTracking['original_creation_tsz'] = listings.original_creation_tsz
+          listingTracking['quantity'] = listings.quantity
+          listingTracking['views'] = listings.views
+          listingTracking['num_favorers'] = listings.num_favorers
+          listingTracking['date_update'] = Math.floor(date / 86400)
+          listingTracking['price'] = listings.price
+          listingTracking['is_digital'] = listings.is_digital
+
+          await dbo.collection("listing").insertOne(listingTracking)
+        }
       }
     }
     await sleep(100)
@@ -276,8 +281,7 @@ async function updateShopInfo() {
 
   for (let index = 0; index < dbData.length; index++) {
     let response = await makeRequest("GET", `https://openapi.etsy.com/v2/shops/${dbData[index].shop_name}?api_key=${api_key}`)
-    if (response == '') {
-    } else {
+    if (IsJsonString(result)) {
       response = JSON.parse(response).results
 
       if (response[0]['creation_tsz'] < dateCount || (dbData[index].total_sales > maxTotalSales && dbData[index].total_sales < minTotalSales)) {
@@ -401,14 +405,22 @@ io.on("connection", async function (client) {
 
   client.on("get_listing_shop_id", async function (shop_id) {
     let result = await makeRequest("GET", `https://openapi.etsy.com/v2/shops/${shop_id}/listings/active?api_key=${api_key}`)
-    result = JSON.parse(result).results
-    client.emit("return-listing-data", result)
+    if (IsJsonString(result)) {
+      result = JSON.parse(result).results
+      client.emit("return-listing-data", result)
+      return
+    }
+    client.emit("return-listing-data", 0)
   })
 
   client.on("get_user_by_user_id", async function (user_id) {
     let result = await makeRequest("GET", `https://openapi.etsy.com/v2/users/${user_id}/profile?api_key=${api_key}`)
-    result = JSON.parse(result).results
-    client.emit("return-user-data", result[0])
+    if (IsJsonString(result)) {
+      result = JSON.parse(result).results
+      client.emit("return-user-data", result[0])
+      return
+    }
+    client.emit("return-user-data", 0)
   })
 
   client.on("shop-tracking", async function (shop_id) {
@@ -422,47 +434,51 @@ io.on("connection", async function (client) {
       client.emit("return-find-shop-by-name", response)
       return
     }
-    response = JSON.parse(response).results
-    siteUrl = "https://www.etsy.com/shop/" + shopName
-    let shopData = await getTotalSalesAndImgFromWeb()
+    if (IsJsonString(result)) {
+      response = JSON.parse(response).results
+      siteUrl = "https://www.etsy.com/shop/" + shopName
+      let shopData = await getTotalSalesAndImgFromWeb()
 
-    response[0]['imgs_listing'] = shopData.imgs
-    response[0]['total_sales'] = shopData.totalSales
+      response[0]['imgs_listing'] = shopData.imgs
+      response[0]['total_sales'] = shopData.totalSales
 
-    var date = new Date().getTime()
-    date = Math.floor(date / 1000) - (365 * 86400)
+      var date = new Date().getTime()
+      date = Math.floor(date / 1000) - (365 * 86400)
 
-    if (shopData.totalSales <= 5000 && shopData.totalSales >= 100 && response[0].creation_tsz >= date) {
-      await dbo.collection("shopName").updateOne({ shop_name: response[0].shop_name }, { $set: { shop_name: response[0].shop_name, total_sales: response[0]['total_sales'], imgs_listing: response[0]['imgs_listing'] } }, { upsert: true })
+      if (shopData.totalSales <= 5000 && shopData.totalSales >= 100 && response[0].creation_tsz >= date) {
+        await dbo.collection("shopName").updateOne({ shop_name: response[0].shop_name }, { $set: { shop_name: response[0].shop_name, total_sales: response[0]['total_sales'], imgs_listing: response[0]['imgs_listing'] } }, { upsert: true })
 
-      let timeNow = getDateTimeNow()
-      await dbo.collection("shopTracking").insertOne({
-        'shop_id': response[0].shop_id,
-        'shop_name': response[0].shop_name,
-        'total_sales': response[0].total_sales,
-        'listing_active_count': response[0].listing_active_count,
-        'num_favorers': response[0].num_favorers,
-        'time_update': timeNow
-      })
+        let timeNow = getDateTimeNow()
+        await dbo.collection("shopTracking").insertOne({
+          'shop_id': response[0].shop_id,
+          'shop_name': response[0].shop_name,
+          'total_sales': response[0].total_sales,
+          'listing_active_count': response[0].listing_active_count,
+          'num_favorers': response[0].num_favorers,
+          'time_update': timeNow
+        })
 
-      await dbo.collection("shop").updateOne({ shop_id: response[0].shop_id }, {
-        $set: {
-          shop_id: response[0].shop_id,
-          imgs_listing: response[0]['imgs_listing'],
-          total_sales: response[0]['total_sales'],
-          shop_name: response[0]['shop_name'],
-          url: response[0]['url'],
-          creation_tsz: response[0]['creation_tsz'],
-          num_favorers: response[0]['num_favorers'],
-          currency_code: response[0]['currency_code'],
-          listing_active_count: response[0]['listing_active_count'],
-          digital_listing_count: response[0]['digital_listing_count'],
-          languages: response[0]['languages'],
-        }
-      }, { upsert: true })
+        await dbo.collection("shop").updateOne({ shop_id: response[0].shop_id }, {
+          $set: {
+            shop_id: response[0].shop_id,
+            imgs_listing: response[0]['imgs_listing'],
+            total_sales: response[0]['total_sales'],
+            shop_name: response[0]['shop_name'],
+            url: response[0]['url'],
+            creation_tsz: response[0]['creation_tsz'],
+            num_favorers: response[0]['num_favorers'],
+            currency_code: response[0]['currency_code'],
+            listing_active_count: response[0]['listing_active_count'],
+            digital_listing_count: response[0]['digital_listing_count'],
+            languages: response[0]['languages'],
+          }
+        }, { upsert: true })
+      }
+
+      client.emit("return-find-shop-by-name", response)
+      return
     }
-
-    client.emit("return-find-shop-by-name", response)
+    client.emit("return-find-shop-by-name", 0)
   })
 
   client.on("product-tracking-join", async function () {
@@ -793,8 +809,20 @@ async function makeRequest(method, url) {
 
 async function getTotalShop() {
   let result = await makeRequest("GET", `https://openapi.etsy.com/v2/shops?api_key=${api_key}&limit=1&offset=1`)
-  result = JSON.parse(result).results
-  return result[0].shop_id
+  if (IsJsonString(result)) {
+    result = JSON.parse(result).results
+    return result[0].shop_id
+  }
+  return 0
+}
+
+function IsJsonString(str) {
+  try {
+    JSON.parse(str)
+  } catch (e) {
+    return false
+  }
+  return true
 }
 
 server.listen(443)

@@ -273,7 +273,7 @@ function updateData(dataFilter = listingData) {
 /* ------------------------------------------------SOCKET SECTION------------------------------------------------ */
 
 let listingLocalData = window.localStorage.getItem('listing-data')
-if (listingLocalData != null) {
+if (listingLocalData != null && IsJsonString(listingLocalData)) {
   listingData = JSON.parse(listingLocalData)
 
   searchOrFilterData()
@@ -395,6 +395,15 @@ function handleDuplicates() {
 //     $(".popup-analytic-container").css('display', 'none')
 //   }
 // })
+
+function IsJsonString(str) {
+  try {
+    JSON.parse(str)
+  } catch (e) {
+    return false
+  }
+  return true
+}
 
 function showAnalytic(id) {
   if (isGettingData) {
