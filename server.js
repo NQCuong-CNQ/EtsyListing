@@ -638,7 +638,7 @@ io.on("connection", async function (client) {
     }
 
     for (let i = 0; i < tempData.length; i += 2) {
-      let temp = tempData[i].replace('Order history', '').replace('Message history1', '')
+      let temp = tempData[i].replace('Order history', '').replace('Message history1', '').replace('Message history3', '')
       gmailTemp.push(temp)
     }
 
@@ -681,28 +681,28 @@ io.on("connection", async function (client) {
   })
 })
 
-// fixTrackingHistory()
-// async function fixTrackingHistory() {
-//   let clientDB = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
-//   var dbo = clientDB.db("trackingdb")
-//   let dbdata = await dbo.collection("tracking_etsy_history").find().toArray()
-//   for (let i = 0; i < dbdata.length; i++) {
-//     if (dbdata[i].customer_email == undefined) {
-//     } else {
+fixTrackingHistory()
+async function fixTrackingHistory() {
+  let clientDB = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
+  var dbo = clientDB.db("trackingdb")
+  let dbdata = await dbo.collection("tracking_etsy_history").find().toArray()
+  for (let i = 0; i < dbdata.length; i++) {
+    if (dbdata[i].customer_email == undefined) {
+    } else {
 
-//       if (Number.isInteger(parseInt(dbdata[i].customer_email.slice(0,10)))) {
-//         dbdata[i].customer_email = dbdata[i].customer_email.substring(10)
-//         await dbo.collection("tracking_etsy_history").updateOne({ id: dbdata[i].id }, { $set: { customer_email: dbdata[i].customer_email } }, { upsert: true })
-//       }
+      // if (Number.isInteger(parseInt(dbdata[i].customer_email.slice(0, 10)))) {
+      //   dbdata[i].customer_email = dbdata[i].customer_email.substring(10)
+      //   await dbo.collection("tracking_etsy_history").updateOne({ id: dbdata[i].id }, { $set: { customer_email: dbdata[i].customer_email } }, { upsert: true })
+      // }
 
-// if (dbdata[i].customer_email.includes('Message history1')) {
-//   console.log(dbdata[i].customer_email)
-//   dbdata[i].customer_email = dbdata[i].customer_email.replace('Message history1', '')
-//   await dbo.collection("tracking_etsy_history").updateOne({ id: dbdata[i].id }, { $set: { customer_email: dbdata[i].customer_email } }, { upsert: true })
-// }
-//     }
-//   }
-// }
+      if (dbdata[i].customer_email.includes('Message history2')) {
+        console.log(dbdata[i].customer_email)
+        dbdata[i].customer_email = dbdata[i].customer_email.replace('Message history2', '')
+        await dbo.collection("tracking_etsy_history").updateOne({ id: dbdata[i].id }, { $set: { customer_email: dbdata[i].customer_email } }, { upsert: true })
+      }
+    }
+  }
+}
 
 async function getSearchProductFromWeb() {
   await sleep(100)

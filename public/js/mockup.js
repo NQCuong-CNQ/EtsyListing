@@ -1,6 +1,6 @@
 var canvas = document.getElementById('myCanvas')
-canvas.width = canvas.height = 1600
-canvas.style.width = canvas.style.height = "500px"
+canvas.width = canvas.height = 2000
+canvas.style.width = canvas.style.height = "2000px"
 var context = canvas.getContext('2d')
 
 var sources = {
@@ -11,9 +11,6 @@ var sources = {
 loadImages(sources, function (images) {
     context.drawImage(images.image1, 0, 0, 500, 500)
     context.drawImage(images.image2, 350, 55, 93, 104)
-
-    var scale = 1600 / 500
-    context.setTransform(scale,0,0,scale,0,0)
 })
 
 function downloadCanvas(link, canvasId, filename) {
