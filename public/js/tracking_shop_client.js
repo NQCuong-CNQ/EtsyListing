@@ -11,7 +11,7 @@ var timeCreatedShopFilter = 0
 var filterType = 0
 var gettingData = 1
 var chart
-var selected_shop 
+var selected_shop
 
 /* ------------------------------------------------MAIN SECTION------------------------------------------------ */
 
@@ -157,7 +157,7 @@ function isDigitShop(data) {
 function updateData(data = shopData) {
   $('#table-shop').DataTable().clear().destroy()
   for (var i = 0; i < data.length; i++) {
-    if(data[i].imgs_listing[0] == null){
+    if (data[i].imgs_listing === undefined || data[i].imgs_listing == null) {
       console.log(data[i].shop_name)
       continue
     }
@@ -224,18 +224,18 @@ $('#user-option-button').on('click', async function () {
   chart.destroy()
 })
 
-function getShopNameByID(id){
+function getShopNameByID(id) {
   for (let i = 0; i < shopData.length; i++) {
-    if(shopData[i].shop_id == id){
+    if (shopData[i].shop_id == id) {
       return shopData[i].shop_name
     }
   }
   return 'Shop'
 }
 
-function getShopUserByID(id){
+function getShopUserByID(id) {
   for (let i = 0; i < shopData.length; i++) {
-    if(shopData[i].shop_id == id){
+    if (shopData[i].shop_id == id) {
       return shopData[i].user_id
     }
   }
