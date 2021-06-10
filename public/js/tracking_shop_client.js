@@ -157,6 +157,10 @@ function isDigitShop(data) {
 function updateData(data = shopData) {
   $('#table-shop').DataTable().clear().destroy()
   for (var i = 0; i < data.length; i++) {
+    if(data[i].imgs_listing[0] == null){
+      console.log(data[i].shop_name)
+      continue
+    }
     $('#table-shop-body').append(`<tr>
         <td onclick="getShopDetail(${data[i].shop_id})"><i class="fas fa-info-circle pointer"></i></td>
         <td>
