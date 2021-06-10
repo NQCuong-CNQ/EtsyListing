@@ -678,6 +678,14 @@ io.on("connection", async function (client) {
   client.on("run-add-tracking", async function (user) {
     client.broadcast.emit("run-add-tracking-by-user", user)
   })
+
+  client.on("check-limit-api", async function (user) {
+    var req = new XMLHttpRequest()
+    req.open('GET', 'https://openapi.etsy.com/v2/shops?api_key=2mlnbmgdqv6esclz98opmmuq', false)
+    req.send(null)
+    var headers = req.getAllResponseHeaders()
+    client.emit("return-check-limit-api", headers)
+  })
 })
 
 // fixTrackingHistory()

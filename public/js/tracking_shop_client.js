@@ -158,7 +158,7 @@ function updateData(data = shopData) {
   $('#table-shop').DataTable().clear().destroy()
   for (var i = 0; i < data.length; i++) {
     if (data[i].imgs_listing === undefined || data[i].imgs_listing == null) {
-      console.log(data[i].shop_name)
+      console.log(data[i].shop_name + "doesn't have img, removed!")
       continue
     }
     $('#table-shop-body').append(`<tr>

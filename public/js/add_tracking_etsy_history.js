@@ -321,10 +321,10 @@ socket.on("return-fix-tracking-history", async function (data) {
 })
 
 $('#check-limit-btn').on('click', async function () {
-    var req = new XMLHttpRequest()
-    req.open('GET', 'https://openapi.etsy.com/v2/shops?api_key=2mlnbmgdqv6esclz98opmmuq', false)
-    req.send(null)
-    var headers = req.getAllResponseHeaders()
-    alert(headers)
+    socket.emit("check-limit-api")
 })
 
+socket.on("return-check-limit-api", async function (data) {
+    toastr.clear()
+    toastr.success(data)
+})
