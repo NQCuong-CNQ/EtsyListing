@@ -325,6 +325,8 @@ $('#check-limit-btn').on('click', async function () {
 })
 
 socket.on("return-check-limit-api", async function (data) {
+    let index = data.indexOf('x-ratelimit-remaining')
+    data = data.slice(index, index + 28).trim()
     toastr.clear()
     toastr.success(data)
 })

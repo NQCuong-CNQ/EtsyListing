@@ -680,10 +680,10 @@ io.on("connection", async function (client) {
   })
 
   client.on("check-limit-api", async function (user) {
-    var req = new XMLHttpRequest()
-    req.open('GET', 'https://openapi.etsy.com/v2/shops?api_key=2mlnbmgdqv6esclz98opmmuq', false)
+    let req = new XMLHttpRequest()
+    req.open('GET', `https://openapi.etsy.com/v2/shops?api_key=${api_key}`, false)
     req.send(null)
-    var headers = req.getAllResponseHeaders()
+    let headers = req.getAllResponseHeaders()
     client.emit("return-check-limit-api", headers)
   })
 })
