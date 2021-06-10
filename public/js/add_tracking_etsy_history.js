@@ -140,7 +140,7 @@ function updateData(data = historyData) {
     $('#table_id-tracking-history').DataTable().clear().destroy()
     for (var i = 0; i < data.length; i++) {
         $('#table_id-tracking-history-body').append(`<tr>
-            <td>${i+1}</td>
+            <td>${i + 1}</td>
             <td>${data[i].id}</td>
             <td>${formatShopName(data[i].name)}</td>
             <td>${formatCustomerName(data[i].customer_name)}</td>
@@ -197,9 +197,9 @@ function getActualCarrierCode(code, actualCode) {
     if (actualCode === undefined || actualCode == '') {
         return '---'
     } else if (code == actualCode) {
-        return 'same'
+        return `<p class="p-input-true">same</p>`
     }
-    return actualCode
+    return `<p class="p-input-true">${actualCode}</p>`
 }
 
 function getCarrierCode(code) {
@@ -245,12 +245,12 @@ function getEpochTime(input) {
 function getCarrierName(track, name) {
     if (name === undefined || name == '') {
         return '---'
-    } else if(track.startsWith('9') && name == 'USPS'){
-        return `<p style="color:green">${name}</p>`
-    } else if((track.startsWith('8') || track.startsWith('1Z') ) && name == 'USPS'){
-        return `<p style="color:green">${name}</p>`
+    } else if (track.startsWith('9') && name == 'USPS') {
+        return `<p class="p-input-true">${name}</p>`
+    } else if ((track.startsWith('8') || track.startsWith('1Z')) && name == 'UPS') {
+        return `<p class="p-input-true">${name}</p>`
     }
-    return `<p style="color:red">${name}</p>`
+    return `<p class="p-input-wrong">${name}</p>`
 }
 
 function convertMonthInString(month) {

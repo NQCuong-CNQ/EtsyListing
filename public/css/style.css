@@ -351,7 +351,7 @@ th, td {
   color: black;
   text-decoration: none;
   transition: 0.2s;
-  text-transform:capitalize;
+  text-transform: capitalize;
 }
 
 #table-shop-body a:hover {
@@ -492,7 +492,7 @@ html {
   transform: translate(-50%, 0);
 }
 
-.title-chart-analytic-shop{
+.title-chart-analytic-shop {
   text-transform: capitalize;
 }
 
@@ -533,4 +533,14 @@ html {
   display: none;
   width: 100%;
   height: 100%;
+}
+
+.p-input-true {
+  color: green;
+  margin: 0;
+}
+
+.p-input-wrong {
+  color: red;
+  margin: 0;
 }
