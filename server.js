@@ -3,7 +3,6 @@ const fs = require('fs')
 var express = require("express")
 var app = express()
 var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest
-var xhr = new XMLHttpRequest()
 const https = require("https")
 const axios = require("axios")
 const cheerio = require('cheerio')
@@ -65,7 +64,7 @@ async function updateCate() {
   await dbo.collection("category").insertOne(category)
 }
 
-// updateData()
+updateData()
 async function updateData() {
   isUpdate = true
   // await updateCate()
@@ -795,6 +794,7 @@ async function getShopNameFromWeb(siteUrl) {
 
 async function makeRequest(method, url) {
   return new Promise(function (resolve, reject) {
+    let xhr = new XMLHttpRequest()
     xhr.open(method, url)
     xhr.onreadystatechange = function () {
       if (xhr.readyState === xhr.DONE) {
