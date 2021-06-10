@@ -319,3 +319,12 @@ socket.on("return-fix-tracking-history", async function (data) {
     toastr.clear()
     toastr.success('Thành công!')
 })
+
+$('#check-limit-btn').on('click', async function () {
+    var req = new XMLHttpRequest()
+    req.open('GET', 'https://openapi.etsy.com/v2/shops?api_key=2mlnbmgdqv6esclz98opmmuq', false)
+    req.send(null)
+    var headers = req.getAllResponseHeaders()
+    alert(headers)
+})
+

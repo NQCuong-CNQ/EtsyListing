@@ -43,48 +43,54 @@ function loadImages(sources, callback) {
 
 
 
+var drop = $("input");
+drop.on('dragenter', function (e) {
+  $(".drop").css({
+    "border": "4px dashed #09f",
+    "background": "rgba(0, 153, 255, .05)"
+  });
+  $(".cont").css({
+    "color": "#09f"
+  });
+}).on('dragleave dragend mouseout drop', function (e) {
+  $(".drop").css({
+    "border": "3px dashed #DADFE3",
+    "background": "transparent"
+  });
+  $(".cont").css({
+    "color": "#8E99A5"
+  });
+});
 
-var dragdrop = {
-    init: function (elem) {
-        elem.setAttribute('ondrop', 'dragdrop.drop(event)');
-        elem.setAttribute('ondragover', 'dragdrop.drag(event)');
-    },
-    drop: function (e) {
-        e.preventDefault();
-        var file = e.dataTransfer.files[0];
-        runUpload(file);
-    },
-    drag: function (e) {
-        e.preventDefault();
+
+
+function handleFileSelect(evt) {
+  var files = evt.target.files; // FileList object
+
+  // Loop through the FileList and render image files as thumbnails.
+  for (var i = 0, f; f = files[i]; i++) {
+
+    // Only process image files.
+    if (!f.type.match('image.*')) {
+      continue;
     }
-};
 
-function runUpload(file) {
-    if (file.type === 'image/png' ||
-        file.type === 'image/jpg' ||
-        file.type === 'image/jpeg' ||
-        file.type === 'image/gif' ||
-        file.type === 'image/bmp') {
-        var reader = new FileReader(),
-            image = new Image();
-        reader.readAsDataURL(file);
-        reader.onload = function (_file) {
-            $('imgPrime').el.src = _file.target.result;
-            $('imgPrime').el.style.display = 'inline';
-        } // END reader.onload()
-    } // END test if file.type === image
+    var reader = new FileReader();
+
+    // Closure to capture the file information.
+    reader.onload = (function(theFile) {
+      return function(e) {
+        // Render thumbnail.
+        var span = document.createElement('span');
+        span.innerHTML = ['<img class="thumb" src="', e.target.result,
+                          '" title="', escape(theFile.name), '"/>'].join('');
+        document.getElementById('list').insertBefore(span, null);
+      };
+    })(f);
+
+    // Read in the image file as a data URL.
+    reader.readAsDataURL(f);
+  }
 }
 
-window.onload = function () {
-    if (window.FileReader) {
-        dragdrop.init($('userActions').el);
-        $('fileUpload').onChange(function () { runUpload(this.files[0]); });
-    } else {
-        var p = document.createElement('p'),
-            msg = document.createTextNode('Sorry, your browser does not support FileReader.');
-        p.className = 'error';
-        p.appendChild(msg);
-        $('userActions').el.innerHTML = '';
-        $('userActions').el.appendChild(p);
-    }
-};
+$('#files').change(handleFileSelect);
