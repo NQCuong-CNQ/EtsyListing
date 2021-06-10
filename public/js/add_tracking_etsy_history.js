@@ -199,7 +199,7 @@ function getActualCarrierCode(code, actualCode) {
     } else if (code == actualCode) {
         return `<p class="p-input-true">same</p>`
     }
-    return `<p class="p-input-true">${actualCode}</p>`
+    return `<p class="p-input-wrong">${actualCode}</p>`
 }
 
 function getCarrierCode(code) {
