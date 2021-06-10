@@ -147,7 +147,7 @@ function updateData(data = historyData) {
             <td>${formatCustomerEmail(data[i].customer_email)}</td>
             <td>${getCarrierCode(data[i].number_tracking)}</td>
             <td>${getActualCarrierCode(data[i].number_tracking, data[i].actual_input)}</td>
-            <td>${getCarrierName(data[i].carrier_name)}</td>
+            <td>${getCarrierName(data[i].number_tracking, data[i].carrier_name)}</td>
             <td>${formatOrderDate(data[i].order_date)}</td>
             <td>${formatOrderStatus(data[i].order_status)}</td>
             <td>${getEpochTime(data[i].time_add_tracking)}</td>
@@ -242,10 +242,15 @@ function getEpochTime(input) {
     return time
 }
 
-function getCarrierName(name) {
+function getCarrierName(track, name) {
     if (name === undefined || name == '') {
         return '---'
-    } return name
+    } else if(track.startsWith('9') && name == 'USPS'){
+        return `<p style="color:green">${name}</p>`
+    } else if((track.startsWith('8') || track.startsWith('1Z') ) && name == 'USPS'){
+        return `<p style="color:green">${name}</p>`
+    }
+    return `<p style="color:red">${name}</p>`
 }
 
 function convertMonthInString(month) {
