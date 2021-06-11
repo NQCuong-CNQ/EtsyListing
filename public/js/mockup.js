@@ -4,7 +4,7 @@ canvas.style.width = canvas.style.height = "2000px"
 var context = canvas.getContext('2d')
 
 var sources = {
-  image1: '/img/mockup/back.jpg',
+  image1: '/img/mockup/mk1.jpg',
   image2: '/img/mockup/img.jpg',
 }
 
@@ -41,7 +41,7 @@ function loadImages(sources, callback) {
   }
 }
 
-var drop = $("input");
+var drop = $("input")
 drop.on('dragenter', function (e) {
   $(".drop").css({
     "border": "4px dashed #09f",
@@ -79,4 +79,4 @@ function handleFileSelect(evt) {
   }
 }
 
-$('#files').change(handleFileSelect)
+$('#files').on('change', handleFileSelect)
