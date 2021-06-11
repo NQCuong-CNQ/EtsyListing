@@ -41,10 +41,13 @@ async function handleFileSelect(evt) {
   count = 0
   idNum = 0
   await createCanvas(files)
+  console.log('end end')
+  
 }
 
 async function createCanvas(files) {
-  console.log(count)
+  console.log('files.length'+ files.length)
+  console.log('count'+count)
   let imgBackground
   let img
   let location = 0
@@ -52,7 +55,8 @@ async function createCanvas(files) {
   let context
 
   for (let j = 0; j < sources.length; j++) {
-    console.log(idNum)
+    console.log('j'+j)
+    console.log('idNum'+idNum)
     imgBackground = new Image
     imgBackground.src = sources[j]
     await imgBackground.decode()
@@ -79,10 +83,12 @@ async function createCanvas(files) {
   }
 
   if (count < files.length) {
+    console.log('count up')
     count++
     await createCanvas(files)
     return
   }
+  console.log('end')
 }
 
 $('#files').on('change', handleFileSelect)
