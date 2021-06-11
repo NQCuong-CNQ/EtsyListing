@@ -90,12 +90,12 @@ async function handleFileSelect(evt) {
       imgBackground = new Image
       imgBackground.src = sources[j]
       await imgBackground.decode()
-      context.drawImage(imgBackground, location, 0, 2000, 2000)
+      await context.drawImage(imgBackground, 0, 0, 2000, 2000)
 
       img = new Image
       img.src = URL.createObjectURL(files[i])
       await img.decode()
-      context.drawImage(img, 0, 0, 1000, 1000)
+      await context.drawImage(img, 0, 0, 1000, 1000)
 
       location += 2000
     }
