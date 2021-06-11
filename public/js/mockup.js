@@ -87,8 +87,8 @@ async function createCanvas(files) {
 
     startX = parseInt(putLocation[`mk${j + 1}`][0])
     startY = parseInt(putLocation[`mk${j + 1}`][1])
-    width = parseInt(putLocation[`mk${j + 1}`][3] - putLocation[`mk${j + 1}`][0])
-    height = parseInt(putLocation[`mk${j + 1}`][4] - putLocation[`mk${j + 1}`][1])
+    width = parseInt(putLocation[`mk${j + 1}`][2] - putLocation[`mk${j + 1}`][0])
+    height = parseInt(putLocation[`mk${j + 1}`][3] - putLocation[`mk${j + 1}`][1])
 
   console.log(startX + '/ ' +startY+ '/ ' +width+ '/ ' +height)
     
