@@ -3,43 +3,43 @@ canvas.width = canvas.height = 2000
 canvas.style.width = canvas.style.height = "2000px"
 var context = canvas.getContext('2d')
 
-var sources = {
-  image1: '/img/mockup/mk1.jpg',
-  image2: '/img/mockup/img.jpg',
-}
+// var sources = {
+//   image1: '/img/mockup/mk1.jpg',
+//   image2: '/img/mockup/img.jpg',
+// }
 
-loadImages(sources, function (images) {
-  context.drawImage(images.image1, 0, 0, 2000, 2000)
-  context.drawImage(images.image2, 120, 800, 1600, 800)
-})
+// loadImages(sources, function (images) {
+//   context.drawImage(images.image1, 0, 0, 2000, 2000)
+//   context.drawImage(images.image2, 120, 800, 1600, 800)
+// })
 
-function downloadCanvas(link, canvasId, filename) {
-  link.href = document.getElementById(canvasId).toDataURL()
-  link.download = filename
-}
+// function downloadCanvas(link, canvasId, filename) {
+//   link.href = document.getElementById(canvasId).toDataURL()
+//   link.download = filename
+// }
 
 $('#download').on('click', function () {
   downloadCanvas(this, 'myCanvas', 'test.png')
 })
 
-function loadImages(sources, callback) {
-  var images = {}
-  var loadedImages = 0
-  var numImages = 0
+// function loadImages(sources, callback) {
+//   var images = {}
+//   var loadedImages = 0
+//   var numImages = 0
 
-  for (var src in sources) {
-    numImages++
-  }
-  for (var src in sources) {
-    images[src] = new Image()
-    images[src].onload = function () {
-      if (++loadedImages >= numImages) {
-        callback(images)
-      }
-    }
-    images[src].src = sources[src]
-  }
-}
+//   for (var src in sources) {
+//     numImages++
+//   }
+//   for (var src in sources) {
+//     images[src] = new Image()
+//     images[src].onload = function () {
+//       if (++loadedImages >= numImages) {
+//         callback(images)
+//       }
+//     }
+//     images[src].src = sources[src]
+//   }
+// }
 
 $("input").on('dragenter', function (e) {
   $(".drop").css({
@@ -75,8 +75,7 @@ function handleFileSelect(evt) {
       }
     })(f)
     reader.readAsDataURL(f)
-    // console.log(files[i])
-    // console.log(reader.result)
+
     var img = new Image
     img.src = URL.createObjectURL(files[i])
     context.drawImage(img, 0, 0, 2000, 2000)
