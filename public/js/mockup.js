@@ -8,10 +8,7 @@ var context = canvas.getContext('2d')
 //   image2: '/img/mockup/img.jpg',
 // }
 
-// loadImages(sources, function (images) {
-//   context.drawImage(images.image1, 0, 0, 2000, 2000)
-//   context.drawImage(images.image2, 120, 800, 1600, 800)
-// })
+
 
 // function downloadCanvas(link, canvasId, filename) {
 //   link.href = document.getElementById(canvasId).toDataURL()
@@ -22,24 +19,24 @@ $('#download').on('click', function () {
   downloadCanvas(this, 'myCanvas', 'test.png')
 })
 
-// function loadImages(sources, callback) {
-//   var images = {}
-//   var loadedImages = 0
-//   var numImages = 0
+function loadImages(sources, callback) {
+  var images = {}
+  var loadedImages = 0
+  var numImages = 0
 
-//   for (var src in sources) {
-//     numImages++
-//   }
-//   for (var src in sources) {
-//     images[src] = new Image()
-//     images[src].onload = function () {
-//       if (++loadedImages >= numImages) {
-//         callback(images)
-//       }
-//     }
-//     images[src].src = sources[src]
-//   }
-// }
+  for (var src in sources) {
+    numImages++
+  }
+  for (var src in sources) {
+    images[src] = new Image()
+    images[src].onload = function () {
+      if (++loadedImages >= numImages) {
+        callback(images)
+      }
+    }
+    images[src].src = sources[src]
+  }
+}
 
 $("input").on('dragenter', function (e) {
   $(".drop").css({
@@ -78,7 +75,10 @@ function handleFileSelect(evt) {
 
     var img = new Image
     img.src = URL.createObjectURL(files[i])
-    context.drawImage(img, 0, 0, 2000, 2000)
+
+    loadImages(sources, function (images) {
+      context.drawImage(img, 0, 0, 2000, 2000)
+    })
   }
 }
 
