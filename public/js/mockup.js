@@ -1,4 +1,5 @@
 var count = 0
+var idNum = 0
 
 var sources = [
   '/img/mockup/mk1.jpg',
@@ -64,24 +65,25 @@ async function handleFileSelect(evt) {
   //     continue
   //   }
 
-    // let reader = new FileReader()
-    // reader.onload = (function (theFile) {
-    //   return function (e) {
-    //     let span = document.createElement('span')
-    //     span.innerHTML = ['<img class="thumb" src="', e.target.result,
-    //       '" title="', escape(theFile.name), '"/>'].join('')
-    //     document.getElementById('list').insertBefore(span, null)
-    //   }
-    // })(f)
-    // reader.readAsDataURL(f)
-    // 
+  // let reader = new FileReader()
+  // reader.onload = (function (theFile) {
+  //   return function (e) {
+  //     let span = document.createElement('span')
+  //     span.innerHTML = ['<img class="thumb" src="', e.target.result,
+  //       '" title="', escape(theFile.name), '"/>'].join('')
+  //     document.getElementById('list').insertBefore(span, null)
+  //   }
+  // })(f)
+  // reader.readAsDataURL(f)
+  // 
   // }
 }
 
-async function createCanvas(files){
+async function createCanvas(files) {
   let imgBackground
   let img
   let location = 0
+  idNum = 0
 
   for (let j = 0; j < sources.length; j++) {
     imgBackground = new Image
@@ -89,10 +91,10 @@ async function createCanvas(files){
     await imgBackground.decode()
 
     $('#canvas-container').append(`
-      <canvas id="canvas${count + j}"></canvas>
+      <canvas id="canvas${idNum}"></canvas>
     `)
 
-    var canvas = document.getElementById(`canvas${count + j}`)
+    var canvas = document.getElementById(`canvas${idNum}`)
     canvas.width = imgBackground.naturalWidth
     canvas.height = imgBackground.naturalHeight
     canvas.style.height = "300px"
@@ -108,7 +110,8 @@ async function createCanvas(files){
     location += 2000
   }
 
-  if(count < files.length){
+  if (count < files.length) {
+    idNum++
     count++
     await createCanvas(files)
     return
