@@ -56,10 +56,7 @@ $("input").on('dragenter', function (e) {
 
 async function handleFileSelect(evt) {
   let files = evt.target.files
-  let imgBackground
-  let img
   count = 0
-  
   await createCanvas(files)
 
   // for (let i = 0, f; f = files[i]; i++) {
@@ -82,6 +79,8 @@ async function handleFileSelect(evt) {
 }
 
 async function createCanvas(files){
+  let imgBackground
+  let img
   count++
   let location = 0
 
