@@ -10,11 +10,11 @@ var sources = [
 ]
 
 var putLocation = {
-  mk1: ['197', '231', '1758', '1272'],
-  mk2: ['197', '231', '1758', '1272'],
-  mk3: ['197', '231', '1758', '1272'],
-  mk4: ['197', '231', '1758', '1272'],
-  mk5: ['197', '231', '1758', '1272'],
+  mk1: [197, 231, 1758, 1272],
+  mk2: [197, 231, 1758, 1272],
+  mk3: [197, 231, 1758, 1272],
+  mk4: [197, 231, 1758, 1272],
+  mk5: [197, 231, 1758, 1272],
 }
 
 function downloadCanvas(link, canvasId, filename) {
@@ -80,7 +80,7 @@ async function createCanvas(files) {
     img = new Image
     img.src = URL.createObjectURL(files[count])
     await img.decode()
-    await context.drawImage(img, putLocation.mk1[0], putLocation.mk1[1], putLocation.mk1[3] - putLocation.mk1[0], putLocation.mk1[4] - putLocation.mk1[1])
+    await context.drawImage(img, putLocation[`mk${j}`][0], putLocation[`mk${j}`][1], putLocation[`mk${j}`][3] - putLocation[`mk${j}`][0], putLocation[`mk${j}`][4] - putLocation[`mk${j}`][1])
     location += canvas.width
     idNum++
   }
