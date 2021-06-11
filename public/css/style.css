@@ -623,3 +623,9 @@ html {
 .fa-cloud-upload-alt {
   font-size: 300%;
 }
+
+canvas {
+  border: 1px solid #d3d3d3;
+  width: 300px;
+  height: 300px;
+}

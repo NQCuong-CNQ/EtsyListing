@@ -1,7 +1,4 @@
-var canvas = document.getElementById('myCanvas')
-canvas.width = canvas.height = 2000
-canvas.style.width = canvas.style.height = "300px"
-var context = canvas.getContext('2d')
+
 
 var sources = [
   '/img/mockup/mk1.jpg',
@@ -81,6 +78,15 @@ async function handleFileSelect(evt) {
 
     for (let j = 0; j < sources.length; j++) {
 
+      $('#canvas-container').append(`
+        <canvas id="canvas${i + j}"></canvas>
+      `)
+
+      var canvas = document.getElementById(`canvas${i + j}`)
+      canvas.width = canvas.height = 2000
+      // canvas.style.width = canvas.style.height = "300px"
+      var context = canvas.getContext('2d')
+
       imgBackground = new Image
       imgBackground.src = sources[j]
       await imgBackground.decode()
@@ -91,7 +97,7 @@ async function handleFileSelect(evt) {
       await img.decode()
       context.drawImage(img, 0, 0, 1000, 1000)
 
-      location += 300
+      location += 2000
     }
   }
 }
