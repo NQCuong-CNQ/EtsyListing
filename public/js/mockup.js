@@ -1,42 +1,40 @@
-var canvas = document.getElementById('myCanvas')
-canvas.width = canvas.height = 2000
-canvas.style.width = canvas.style.height = "2000px"
-var context = canvas.getContext('2d')
+var context = document.getElementById('myCanvas').getContext('2d')
 
-// var sources = {
-//   image1: '/img/mockup/mk1.jpg',
-//   image2: '/img/mockup/img.jpg',
-// }
+var sources = [
+  '/img/mockup/mk1.jpg',
+  '/img/mockup/mk2.jpg',
+  '/img/mockup/mk3.jpg',
+  '/img/mockup/mk4.jpg',
+  '/img/mockup/mk5.jpg',
+]
 
-
-
-// function downloadCanvas(link, canvasId, filename) {
-//   link.href = document.getElementById(canvasId).toDataURL()
-//   link.download = filename
-// }
+function downloadCanvas(link, canvasId, filename) {
+  link.href = document.getElementById(canvasId).toDataURL()
+  link.download = filename
+}
 
 $('#download').on('click', function () {
   downloadCanvas(this, 'myCanvas', 'test.png')
 })
 
-// function loadImages(sources, callback) {
-//   var images = {}
-//   var loadedImages = 0
-//   var numImages = 0
+function loadImages(sources, callback) {
+  var images = {}
+  var loadedImages = 0
+  var numImages = 0
 
-//   for (var src in sources) {
-//     numImages++
-//   }
-//   for (var src in sources) {
-//     images[src] = new Image()
-//     images[src].onload = function () {
-//       if (++loadedImages >= numImages) {
-//         callback(images)
-//       }
-//     }
-//     images[src].src = sources[src]
-//   }
-// }
+  for (var src in sources) {
+    numImages++
+  }
+  for (var src in sources) {
+    images[src] = new Image()
+    images[src].onload = function () {
+      if (++loadedImages >= numImages) {
+        callback(images)
+      }
+    }
+    images[src].src = sources[src]
+  }
+}
 
 $("input").on('dragenter', function (e) {
   $(".drop").css({
@@ -62,27 +60,28 @@ function handleFileSelect(evt) {
     if (!f.type.match('image.*')) {
       continue
     }
-    var reader = new FileReader()
-    reader.onload = (function (theFile) {
-      return function (e) {
-        var span = document.createElement('span')
-        span.innerHTML = ['<img class="thumb" src="', e.target.result,
-          '" title="', escape(theFile.name), '"/>'].join('')
-        document.getElementById('list').insertBefore(span, null)
-      }
-    })(f)
-    reader.readAsDataURL(f)
+
+    // var reader = new FileReader()
+    // reader.onload = (function (theFile) {
+    //   return function (e) {
+    //     var span = document.createElement('span')
+    //     span.innerHTML = ['<img class="thumb" src="', e.target.result,
+    //       '" title="', escape(theFile.name), '"/>'].join('')
+    //     document.getElementById('list').insertBefore(span, null)
+    //   }
+    // })(f)
+    // reader.readAsDataURL(f)
 
     var img = new Image
     img.onload = function () {
-      context.drawImage(img, 0, 0, 2000, 2000)
+      for (let j = 0; j < array.length; j++) {
+        loadImages(sources, function (images) {
+          context.drawImage(sources[j], 0, 0, 2000, 2000)
+          context.drawImage(img, 0, 0, 1000, 1000)
+        })
+      }
     }
     img.src = URL.createObjectURL(files[i])
-
-
-    // loadImages(sources, function (images) {
-    //   context.drawImage(img, 0, 0, 2000, 2000)
-    // })
   }
 }
 
