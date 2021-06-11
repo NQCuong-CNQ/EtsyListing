@@ -1,4 +1,4 @@
-
+var count = 0
 
 var sources = [
   '/img/mockup/mk1.jpg',
@@ -58,11 +58,14 @@ async function handleFileSelect(evt) {
   let files = evt.target.files
   let imgBackground
   let img
+  count = 0
+  
+  await createCanvas(files)
 
-  for (let i = 0, f; f = files[i]; i++) {
-    if (!f.type.match('image.*')) {
-      continue
-    }
+  // for (let i = 0, f; f = files[i]; i++) {
+  //   if (!f.type.match('image.*')) {
+  //     continue
+  //   }
 
     // let reader = new FileReader()
     // reader.onload = (function (theFile) {
@@ -74,33 +77,42 @@ async function handleFileSelect(evt) {
     //   }
     // })(f)
     // reader.readAsDataURL(f)
-    let location = 0
+    // 
+  // }
+}
 
-    for (let j = 0; j < sources.length; j++) {
-      imgBackground = new Image
-      imgBackground.src = sources[j]
-      await imgBackground.decode()
+async function createCanvas(files){
+  count++
+  let location = 0
 
-      $('#canvas-container').append(`
-        <canvas id="canvas${i + j}"></canvas>
-      `)
+  for (let j = 0; j < sources.length; j++) {
+    imgBackground = new Image
+    imgBackground.src = sources[j]
+    await imgBackground.decode()
 
-      var canvas = document.getElementById(`canvas${i + j}`)
-      canvas.width = imgBackground.naturalWidth
-      canvas.height = imgBackground.naturalHeight
-      canvas.style.height = "300px"
-      canvas.style.width = imgBackground.naturalWidth * 300 / imgBackground.naturalHeight
-      var context = canvas.getContext('2d')
+    $('#canvas-container').append(`
+      <canvas id="canvas${count + j}"></canvas>
+    `)
 
-      await context.drawImage(imgBackground, 0, 0, 2000, 2000)
+    var canvas = document.getElementById(`canvas${count + j}`)
+    canvas.width = imgBackground.naturalWidth
+    canvas.height = imgBackground.naturalHeight
+    canvas.style.height = "300px"
+    canvas.style.width = imgBackground.naturalWidth * 300 / imgBackground.naturalHeight
+    var context = canvas.getContext('2d')
 
-      img = new Image
-      img.src = URL.createObjectURL(files[i])
-      await img.decode()
-      await context.drawImage(img, 0, 0, 1000, 1000)
+    await context.drawImage(imgBackground, 0, 0, 2000, 2000)
 
-      location += 2000
-    }
+    img = new Image
+    img.src = URL.createObjectURL(files[count])
+    await img.decode()
+    await context.drawImage(img, 0, 0, 1000, 1000)
+
+    location += 2000
+  }
+
+  if(count < files.length){
+    createCanvas(files)
   }
 }
 
