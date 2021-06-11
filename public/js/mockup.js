@@ -61,24 +61,24 @@ function handleFileSelect(evt) {
       continue
     }
 
-    // var reader = new FileReader()
-    // reader.onload = (function (theFile) {
-    //   return function (e) {
-    //     var span = document.createElement('span')
-    //     span.innerHTML = ['<img class="thumb" src="', e.target.result,
-    //       '" title="', escape(theFile.name), '"/>'].join('')
-    //     document.getElementById('list').insertBefore(span, null)
-    //   }
-    // })(f)
-    // reader.readAsDataURL(f)
+    var reader = new FileReader()
+    reader.onload = (function (theFile) {
+      return function (e) {
+        var span = document.createElement('span')
+        span.innerHTML = ['<img class="thumb" src="', e.target.result,
+          '" title="', escape(theFile.name), '"/>'].join('')
+        document.getElementById('list').insertBefore(span, null)
+      }
+    })(f)
+    reader.readAsDataURL(f)
 
     var img = new Image
     img.onload = function () {
       for (let j = 0; j < sources.length; j++) {
-        loadImages(sources[j], function (images) {
-          context.drawImage(images, 0, 0, 2000, 2000)
-          context.drawImage(img, 0, 0, 1000, 1000)
-        })
+        var imgBackground = new Image
+        imgBackground.src = '/img/mockup/mk1.jpg'
+        context.drawImage(imgBackground, 0, 0, 1000, 1000)
+        context.drawImage(img, 0, 0, 1000, 1000)
       }
     }
     img.src = URL.createObjectURL(files[i])
