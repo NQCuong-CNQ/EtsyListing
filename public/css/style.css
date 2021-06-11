@@ -629,3 +629,6 @@ canvas {
   width: 300px;
   height: 300px;
 }
+#canvas-container{
+  margin-top: 1rem;
+}
