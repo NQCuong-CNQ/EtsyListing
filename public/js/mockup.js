@@ -1,4 +1,4 @@
-var canvas = $('#myCanvas')
+var canvas = document.getElementById('myCanvas')
 canvas.width = canvas.height = 2000
 canvas.style.width = canvas.style.height = "2000px"
 var context = canvas.getContext('2d')
