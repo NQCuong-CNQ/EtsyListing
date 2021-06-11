@@ -80,10 +80,12 @@ async function createCanvas(files) {
     img = new Image
     img.src = URL.createObjectURL(files[count])
     await img.decode()
-    await context.drawImage(img, putLocation[j].mk1[0], putLocation[j].mk1[1], putLocation[j].mk1[3] - putLocation[j].mk1[0], putLocation[j].mk1[4] - putLocation[j].mk1[1])
+    await context.drawImage(img, putLocation.mk1[0], putLocation.mk1[1], putLocation.mk1[3] - putLocation.mk1[0], putLocation.mk1[4] - putLocation.mk1[1])
     location += canvas.width
     idNum++
   }
+
+  console.log(putLocation)
 
   if (count < files.length - 1) {
     count++
