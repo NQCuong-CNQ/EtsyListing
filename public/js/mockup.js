@@ -81,7 +81,6 @@ async function handleFileSelect(evt) {
 async function createCanvas(files){
   let imgBackground
   let img
-  count++
   let location = 0
 
   for (let j = 0; j < sources.length; j++) {
@@ -106,12 +105,13 @@ async function createCanvas(files){
     img.src = URL.createObjectURL(files[count])
     await img.decode()
     await context.drawImage(img, 0, 0, 1000, 1000)
-
     location += 2000
   }
 
   if(count < files.length){
-    createCanvas(files)
+    count++
+    await createCanvas(files)
+    return
   }
 }
 
