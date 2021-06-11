@@ -76,16 +76,20 @@ function handleFileSelect(evt) {
     reader.readAsDataURL(f)
 
     for (let j = 0; j < sources.length; j++) {
-      var img = new Image
+
       var imgBackground = new Image
       imgBackground.onload = function () {
         context.drawImage(imgBackground, 0, 0, 2000, 2000)
+
+        var img = new Image
+
         img.onload = function () {
           context.drawImage(img, 0, 0, 1000, 1000)
         }
         img.src = URL.createObjectURL(files[i])
       }
       imgBackground.src = '/img/mockup/mk1.jpg'
+
     }
   }
 }
