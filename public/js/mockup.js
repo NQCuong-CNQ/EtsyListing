@@ -77,7 +77,7 @@ function handleFileSelect(evt) {
       for (let j = 0; j < sources.length; j++) {
         var imgBackground = new Image
         imgBackground.src = '/img/mockup/mk1.jpg'
-        context.drawImage(imgBackground, 0, 0, 1000, 1000)
+        context.drawImage(imgBackground, 0, 0, 2000, 2000)
         context.drawImage(img, 0, 0, 1000, 1000)
       }
     }
