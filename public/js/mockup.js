@@ -17,11 +17,6 @@ var putLocation = {
   mk5: [197, 231, 1758, 1272],
 }
 
-console.log(putLocation)
-console.log(putLocation[`mk${1}`])
-console.log(putLocation[`mk${1}`][0])
-console.log(putLocation[`mk${1}`]['0'])
-
 function downloadCanvas(link, canvasId, filename) {
   link.href = document.getElementById(canvasId).toDataURL()
   link.download = filename
@@ -63,6 +58,10 @@ async function createCanvas(files) {
   let location = 0
   let canvas
   let context
+  let startX = 0
+  let startY = 0
+  let width = 0
+  let height = 0
 
   for (let j = 0; j < sources.length; j++) {
     imgBackground = new Image
@@ -85,7 +84,12 @@ async function createCanvas(files) {
     img = new Image
     img.src = URL.createObjectURL(files[count])
     await img.decode()
-    await context.drawImage(img, putLocation[`mk${j}`][0], putLocation[`mk${j}`][1], putLocation[`mk${j}`][3] - putLocation[`mk${j}`][0], putLocation[`mk${j}`][4] - putLocation[`mk${j}`][1])
+
+    startX = putLocation[`mk${j + 1}`][0]
+    startY = putLocation[`mk${j + 1}`][1]
+    width = putLocation[`mk${j + 1}`][3] - putLocation[`mk${j + 1}`][0]
+    height = putLocation[`mk${j + 1}`][4] - putLocation[`mk${j + 1}`][1]
+    await context.drawImage(img, startX, startY, width, height)
     location += canvas.width
     idNum++
   }
