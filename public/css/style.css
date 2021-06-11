@@ -588,10 +588,6 @@ html {
 
 .drop .cont .browse {
   padding: 8px 16px;
-  transition: 0.2s;
-}
-
-.drop .cont .browse:hover {
   background-color: #0081ff;
   color: white;
 }
