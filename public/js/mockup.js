@@ -9,12 +9,20 @@ var sources = [
   '/img/mockup/mk5.jpg',
 ]
 
+var putLocation = {
+  mk1: ['197', '231', '1758', '1272'],
+  mk2: ['197', '231', '1758', '1272'],
+  mk3: ['197', '231', '1758', '1272'],
+  mk4: ['197', '231', '1758', '1272'],
+  mk5: ['197', '231', '1758', '1272'],
+}
+
 function downloadCanvas(link, canvasId, filename) {
   link.href = document.getElementById(canvasId).toDataURL()
   link.download = filename
 }
 
-$('#download').on('click', function () {
+$('#download-all').on('click', function () {
   downloadCanvas(this, 'myCanvas', 'test.png')
 })
 
@@ -40,14 +48,11 @@ async function handleFileSelect(evt) {
   let files = evt.target.files
   count = 0
   idNum = 0
+  $('#canvas-container').empty()
   await createCanvas(files)
-  console.log('end end')
-  
 }
 
 async function createCanvas(files) {
-  console.log('files.length'+ files.length)
-  console.log('count'+count)
   let imgBackground
   let img
   let location = 0
@@ -55,8 +60,6 @@ async function createCanvas(files) {
   let context
 
   for (let j = 0; j < sources.length; j++) {
-    console.log('j'+j)
-    console.log('idNum'+idNum)
     imgBackground = new Image
     imgBackground.src = sources[j]
     await imgBackground.decode()
@@ -77,18 +80,16 @@ async function createCanvas(files) {
     img = new Image
     img.src = URL.createObjectURL(files[count])
     await img.decode()
-    await context.drawImage(img, 0, 0, 500, 500)
+    await context.drawImage(img, putLocation[j].mk1[0], putLocation[j].mk1[1], putLocation[j].mk1[3] - putLocation[j].mk1[0], putLocation[j].mk1[4] - putLocation[j].mk1[1])
     location += canvas.width
     idNum++
   }
 
-  if (count < files.length) {
-    console.log('count up')
+  if (count < files.length - 1) {
     count++
     await createCanvas(files)
     return
   }
-  console.log('end')
 }
 
 $('#files').on('change', handleFileSelect)
