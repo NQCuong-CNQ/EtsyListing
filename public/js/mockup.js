@@ -108,10 +108,10 @@ async function createCanvas(files) {
     await img.decode()
     await context.drawImage(img, 0, 0, 1000, 1000)
     location += 2000
+    idNum++
   }
 
   if (count < files.length) {
-    idNum++
     count++
     await createCanvas(files)
     return
