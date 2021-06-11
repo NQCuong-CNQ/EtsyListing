@@ -76,9 +76,10 @@ function handleFileSelect(evt) {
     })(f)
     reader.readAsDataURL(f)
     // console.log(files[i])
-    // console.log(reader)
-
-    context.drawImage(reader.result, 0, 0, 2000, 2000)
+    // console.log(reader.result)
+    var img = new Image
+    img.src = URL.createObjectURL(files[i])
+    context.drawImage(img, 0, 0, 2000, 2000)
   }
 }
 
