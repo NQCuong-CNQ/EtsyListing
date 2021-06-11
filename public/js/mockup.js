@@ -85,16 +85,17 @@ async function createCanvas(files) {
     img.src = URL.createObjectURL(files[count])
     await img.decode()
 
-    startX = putLocation[`mk${j + 1}`][0]
-    startY = putLocation[`mk${j + 1}`][1]
-    width = putLocation[`mk${j + 1}`][3] - putLocation[`mk${j + 1}`][0]
-    height = putLocation[`mk${j + 1}`][4] - putLocation[`mk${j + 1}`][1]
+    startX = parseInt(putLocation[`mk${j + 1}`][0])
+    startY = parseInt(putLocation[`mk${j + 1}`][1])
+    width = parseInt(putLocation[`mk${j + 1}`][3] - putLocation[`mk${j + 1}`][0])
+    height = parseInt(putLocation[`mk${j + 1}`][4] - putLocation[`mk${j + 1}`][1])
+
+  console.log(startX + '/ ' +startY+ '/ ' +width+ '/ ' +height)
+    
     await context.drawImage(img, startX, startY, width, height)
     location += canvas.width
     idNum++
   }
-
-  console.log(putLocation)
 
   if (count < files.length - 1) {
     count++
