@@ -75,8 +75,8 @@ function handleFileSelect(evt) {
       }
     })(f)
     reader.readAsDataURL(f)
-
-    context.drawImage(files[i], 0, 0, 2000, 2000)
+    console.log(files[i])
+    // context.drawImage(files[i], 0, 0, 2000, 2000)
   }
 }
 
