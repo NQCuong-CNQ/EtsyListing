@@ -19,24 +19,24 @@ $('#download').on('click', function () {
   downloadCanvas(this, 'myCanvas', 'test.png')
 })
 
-function loadImages(sources, callback) {
-  var images = {}
-  var loadedImages = 0
-  var numImages = 0
+// function loadImages(sources, callback) {
+//   var images = {}
+//   var loadedImages = 0
+//   var numImages = 0
 
-  for (var src in sources) {
-    numImages++
-  }
-  for (var src in sources) {
-    images[src] = new Image()
-    images[src].onload = function () {
-      if (++loadedImages >= numImages) {
-        callback(images)
-      }
-    }
-    images[src].src = sources[src]
-  }
-}
+//   for (var src in sources) {
+//     numImages++
+//   }
+//   for (var src in sources) {
+//     images[src] = new Image()
+//     images[src].onload = function () {
+//       if (++loadedImages >= numImages) {
+//         callback(images)
+//       }
+//     }
+//     images[src].src = sources[src]
+//   }
+// }
 
 $("input").on('dragenter', function (e) {
   $(".drop").css({
@@ -74,11 +74,15 @@ function handleFileSelect(evt) {
     reader.readAsDataURL(f)
 
     var img = new Image
+    img.onload = function () {
+      context.drawImage(img, 0, 0, 2000, 2000)
+    }
     img.src = URL.createObjectURL(files[i])
 
-    loadImages(sources, function (images) {
-      context.drawImage(img, 0, 0, 2000, 2000)
-    })
+
+    // loadImages(sources, function (images) {
+    //   context.drawImage(img, 0, 0, 2000, 2000)
+    // })
   }
 }
 
