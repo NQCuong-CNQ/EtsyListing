@@ -84,6 +84,8 @@ async function createCanvas(files) {
   let imgBackground
   let img
   let location = 0
+  let canvas
+  let context
 
   for (let j = 0; j < sources.length; j++) {
     imgBackground = new Image
@@ -94,20 +96,20 @@ async function createCanvas(files) {
       <canvas id="canvas${idNum}"></canvas>
     `)
 
-    var canvas = document.getElementById(`canvas${idNum}`)
+    canvas = document.getElementById(`canvas${idNum}`)
     canvas.width = imgBackground.naturalWidth
     canvas.height = imgBackground.naturalHeight
     canvas.style.height = "300px"
     canvas.style.width = imgBackground.naturalWidth * 300 / imgBackground.naturalHeight
-    var context = canvas.getContext('2d')
+    context = canvas.getContext('2d')
 
-    await context.drawImage(imgBackground, 0, 0, 2000, 2000)
+    await context.drawImage(imgBackground, 0, 0, canvas.width, canvas.height)
 
     img = new Image
     img.src = URL.createObjectURL(files[count])
     await img.decode()
-    await context.drawImage(img, 0, 0, 1000, 1000)
-    location += 2000
+    await context.drawImage(img, 0, 0, 500, 500)
+    location += canvas.width
     idNum++
   }
 
