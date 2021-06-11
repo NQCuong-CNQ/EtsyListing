@@ -17,6 +17,10 @@ var putLocation = {
   mk5: [197, 231, 1758, 1272],
 }
 
+console.log(putLocation)
+console.log(putLocation[`mk${1}`])
+console.log(putLocation[`mk${j}`][0])
+
 function downloadCanvas(link, canvasId, filename) {
   link.href = document.getElementById(canvasId).toDataURL()
   link.download = filename
