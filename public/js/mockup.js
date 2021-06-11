@@ -1,4 +1,4 @@
-var canvas = document.getElementById('myCanvas')
+var canvas = $('#myCanvas')
 canvas.width = canvas.height = 2000
 canvas.style.width = canvas.style.height = "2000px"
 var context = canvas.getContext('2d')
@@ -18,9 +18,9 @@ function downloadCanvas(link, canvasId, filename) {
   link.download = filename
 }
 
-document.getElementById('download').addEventListener('click', function () {
+$('#download').on('click', function () {
   downloadCanvas(this, 'myCanvas', 'test.png')
-}, false)
+})
 
 function loadImages(sources, callback) {
   var images = {}
@@ -41,8 +41,7 @@ function loadImages(sources, callback) {
   }
 }
 
-var drop = $("input")
-drop.on('dragenter', function (e) {
+$("input").on('dragenter', function (e) {
   $(".drop").css({
     "border": "4px dashed #09f",
     "background": "rgba(0, 153, 255, .05)"
@@ -76,9 +75,9 @@ function handleFileSelect(evt) {
       }
     })(f)
     reader.readAsDataURL(f)
-  }
 
-  alert(files.length)
+    context.drawImage(files[i], 0, 0, 2000, 2000)
+  }
 }
 
 $('#files').on('change', handleFileSelect)
