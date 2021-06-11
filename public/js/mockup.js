@@ -18,25 +18,6 @@ $('#download').on('click', function () {
   downloadCanvas(this, 'myCanvas', 'test.png')
 })
 
-// function loadImages(sources, callback) {
-//   var images = {}
-//   var loadedImages = 0
-//   var numImages = 0
-
-//   for (var src in sources) {
-//     numImages++
-//   }
-//   for (var src in sources) {
-//     images[src] = new Image()
-//     images[src].onload = function () {
-//       if (++loadedImages >= numImages) {
-//         callback(images)
-//       }
-//     }
-//     images[src].src = sources[src]
-//   }
-// }
-
 $("input").on('dragenter', function (e) {
   $(".drop").css({
     "border": "4px dashed #09f",
@@ -60,27 +41,10 @@ async function handleFileSelect(evt) {
   count = 0
   idNum = 0
   await createCanvas(files)
-
-  // for (let i = 0, f; f = files[i]; i++) {
-  //   if (!f.type.match('image.*')) {
-  //     continue
-  //   }
-
-  // let reader = new FileReader()
-  // reader.onload = (function (theFile) {
-  //   return function (e) {
-  //     let span = document.createElement('span')
-  //     span.innerHTML = ['<img class="thumb" src="', e.target.result,
-  //       '" title="', escape(theFile.name), '"/>'].join('')
-  //     document.getElementById('list').insertBefore(span, null)
-  //   }
-  // })(f)
-  // reader.readAsDataURL(f)
-  // 
-  // }
 }
 
 async function createCanvas(files) {
+  console.log(count)
   let imgBackground
   let img
   let location = 0
@@ -88,6 +52,7 @@ async function createCanvas(files) {
   let context
 
   for (let j = 0; j < sources.length; j++) {
+    console.log(idNum)
     imgBackground = new Image
     imgBackground.src = sources[j]
     await imgBackground.decode()
