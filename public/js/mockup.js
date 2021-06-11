@@ -75,8 +75,8 @@ function handleFileSelect(evt) {
     var img = new Image
     img.onload = function () {
       for (let j = 0; j < sources.length; j++) {
-        loadImages(sources, function (images) {
-          context.drawImage(sources[j], 0, 0, 2000, 2000)
+        loadImages(sources[j], function (images) {
+          context.drawImage(images, 0, 0, 2000, 2000)
           context.drawImage(img, 0, 0, 1000, 1000)
         })
       }
