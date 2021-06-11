@@ -46,37 +46,37 @@ drop.on('dragenter', function (e) {
   $(".drop").css({
     "border": "4px dashed #09f",
     "background": "rgba(0, 153, 255, .05)"
-  });
+  })
   $(".cont").css({
     "color": "#09f"
-  });
+  })
 }).on('dragleave dragend mouseout drop', function (e) {
   $(".drop").css({
     "border": "3px dashed #DADFE3",
     "background": "transparent"
-  });
+  })
   $(".cont").css({
     "color": "#8E99A5"
-  });
-});
+  })
+})
 
 function handleFileSelect(evt) {
-  var files = evt.target.files; // FileList object
+  var files = evt.target.files
   for (var i = 0, f; f = files[i]; i++) {
     if (!f.type.match('image.*')) {
-      continue;
+      continue
     }
-    var reader = new FileReader();
+    var reader = new FileReader()
     reader.onload = (function (theFile) {
       return function (e) {
-        var span = document.createElement('span');
+        var span = document.createElement('span')
         span.innerHTML = ['<img class="thumb" src="', e.target.result,
-          '" title="', escape(theFile.name), '"/>'].join('');
-        document.getElementById('list').insertBefore(span, null);
+          '" title="', escape(theFile.name), '"/>'].join('')
+        document.getElementById('list').insertBefore(span, null)
       };
-    })(f);
-    reader.readAsDataURL(f);
+    })(f)
+    reader.readAsDataURL(f)
   }
 }
 
-$('#files').change(handleFileSelect);
+$('#files').change(handleFileSelect)
