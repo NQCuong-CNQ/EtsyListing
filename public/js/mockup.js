@@ -80,20 +80,18 @@ async function handleFileSelect(evt) {
       imgBackground = new Image
       imgBackground.src = sources[j]
       await imgBackground.decode()
-      console.log(imgBackground.width)
-      console.log(imgBackground.naturalWidth)
-      console.log(imgBackground.width())
 
       $('#canvas-container').append(`
         <canvas id="canvas${i + j}"></canvas>
       `)
 
       var canvas = document.getElementById(`canvas${i + j}`)
-      canvas.width = canvas.height = 2000
-      // canvas.style.width = canvas.style.height = "300px"
+      canvas.width = imgBackground.naturalWidth
+      canvas.height = imgBackground.naturalHeight
+      canvas.style.height = "300px"
+      canvas.style.width = imgBackground.naturalWidth * 300 / imgBackground.naturalHeight
       var context = canvas.getContext('2d')
 
-      
       await context.drawImage(imgBackground, 0, 0, 2000, 2000)
 
       img = new Image

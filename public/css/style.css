@@ -626,8 +626,6 @@ html {
 
 canvas {
   border: 1px solid #d3d3d3;
-  width: 300px;
-  height: 300px;
 }
 #canvas-container{
   margin-top: 1rem;
