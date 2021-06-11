@@ -57,7 +57,7 @@ $("input").on('dragenter', function (e) {
   })
 })
 
-function handleFileSelect(evt) {
+async function handleFileSelect(evt) {
   var files = evt.target.files
   for (var i = 0, f; f = files[i]; i++) {
     if (!f.type.match('image.*')) {
@@ -78,16 +78,21 @@ function handleFileSelect(evt) {
     for (let j = 0; j < sources.length; j++) {
 
       var imgBackground = new Image
-      imgBackground.onload = function () {
-        context.drawImage(imgBackground, 0, 0, 2000, 2000)
-      }
+      // imgBackground.onload = function () {
+        
+      // }
       imgBackground.src = '/img/mockup/mk1.jpg'
+      await imgBackground.decode()
+      context.drawImage(imgBackground, 0, 0, 2000, 2000)
+
 
       var img = new Image
-      img.onload = function () {
-        context.drawImage(img, 0, 0, 1000, 1000)
-      }
+      // img.onload = function () {
+      //   context.drawImage(img, 0, 0, 1000, 1000)
+      // }
       img.src = URL.createObjectURL(files[i])
+      await img.decode()
+      context.drawImage(img, 0, 0, 1000, 1000)
     }
   }
 }
