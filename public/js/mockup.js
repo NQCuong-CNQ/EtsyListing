@@ -19,7 +19,8 @@ var putLocation = {
 
 console.log(putLocation)
 console.log(putLocation[`mk${1}`])
-console.log(putLocation[`mk${j}`][0])
+console.log(putLocation[`mk${1}`][0])
+console.log(putLocation[`mk${1}`]['0'])
 
 function downloadCanvas(link, canvasId, filename) {
   link.href = document.getElementById(canvasId).toDataURL()
