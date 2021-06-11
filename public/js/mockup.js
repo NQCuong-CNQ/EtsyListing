@@ -80,13 +80,12 @@ function handleFileSelect(evt) {
       var imgBackground = new Image
       imgBackground.onload = function () {
         context.drawImage(imgBackground, 0, 0, 2000, 2000)
+        img.onload = function () {
+          context.drawImage(img, 0, 0, 1000, 1000)
+        }
+        img.src = URL.createObjectURL(files[i])
       }
       imgBackground.src = '/img/mockup/mk1.jpg'
-
-      img.onload = function () {
-        context.drawImage(img, 0, 0, 1000, 1000)
-      }
-      img.src = URL.createObjectURL(files[i])
     }
   }
 }
