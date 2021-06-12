@@ -74,13 +74,6 @@ async function createCanvas(files) {
 
   img = new Image
   img.src = URL.createObjectURL(files[count])
-  img.setShadow({
-    color: '#888888',
-    blur: 70,
-    offsetX: 45,
-    offsetY: 45,
-    opacity: 0.8
-})
   await img.decode()
 
   if (img.naturalWidth > img.naturalHeight) {
@@ -134,6 +127,10 @@ async function createCanvas(files) {
       width = parseInt(putLocationVer[`mk${j + 1}`][2] - putLocationVer[`mk${j + 1}`][0])
       height = parseInt(putLocationVer[`mk${j + 1}`][3] - putLocationVer[`mk${j + 1}`][1])
 
+      context.shadowOffsetX = 0;
+context.shadowOffsetY = 0;
+context.shadowBlur = 10;
+context.shadowColor = 'rgba(30,30,30, 0.4)';
       await context.drawImage(img, startX, startY, width, height)
       idNum++
     }
