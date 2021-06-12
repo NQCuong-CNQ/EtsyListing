@@ -1,20 +1,26 @@
 var count = 0
 var idNum = 0
 
-var sources = [
+var srcBackgroundHor = [
   '/img/mockup/mk1.jpg',
   '/img/mockup/mk2.jpg',
+]
+
+var putLocationHor = {
+  mk1: [197, 231, 1759, 1272],
+  mk2: [81, 109, 923, 669],
+}
+
+var srcBackgroundVer = [
   '/img/mockup/mk3.jpg',
   '/img/mockup/mk4.jpg',
   '/img/mockup/mk5.jpg',
 ]
 
-var putLocation = {
-  mk1: [197, 231, 1759, 1272],
-  mk2: [81, 109, 923, 669],
-  mk3: [147, 80, 677, 862],
-  mk4: [206, 34, 636, 667],
-  mk5: [233, 26, 608, 578],
+var putLocationVer = {
+  mk1: [147, 80, 678, 862],
+  mk2: [206, 34, 637, 666],
+  mk3: [233, 26, 608, 578],
 }
 
 function downloadCanvas(link, canvasId, filename) {
@@ -55,7 +61,6 @@ async function handleFileSelect(evt) {
 async function createCanvas(files) {
   let imgBackground
   let img
-  let location = 0
   let canvas
   let context
   let startX = 0
@@ -63,36 +68,64 @@ async function createCanvas(files) {
   let width = 0
   let height = 0
 
-  for (let j = 0; j < sources.length; j++) {
-    imgBackground = new Image
-    imgBackground.src = sources[j]
-    await imgBackground.decode()
+  img = new Image
+  img.src = URL.createObjectURL(files[count])
+  await img.decode()
+  
+  if (img.naturalWidth > img.naturalHeight) {
+    for (let j = 0; j < srcBackgroundHor.length; j++) {
+      imgBackground = new Image
+      imgBackground.src = sources[j]
+      await imgBackground.decode()
 
-    $('#canvas-container').append(`
-      <canvas id="canvas${idNum}"></canvas>
-    `)
+      $('#canvas-container').append(`
+        <canvas id="canvas${idNum}"></canvas>
+      `)
 
-    canvas = document.getElementById(`canvas${idNum}`)
-    canvas.width = imgBackground.naturalWidth
-    canvas.height = imgBackground.naturalHeight
-    canvas.style.height = "300px"
-    canvas.style.width = imgBackground.naturalWidth * 300 / imgBackground.naturalHeight
-    context = canvas.getContext('2d')
+      canvas = document.getElementById(`canvas${idNum}`)
+      canvas.width = imgBackground.naturalWidth
+      canvas.height = imgBackground.naturalHeight
+      canvas.style.height = "300px"
+      canvas.style.width = imgBackground.naturalWidth * 300 / imgBackground.naturalHeight
+      context = canvas.getContext('2d')
 
-    await context.drawImage(imgBackground, 0, 0, canvas.width, canvas.height)
+      await context.drawImage(imgBackground, 0, 0, canvas.width, canvas.height)
 
-    img = new Image
-    img.src = URL.createObjectURL(files[count])
-    await img.decode()
+      startX = parseInt(putLocationHor[`mk${j + 1}`][0])
+      startY = parseInt(putLocationHor[`mk${j + 1}`][1])
+      width = parseInt(putLocationHor[`mk${j + 1}`][2] - putLocationHor[`mk${j + 1}`][0])
+      height = parseInt(putLocationHor[`mk${j + 1}`][3] - putLocationHor[`mk${j + 1}`][1])
 
-    startX = parseInt(putLocation[`mk${j + 1}`][0])
-    startY = parseInt(putLocation[`mk${j + 1}`][1])
-    width = parseInt(putLocation[`mk${j + 1}`][2] - putLocation[`mk${j + 1}`][0])
-    height = parseInt(putLocation[`mk${j + 1}`][3] - putLocation[`mk${j + 1}`][1])
+      await context.drawImage(img, startX, startY, width, height)
+      idNum++
+    }
+  } else if (img.naturalWidth < img.naturalHeight) {
+    for (let j = 0; j < srcBackgroundVer.length; j++) {
+      imgBackground = new Image
+      imgBackground.src = sources[j]
+      await imgBackground.decode()
 
-    await context.drawImage(img, startX, startY, width, height)
-    location += canvas.width
-    idNum++
+      $('#canvas-container').append(`
+        <canvas id="canvas${idNum}"></canvas>
+      `)
+
+      canvas = document.getElementById(`canvas${idNum}`)
+      canvas.width = imgBackground.naturalWidth
+      canvas.height = imgBackground.naturalHeight
+      canvas.style.height = "300px"
+      canvas.style.width = imgBackground.naturalWidth * 300 / imgBackground.naturalHeight
+      context = canvas.getContext('2d')
+
+      await context.drawImage(imgBackground, 0, 0, canvas.width, canvas.height)
+
+      startX = parseInt(putLocationVer[`mk${j + 1}`][0])
+      startY = parseInt(putLocationVer[`mk${j + 1}`][1])
+      width = parseInt(putLocationVer[`mk${j + 1}`][2] - putLocationVer[`mk${j + 1}`][0])
+      height = parseInt(putLocationVer[`mk${j + 1}`][3] - putLocationVer[`mk${j + 1}`][1])
+
+      await context.drawImage(img, startX, startY, width, height)
+      idNum++
+    }
   }
 
   if (count < files.length - 1) {
