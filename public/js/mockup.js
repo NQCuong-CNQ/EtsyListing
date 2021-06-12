@@ -71,11 +71,11 @@ async function createCanvas(files) {
   img = new Image
   img.src = URL.createObjectURL(files[count])
   await img.decode()
-  
+
   if (img.naturalWidth > img.naturalHeight) {
     for (let j = 0; j < srcBackgroundHor.length; j++) {
       imgBackground = new Image
-      imgBackground.src = sources[j]
+      imgBackground.src = srcBackgroundHor[j]
       await imgBackground.decode()
 
       $('#canvas-container').append(`
@@ -102,7 +102,7 @@ async function createCanvas(files) {
   } else if (img.naturalWidth < img.naturalHeight) {
     for (let j = 0; j < srcBackgroundVer.length; j++) {
       imgBackground = new Image
-      imgBackground.src = sources[j]
+      imgBackground.src = srcBackgroundVer[j]
       await imgBackground.decode()
 
       $('#canvas-container').append(`
