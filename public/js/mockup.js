@@ -142,7 +142,8 @@ function downloadCanvas(canvasId, filename) {
   var aDownloadLink = document.createElement('a')
   aDownloadLink.download = filename
   aDownloadLink.href = document.getElementById(canvasId).toDataURL()
-  aDownloadLink.click()
+  console.log(aDownloadLink.href)
+  // aDownloadLink.click()
 }
 
 $('#download-all').on('click', function () {
