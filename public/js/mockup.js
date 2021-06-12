@@ -127,10 +127,10 @@ async function createCanvas(files) {
       width = parseInt(putLocationVer[`mk${j + 1}`][2] - putLocationVer[`mk${j + 1}`][0])
       height = parseInt(putLocationVer[`mk${j + 1}`][3] - putLocationVer[`mk${j + 1}`][1])
 
-      context.shadowOffsetX = 0;
-context.shadowOffsetY = 0;
+      context.shadowOffsetX = 10;
+context.shadowOffsetY = 10;
 context.shadowBlur = 10;
-context.shadowColor = 'rgba(30,30,30, 0.4)';
+context.shadowColor = 'rgba(25, 24, 23, 1)';
       await context.drawImage(img, startX, startY, width, height)
       idNum++
     }
