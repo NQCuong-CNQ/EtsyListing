@@ -90,8 +90,6 @@ async function createCanvas(files) {
     width = parseInt(putLocation[`mk${j + 1}`][2] - putLocation[`mk${j + 1}`][0])
     height = parseInt(putLocation[`mk${j + 1}`][3] - putLocation[`mk${j + 1}`][1])
 
-  console.log(startX + '/ ' +startY+ '/ ' +width+ '/ ' +height)
-    
     await context.drawImage(img, startX, startY, width, height)
     location += canvas.width
     idNum++

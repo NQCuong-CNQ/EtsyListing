@@ -75,7 +75,7 @@ socket.on("track-order-step4", async function (name) {
             numCarrier = $('[htmlfor="Select delivery company..."]').val()
             nameCarrier = $(`[htmlfor="Select delivery company..."] option[value="${numCarrier}"]`).text()
         }
-        
+
         if (nameCarrier === 'Other' || nameCarrier == '') {
             nameCarrier = $('input[placeholder="Shipping carrier"]').val()
             if (nameCarrier === undefined || nameCarrier == '') {
@@ -86,7 +86,7 @@ socket.on("track-order-step4", async function (name) {
             }
         }
 
-        if(nameCarrier == 'FedEx'){
+        if (nameCarrier == 'FedEx') {
             return
         }
 
@@ -141,6 +141,12 @@ async function addTrackingAction(id, number) {
     trackData['name'] = shopName
     trackData['id'] = id
     trackData['number_tracking'] = number
+
+    let findQuery = 0
+    if (document.querySelector('html').innerText.indexOf('item purchased') == -1 && document.querySelector('html').innerText.indexOf('items purchased') != -1) {
+        findQuery = 1
+    }
+    trackData['find_query'] = findQuery
 
     socket.emit("track-order-step1", trackData)
 }

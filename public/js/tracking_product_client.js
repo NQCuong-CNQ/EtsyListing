@@ -18,6 +18,80 @@ var dataOriginal = []
 var isGettingData = true
 var chart
 
+var dataSelect = [
+  {
+    id: "Father's Day",
+    text: "Father's Day"
+  },
+  {
+    id: "Pride Month",
+    text: "Pride Month"
+  },
+  {
+    id: "Independence Day",
+    text: "Independence Day"
+  },
+  {
+    id: "Canvas",
+    text: "Canvas"
+  },
+  {
+    id: "Art Print",
+    text: "Art Print"
+  },
+  {
+    id: "Shirt",
+    text: "Shirt"
+  },
+  {
+    id: "Mug",
+    text: "Mug"
+  },
+  {
+    id: "Blanket",
+    text: "Blanket"
+  },
+  {
+    id: "Mother's Day",
+    text: "Mother's Day"
+  },
+  {
+    id: "Valentine's Day",
+    text: "Valentine's Day"
+  },
+  {
+    id: "Patrick's Day",
+    text: "Patrick's Day"
+  },
+  {
+    id: "Wedding's Day",
+    text: "Wedding's Day"
+  },
+  {
+    id: "New Year's Day",
+    text: "New Year's Day"
+  },
+  {
+    id: "Memorial Day",
+    text: "Memorial Day"
+  },
+  {
+    id: "Thanksgiving",
+    text: "Thanksgiving"
+  },
+  {
+    id: "Christmas",
+    text: "Christmas"
+  },
+  {
+    id: "Halloween",
+    text: "Halloween"
+  },
+  {
+    id: "Personalize",
+    text: "Personalize"
+  }
+]
 /* ------------------------------------------------MAIN SECTION------------------------------------------------ */
 
 // $('#pod-filter-listing').on('click', async function () {
@@ -530,80 +604,6 @@ $('#find-product-by-keyword').on('keypress', function (e) {
   }
 })
 
-var dataSelect = [
-  {
-    id: "Father's Day",
-    text: "Father's Day"
-  },
-  {
-    id: "Pride Month",
-    text: "Pride Month"
-  },
-  {
-    id: "Independence Day",
-    text: "Independence Day"
-  },
-  {
-    id: "Canvas",
-    text: "Canvas"
-  },
-  {
-    id: "Art Print",
-    text: "Art Print"
-  },
-  {
-    id: "Shirt",
-    text: "Shirt"
-  },
-  {
-    id: "Mug",
-    text: "Mug"
-  },
-  {
-    id: "Blanket",
-    text: "Blanket"
-  },
-  {
-    id: "Mother's Day",
-    text: "Mother's Day"
-  },
-  {
-    id: "Valentine's Day",
-    text: "Valentine's Day"
-  },
-  {
-    id: "Patrick's Day",
-    text: "Patrick's Day"
-  },
-  {
-    id: "Wedding's Day",
-    text: "Wedding's Day"
-  },
-  {
-    id: "New Year's Day",
-    text: "New Year's Day"
-  },
-  {
-    id: "Memorial Day",
-    text: "Memorial Day"
-  },
-  {
-    id: "Thanksgiving",
-    text: "Thanksgiving"
-  },
-  {
-    id: "Christmas",
-    text: "Christmas"
-  },
-  {
-    id: "Halloween",
-    text: "Halloween"
-  },
-  {
-    id: "Personalize",
-    text: "Personalize"
-  }
-]
 
 $('#find-product-by-keyword').select2({
   placeholder: "Keyword",
