@@ -55,6 +55,10 @@ async function handleFileSelect(evt) {
   count = 0
   idNum = 0
   $('#canvas-container').empty()
+
+  toastr.clear()
+  toastr.info('Rendering Mockup...')
+
   await createCanvas(files)
 }
 
@@ -70,6 +74,13 @@ async function createCanvas(files) {
 
   img = new Image
   img.src = URL.createObjectURL(files[count])
+  img.setShadow({
+    color: '#888888',
+    blur: 70,
+    offsetX: 45,
+    offsetY: 45,
+    opacity: 0.8
+})
   await img.decode()
 
   if (img.naturalWidth > img.naturalHeight) {
@@ -133,6 +144,8 @@ async function createCanvas(files) {
     await createCanvas(files)
     return
   }
+  toastr.clear()
+  toastr.success('Complete !')
 }
 
 $('#files').on('change', handleFileSelect)
