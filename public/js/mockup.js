@@ -139,6 +139,9 @@ async function createCanvas(files) {
 $('#files').on('change', handleFileSelect)
 
 function downloadCanvas(link, canvasId, filename) {
+  console.log(this)
+  console.log(canvasId)
+  console.log(filename)
   link.href = document.getElementById(canvasId).toDataURL()
   link.download = filename
 }
