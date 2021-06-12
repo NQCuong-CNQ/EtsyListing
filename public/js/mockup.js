@@ -23,15 +23,6 @@ var putLocationVer = {
   mk3: [233, 26, 608, 578],
 }
 
-function downloadCanvas(link, canvasId, filename) {
-  link.href = document.getElementById(canvasId).toDataURL()
-  link.download = filename
-}
-
-$('#download-all').on('click', function () {
-  downloadCanvas(this, 'myCanvas', 'test.png')
-})
-
 $("input").on('dragenter', function (e) {
   $(".drop").css({
     "border": "4px dashed #09f",
@@ -127,10 +118,10 @@ async function createCanvas(files) {
       width = parseInt(putLocationVer[`mk${j + 1}`][2] - putLocationVer[`mk${j + 1}`][0])
       height = parseInt(putLocationVer[`mk${j + 1}`][3] - putLocationVer[`mk${j + 1}`][1])
 
-      context.shadowOffsetX = 10;
-context.shadowOffsetY = 10;
-context.shadowBlur = 10;
-context.shadowColor = 'rgba(25, 24, 23, 1)';
+      // context.shadowOffsetX = 10
+      // context.shadowOffsetY = 10
+      // context.shadowBlur = 10
+      // context.shadowColor = 'rgba(25, 24, 23, 1)'
       await context.drawImage(img, startX, startY, width, height)
       idNum++
     }
@@ -146,3 +137,14 @@ context.shadowColor = 'rgba(25, 24, 23, 1)';
 }
 
 $('#files').on('change', handleFileSelect)
+
+function downloadCanvas(link, canvasId, filename) {
+  link.href = document.getElementById(canvasId).toDataURL()
+  link.download = filename
+}
+
+$('#download-all').on('click', function () {
+  for (let i = 0; i < idNum; i++) {
+    downloadCanvas(this, `canvas${i}`, `${i}.jpg`)
+  }
+})
