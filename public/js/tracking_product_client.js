@@ -859,7 +859,7 @@ function searchByLevelCate(key, data) {
       if (formatForSearch(data[i].title).indexOf(key[j]) != -1) {
         searchData.push(data[i])
       }
-      if (formatForSearch(data[i].taxonomy_path[data[i].taxonomy_path.length - 1]).indexOf(key[j]) != -1) {
+      else if (formatForSearch(data[i].taxonomy_path[data[i].taxonomy_path.length - 1]).indexOf(key[j]) != -1) {
         searchData.push(data[i])
       }
     }

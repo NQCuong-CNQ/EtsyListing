@@ -49,7 +49,6 @@ async function handleFileSelect(evt) {
 
   toastr.clear()
   toastr.info('Rendering Mockup...')
-
   await createCanvas(files)
 }
 
@@ -101,6 +100,7 @@ async function createCanvas(files) {
       await imgBackground.decode()
 
       $('#canvas-container').append(`
+        <div class='canvas-select-container'></div>
         <canvas id="canvas${idNum}"></canvas>
       `)
 
