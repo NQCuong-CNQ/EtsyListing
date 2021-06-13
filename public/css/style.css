@@ -639,3 +639,6 @@ html {
   position: absolute;
 }
 
+.select-all-label, #select-all-cb, #download-all{
+  display: none;
+}
