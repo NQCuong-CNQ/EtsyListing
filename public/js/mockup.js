@@ -1,5 +1,8 @@
 var count = 0
 var idNum = 0
+var progressRange = 0
+var progressVal = 0
+// var progressRange = 0
 
 var srcBackgroundHor = [
   '/img/mockup/mk1.jpg',
@@ -43,10 +46,26 @@ $("input").on('dragenter', function (e) {
 
 async function handleFileSelect(evt) {
   let files = evt.target.files
+  let img
   count = 0
   idNum = 0
+  progressRange = 0
+  progressVal = 0
+  let valuemax = 0
   $('.progress').css('display', 'block')
+  $('.progress').css('width', `0%`)
   $('#canvas-container').empty()
+
+  for (let i = 0; i < files.length; i++) {
+    img = new Image
+    img.src = URL.createObjectURL(files[i])
+    if (img.naturalWidth > img.naturalHeight) {
+      valuemax += srcBackgroundHor.length
+    } else {
+      valuemax += srcBackgroundVer.length
+    }
+  }
+  progressRange = (100 / valuemax)
 
   toastr.clear()
   toastr.info('Rendering Mockup...')
@@ -131,6 +150,9 @@ async function drawCanvas(srcBackground, putLocation, img) {
     // context.shadowColor = 'rgba(25, 24, 23, 1)'
     await context.drawImage(img, startX, startY, width, height)
     idNum++
+    progressVal += progressRange
+    $('.progress').css('width', `${progressVal}%`)
+    $('.progress-bar').text(`${Math.floor(progressVal)}%`)
   }
 }
 
@@ -146,7 +168,7 @@ function downloadCanvas(canvasId, filename) {
 $('#download-all').on('click', function () {
   let list = []
   list = listSelected()
-  if(checkSelectedAction(list) == 0){
+  if (checkSelectedAction(list) == 0) {
     toastr.clear()
     toastr.error('Nothing is selected')
     return
@@ -166,10 +188,10 @@ function onCheckCB(id) {
     $(`#select-${id}`).prop("checked", true)
   }
 
-  if(checkSelectedAction(listSelected())){
-    $(`#select-all-cb`).prop("checked", true)
-  } else {
+  if (checkSelectedAction(listSelected()) == 0) {
     $(`#select-all-cb`).prop("checked", false)
+  } else {
+    $(`#select-all-cb`).prop("checked", true)
   }
 }
 
