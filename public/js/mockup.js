@@ -50,83 +50,32 @@ async function handleFileSelect(evt) {
   toastr.clear()
   toastr.info('Rendering Mockup...')
   await createCanvas(files)
+
+  $('.select-all-label').css('display', 'block')
+  $('#select-all-cb').css('display', 'block')
+  $('#download-all').css('display', 'block')
 }
 
-async function createCanvas(files) {
-  let imgBackground
-  let img
-  let canvas
-  let context
-  let startX = 0
-  let startY = 0
-  let width = 0
-  let height = 0
+$('#select-all-cb').on('change', function () {
+  if ($(this).prop("checked")) {
+    for (let i = 0; i <= idNum; i++) {
+      $(`#select-${idNum}`).prop("checked", true)      
+    }
+  } else {
+    $(`#select-${idNum}`).prop("checked", false)
+  }
+})
 
+async function createCanvas(files) {
+  let img
   img = new Image
   img.src = URL.createObjectURL(files[count])
   await img.decode()
 
   if (img.naturalWidth > img.naturalHeight) {
-    for (let j = 0; j < srcBackgroundHor.length; j++) {
-      imgBackground = new Image
-      imgBackground.src = srcBackgroundHor[j]
-      await imgBackground.decode()
-
-      $('#canvas-container').append(`
-        <canvas id="canvas-${idNum}"></canvas>
-      `)
-
-      canvas = document.getElementById(`canvas-${idNum}`)
-      canvas.width = imgBackground.naturalWidth
-      canvas.height = imgBackground.naturalHeight
-      canvas.style.height = "300px"
-      canvas.style.width = imgBackground.naturalWidth * 300 / imgBackground.naturalHeight
-      context = canvas.getContext('2d')
-
-      await context.drawImage(imgBackground, 0, 0, canvas.width, canvas.height)
-
-      startX = parseInt(putLocationHor[`mk${j + 1}`][0])
-      startY = parseInt(putLocationHor[`mk${j + 1}`][1])
-      width = parseInt(putLocationHor[`mk${j + 1}`][2] - putLocationHor[`mk${j + 1}`][0])
-      height = parseInt(putLocationHor[`mk${j + 1}`][3] - putLocationHor[`mk${j + 1}`][1])
-
-      await context.drawImage(img, startX, startY, width, height)
-      idNum++
-    }
+    drawCanvas(srcBackgroundHor, putLocationHor, img)
   } else if (img.naturalWidth < img.naturalHeight) {
-    for (let j = 0; j < srcBackgroundVer.length; j++) {
-      imgBackground = new Image
-      imgBackground.src = srcBackgroundVer[j]
-      await imgBackground.decode()
-
-      $('#canvas-container').append(`
-        <div class='canvas-select-container'>
-          <input class="mt-2 ml-2 canvas-select-checkbox" type="checkbox" id="select-${idNum}">
-          <canvas id="canvas-${idNum}"></canvas>
-        </div>
-      `)
-
-      canvas = document.getElementById(`canvas-${idNum}`)
-      canvas.width = imgBackground.naturalWidth
-      canvas.height = imgBackground.naturalHeight
-      canvas.style.height = "300px"
-      canvas.style.width = imgBackground.naturalWidth * 300 / imgBackground.naturalHeight
-      context = canvas.getContext('2d')
-
-      await context.drawImage(imgBackground, 0, 0, canvas.width, canvas.height)
-
-      startX = parseInt(putLocationVer[`mk${j + 1}`][0])
-      startY = parseInt(putLocationVer[`mk${j + 1}`][1])
-      width = parseInt(putLocationVer[`mk${j + 1}`][2] - putLocationVer[`mk${j + 1}`][0])
-      height = parseInt(putLocationVer[`mk${j + 1}`][3] - putLocationVer[`mk${j + 1}`][1])
-
-      // context.shadowOffsetX = 10
-      // context.shadowOffsetY = 10
-      // context.shadowBlur = 10
-      // context.shadowColor = 'rgba(25, 24, 23, 1)'
-      await context.drawImage(img, startX, startY, width, height)
-      idNum++
-    }
+    drawCanvas(srcBackgroundVer, putLocationVer, img)
   }
 
   if (count < files.length - 1) {
@@ -136,6 +85,50 @@ async function createCanvas(files) {
   }
   toastr.clear()
   toastr.success('Complete!')
+}
+
+function drawCanvas(srcBackground, putLocation){
+  let imgBackground
+  let canvas
+  let context
+  let startX = 0
+  let startY = 0
+  let width = 0
+  let height = 0
+
+  for (let j = 0; j < srcBackground.length; j++) {
+    imgBackground = new Image
+    imgBackground.src = srcBackground[j]
+    await imgBackground.decode()
+
+    $('#canvas-container').append(`
+      <div class='canvas-select-container'>
+        <input class="mt-2 ml-2 canvas-select-checkbox" type="checkbox" id="select-${idNum}">
+        <canvas id="canvas-${idNum}"></canvas>
+      </div>
+    `)
+
+    canvas = document.getElementById(`canvas-${idNum}`)
+    canvas.width = imgBackground.naturalWidth
+    canvas.height = imgBackground.naturalHeight
+    canvas.style.height = "300px"
+    canvas.style.width = imgBackground.naturalWidth * 300 / imgBackground.naturalHeight
+    context = canvas.getContext('2d')
+
+    await context.drawImage(imgBackground, 0, 0, canvas.width, canvas.height)
+
+    startX = parseInt(putLocation[`mk${j + 1}`][0])
+    startY = parseInt(putLocation[`mk${j + 1}`][1])
+    width = parseInt(putLocation[`mk${j + 1}`][2] - putLocation[`mk${j + 1}`][0])
+    height = parseInt(putLocation[`mk${j + 1}`][3] - putLocation[`mk${j + 1}`][1])
+
+    // context.shadowOffsetX = 10
+    // context.shadowOffsetY = 10
+    // context.shadowBlur = 10
+    // context.shadowColor = 'rgba(25, 24, 23, 1)'
+    await context.drawImage(img, startX, startY, width, height)
+    idNum++
+  }
 }
 
 $('#files').on('change', handleFileSelect)
