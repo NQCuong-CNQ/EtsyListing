@@ -73,9 +73,9 @@ async function createCanvas(files) {
   await img.decode()
 
   if (img.naturalWidth > img.naturalHeight) {
-    drawCanvas(srcBackgroundHor, putLocationHor, img)
+    await drawCanvas(srcBackgroundHor, putLocationHor, img)
   } else if (img.naturalWidth < img.naturalHeight) {
-    drawCanvas(srcBackgroundVer, putLocationVer, img)
+    await drawCanvas(srcBackgroundVer, putLocationVer, img)
   }
 
   if (count < files.length - 1) {
@@ -87,7 +87,7 @@ async function createCanvas(files) {
   toastr.success('Complete!')
 }
 
-function drawCanvas(srcBackground, putLocation){
+async function drawCanvas(srcBackground, putLocation){
   let imgBackground
   let canvas
   let context
