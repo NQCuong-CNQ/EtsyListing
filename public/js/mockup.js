@@ -101,7 +101,7 @@ async function createCanvas(files) {
 
       $('#canvas-container').append(`
         <div class='canvas-select-container'>
-          <input class="mt-1 ml-1" type="checkbox" id="select-${idNum}">
+          <input class="mt-2 ml-2 canvas-select-checkbox" type="checkbox" id="select-${idNum}">
           <canvas id="canvas-${idNum}"></canvas>
         </div>
       `)
