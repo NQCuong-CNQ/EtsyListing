@@ -59,16 +59,14 @@ async function handleFileSelect(evt) {
   for (let i = 0; i < files.length; i++) {
     img = new Image
     img.src = URL.createObjectURL(files[i])
-    console.log(img.naturalWidth+'-'+ img.naturalHeight)
+    await img.decode()
     if (img.naturalWidth > img.naturalHeight) {
       valuemax += srcBackgroundHor.length
     } else if (img.naturalWidth < img.naturalHeight) {
       valuemax += srcBackgroundVer.length
     }
   }
-  console.log(valuemax)
   progressRange = (100 / valuemax)
-
   toastr.clear()
   toastr.info('Rendering Mockup...')
   await createCanvas(files)
@@ -190,7 +188,6 @@ function onCheckCB(id) {
     $(`#select-${id}`).prop("checked", true)
   }
 
-  console.log(checkSelectedAction(listSelected()))
   if (checkSelectedAction(listSelected()) == 1) {
     $(`#select-all-cb`).prop("checked", true)
   } else {
@@ -214,7 +211,7 @@ function checkSelectedAction(list) {
     }
   }
 
-  if (count == list.length - 1) {
+  if (count >= list.length) {
     return 1
   } else if (count == 0) {
     return 0
