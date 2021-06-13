@@ -144,16 +144,16 @@ function downloadCanvas(canvasId, filename) {
 }
 
 $('#download-all').on('click', function () {
-  let listSelected = []
-  listSelected = listSelected()
-  if(checkSelectedAction(listSelected) == 0){
+  let list = []
+  list = listSelected()
+  if(checkSelectedAction(list) == 0){
     toastr.clear()
     toastr.error('Nothing is selected')
     return
   }
 
-  for (let j = 0; j < listSelected.length; j++) {
-    if (listSelected[j]) {
+  for (let j = 0; j < list.length; j++) {
+    if (list[j]) {
       downloadCanvas(`canvas-${j}`, `${j}.jpg`)
     }
   }
@@ -181,15 +181,15 @@ function listSelected() {
   return list
 }
 
-function checkSelectedAction(listSelected) {
+function checkSelectedAction(list) {
   let count = 0
-  for (let i = 0; i < listSelected.length; i++) {
-    if (listSelected[i]) {
+  for (let i = 0; i < list.length; i++) {
+    if (list[i]) {
       count++
     }
   }
 
-  if (count == listSelected.length - 1) {
+  if (count == list.length - 1) {
     return 1
   } else if (count == 0) {
     return 0
