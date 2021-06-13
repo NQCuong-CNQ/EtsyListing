@@ -59,12 +59,14 @@ async function handleFileSelect(evt) {
   for (let i = 0; i < files.length; i++) {
     img = new Image
     img.src = URL.createObjectURL(files[i])
+    console.log(img.naturalWidth+'-'+ img.naturalHeight)
     if (img.naturalWidth > img.naturalHeight) {
       valuemax += srcBackgroundHor.length
-    } else {
+    } else if (img.naturalWidth < img.naturalHeight) {
       valuemax += srcBackgroundVer.length
     }
   }
+  console.log(valuemax)
   progressRange = (100 / valuemax)
 
   toastr.clear()
@@ -188,6 +190,7 @@ function onCheckCB(id) {
     $(`#select-${id}`).prop("checked", true)
   }
 
+  console.log(checkSelectedAction(listSelected()))
   if (checkSelectedAction(listSelected()) == 1) {
     $(`#select-all-cb`).prop("checked", true)
   } else {
