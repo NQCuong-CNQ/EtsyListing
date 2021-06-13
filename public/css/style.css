@@ -643,3 +643,12 @@ html {
 .select-all-container, #download-all{
   display: none;
 }
+
+.select-all-container p{
+  margin: 0;
+}
+
+.upload-container{
+  height: 250px;
+  margin-bottom: 1rem;
+}

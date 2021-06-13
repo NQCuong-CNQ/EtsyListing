@@ -53,10 +53,10 @@ async function handleFileSelect(evt) {
 
   $('.select-all-container').css('display', 'flex')
   $('#download-all').css('display', 'block')
+  $(`#select-all-cb`).prop("checked", false)  
 }
 
 $('#select-all-cb').on('change', function () {
-  console.log($('#select-all-cb').prop("checked"))
   if ($('#select-all-cb').prop("checked")) {
     for (let i = 0; i < idNum; i++) {
       $(`#select-${i}`).prop("checked", true)      
