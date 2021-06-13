@@ -53,17 +53,17 @@ async function handleFileSelect(evt) {
 
   $('.select-all-container').css('display', 'flex')
   $('#download-all').css('display', 'block')
-  $(`#select-all-cb`).prop("checked", false)  
+  $(`#select-all-cb`).prop("checked", false)
 }
 
 $('#select-all-cb').on('change', function () {
   if ($('#select-all-cb').prop("checked")) {
     for (let i = 0; i < idNum; i++) {
-      $(`#select-${i}`).prop("checked", true)      
+      $(`#select-${i}`).prop("checked", true)
     }
   } else {
     for (let i = 0; i < idNum; i++) {
-      $(`#select-${i}`).prop("checked", false)      
+      $(`#select-${i}`).prop("checked", false)
     }
   }
 })
@@ -89,7 +89,7 @@ async function createCanvas(files) {
   toastr.success('Complete!')
 }
 
-async function drawCanvas(srcBackground, putLocation, img){
+async function drawCanvas(srcBackground, putLocation, img) {
   let imgBackground
   let canvas
   let context
@@ -106,7 +106,7 @@ async function drawCanvas(srcBackground, putLocation, img){
     $('#canvas-container').append(`
       <div class='canvas-select-container'>
         <input class="mt-2 ml-2 canvas-select-checkbox" type="checkbox" id="select-${idNum}">
-        <canvas onclick='alert(${idNum})' id="canvas-${idNum}"></canvas>
+        <canvas onclick='onCheckCB(${idNum})' id="canvas-${idNum}"></canvas>
       </div>
     `)
 
@@ -147,3 +147,11 @@ $('#download-all').on('click', function () {
     downloadCanvas(`canvas-${i}`, `${i}.jpg`)
   }
 })
+
+function onCheckCB(id) {
+  if ($(`#select-${id}`).prop("checked")) {
+    $(`#select-${id}`).prop("checked", false)
+  } else {
+    $(`#select-${id}`).prop("checked", true)
+  }
+}

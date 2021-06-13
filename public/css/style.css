@@ -633,7 +633,8 @@ html {
 
 .canvas-select-container {
   position: relative;
-  padding-right: 0.7rem;
+  margin-right: 0.7rem;
+  overflow: hidden;
 }
 
 .canvas-select-checkbox{
@@ -655,4 +656,9 @@ html {
 
 canvas{
   cursor: pointer;
+  transition: 0.2s;
+}
+
+canvas:hover{
+  transform: scale(1.2);
 }
