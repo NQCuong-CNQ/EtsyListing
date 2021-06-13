@@ -54,7 +54,7 @@ async function handleFileSelect(evt) {
 
   $('.select-all-container').css('display', 'flex')
   $('#download-all').css('display', 'block')
-  $(`#select-all-cb`).prop("checked", true)
+  $(`#select-all-cb`).prop("checked", false)
 }
 
 $('#select-all-cb').on('change', function () {
@@ -145,12 +145,15 @@ function downloadCanvas(canvasId, filename) {
 
 $('#download-all').on('click', function () {
   let listSelected = []
-  for (let i = 0; i < idNum; i++) {
-    listSelected.push($(`#select-${i}`).prop("checked"))
+  listSelected = listSelected()
+  if(checkSelectedAction(listSelected) == 0){
+    toastr.clear()
+    toastr.error('Nothing is selected')
+    return
   }
 
   for (let j = 0; j < listSelected.length; j++) {
-    if(listSelected[j]){
+    if (listSelected[j]) {
       downloadCanvas(`canvas-${j}`, `${j}.jpg`)
     }
   }
@@ -162,4 +165,33 @@ function onCheckCB(id) {
   } else {
     $(`#select-${id}`).prop("checked", true)
   }
+
+  if(checkSelectedAction(listSelected())){
+    $(`#select-all-cb`).prop("checked", true)
+  } else {
+    $(`#select-all-cb`).prop("checked", false)
+  }
+}
+
+function listSelected() {
+  let list = []
+  for (let i = 0; i < idNum; i++) {
+    list.push($(`#select-${i}`).prop("checked"))
+  }
+  return list
+}
+
+function checkSelectedAction(listSelected) {
+  let count = 0
+  for (let i = 0; i < listSelected.length; i++) {
+    if (listSelected[i]) {
+      count++
+    }
+  }
+
+  if (count == listSelected.length - 1) {
+    return 1
+  } else if (count == 0) {
+    return 0
+  } return -1
 }
