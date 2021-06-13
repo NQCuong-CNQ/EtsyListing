@@ -59,12 +59,11 @@ async function handleFileSelect(evt) {
 $('#select-all-cb').on('change', function () {
   console.log($('#select-all-cb').prop("checked"))
   if ($('#select-all-cb').prop("checked")) {
-    for (let i = 0; i <= idNum; i++) {
-      console.log(idNum)
-      $(`#select-${idNum}`).prop("checked", true)      
+    for (let i = 0; i < idNum; i++) {
+      $(`#select-${i}`).prop("checked", true)      
     }
   } else {
-    $(`#select-${idNum}`).prop("checked", false)
+    $(`#select-${i}`).prop("checked", false)
   }
 })
 
