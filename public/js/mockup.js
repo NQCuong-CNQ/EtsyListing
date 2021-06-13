@@ -53,6 +53,7 @@ async function handleFileSelect(evt) {
 
   $('.select-all-container').css('display', 'flex')
   $('#download-all').css('display', 'block')
+  $('.progress').css('display', 'block')
   $(`#select-all-cb`).prop("checked", false)
 }
 

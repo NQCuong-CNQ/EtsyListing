@@ -635,10 +635,12 @@ html {
   position: relative;
   margin-right: 0.7rem;
   overflow: hidden;
+  margin-bottom: 0.3rem;
 }
 
 .canvas-select-checkbox{
   position: absolute;
+  z-index: 1;
 }
 
 .select-all-container, #download-all{
@@ -661,4 +663,8 @@ canvas{
 
 canvas:hover{
   transform: scale(1.2);
+}
+
+.progress{
+  display: none;
 }
