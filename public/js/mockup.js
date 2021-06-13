@@ -133,7 +133,7 @@ async function createCanvas(files) {
     return
   }
   toastr.clear()
-  toastr.success('Complete !')
+  toastr.success('Complete!')
 }
 
 $('#files').on('change', handleFileSelect)
@@ -142,8 +142,8 @@ function downloadCanvas(canvasId, filename) {
   var aDownloadLink = document.createElement('a')
   aDownloadLink.download = filename
   aDownloadLink.href = document.getElementById(canvasId).toDataURL()
-  console.log(aDownloadLink.href)
-  // aDownloadLink.click()
+  // console.log(aDownloadLink.href)
+  aDownloadLink.click()
 }
 
 $('#download-all').on('click', function () {

@@ -35,19 +35,20 @@
 // console.log(arr.length)
 // console.log(arr)
 
-// let str = '432536asdfsaddv'
-// console.log(str.slice(0,4))
+let str = '432536asdfsaddv'
+str = str.substring(1)
+console.log(str)
 // console.log(Number.isInteger(parseInt(str.slice(0,4))))
 
 // let date = new Date().getTime()
 // let dateCount = Math.floor(date /1000)
 // console.log(dateCount)
-console.log(IsJsonString(`sadfsf`))
-function IsJsonString(str) {
-    try {
-        JSON.parse(str)
-    } catch (e) {
-        return false
-    }
-    return true
-  }
+// console.log(IsJsonString(`sadfsf`))
+// function IsJsonString(str) {
+//     try {
+//         JSON.parse(str)
+//     } catch (e) {
+//         return false
+//     }
+//     return true
+//   }
