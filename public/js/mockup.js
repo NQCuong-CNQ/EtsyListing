@@ -53,7 +53,7 @@ async function handleFileSelect(evt) {
   progressVal = 0
   let valuemax = 0
   $('.progress').css('display', 'block')
-  $('.progress').css('width', `0%`)
+  $('.progress-bar').css('width', `0%`)
   $('#canvas-container').empty()
 
   for (let i = 0; i < files.length; i++) {
@@ -151,7 +151,7 @@ async function drawCanvas(srcBackground, putLocation, img) {
     await context.drawImage(img, startX, startY, width, height)
     idNum++
     progressVal += progressRange
-    $('.progress').css('width', `${progressVal}%`)
+    $('.progress-bar').css('width', `${progressVal}%`)
     $('.progress-bar').text(`${Math.floor(progressVal)}%`)
   }
 }
@@ -188,10 +188,10 @@ function onCheckCB(id) {
     $(`#select-${id}`).prop("checked", true)
   }
 
-  if (checkSelectedAction(listSelected()) == 0) {
-    $(`#select-all-cb`).prop("checked", false)
-  } else {
+  if (checkSelectedAction(listSelected()) == 1) {
     $(`#select-all-cb`).prop("checked", true)
+  } else {
+    $(`#select-all-cb`).prop("checked", false)
   }
 }
 
