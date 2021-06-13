@@ -51,8 +51,7 @@ async function handleFileSelect(evt) {
   toastr.info('Rendering Mockup...')
   await createCanvas(files)
 
-  $('.select-all-label').css('display', 'block')
-  $('#select-all-cb').css('display', 'inline')
+  $('.select-all-container').css('display', 'flex')
   $('#download-all').css('display', 'block')
 }
 
@@ -63,7 +62,9 @@ $('#select-all-cb').on('change', function () {
       $(`#select-${i}`).prop("checked", true)      
     }
   } else {
-    $(`#select-${i}`).prop("checked", false)
+    for (let i = 0; i < idNum; i++) {
+      $(`#select-${i}`).prop("checked", false)      
+    }
   }
 })
 
