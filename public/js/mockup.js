@@ -52,13 +52,15 @@ async function handleFileSelect(evt) {
   await createCanvas(files)
 
   $('.select-all-label').css('display', 'block')
-  $('#select-all-cb').css('display', 'block')
+  $('#select-all-cb').css('display', 'inline')
   $('#download-all').css('display', 'block')
 }
 
 $('#select-all-cb').on('change', function () {
-  if ($(this).prop("checked")) {
+  console.log($('#select-all-cb').prop("checked"))
+  if ($('#select-all-cb').prop("checked")) {
     for (let i = 0; i <= idNum; i++) {
+      console.log(idNum)
       $(`#select-${idNum}`).prop("checked", true)      
     }
   } else {
