@@ -58,7 +58,6 @@ th, td {
 input {
   border-radius: 5px;
   border: 1px solid;
-  transform: scale(1.3);
 }
 
 .button-primary {
@@ -667,4 +666,12 @@ canvas:hover{
 
 .progress{
   display: none;
+}
+
+.select-all-container input{
+  transform: scale(1.2);
+}
+
+.canvas-select-container input{
+  transform: scale(1.2);
 }

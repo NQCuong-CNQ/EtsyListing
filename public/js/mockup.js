@@ -45,6 +45,7 @@ async function handleFileSelect(evt) {
   let files = evt.target.files
   count = 0
   idNum = 0
+  $('.progress').css('display', 'block')
   $('#canvas-container').empty()
 
   toastr.clear()
@@ -53,7 +54,6 @@ async function handleFileSelect(evt) {
 
   $('.select-all-container').css('display', 'flex')
   $('#download-all').css('display', 'block')
-  $('.progress').css('display', 'block')
   $(`#select-all-cb`).prop("checked", false)
 }
 
