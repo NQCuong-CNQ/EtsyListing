@@ -73,10 +73,10 @@ async function createCanvas(files) {
       await imgBackground.decode()
 
       $('#canvas-container').append(`
-        <canvas id="canvas${idNum}"></canvas>
+        <canvas id="canvas-${idNum}"></canvas>
       `)
 
-      canvas = document.getElementById(`canvas${idNum}`)
+      canvas = document.getElementById(`canvas-${idNum}`)
       canvas.width = imgBackground.naturalWidth
       canvas.height = imgBackground.naturalHeight
       canvas.style.height = "300px"
@@ -101,11 +101,12 @@ async function createCanvas(files) {
 
       $('#canvas-container').append(`
         <div class='canvas-select-container'>
-          <canvas id="canvas${idNum}"></canvas>
+          <input class="mt-1 ml-1" type="checkbox" id="select-${idNum}">
+          <canvas id="canvas-${idNum}"></canvas>
         </div>
       `)
 
-      canvas = document.getElementById(`canvas${idNum}`)
+      canvas = document.getElementById(`canvas-${idNum}`)
       canvas.width = imgBackground.naturalWidth
       canvas.height = imgBackground.naturalHeight
       canvas.style.height = "300px"
@@ -149,6 +150,6 @@ function downloadCanvas(canvasId, filename) {
 
 $('#download-all').on('click', function () {
   for (let i = 0; i < idNum; i++) {
-    downloadCanvas(`canvas${i}`, `${i}.jpg`)
+    downloadCanvas(`canvas-${i}`, `${i}.jpg`)
   }
 })

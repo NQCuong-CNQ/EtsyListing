@@ -624,13 +624,11 @@ html {
   font-size: 300%;
 }
 
-canvas {
-  border: 1px solid #d3d3d3;
-}
-#canvas-container{
+#canvas-container {
   margin-top: 0.2rem;
 }
-.canvas-select-container{
-  background-color: white;
-  opacity: 0.3;
+
+.canvas-select-container {
+  position: relative;
+  padding-right: 0.7rem;
 }
