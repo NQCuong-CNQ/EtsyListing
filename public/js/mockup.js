@@ -87,7 +87,7 @@ async function createCanvas(files) {
   toastr.success('Complete!')
 }
 
-async function drawCanvas(srcBackground, putLocation){
+async function drawCanvas(srcBackground, putLocation, img){
   let imgBackground
   let canvas
   let context
