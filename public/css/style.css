@@ -644,6 +644,7 @@ html {
 
 .select-all-container, #download-all{
   display: none;
+  margin: auto;
 }
 
 .select-all-container p{

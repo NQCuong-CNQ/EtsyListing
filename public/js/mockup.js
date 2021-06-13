@@ -54,7 +54,7 @@ async function handleFileSelect(evt) {
 
   $('.select-all-container').css('display', 'flex')
   $('#download-all').css('display', 'block')
-  $(`#select-all-cb`).prop("checked", false)
+  $(`#select-all-cb`).prop("checked", true)
 }
 
 $('#select-all-cb').on('change', function () {
@@ -144,8 +144,15 @@ function downloadCanvas(canvasId, filename) {
 }
 
 $('#download-all').on('click', function () {
+  let listSelected = []
   for (let i = 0; i < idNum; i++) {
-    downloadCanvas(`canvas-${i}`, `${i}.jpg`)
+    listSelected.push($(`#select-${i}`).prop("checked"))
+  }
+
+  for (let j = 0; j < listSelected.length; j++) {
+    if(listSelected[j]){
+      downloadCanvas(`canvas-${j}`, `${j}.jpg`)
+    }
   }
 })
 
