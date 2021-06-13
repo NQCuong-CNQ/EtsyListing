@@ -100,8 +100,9 @@ async function createCanvas(files) {
       await imgBackground.decode()
 
       $('#canvas-container').append(`
-        <div class='canvas-select-container'></div>
-        <canvas id="canvas${idNum}"></canvas>
+        <div class='canvas-select-container'>
+          <canvas id="canvas${idNum}"></canvas>
+        </div>
       `)
 
       canvas = document.getElementById(`canvas${idNum}`)
