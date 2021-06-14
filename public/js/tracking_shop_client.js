@@ -692,7 +692,7 @@ $('#sales-larger-than').on('change', async function () {
     toastr.clear()
     toastr.warning('Please input a number !')
     $('#sales-larger-than').val('')
-  } else if (salesLargerThan < 100 || salesLargerThan == '') {
+  } else if (salesLargerThan < 100 || salesLargerThan == '' || salesLargerThan == null) {
     salesLargerThan = 0
     searchOrFilterData()
   } else {
@@ -705,7 +705,7 @@ $('#month-filter-shop').on('change', async function () {
   monthFilterShop = parseInt(monthFilterShop)
   if (Number.isInteger(monthFilterShop) && monthFilterShop >= 1 && monthFilterShop <= 12) {
     searchOrFilterData()
-  } else if (monthFilterShop == '') {
+  } else if (monthFilterShop == '' || monthFilterShop == null) {
     monthFilterShop = 0
     searchOrFilterData()
   } else {
