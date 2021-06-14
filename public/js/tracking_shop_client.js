@@ -12,6 +12,7 @@ var filterType = 0
 var gettingData = 1
 var chart
 var selected_shop
+var salesLargerThan = 0
 
 /* ------------------------------------------------MAIN SECTION------------------------------------------------ */
 
@@ -92,6 +93,8 @@ function searchOrFilterData() {
   } else if (category == 'All') {
   }
 
+  dataFilter = getSalesLargerThan(dataFilter)
+
   if (timeCreatedShopFilter == 'custom') {
     dataFilter = timeCreatedShopFilterCustom(dataFilter)
   } else if (timeCreatedShopFilter > 0) {
@@ -99,6 +102,16 @@ function searchOrFilterData() {
   }
 
   updateData(dataFilter)
+}
+
+function getSalesLargerThan(data){
+  let filterData = []
+  for (let i = 0; i < data.length; i++) {
+    if (data[i].total_sales >= salesLargerThan) {
+      filterData.push(data[i])
+    }
+  }
+  return filterData
 }
 
 function timeCreatedShopFilterCustom(data) {
@@ -113,7 +126,6 @@ function timeCreatedShopFilterCustom(data) {
       filterData.push(data[i])
     }
   }
-
   return filterData
 }
 
@@ -644,6 +656,11 @@ $('#custom-time-created-shop-filter').daterangepicker({
 }, function (start, end, label) {
   timeCreatedShopFilter = 'custom'
   $('#dropdown-filter-shop-time-created').text(start.format('MM-DD-YYYY') + ' to ' + end.format('MM-DD-YYYY'))
+  searchOrFilterData()
+})
+
+$('#sales-larger-than').on('change', async function () {
+  salesLargerThan = $('#sales-larger-than').val()
   searchOrFilterData()
 })
 
