@@ -94,13 +94,13 @@ async function createCanvas(files) {
   img.src = URL.createObjectURL(files[count])
   await img.decode()
 
+  minimizeUpload()
+
   if (img.naturalWidth >= img.naturalHeight) {
     await drawCanvas(srcBackgroundHor, putLocationHor, img)
   } else if (img.naturalWidth < img.naturalHeight) {
     await drawCanvas(srcBackgroundVer, putLocationVer, img)
   }
-
-  minimizeUpload()
 
   if (count < files.length - 1) {
     count++
