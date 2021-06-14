@@ -687,9 +687,9 @@ $('#custom-time-created-shop-filter').daterangepicker({
 
 $('#sales-larger-than').on('change', async function () {
   salesLargerThan = $('#sales-larger-than').val().trim()
-  if (!Number.isInteger(salesLargerThan)) {
+  if (Number.isInteger(salesLargerThan) == false) {
     toastr.clear()
-    toastr.warning('Please input a number!')
+    toastr.warning('Please input a number !')
   } else if (salesLargerThan < 100) {
 
   } else {
@@ -699,11 +699,12 @@ $('#sales-larger-than').on('change', async function () {
 
 $('#month-filter-shop').on('change', async function () {
   monthFilterShop = $('#month-filter-shop').val().trim()
+  monthFilterShop = parseInt(monthFilterShop)
   if (Number.isInteger(monthFilterShop) && monthFilterShop >= 1 && monthFilterShop <= 12) {
     searchOrFilterData()
   } else {
     toastr.clear()
-    toastr.warning('Please input a valid number!')
+    toastr.warning('Please input a valid number !')
   }
 })
 
