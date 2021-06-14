@@ -22,8 +22,8 @@ var srcBackgroundVer = [
 
 var putLocationVer = {
   mk1: [147, 80, 678, 862],
-  mk2: [206, 34, 636, 666],
-  mk3: [233, 26, 606, 576],
+  mk2: [206, 34, 637, 666],
+  mk3: [233, 26, 607, 577],
 }
 
 $("input").on('dragenter', function (e) {
