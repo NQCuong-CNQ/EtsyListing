@@ -13,6 +13,7 @@ var gettingData = 1
 var chart
 var selected_shop
 var salesLargerThan = 0
+var monthFilterShop = 0
 
 /* ------------------------------------------------MAIN SECTION------------------------------------------------ */
 
@@ -80,7 +81,8 @@ function searchOrFilterData() {
     dataFilter = getTypeProduct(dataFilter, true)
   }
 
-  if (category == 'Canvas') {
+  if (category == 'All') {
+  } else if (category == 'Canvas') {
     dataFilter = getCategoryProduct(dataFilter)
   } else if (category == 'Mug') {
     dataFilter = getCategoryProduct(dataFilter)
@@ -90,21 +92,26 @@ function searchOrFilterData() {
     dataFilter = getCategoryProduct(dataFilter)
   } else if (category == 'Tumbler') {
     dataFilter = getCategoryProduct(dataFilter)
-  } else if (category == 'All') {
   }
 
-  dataFilter = getSalesLargerThan(dataFilter)
+  if (salesLargerThan > 100) {
+    dataFilter = getSalesLargerThan(dataFilter)
+  }
 
-  if (timeCreatedShopFilter == 'custom') {
-    dataFilter = timeCreatedShopFilterCustom(dataFilter)
-  } else if (timeCreatedShopFilter > 0) {
+  if (monthFilterShop >= 1 && monthFilterShop <= 12) {
+    dataFilter = getMonthFilter(dataFilter)
+  }
+
+  if (timeCreatedShopFilter > 0) {
     dataFilter = timeCreatedShopFilterAction(dataFilter)
+  } else if (timeCreatedShopFilter == 'custom') {
+    dataFilter = timeCreatedShopFilterCustom(dataFilter)
   }
 
   updateData(dataFilter)
 }
 
-function getSalesLargerThan(data){
+function getSalesLargerThan(data) {
   let filterData = []
   for (let i = 0; i < data.length; i++) {
     if (data[i].total_sales >= salesLargerThan) {
@@ -112,6 +119,25 @@ function getSalesLargerThan(data){
     }
   }
   return filterData
+}
+
+function getMonthFilter(data) {
+  let filterData = []
+  for (let i = 0; i < data.length; i++) {
+    if (getMonthTime(data[i].creation_tsz) == parseInt(monthFilterShop)) {
+      filterData.push(data[i])
+    }
+  }
+  return filterData
+}
+
+function getMonthTime(input) {
+  var date = new Date(0)
+  date.setUTCSeconds(input)
+  time = String(date)
+  time = time.split(' ')
+  time = convertMonthInString(time[1])
+  return parseInt(time)
 }
 
 function timeCreatedShopFilterCustom(data) {
@@ -660,8 +686,25 @@ $('#custom-time-created-shop-filter').daterangepicker({
 })
 
 $('#sales-larger-than').on('change', async function () {
-  salesLargerThan = $('#sales-larger-than').val()
-  searchOrFilterData()
+  salesLargerThan = $('#sales-larger-than').val().trim()
+  if (!Number.isInteger(salesLargerThan)) {
+    toastr.clear()
+    toastr.warning('Please input a number!')
+  } else if (salesLargerThan < 100) {
+
+  } else {
+    searchOrFilterData()
+  }
+})
+
+$('#month-filter-shop').on('change', async function () {
+  monthFilterShop = $('#month-filter-shop').val().trim()
+  if (Number.isInteger(monthFilterShop) && monthFilterShop >= 1 && monthFilterShop <= 12) {
+    searchOrFilterData()
+  } else {
+    toastr.clear()
+    toastr.warning('Please input a valid number!')
+  }
 })
 
 function timeCreatedShopFilterAction(dataFilter) {

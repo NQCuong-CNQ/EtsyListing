@@ -678,3 +678,7 @@ html {
 .canvas-select-container input{
   transform: scale(1.2);
 }
+
+#sales-larger-than, #month-filter-shop{
+  width: 75px;
+}
