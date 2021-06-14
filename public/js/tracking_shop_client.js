@@ -687,31 +687,38 @@ $('#custom-time-created-shop-filter').daterangepicker({
 
 $('#sales-larger-than').on('change', async function () {
   salesLargerThan = $('#sales-larger-than').val().trim()
-  salesLargerThan = parseInt(salesLargerThan)
-  if (Number.isInteger(salesLargerThan) == false) {
-    toastr.clear()
-    toastr.warning('Please input a number !')
-    $('#sales-larger-than').val('')
-  } else if (salesLargerThan < 100 || salesLargerThan == '' || salesLargerThan == null) {
+  if (salesLargerThan == '') {
     salesLargerThan = 0
     searchOrFilterData()
   } else {
-    searchOrFilterData()
+    salesLargerThan = parseInt(salesLargerThan)
+    if (Number.isInteger(salesLargerThan) == false) {
+      toastr.clear()
+      toastr.warning('Please input a number !')
+      $('#sales-larger-than').val('')
+    } else if (salesLargerThan < 100) {
+      salesLargerThan = 0
+      searchOrFilterData()
+    } else {
+      searchOrFilterData()
+    }
   }
 })
 
 $('#month-filter-shop').on('change', async function () {
   monthFilterShop = $('#month-filter-shop').val().trim()
-  monthFilterShop = parseInt(monthFilterShop)
-  if (Number.isInteger(monthFilterShop) && monthFilterShop >= 1 && monthFilterShop <= 12) {
-    searchOrFilterData()
-  } else if (monthFilterShop == '' || monthFilterShop == null) {
+  if (monthFilterShop == '') {
     monthFilterShop = 0
     searchOrFilterData()
   } else {
-    toastr.clear()
-    toastr.warning('Please input a valid number!')
-    $('#month-filter-shop').val('')
+    monthFilterShop = parseInt(monthFilterShop)
+    if (Number.isInteger(monthFilterShop) && monthFilterShop >= 1 && monthFilterShop <= 12) {
+      searchOrFilterData()
+    } else {
+      toastr.clear()
+      toastr.warning('Please input a valid number!')
+      $('#month-filter-shop').val('')
+    }
   }
 })
 
