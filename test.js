@@ -34,10 +34,9 @@
 // }
 // console.log(arr.length)
 // console.log(arr)
-
-let str = '432536asdfsaddv'
-str = str.substring(1)
-console.log(str)
+let salesLargerThan = '00000000008888'
+salesLargerThan = parseInt(salesLargerThan)
+console.log(salesLargerThan)
 // console.log(Number.isInteger(parseInt(str.slice(0,4))))
 
 // let date = new Date().getTime()

@@ -687,6 +687,7 @@ $('#custom-time-created-shop-filter').daterangepicker({
 
 $('#sales-larger-than').on('change', async function () {
   salesLargerThan = $('#sales-larger-than').val().trim()
+  salesLargerThan = parseInt(salesLargerThan)
   if (Number.isInteger(salesLargerThan) == false) {
     toastr.clear()
     toastr.warning('Please input a number !')
@@ -704,7 +705,7 @@ $('#month-filter-shop').on('change', async function () {
     searchOrFilterData()
   } else {
     toastr.clear()
-    toastr.warning('Please input a valid number !')
+    toastr.warning('Please input a valid number!')
   }
 })
 
