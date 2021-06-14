@@ -335,9 +335,6 @@ function updateData(dataFilter = listingData) {
     `)
   }
 
-  // <a href="${dataFilter[i].img_url_original}" target="_blank"><img src="${dataFilter[i].img_url}"
-  //             alt="" width="100%" loading='lazy'></a>
-
   $('#loading').css('display', 'none')
   scrollToTop()
 }
@@ -604,7 +601,6 @@ $('#find-product-by-keyword').on('keypress', function (e) {
   }
 })
 
-
 $('#find-product-by-keyword').select2({
   placeholder: "Keyword",
   data: dataSelect,
@@ -613,17 +609,6 @@ $('#find-product-by-keyword').select2({
 $('#find-product-by-keyword').on('change', function (e) {
   $('.select2-results__option--selected').on('unbind')
 })
-
-// $('.grid-view-listing').on('click', async function () {
-//   if (isGridView) {
-//     isGridView = false
-//     $('.grid-view-listing').html('<i class="fas fa-list-ul"></i>')
-
-//   } else {
-//     isGridView = true
-//     $('.grid-view-listing').html('<i class="fas fa-th"></i>')
-//   }
-// })
 
 function scrollToTop() {
   document.body.scrollTop = 0;
@@ -749,25 +734,6 @@ function updatePaginationBtn(data) {
 //   return filterData
 // }
 
-// function checkSearchByKeyword(keyword, index) {
-//   if (keyword.length == 1 && checkSearchTaxonomy(keyword, index)) {
-//     return true
-//   }
-
-//   for (let j = 0; j < keyword.length; j++) {
-//     if (listingData[index].title.toLowerCase().indexOf(keyword[j]) !== -1) {
-//     } else { return false }
-//   } return true
-// }
-
-// function checkSearchTaxonomy(keyword, index) {
-//   for (var i = 0; i < listingData[index].taxonomy_path.length; i++) {
-//     if (listingData[index].taxonomy_path[i].toLowerCase().indexOf(keyword[0]) !== -1) {
-//       return true
-//     }
-//   }
-// }
-
 // function filterByCustomDate(data) {
 //   let filterData = []
 //   let dateRange = $('#filter-listing-creation-date').text().split(' to ')
@@ -807,12 +773,6 @@ function searchByKeyword(keyword, data) {
   if (searchKeyData['level3'].length > 0) {
     dataSearch = searchByLevel(searchKeyData['level3'], dataSearch)
   }
-
-  // for (var i = 0; i < data.length; i++) {
-  //   if (checkSearchByKeyword(keyword, i)) {
-  //     dataSearch.push(data[i])
-  //   }
-  // }
 
   return dataSearch
 }
