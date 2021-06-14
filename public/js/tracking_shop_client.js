@@ -735,9 +735,7 @@ function timeCreatedShopFilterAction(dataFilter) {
   }
 
   for (let i = 0; i < dataFilter.length; i++) {
-    if (timeCreatedShopFilter <= 2 && getDayTimeLife(dataFilter[i].creation_tsz) <= daysInTime) {
-      shopTimeDataFilter.push(dataFilter[i])
-    } else if (timeCreatedShopFilter == 3 && getDayTimeLife(dataFilter[i].creation_tsz) > daysInTime) {
+    if (getDayTimeLife(dataFilter[i].creation_tsz) <= daysInTime) {
       shopTimeDataFilter.push(dataFilter[i])
     }
   }
