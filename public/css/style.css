@@ -638,47 +638,51 @@ html {
   margin-bottom: 0.7rem;
 }
 
-.canvas-select-checkbox{
+.canvas-select-checkbox {
   position: absolute;
   z-index: 1;
 }
 
-.select-all-container, #download-all{
+.select-all-container, #download-all {
   display: none;
   margin: auto;
 }
 
-.select-all-container p{
+.select-all-container p {
   margin: 0;
 }
 
-.upload-container{
+.upload-container {
   height: 250px;
   margin-bottom: 1rem;
   transition: height 0.2s;
 }
 
-.canvas-select-container canvas{
+.canvas-select-container canvas {
   cursor: pointer;
   transition: 0.2s;
 }
 
-.canvas-select-container canvas:hover{
+.canvas-select-container canvas:hover {
   transform: scale(1.1);
 }
 
-.progress{
+.progress {
   display: none;
 }
 
-.select-all-container input{
+.select-all-container input {
   transform: scale(1.2);
 }
 
-.canvas-select-container input{
+.canvas-select-container input {
   transform: scale(1.2);
 }
 
-#sales-larger-than, #month-filter-shop{
+#sales-larger-than {
   width: 75px;
+}
+
+#month-filter-shop {
+  width: 40px;
 }
