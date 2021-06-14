@@ -100,6 +100,8 @@ async function createCanvas(files) {
     await drawCanvas(srcBackgroundVer, putLocationVer, img)
   }
 
+  minimizeUpload()
+
   if (count < files.length - 1) {
     count++
     await createCanvas(files)
@@ -107,6 +109,14 @@ async function createCanvas(files) {
   }
   toastr.clear()
   toastr.success('Complete!')
+}
+
+function minimizeUpload(){  
+  $('.tit').css('display', 'none')
+  $('button.browse').css('display', 'none')
+  $('.upload-container').css('height', '100px')
+  $('.drop').css('height', '100px')
+  $('.drop .cont').css('height', '50px')
 }
 
 async function drawCanvas(srcBackground, putLocation, img) {

@@ -655,6 +655,7 @@ html {
 .upload-container{
   height: 250px;
   margin-bottom: 1rem;
+  transition: height 0.2s;
 }
 
 .canvas-select-container canvas{
