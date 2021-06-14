@@ -657,12 +657,12 @@ html {
   margin-bottom: 1rem;
 }
 
-canvas{
+.canvas-select-container canvas{
   cursor: pointer;
   transition: 0.2s;
 }
 
-canvas:hover{
+.canvas-select-container canvas:hover{
   transform: scale(1.1);
 }
 
