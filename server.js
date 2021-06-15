@@ -43,6 +43,8 @@ var maxDateShop = 365
 const MongoClient = require('mongodb').MongoClient
 const { Console } = require('console')
 const url = "mongodb://localhost:27017/trackingdb"
+var clientDB = MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
+var dbo = clientDB.db("trackingdb")
 
 setInterval(scheduleUpdate, 3600000) // 1h
 async function scheduleUpdate() {
@@ -54,8 +56,8 @@ async function scheduleUpdate() {
 }
 
 async function updateCate() {
-  let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
-  var dbo = client.db("trackingdb")
+  // let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
+  // var dbo = client.db("trackingdb")
 
   let category = {
     'CategoryList': 'Canvas,Mug,Blanket,Shirt,Tumbler',
@@ -64,14 +66,14 @@ async function updateCate() {
   await dbo.collection("category").insertOne(category)
 }
 
-// updateData()
+updateData()
 async function updateData() {
   isUpdate = true
   // await updateCate()
-  await getListing()
+  // await getListing()
   await getShopName()
-  await updateShopInfo()
-  await completeUpdate()
+  // await updateShopInfo()
+  // await completeUpdate()
 
   isUpdate = false
 }
@@ -107,8 +109,8 @@ async function getListing() {
     }
   }
 
-  let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
-  var dbo = client.db("trackingdb")
+  // let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
+  // var dbo = client.db("trackingdb")
   let dblisting = await dbo.collection("listing").find().toArray()
 
   for (let i = 0; i < dblisting.length; i++) {
@@ -191,17 +193,17 @@ async function getListing() {
     }
     await sleep(100)
   }
-  client.close()
+  // client.close()
 }
 
 async function getShopName() {
-  let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
-  var dbo = client.db("trackingdb")
+  // let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
+  // var dbo = client.db("trackingdb")
   let category = await dbo.collection("category").findOne()
 
   let categoryList = category.CategoryList.split(',')
   let categoryLink = category.CategoryLink.split('|')
-  client.close()
+  // client.close()
 
   for (let index = 0; index < categoryList.length; index++) {
     console.log('category: ' + categoryList[index])
@@ -215,12 +217,12 @@ async function getShopName() {
     }
   }
 
-  client.close()
+  // client.close()
 }
 
 async function saveShopNameToDB(dataShopName, shopCategory) {
-  let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
-  let dbo = client.db("trackingdb")
+  // let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
+  // let dbo = client.db("trackingdb")
   let shopBlackList = await dbo.collection("shopBlackList").find().toArray()
   shopBlackList = shopBlackList.map(({ shop_name }) => shop_name)
 
@@ -278,8 +280,8 @@ async function sleep(ms) {
 }
 
 async function updateShopInfo() {
-  let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
-  var dbo = client.db("trackingdb")
+  // let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
+  // var dbo = client.db("trackingdb")
   let dbData = await dbo.collection("shopName").find().toArray()
 
   let date = new Date().getTime()
@@ -327,7 +329,7 @@ async function updateShopInfo() {
       await sleep(100)
     }
   }
-  client.close()
+  // client.close()
 }
 
 async function deleteShop(dbo, shopName) {
@@ -345,14 +347,14 @@ function getDateTimeNow() {
 }
 
 async function completeUpdate() {
-  let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
-  var dbo = client.db("trackingdb")
+  // let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
+  // var dbo = client.db("trackingdb")
 
   let timeNow = getDateTimeNow()
 
   await dbo.collection("log").insertOne({ updateHistory: timeNow })
   console.log("Update completed at: " + timeNow)
-  client.close()
+  // client.close()
 }
 
 app.get("/", function (req, res, next) {
@@ -390,8 +392,8 @@ app.get("/mockup", function (req, res, next) {
 app.use(express.static("public"))
 
 io.on("connection", async function (client) {
-  let clientDB = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
-  var dbo = clientDB.db("trackingdb")
+  // let clientDB = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
+  // var dbo = clientDB.db("trackingdb")
 
   client.on("shop-tracking-join", async function () {
     if (isUpdate) {
@@ -501,17 +503,17 @@ io.on("connection", async function (client) {
   })
 
   client.on("get-list-shop-braumstar", async function (dataUser) {
-    clientDB.close()
+    // clientDB.close()
     let clientDBBraumstar = await MongoClient.connect('mongodb://zic:Mynewpassword%400@braumstar.com:27020/zicDb?authSource=zicDb', { useNewUrlParser: true, useUnifiedTopology: true })
     var dboBraumstar = clientDBBraumstar.db("zicDb")
 
     let dbData = await dboBraumstar.collection("etsyAccounts").find({ username: dataUser }).toArray()
     client.emit("list-shop-braumstar", dbData)
-    clientDBBraumstar.close()
+    // clientDBBraumstar.close()
   })
 
   client.on("new-user-braumstar", async function (dataUser) {
-    clientDB.close()
+    // clientDB.close()
     let clientDBBraumstar = await MongoClient.connect('mongodb://zic:Mynewpassword%400@braumstar.com:27020/zicDb?authSource=zicDb', { useNewUrlParser: true, useUnifiedTopology: true })
     var dboBraumstar = clientDBBraumstar.db("zicDb")
 
@@ -541,11 +543,11 @@ io.on("connection", async function (client) {
     //   isSuccess = 1
     // }
     client.emit("return-new-user-braumstar", 1)
-    clientDBBraumstar.close()
+    // clientDBBraumstar.close()
   })
 
   client.on("add-shop-braumstar", async function (dataShop) {
-    clientDB.close()
+    // clientDB.close()
     let clientDBBraumstar = await MongoClient.connect('mongodb://zic:Mynewpassword%400@braumstar.com:27020/zicDb?authSource=zicDb', { useNewUrlParser: true, useUnifiedTopology: true })
     var dboBraumstar = clientDBBraumstar.db("zicDb")
     let isSuccess = 0
@@ -578,11 +580,11 @@ io.on("connection", async function (client) {
     }
 
     client.emit("return-add-shop-braumstar", isSuccess)
-    clientDBBraumstar.close()
+    // clientDBBraumstar.close()
   })
 
   client.on("delete-shop-braumstar", async function (dataShop) {
-    clientDB.close()
+    // clientDB.close()
     let clientDBBraumstar = await MongoClient.connect('mongodb://zic:Mynewpassword%400@braumstar.com:27020/zicDb?authSource=zicDb', { useNewUrlParser: true, useUnifiedTopology: true })
     var dboBraumstar = clientDBBraumstar.db("zicDb")
 
@@ -595,7 +597,7 @@ io.on("connection", async function (client) {
     }
 
     client.emit("return-delete-shop-braumstar", 1)
-    clientDBBraumstar.close()
+    // clientDBBraumstar.close()
   })
 
   client.on("track-order-join", async function (data) {

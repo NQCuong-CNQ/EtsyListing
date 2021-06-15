@@ -1,20 +1,33 @@
-// const MongoClient = require('mongodb').MongoClient;
-// const url = "mongodb://localhost:27017/trackingdb"
+const MongoClient = require('mongodb').MongoClient;
+const url = "mongodb://localhost:27017/trackingdb"
 
-// test()
-// async function test(){
-//     let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
-//     var dbo = client.db("trackingdb")
-//     let oldListing = await dbo.collection("listing").findOne()
-//     console.log(oldListing)
+test()
+async function test(){
+    let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
+    var dbo = client.db("trackingdb")
+    let oldListing = await dbo.collection("listing").findOne()
+    console.log(oldListing)
 
 
-//     if(oldListing != null){
-//         console.log('oldListing') 
-//     }
+    if(oldListing != null){
+        console.log('oldListing') 
+    }
 
-// }
+}
 
+
+othertest()
+async function othertest(){
+
+    let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
+    var dbo = client.db("trackingdb")
+    console.log('oldListing')
+
+    let clientDBBraumstar = await MongoClient.connect('mongodb://zic:Mynewpassword%400@braumstar.com:27020/zicDb?authSource=zicDb', { useNewUrlParser: true, useUnifiedTopology: true })
+    var dboBraumstar = clientDBBraumstar.db("zicDb")
+    let dbData = await dboBraumstar.collection("etsyAccounts").find({ username: 'vi' }).toArray()
+    console.log(dbData)
+}
 
 // var date = new Date().getTime()
 // date = Math.floor(date / 3600000)
