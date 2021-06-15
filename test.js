@@ -1,3 +1,21 @@
+const MongoClient = require('mongodb').MongoClient;
+const url = "mongodb://localhost:27017/trackingdb"
+
+test()
+async function test(){
+    let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
+    var dbo = client.db("trackingdb")
+    let oldListing = await dbo.collection("listing").findOne()
+    console.log(oldListing)
+
+
+    if(oldListing != null){
+        console.log('oldListing') 
+    }
+
+}
+
+
 // var date = new Date().getTime()
 // date = Math.floor(date / 3600000)
 // for (let i = 0; i < 1000; i++) {
@@ -34,9 +52,9 @@
 // }
 // console.log(arr.length)
 // console.log(arr)
-let salesLargerThan = '00000000008888'
-salesLargerThan = parseInt(salesLargerThan)
-console.log(salesLargerThan)
+// let salesLargerThan = '00000000008888'
+// salesLargerThan = parseInt(salesLargerThan)
+// console.log(salesLargerThan)
 // console.log(Number.isInteger(parseInt(str.slice(0,4))))
 
 // let date = new Date().getTime()

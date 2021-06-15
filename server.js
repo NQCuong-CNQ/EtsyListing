@@ -40,8 +40,8 @@ var minTotalSales = 10
 var maxTotalSales = 5000
 var maxDateShop = 365
 
-const MongoClient = require('mongodb').MongoClient;
-const { Console } = require('console');
+const MongoClient = require('mongodb').MongoClient
+const { Console } = require('console')
 const url = "mongodb://localhost:27017/trackingdb"
 
 setInterval(scheduleUpdate, 3600000) // 1h
@@ -122,8 +122,8 @@ async function getListing() {
 
   idListings = [...new Set(idListings)]
   console.log(idListings.length)
-  if (idListings.length > 4500) {
-    idListings = idListings.slice(idListings.length - 4500, idListings.length)
+  if (idListings.length > 5000) {
+    idListings = idListings.slice(idListings.length - 5000, idListings.length)
   }
   console.log(idListings.length)
 
@@ -147,12 +147,19 @@ async function getListing() {
           await dbo.collection("listingBlackList").updateOne({ listing_id: listings.listing_id }, { $set: { listing_id: listings.listing_id } }, { upsert: true })
         } else {
           listingTracking = new Object
-          let resultImgs = await makeRequest("GET", `https://openapi.etsy.com/v2/listings/${idListings[i]}/images?api_key=${api_key}`)
 
-          if (IsJsonString(resultImgs)) {
-            resultImgs = JSON.parse(resultImgs).results[0]
-            listingTracking['img_url'] = resultImgs.url_570xN
-            listingTracking['img_url_original'] = resultImgs.url_fullxfull
+          let oldListing = await dbo.collection("listing").findOne({ listing_id: idListings[i] })
+          if(oldListing != null){
+            listingTracking['img_url'] = oldListing.img_url
+            listingTracking['img_url_original'] = oldListing.img_url_original
+          } else {
+            let resultImgs = await makeRequest("GET", `https://openapi.etsy.com/v2/listings/${idListings[i]}/images?api_key=${api_key}`)
+
+            if (IsJsonString(resultImgs)) {
+              resultImgs = JSON.parse(resultImgs).results[0]
+              listingTracking['img_url'] = resultImgs.url_570xN
+              listingTracking['img_url_original'] = resultImgs.url_fullxfull
+            }
           }
 
           let percentFavor
