@@ -1,55 +1,55 @@
-// const MongoClient = require('mongodb').MongoClient;
-// const url = "mongodb://localhost:27017/trackingdb"
+const MongoClient = require('mongodb').MongoClient;
+const url = "mongodb://localhost:27017/trackingdb"
 
-test()
-async function test(){
-  dbData = [
-    {
-      id: '1',
-      name: 'cuong12'
-    },
-    {
-      id: '2',
-      name: 'cuong2'
-    },{
-      id: '3',
-      name: 'cuong3'
-    },{
-      id: '4',
-      name: 'cuong4'
-    },{
-      id: '5',
-      name: 'cuong5'
-    },{
-      id: '6',
-      name: 'cuong6'
-    },{
-      id: '7',
-      name: 'cuong7'
-    },{
-      id: '8',
-      name: 'cuong8'
-    },
-  ]
-  if (dbData.length > 5) {
-    dbData = dbData.slice(dbData.length - 5, dbData.length)
-  }
-  console.log(dbData)
-}
-
-
-// othertest()
-// async function othertest(){
-
-//     let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
-//     var dbo = client.db("trackingdb")
-//     console.log('oldListing')
-
-//     let clientDBBraumstar = await MongoClient.connect('mongodb://zic:Mynewpassword%400@braumstar.com:27020/zicDb?authSource=zicDb', { useNewUrlParser: true, useUnifiedTopology: true })
-//     var dboBraumstar = clientDBBraumstar.db("zicDb")
-//     let dbData = await dboBraumstar.collection("etsyAccounts").find({ username: 'vi' }).toArray()
-//     console.log(getUpdateHistoryEpoch(1623692049))
+// test()
+// async function test(){
+//   dbData = [
+//     {
+//       id: '1',
+//       name: 'cuong12'
+//     },
+//     {
+//       id: '2',
+//       name: 'cuong2'
+//     },{
+//       id: '3',
+//       name: 'cuong3'
+//     },{
+//       id: '4',
+//       name: 'cuong4'
+//     },{
+//       id: '5',
+//       name: 'cuong5'
+//     },{
+//       id: '6',
+//       name: 'cuong6'
+//     },{
+//       id: '7',
+//       name: 'cuong7'
+//     },{
+//       id: '8',
+//       name: 'cuong8'
+//     },
+//   ]
+//   if (dbData.length > 5) {
+//     dbData = dbData.slice(dbData.length - 5, dbData.length)
+//   }
+//   console.log(dbData.length)
 // }
+
+
+othertest()
+async function othertest(){
+
+    // let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
+    // var dbo = client.db("trackingdb")
+    // console.log('oldListing')
+
+    let clientDBBraumstar = await MongoClient.connect('mongodb://zic:Mynewpassword%400@braumstar.com:27020/zicDb?authSource=zicDb', { useNewUrlParser: true, useUnifiedTopology: true })
+    var dboBraumstar = clientDBBraumstar.db("zicDb")
+    let dbData = await dboBraumstar.collection("etsyAccounts").find({ username: 'vi' }).toArray()
+    console.log(dbData)
+}
 
 
 // function getUpdateHistoryEpoch(input){
