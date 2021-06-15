@@ -686,3 +686,7 @@ html {
 #month-filter-shop {
   width: 40px;
 }
+
+[src="undefined"]{
+  display: none;
+}
