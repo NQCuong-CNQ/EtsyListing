@@ -1,19 +1,19 @@
-const MongoClient = require('mongodb').MongoClient;
-const url = "mongodb://localhost:27017/trackingdb"
+// const MongoClient = require('mongodb').MongoClient;
+// const url = "mongodb://localhost:27017/trackingdb"
 
-test()
-async function test(){
-    let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
-    var dbo = client.db("trackingdb")
-    let oldListing = await dbo.collection("listing").findOne()
-    console.log(oldListing)
+// test()
+// async function test(){
+//     let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
+//     var dbo = client.db("trackingdb")
+//     let oldListing = await dbo.collection("listing").findOne()
+//     console.log(oldListing)
 
 
-    if(oldListing != null){
-        console.log('oldListing') 
-    }
+//     if(oldListing != null){
+//         console.log('oldListing') 
+//     }
 
-}
+// }
 
 
 // var date = new Date().getTime()
