@@ -131,8 +131,8 @@ async function getListing() {
 
   idListings = [...new Set(idListings)]
   console.log(idListings.length)
-  if (idListings.length > 6000) {
-    idListings = idListings.slice(idListings.length - 6000, idListings.length)
+  if (idListings.length > 5000) {
+    idListings = idListings.slice(idListings.length - 5000, idListings.length)
   }
   console.log(idListings.length)
 
@@ -296,8 +296,8 @@ async function updateShopInfo() {
   // var dbo = client.db("trackingdb")
   let dbData = await dbo.collection("shopName").find().toArray()
 
-  if (dbData.length > 4000) {
-    dbData = dbData.slice(dbData.length - 4000, dbData.length)
+  if (dbData.length > 5000) {
+    dbData = dbData.slice(dbData.length - 5000, dbData.length)
   }
   console.log(dbData.length)
 
