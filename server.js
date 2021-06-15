@@ -33,7 +33,7 @@ app.use(function (req, res, next) {
 })
 
 const limit = 100
-const limitPage = 10
+var limitPage = 10
 const api_key = '2mlnbmgdqv6esclz98opmmuq'
 var siteUrl
 // var isUpdate = false
