@@ -1,34 +1,81 @@
-const MongoClient = require('mongodb').MongoClient;
-const url = "mongodb://localhost:27017/trackingdb"
+// const MongoClient = require('mongodb').MongoClient;
+// const url = "mongodb://localhost:27017/trackingdb"
 
 test()
 async function test(){
-    let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
-    var dbo = client.db("trackingdb")
-    let oldListing = await dbo.collection("listing").findOne()
-    console.log(oldListing)
-
-
-    if(oldListing != null){
-        console.log('oldListing') 
-    }
-
+  dbData = [
+    {
+      id: '1',
+      name: 'cuong12'
+    },
+    {
+      id: '2',
+      name: 'cuong2'
+    },{
+      id: '3',
+      name: 'cuong3'
+    },{
+      id: '4',
+      name: 'cuong4'
+    },{
+      id: '5',
+      name: 'cuong5'
+    },{
+      id: '6',
+      name: 'cuong6'
+    },{
+      id: '7',
+      name: 'cuong7'
+    },{
+      id: '8',
+      name: 'cuong8'
+    },
+  ]
+  if (dbData.length > 5) {
+    dbData = dbData.slice(dbData.length - 5, dbData.length)
+  }
+  console.log(dbData)
 }
 
 
-othertest()
-async function othertest(){
+// othertest()
+// async function othertest(){
 
-    let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
-    var dbo = client.db("trackingdb")
-    console.log('oldListing')
+//     let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
+//     var dbo = client.db("trackingdb")
+//     console.log('oldListing')
 
-    let clientDBBraumstar = await MongoClient.connect('mongodb://zic:Mynewpassword%400@braumstar.com:27020/zicDb?authSource=zicDb', { useNewUrlParser: true, useUnifiedTopology: true })
-    var dboBraumstar = clientDBBraumstar.db("zicDb")
-    let dbData = await dboBraumstar.collection("etsyAccounts").find({ username: 'vi' }).toArray()
-    console.log(dbData)
-}
+//     let clientDBBraumstar = await MongoClient.connect('mongodb://zic:Mynewpassword%400@braumstar.com:27020/zicDb?authSource=zicDb', { useNewUrlParser: true, useUnifiedTopology: true })
+//     var dboBraumstar = clientDBBraumstar.db("zicDb")
+//     let dbData = await dboBraumstar.collection("etsyAccounts").find({ username: 'vi' }).toArray()
+//     console.log(getUpdateHistoryEpoch(1623692049))
+// }
 
+
+// function getUpdateHistoryEpoch(input){
+//     var date = new Date(0)
+//     date.setUTCSeconds(input)
+//     time = String(date)
+//     time = time.split(' ')
+//     time = time[2] + '/' + convertMonthInString(time[1]) + ' ' + time[4]
+//     return time
+//   }
+//   function convertMonthInString(month) {
+//     switch (month) {
+//       case 'Jan': return '01'
+//       case 'Feb': return '02'
+//       case 'Mar': return '03'
+//       case 'Apr': return '04'
+//       case 'May': return '05'
+//       case 'Jun': return '06'
+//       case 'Jul': return '07'
+//       case 'Aug': return '08'
+//       case 'Sep': return '09'
+//       case 'Oct': return '10'
+//       case 'Nov': return '11'
+//       case 'Dec': return '12'
+//     }
+//   }
 // var date = new Date().getTime()
 // date = Math.floor(date / 3600000)
 // for (let i = 0; i < 1000; i++) {

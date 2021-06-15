@@ -212,6 +212,11 @@ async function getShopName() {
   // client.close()
 
   for (let index = 0; index < categoryList.length; index++) {
+    if(index == 0){
+      limitPage = 20
+    } else {
+      limitPage = 10
+    }
     console.log('category: ' + categoryList[index])
     for (let i = 0; i < limitPage; i++) {
       let siteUrlPage = categoryLink[index] + (i + 1)
@@ -289,6 +294,11 @@ async function updateShopInfo() {
   // let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
   // var dbo = client.db("trackingdb")
   let dbData = await dbo.collection("shopName").find().toArray()
+
+  if (dbData.length > 4000) {
+    dbData = dbData.slice(dbData.length - 4000, dbData.length)
+  }
+  console.log(dbData.length)
 
   let date = new Date().getTime()
   let dateCount = Math.floor(date / 1000) - (maxDateShop * 86400)

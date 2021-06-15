@@ -392,7 +392,7 @@ socket.on("total-shop", function (data) {
 })
 
 socket.on("last-updated", function (data) {
-  $('#last-updated').text("Last updated: " + data.updateHistory)
+  $('#last-updated').text("Last updated: " + getUpdateHistoryEpoch(data.updateHistory))
 })
 
 socket.on("shop-tracking-data", function (data) {
@@ -576,6 +576,15 @@ function getEpochTime(input) {
   time = String(date)
   time = time.split(' ')
   time = time[2] + '-' + convertMonthInString(time[1]) + '-' + time[3]
+  return time
+}
+
+function getUpdateHistoryEpoch(input){
+  var date = new Date(0)
+  date.setUTCSeconds(input)
+  time = String(date)
+  time = time.split(' ')
+  time = time[2] + '/' + convertMonthInString(time[1]) + ' ' + time[4]
   return time
 }
 
