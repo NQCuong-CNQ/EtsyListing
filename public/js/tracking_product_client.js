@@ -356,10 +356,10 @@ if (listingLocalData != null && IsJsonString(listingLocalData)) {
 
 socket.emit("product-tracking-join")
 
-socket.on("updating", function () {
-  toastr.clear()
-  toastr.warning('Data Server is updating, cannot get new information!')
-})
+// socket.on("updating", function () {
+//   toastr.clear()
+//   toastr.warning('Data Server is updating, cannot get new information!')
+// })
 
 socket.on("return-product-tracking-join", function (data) {
   listingData = data
