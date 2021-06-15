@@ -41,10 +41,17 @@ var maxTotalSales = 5000
 var maxDateShop = 365
 
 const MongoClient = require('mongodb').MongoClient
-const { Console } = require('console')
 const url = "mongodb://localhost:27017/trackingdb"
-var clientDB = MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
-var dbo = clientDB.db("trackingdb")
+var clientDB
+var dbo
+
+main()
+async function main(){
+  clientDB = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
+  dbo = clientDB.db("trackingdb")
+
+  await updateData()
+}
 
 setInterval(scheduleUpdate, 3600000) // 1h
 async function scheduleUpdate() {
@@ -66,7 +73,6 @@ async function updateCate() {
   await dbo.collection("category").insertOne(category)
 }
 
-updateData()
 async function updateData() {
   isUpdate = true
   // await updateCate()
