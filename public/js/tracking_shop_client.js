@@ -94,7 +94,7 @@ function searchOrFilterData() {
     dataFilter = getCategoryProduct(dataFilter)
   }
 
-  if (salesLargerThan > 100) {
+  if (salesLargerThan > 10) {
     dataFilter = getSalesLargerThan(dataFilter)
   }
 
@@ -696,7 +696,7 @@ $('#sales-larger-than').on('change', async function () {
       toastr.clear()
       toastr.warning('Please input a number !')
       $('#sales-larger-than').val('')
-    } else if (salesLargerThan < 100) {
+    } else if (salesLargerThan < 10) {
       salesLargerThan = 0
       searchOrFilterData()
     } else {

@@ -32,11 +32,11 @@ app.use(function (req, res, next) {
 })
 
 const limit = 100
-const limitPage = 5
+const limitPage = 10
 const api_key = '2mlnbmgdqv6esclz98opmmuq'
 var siteUrl
 var isUpdate = false
-var minTotalSales = 100
+var minTotalSales = 10
 var maxTotalSales = 5000
 var maxDateShop = 365
 
@@ -448,7 +448,7 @@ io.on("connection", async function (client) {
       var date = new Date().getTime()
       date = Math.floor(date / 1000) - (365 * 86400)
 
-      if (shopData.totalSales <= 5000 && shopData.totalSales >= 100 && response[0].creation_tsz >= date) {
+      if (shopData.totalSales <= maxTotalSales && shopData.totalSales >= minTotalSales && response[0].creation_tsz >= date) {
         await dbo.collection("shopName").updateOne({ shop_name: response[0].shop_name }, { $set: { shop_name: response[0].shop_name, total_sales: response[0]['total_sales'], imgs_listing: response[0]['imgs_listing'] } }, { upsert: true })
 
         let timeNow = getDateTimeNow()
