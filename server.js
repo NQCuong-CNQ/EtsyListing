@@ -35,7 +35,7 @@ const limit = 100
 const limitPage = 10
 const api_key = '2mlnbmgdqv6esclz98opmmuq'
 var siteUrl
-var isUpdate = false
+// var isUpdate = false
 var minTotalSales = 10
 var maxTotalSales = 5000
 var maxDateShop = 365
@@ -74,14 +74,14 @@ async function updateCate() {
 }
 
 async function updateData() {
-  isUpdate = true
+  // isUpdate = true
   // await updateCate()
   // await getListing()
   await getShopName()
   // await updateShopInfo()
   // await completeUpdate()
 
-  isUpdate = false
+  // isUpdate = false
 }
 
 async function getListing() {
@@ -402,9 +402,9 @@ io.on("connection", async function (client) {
   // var dbo = clientDB.db("trackingdb")
 
   client.on("shop-tracking-join", async function () {
-    if (isUpdate) {
-      client.emit("updating")
-    } else {
+    // if (isUpdate) {
+    //   client.emit("updating")
+    // } else {
       let shopCategory = await dbo.collection("shopCategory").find().toArray()
       client.emit("return-shop-category-data", shopCategory)
 
@@ -413,7 +413,7 @@ io.on("connection", async function (client) {
 
       let lastUpdated = await dbo.collection("log").find().toArray()
       client.emit("last-updated", lastUpdated[lastUpdated.length - 1])
-    }
+    // }
   })
 
   client.on("get-total-shop", async function () {
@@ -500,12 +500,12 @@ io.on("connection", async function (client) {
   })
 
   client.on("product-tracking-join", async function () {
-    if (isUpdate) {
-      client.emit("updating")
-    } else {
+    // if (isUpdate) {
+    //   client.emit("updating")
+    // } else {
       let dbData = await dbo.collection("listing").find().toArray()
       client.emit("return-product-tracking-join", dbData)
-    }
+    // }
   })
 
   client.on("get-list-shop-braumstar", async function (dataUser) {
@@ -607,9 +607,9 @@ io.on("connection", async function (client) {
   })
 
   client.on("track-order-join", async function (data) {
-    if(isUpdate){
-      return
-    }
+    // if(isUpdate){
+    //   return
+    // }
 
     console.log('getting data success! ' + data['data'].length)
     let trackData = []
