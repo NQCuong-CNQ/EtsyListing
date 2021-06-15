@@ -122,8 +122,8 @@ async function getListing() {
 
   idListings = [...new Set(idListings)]
   console.log(idListings.length)
-  if (idListings.length > 5000) {
-    idListings = idListings.slice(idListings.length - 5000, idListings.length)
+  if (idListings.length > 6000) {
+    idListings = idListings.slice(idListings.length - 6000, idListings.length)
   }
   console.log(idListings.length)
 
