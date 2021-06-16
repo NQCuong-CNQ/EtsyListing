@@ -591,7 +591,7 @@ io.on("connection", async function (client) {
     let trackObj
     let trackDataForSave
 
-    for (let i = 1; i < temp.length - 1; i++) {
+    for (let i = temp.length - 2; i >= 1; i--) {
       trackObj = new Object
       trackObj['pro_ID'] = temp[i].split(',')[0].replace(/[^0-9]/g, '')
       trackObj['track_number'] = temp[i].split(',')[19].replace(/[^0-9a-zA-Z]/g, '')
