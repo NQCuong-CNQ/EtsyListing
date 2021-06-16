@@ -40,7 +40,7 @@ var siteUrl
 var isUpdate = false
 var minTotalSales = 10
 var maxTotalSales = 5000
-var maxDateShop = 365
+var maxDateShop = 547
 
 const MongoClient = require('mongodb').MongoClient
 const url = "mongodb://localhost:27017/trackingdb"
@@ -69,7 +69,7 @@ async function updateCate() {
     'CategoryList': 'Canvas,Canvas,Mug,Blanket,Shirt,Tumbler',
     'CategoryLink': 'https://www.etsy.com/c/home-and-living/home-decor/wall-decor/wall-hangings/prints?explicit=1&ref=pagination&page=|https://www.etsy.com/c/handmade/home-and-living/home-decor/wall-decor/wall-hangings?explicit=1&facet=home-and-living%2Fhome-decor%2Fwall-decor%2Fwall-hangings&ship_to=US&attr_346=2341&item_type=handmade&ref=pagination&page=|https://www.etsy.com/c/home-and-living/kitchen-and-dining/drink-and-barware/drinkware/mugs?explicit=1&ref=pagination&page=|https://www.etsy.com/c/home-and-living/bedding/blankets-and-throws?ref=pagination&explicit=1&page=|https://www.etsy.com/c/clothing/mens-clothing/shirts-and-tees?ref=pagination&page=|https://www.etsy.com/c/home-and-living/kitchen-and-dining/drink-and-barware/drinkware/tumblers-and-water-glasses?explicit=1&ref=pagination&page=',
   }
-  await dbo.collection("category").remove()
+  await dbo.collection("category").deleteMany()
   await dbo.collection("category").insertOne(category)
 }
 
