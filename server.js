@@ -35,8 +35,9 @@ app.use(function (req, res, next) {
 const limit = 100
 var limitPage = 10
 const api_key = '2mlnbmgdqv6esclz98opmmuq'
+const api_key_2 = 'v2jgfkortd8sy3w393hcqtob'
 var siteUrl
-// var isUpdate = false
+var isUpdate = false
 var minTotalSales = 10
 var maxTotalSales = 5000
 var maxDateShop = 365
@@ -47,11 +48,10 @@ var clientDB
 var dbo
 
 main()
-async function main(){
+async function main() {
   clientDB = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
   dbo = clientDB.db("trackingdb")
-
-  await updateData()
+  // await updateData()
 }
 
 setInterval(scheduleUpdate, 3600000) // 1h
@@ -64,9 +64,6 @@ async function scheduleUpdate() {
 }
 
 async function updateCate() {
-  // let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
-  // var dbo = client.db("trackingdb")
-
   let category = {
     'CategoryList': 'Canvas,Mug,Blanket,Shirt,Tumbler',
     'CategoryLink': 'https://www.etsy.com/c/home-and-living/home-decor/wall-decor/wall-hangings/prints?explicit=1&ref=pagination&page=|https://www.etsy.com/c/home-and-living/kitchen-and-dining/drink-and-barware/drinkware/mugs?explicit=1&ref=pagination&page=|https://www.etsy.com/c/home-and-living/bedding/blankets-and-throws?ref=pagination&explicit=1&page=|https://www.etsy.com/c/clothing/mens-clothing/shirts-and-tees?ref=pagination&page=|https://www.etsy.com/c/home-and-living/kitchen-and-dining/drink-and-barware/drinkware/tumblers-and-water-glasses?explicit=1&ref=pagination&page=',
@@ -75,14 +72,15 @@ async function updateCate() {
 }
 
 async function updateData() {
-  // isUpdate = true
+  isUpdate = true
+  
   // await updateCate()
-  // await getListing()
+  await getListing()
   await getShopName()
   await updateShopInfo()
   await completeUpdate()
 
-  // isUpdate = false
+  isUpdate = false
 }
 
 async function getListing() {
@@ -116,12 +114,10 @@ async function getListing() {
     }
   }
 
-  // let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
-  // var dbo = client.db("trackingdb")
   let dblisting = await dbo.collection("listing").find().toArray()
 
   for (let i = 0; i < dblisting.length; i++) {
-    if ((date - dblisting[i].original_creation_tsz) > (86400 * 20)) {
+    if ((date - dblisting[i].original_creation_tsz) > (86400 * 30)) {
       await dbo.collection("listingBlackList").updateOne({ listing_id: dblisting[i].listing_id }, { $set: { listing_id: dblisting[i].listing_id } }, { upsert: true })
       await dbo.collection("listing").deleteMany({ listing_id: dblisting[i].listing_id })
     } else {
@@ -131,8 +127,8 @@ async function getListing() {
 
   idListings = [...new Set(idListings)]
   console.log(idListings.length)
-  if (idListings.length > 5000) {
-    idListings = idListings.slice(idListings.length - 5000, idListings.length)
+  if (idListings.length > 9900) {
+    idListings = idListings.slice(idListings.length - 9900, idListings.length)
   }
   console.log(idListings.length)
 
@@ -152,13 +148,13 @@ async function getListing() {
         if (listings.state != 'active') {
           await dbo.collection("listing").deleteMany({ listing_id: listings.listing_id })
         }
-        if (listings.toString().includes('does not exist') || ((date - listings.original_creation_tsz) > (86400 * 20)) || listings.state != 'active') {
+        if (listings.toString().includes('does not exist') || ((date - listings.original_creation_tsz) > (86400 * 30)) || listings.state != 'active') {
           await dbo.collection("listingBlackList").updateOne({ listing_id: listings.listing_id }, { $set: { listing_id: listings.listing_id } }, { upsert: true })
         } else {
           listingTracking = new Object
 
           let oldListing = await dbo.collection("listing").findOne({ listing_id: idListings[i] })
-          if(oldListing != null){
+          if (oldListing != null) {
             listingTracking['img_url'] = oldListing.img_url
             listingTracking['img_url_original'] = oldListing.img_url_original
           } else {
@@ -200,20 +196,15 @@ async function getListing() {
     }
     await sleep(100)
   }
-  // client.close()
 }
 
 async function getShopName() {
-  // let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
-  // var dbo = client.db("trackingdb")
   let category = await dbo.collection("category").findOne()
-
   let categoryList = category.CategoryList.split(',')
   let categoryLink = category.CategoryLink.split('|')
-  // client.close()
 
   for (let index = 0; index < categoryList.length; index++) {
-    if(index == 0){
+    if (index == 0) {
       limitPage = 20
     } else {
       limitPage = 10
@@ -228,13 +219,9 @@ async function getShopName() {
       await saveShopNameToDB(dataShopName, categoryList[index])
     }
   }
-
-  // client.close()
 }
 
 async function saveShopNameToDB(dataShopName, shopCategory) {
-  // let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
-  // let dbo = client.db("trackingdb")
   let shopBlackList = await dbo.collection("shopBlackList").find().toArray()
   shopBlackList = shopBlackList.map(({ shop_name }) => shop_name)
 
@@ -292,12 +279,10 @@ async function sleep(ms) {
 }
 
 async function updateShopInfo() {
-  // let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
-  // var dbo = client.db("trackingdb")
   let dbData = await dbo.collection("shopName").find().toArray()
 
-  if (dbData.length > 5000) {
-    dbData = dbData.slice(dbData.length - 5000, dbData.length)
+  if (dbData.length > 9000) {
+    dbData = dbData.slice(dbData.length - 9000, dbData.length)
   }
   console.log(dbData.length)
 
@@ -305,7 +290,7 @@ async function updateShopInfo() {
   let dateCount = Math.floor(date / 1000) - (maxDateShop * 86400)
 
   for (let index = 0; index < dbData.length; index++) {
-    let response = await makeRequest("GET", `https://openapi.etsy.com/v2/shops/${dbData[index].shop_name}?api_key=${api_key}`)
+    let response = await makeRequest("GET", `https://openapi.etsy.com/v2/shops/${dbData[index].shop_name}?api_key=${api_key_2}`)
     if (IsJsonString(response)) {
       response = JSON.parse(response).results
 
@@ -346,7 +331,6 @@ async function updateShopInfo() {
       await sleep(100)
     }
   }
-  // client.close()
 }
 
 async function deleteShop(dbo, shopName) {
@@ -364,14 +348,10 @@ function getDateTimeNow() {
 }
 
 async function completeUpdate() {
-  // let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
-  // var dbo = client.db("trackingdb")
-
   let timeNow = getDateTimeNow()
 
   await dbo.collection("log").insertOne({ updateHistory: timeNow })
   console.log("Update completed at: " + timeNow)
-  // client.close()
 }
 
 app.get("/", function (req, res, next) {
@@ -409,22 +389,18 @@ app.get("/mockup", function (req, res, next) {
 app.use(express.static("public"))
 
 io.on("connection", async function (client) {
-  // let clientDB = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
-  // var dbo = clientDB.db("trackingdb")
-
   client.on("shop-tracking-join", async function () {
-    // if (isUpdate) {
-    //   client.emit("updating")
-    // } else {
-      let shopCategory = await dbo.collection("shopCategory").find().toArray()
-      client.emit("return-shop-category-data", shopCategory)
+    if (isUpdate) {
+      client.emit("updating")
+    }
+    let shopCategory = await dbo.collection("shopCategory").find().toArray()
+    client.emit("return-shop-category-data", shopCategory)
 
-      let dbData = await dbo.collection("shop").find().toArray()
-      client.emit("return-shop-data", dbData)
+    let dbData = await dbo.collection("shop").find().toArray()
+    client.emit("return-shop-data", dbData)
 
-      let lastUpdated = await dbo.collection("log").find().toArray()
-      client.emit("last-updated", lastUpdated[lastUpdated.length - 1])
-    // }
+    let lastUpdated = await dbo.collection("log").find().toArray()
+    client.emit("last-updated", lastUpdated[lastUpdated.length - 1])
   })
 
   client.on("get-total-shop", async function () {
@@ -433,7 +409,7 @@ io.on("connection", async function (client) {
   })
 
   client.on("get_listing_shop_id", async function (shop_id) {
-    let result = await makeRequest("GET", `https://openapi.etsy.com/v2/shops/${shop_id}/listings/active?api_key=${api_key}`)
+    let result = await makeRequest("GET", `https://openapi.etsy.com/v2/shops/${shop_id}/listings/active?api_key=${api_key_2}`)
     if (IsJsonString(result)) {
       result = JSON.parse(result).results
       client.emit("return-listing-data", result)
@@ -443,7 +419,7 @@ io.on("connection", async function (client) {
   })
 
   client.on("get_user_by_user_id", async function (user_id) {
-    let result = await makeRequest("GET", `https://openapi.etsy.com/v2/users/${user_id}/profile?api_key=${api_key}`)
+    let result = await makeRequest("GET", `https://openapi.etsy.com/v2/users/${user_id}/profile?api_key=${api_key_2}`)
     if (IsJsonString(result)) {
       result = JSON.parse(result).results
       client.emit("return-user-data", result[0])
@@ -458,7 +434,7 @@ io.on("connection", async function (client) {
   })
 
   client.on("find-shop-by-name", async function (shopName) {
-    let response = await makeRequest("GET", `https://openapi.etsy.com/v2/shops/${shopName}?api_key=${api_key}`)
+    let response = await makeRequest("GET", `https://openapi.etsy.com/v2/shops/${shopName}?api_key=${api_key_2}`)
     if (response == 0) {
       client.emit("return-find-shop-by-name", response)
       return
@@ -511,26 +487,22 @@ io.on("connection", async function (client) {
   })
 
   client.on("product-tracking-join", async function () {
-    // if (isUpdate) {
-    //   client.emit("updating")
-    // } else {
-      let dbData = await dbo.collection("listing").find().toArray()
-      client.emit("return-product-tracking-join", dbData)
-    // }
+    if (isUpdate) {
+      client.emit("updating")
+    }
+    let dbData = await dbo.collection("listing").find().toArray()
+    client.emit("return-product-tracking-join", dbData)
   })
 
   client.on("get-list-shop-braumstar", async function (dataUser) {
-    // clientDB.close()
     let clientDBBraumstar = await MongoClient.connect('mongodb://zic:Mynewpassword%400@braumstar.com:27020/zicDb?authSource=zicDb', { useNewUrlParser: true, useUnifiedTopology: true })
     var dboBraumstar = clientDBBraumstar.db("zicDb")
 
     let dbData = await dboBraumstar.collection("etsyAccounts").find({ username: dataUser }).toArray()
     client.emit("list-shop-braumstar", dbData)
-    // clientDBBraumstar.close()
   })
 
   client.on("new-user-braumstar", async function (dataUser) {
-    // clientDB.close()
     let clientDBBraumstar = await MongoClient.connect('mongodb://zic:Mynewpassword%400@braumstar.com:27020/zicDb?authSource=zicDb', { useNewUrlParser: true, useUnifiedTopology: true })
     var dboBraumstar = clientDBBraumstar.db("zicDb")
 
@@ -560,11 +532,9 @@ io.on("connection", async function (client) {
     //   isSuccess = 1
     // }
     client.emit("return-new-user-braumstar", 1)
-    // clientDBBraumstar.close()
   })
 
   client.on("add-shop-braumstar", async function (dataShop) {
-    // clientDB.close()
     let clientDBBraumstar = await MongoClient.connect('mongodb://zic:Mynewpassword%400@braumstar.com:27020/zicDb?authSource=zicDb', { useNewUrlParser: true, useUnifiedTopology: true })
     var dboBraumstar = clientDBBraumstar.db("zicDb")
     let isSuccess = 0
@@ -597,11 +567,9 @@ io.on("connection", async function (client) {
     }
 
     client.emit("return-add-shop-braumstar", isSuccess)
-    // clientDBBraumstar.close()
   })
 
   client.on("delete-shop-braumstar", async function (dataShop) {
-    // clientDB.close()
     let clientDBBraumstar = await MongoClient.connect('mongodb://zic:Mynewpassword%400@braumstar.com:27020/zicDb?authSource=zicDb', { useNewUrlParser: true, useUnifiedTopology: true })
     var dboBraumstar = clientDBBraumstar.db("zicDb")
 
@@ -614,14 +582,9 @@ io.on("connection", async function (client) {
     }
 
     client.emit("return-delete-shop-braumstar", 1)
-    // clientDBBraumstar.close()
   })
 
   client.on("track-order-join", async function (data) {
-    // if(isUpdate){
-    //   return
-    // }
-
     console.log('getting data success! ' + data['data'].length)
     let trackData = []
     let temp = data['data'].split('\n')
@@ -668,7 +631,7 @@ io.on("connection", async function (client) {
 
     for (let i = 0; i < tempData.length; i += 2) {
       let temp = tempData[i].replace('Order history', '')
-      if(temp.includes('Message history')){
+      if (temp.includes('Message history')) {
         temp = temp.replace('Message history', '').substring(1)
       }
       gmailTemp.push(temp)
@@ -853,7 +816,7 @@ async function makeRequest(method, url) {
 }
 
 async function getTotalShop() {
-  let result = await makeRequest("GET", `https://openapi.etsy.com/v2/shops?api_key=${api_key}&limit=1&offset=1`)
+  let result = await makeRequest("GET", `https://openapi.etsy.com/v2/shops?api_key=${api_key_2}&limit=1&offset=1`)
   if (IsJsonString(result)) {
     result = JSON.parse(result).results
     return result[0].shop_id

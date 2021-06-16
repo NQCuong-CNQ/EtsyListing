@@ -323,10 +323,10 @@ if (categoryLocalData != null && IsJsonString(categoryLocalData)) {
 
 socket.emit("shop-tracking-join")
 
-// socket.on("updating", function (data) {
-//   toastr.clear()
-//   toastr.warning('Data Server is updating, cannot get new information!')
-// })
+socket.on("updating", function (data) {
+  toastr.clear()
+  toastr.warning('Data Server is updating, comeback later for updated shops!')
+})
 
 socket.on("return-shop-data", async function (data) {
   shopData = data
