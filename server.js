@@ -51,7 +51,8 @@ main()
 async function main() {
   clientDB = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
   dbo = clientDB.db("trackingdb")
-  // await updateData()
+  await updateCate()
+  await getShopName()
 }
 
 setInterval(scheduleUpdate, 3600000) // 1h
@@ -75,9 +76,8 @@ async function updateCate() {
 async function updateData() {
   isUpdate = true
   
-  await updateCate()
   await getListing()
-  await getShopName()
+  // await getShopName()
   await updateShopInfo()
   await completeUpdate()
 
@@ -205,7 +205,7 @@ async function getShopName() {
   let categoryLink = category.CategoryLink.split('|')
 
   for (let index = 0; index < categoryList.length; index++) {
-    if (index == 0) {
+    if (index == 0 || index == 1)  {
       limitPage = 20
     } else {
       limitPage = 10
