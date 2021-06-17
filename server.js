@@ -53,8 +53,10 @@ async function main() {
   dbo = clientDB.db("trackingdb")
   isUpdate = true
   // await updateCate()
+
   await getShopName()
   await updateShopInfo()
+  await completeUpdate()
   // updateData()
   isUpdate = false
 }
@@ -82,7 +84,7 @@ async function updateData() {
   
   await getListing()
   // await getShopName()
-  await updateShopInfo()
+  // await updateShopInfo()
   await completeUpdate()
 
   isUpdate = false
@@ -225,6 +227,7 @@ async function getShopName() {
   //   }
   // }
 
+  console.log('?')
   let shopName = await dbo.collection("shopName").find().toArray()
   for (let index = 0; index < shopName.length; index++) {
     siteUrl = "https://www.etsy.com/shop/" + shopName[index].shop_name
