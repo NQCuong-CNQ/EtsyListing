@@ -40,7 +40,7 @@ var siteUrl
 var isUpdate = false
 var minTotalSales = 10
 var maxTotalSales = 5000
-var maxDateShop = 365
+var maxDateShop = 547
 
 const MongoClient = require('mongodb').MongoClient
 const url = "mongodb://localhost:27017/trackingdb"
@@ -51,7 +51,8 @@ main()
 async function main() {
   clientDB = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
   dbo = clientDB.db("trackingdb")
-  // await updateData()
+  await updateCate()
+  await getShopName()
 }
 
 setInterval(scheduleUpdate, 3600000) // 1h
@@ -68,16 +69,15 @@ async function updateCate() {
     'CategoryList': 'Canvas,Canvas,Mug,Blanket,Shirt,Tumbler',
     'CategoryLink': 'https://www.etsy.com/c/home-and-living/home-decor/wall-decor/wall-hangings/prints?explicit=1&ref=pagination&page=|https://www.etsy.com/c/handmade/home-and-living/home-decor/wall-decor/wall-hangings?explicit=1&facet=home-and-living%2Fhome-decor%2Fwall-decor%2Fwall-hangings&ship_to=US&attr_346=2341&item_type=handmade&ref=pagination&page=|https://www.etsy.com/c/home-and-living/kitchen-and-dining/drink-and-barware/drinkware/mugs?explicit=1&ref=pagination&page=|https://www.etsy.com/c/home-and-living/bedding/blankets-and-throws?ref=pagination&explicit=1&page=|https://www.etsy.com/c/clothing/mens-clothing/shirts-and-tees?ref=pagination&page=|https://www.etsy.com/c/home-and-living/kitchen-and-dining/drink-and-barware/drinkware/tumblers-and-water-glasses?explicit=1&ref=pagination&page=',
   }
-  await dbo.collection("category").remove()
+  await dbo.collection("category").deleteMany()
   await dbo.collection("category").insertOne(category)
 }
 
 async function updateData() {
   isUpdate = true
   
-  await updateCate()
   await getListing()
-  await getShopName()
+  // await getShopName()
   await updateShopInfo()
   await completeUpdate()
 
@@ -205,7 +205,7 @@ async function getShopName() {
   let categoryLink = category.CategoryLink.split('|')
 
   for (let index = 0; index < categoryList.length; index++) {
-    if (index == 0) {
+    if (index == 0 || index == 1)  {
       limitPage = 20
     } else {
       limitPage = 10
@@ -592,7 +592,7 @@ io.on("connection", async function (client) {
     let trackObj
     let trackDataForSave
 
-    for (let i = temp.length - 2; i >= 1; i--) {
+    for (let i = 1; i < temp.length - 1; i++) {
       trackObj = new Object
       trackObj['pro_ID'] = temp[i].split(',')[0].replace(/[^0-9]/g, '')
       trackObj['track_number'] = temp[i].split(',')[19].replace(/[^0-9a-zA-Z]/g, '')
