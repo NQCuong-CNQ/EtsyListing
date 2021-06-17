@@ -232,7 +232,7 @@ async function getShopName() {
   for (let index = 0; index < shopName.length; index++) {
     siteUrl = "https://www.etsy.com/shop/" + shopName[index].shop_name
     let shopData = await getTotalSalesAndImgFromWeb()
-
+    console.log(shopData)
     if(shopData != 0){
       let total_sales = parseInt(shopData.totalSales)
       let imgs = shopData.imgs
