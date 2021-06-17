@@ -1,5 +1,7 @@
-const MongoClient = require('mongodb').MongoClient;
-const url = "mongodb://localhost:27017/trackingdb"
+// const MongoClient = require('mongodb').MongoClient;
+// const url = "mongodb://localhost:27017/trackingdb"
+
+const $ = require("jquery")
 
 // test()
 // async function test(){
@@ -37,18 +39,40 @@ const url = "mongodb://localhost:27017/trackingdb"
 //   console.log(dbData.length)
 // }
 
+let data = {
+    "product": {
+        "title": "Burton Custom Freestyle 151",
+        "body_html": "<strong>Good snowboard!</strong>",
+        "vendor": "Burton",
+        "product_type": "Snowboard",
+        "tags": [
+            "Barnes & Noble",
+            "Big Air",
+            "John's Fav"
+        ],
+        "status": "draft"
+    }
+}
+
 
 othertest()
-async function othertest(){
+async function othertest() {
+    $.ajax({
+        url: "https://f5a9307c03434fd67f30e4e86c0fc779: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@kidstoreboutique.myshopify.com/admin/api/2021-04/products.json",
+        data: data,
+        type: 'POST'
+    }).done(function () {
+        $(this).addClass("done");
+    });
 
     // let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
     // var dbo = client.db("trackingdb")
     // console.log('oldListing')
 
-    let clientDBBraumstar = await MongoClient.connect('mongodb://zic:Mynewpassword%400@braumstar.com:27020/zicDb?authSource=zicDb', { useNewUrlParser: true, useUnifiedTopology: true })
-    var dboBraumstar = clientDBBraumstar.db("zicDb")
-    let dbData = await dboBraumstar.collection("etsyAccounts").find({ username: 'vi' }).toArray()
-    console.log(dbData)
+    // let clientDBBraumstar = await MongoClient.connect('mongodb://zic:Mynewpassword%400@braumstar.com:27020/zicDb?authSource=zicDb', { useNewUrlParser: true, useUnifiedTopology: true })
+    // var dboBraumstar = clientDBBraumstar.db("zicDb")
+    // let dbData = await dboBraumstar.collection("etsyAccounts").find({ username: 'vi' }).toArray()
+    // console.log(dbData)
 }
 
 
@@ -80,7 +104,7 @@ async function othertest(){
 // date = Math.floor(date / 3600000)
 // for (let i = 0; i < 1000; i++) {
 //     console.log(i%26)
-    
+
 // }
 // console.log(date+1)
 // console.log((date+1)%26)
