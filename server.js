@@ -52,7 +52,7 @@ async function main() {
   clientDB = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
   dbo = clientDB.db("trackingdb")
   isUpdate = true
-  await updateCate()
+  // await updateCate()
   await getShopName()
   // updateData()
   isUpdate = false
@@ -131,8 +131,8 @@ async function getListing() {
 
   idListings = [...new Set(idListings)]
   console.log(idListings.length)
-  if (idListings.length > 9900) {
-    idListings = idListings.slice(idListings.length - 9900, idListings.length)
+  if (idListings.length > 7000) {
+    idListings = idListings.slice(idListings.length - 7000, idListings.length)
   }
   console.log(idListings.length)
 
@@ -737,12 +737,13 @@ async function fetchData(siteUrl) {
   try {
     result = await axios.get(siteUrl)
   } catch (err) {
-    result = err.response.status
-    console.log('error ' + result)
+    console.log('error get url')
   }
+
   if (result == 404) {
     return 0
   }
+  
   return cheerio.load(result.data)
 }
 
