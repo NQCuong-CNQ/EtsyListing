@@ -230,15 +230,17 @@ async function getShopName() {
     siteUrl = "https://www.etsy.com/shop/" + shopName[index].shop_name
     let shopData = await getTotalSalesAndImgFromWeb()
 
-    let total_sales = parseInt(shopData.totalSales)
-    let imgs = shopData.imgs
-
-    console.log(shopName[index].shop_name + ":" + total_sales)
-    if (total_sales >= minTotalSales && total_sales <= maxTotalSales) {
-      await dbo.collection("shopName").updateOne({ shop_name: shopName[index].shop_name }, { $set: { total_sales: total_sales, imgs_listing: imgs } }, { upsert: true })
-      console.log('ok')
-    } else {
-      await deleteShop(dbo, shopName[index].shop_name)
+    if(shopData != 0){
+      let total_sales = parseInt(shopData.totalSales)
+      let imgs = shopData.imgs
+  
+      console.log(shopName[index].shop_name + ":" + total_sales)
+      if (total_sales >= minTotalSales && total_sales <= maxTotalSales) {
+        await dbo.collection("shopName").updateOne({ shop_name: shopName[index].shop_name }, { $set: { total_sales: total_sales, imgs_listing: imgs } }, { upsert: true })
+        console.log('ok')
+      } else {
+        await deleteShop(dbo, shopName[index].shop_name)
+      }
     }
   }
 }
