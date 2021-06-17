@@ -53,7 +53,7 @@ async function main() {
   dbo = clientDB.db("trackingdb")
   isUpdate = true
   // await updateCate()
-  // await getShopName()
+  await getShopName()
   await updateShopInfo()
   // updateData()
   isUpdate = false
@@ -204,26 +204,26 @@ async function getListing() {
 }
 
 async function getShopName() {
-  let category = await dbo.collection("category").findOne()
-  let categoryList = category.CategoryList.split(',')
-  let categoryLink = category.CategoryLink.split('|')
+  // let category = await dbo.collection("category").findOne()
+  // let categoryList = category.CategoryList.split(',')
+  // let categoryLink = category.CategoryLink.split('|')
 
-  for (let index = 0; index < categoryList.length; index++) {
-    if (index == 0 || index == 1)  {
-      limitPage = 50
-    } else {
-      limitPage = 30
-    }
-    console.log('category: ' + categoryList[index])
-    for (let i = 0; i < limitPage; i++) {
-      let siteUrlPage = categoryLink[index] + (i + 1)
-      console.log('siteUrlPage: ' + siteUrlPage)
+  // for (let index = 0; index < categoryList.length; index++) {
+  //   if (index == 0 || index == 1)  {
+  //     limitPage = 50
+  //   } else {
+  //     limitPage = 30
+  //   }
+  //   console.log('category: ' + categoryList[index])
+  //   for (let i = 0; i < limitPage; i++) {
+  //     let siteUrlPage = categoryLink[index] + (i + 1)
+  //     console.log('siteUrlPage: ' + siteUrlPage)
 
-      let dataShopName = await getShopNameFromWeb(siteUrlPage)
-      console.log('page: ' + i)
-      await saveShopNameToDB(dataShopName, categoryList[index])
-    }
-  }
+  //     let dataShopName = await getShopNameFromWeb(siteUrlPage)
+  //     console.log('page: ' + i)
+  //     await saveShopNameToDB(dataShopName, categoryList[index])
+  //   }
+  // }
 
   let shopName = await dbo.collection("shopName").find().toArray()
   for (let index = 0; index < shopName.length; index++) {
@@ -739,6 +739,7 @@ async function fetchData(siteUrl) {
     result = await axios.get(siteUrl)
   } catch (err) {
     console.log('error get url')
+    return 0
   }
 
   if (result == 404) {
