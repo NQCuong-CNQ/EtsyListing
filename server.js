@@ -53,11 +53,9 @@ async function main() {
   dbo = clientDB.db("trackingdb")
   isUpdate = true
   // await updateCate()
-
   await getShopName()
-  await updateShopInfo()
-  await completeUpdate()
-  // updateData()
+  // await updateShopInfo()
+  // await completeUpdate()
   isUpdate = false
 }
 
@@ -83,8 +81,8 @@ async function updateData() {
   isUpdate = true
 
   await getListing()
-  // await getShopName()
-  // await updateShopInfo()
+  await getShopName()
+  await updateShopInfo()
   await completeUpdate()
 
   isUpdate = false
@@ -230,6 +228,7 @@ async function getShopName() {
   let shopName = await dbo.collection("shopName").find().toArray()
   for (let index = 0; index < shopName.length; index++) {
     siteUrl = "https://www.etsy.com/shop/" + shopName[index].shop_name
+    console.log('getting from web')
     let shopData = await getTotalSalesAndImgFromWeb()
 
     let total_sales = parseInt(shopData.totalSales)
@@ -240,7 +239,7 @@ async function getShopName() {
       await dbo.collection("shopName").updateOne({ shop_name: shopName[index].shop_name }, { $set: { total_sales: total_sales, imgs_listing: imgs } }, { upsert: true })
       console.log('ok')
     } else {
-      await deleteShop(dbo, shopName[index].shop_name)
+      await deleteShop(shopName[index].shop_name)
     }
   }
 }
@@ -302,8 +301,8 @@ async function updateShopInfo() {
       response = JSON.parse(response).results
 
       if (response[0]['creation_tsz'] < dateCount || (dbData[index].total_sales > maxTotalSales && dbData[index].total_sales < minTotalSales)) {
-        await deleteShop(dbo, response[0]['shop_name'])
-        console.log('removed ' + dbData[index].total_sales + " - " + response[0]['creation_tsz'] + '<' + dateCount)
+        await deleteShop(response[0]['shop_name'])
+        console.log('removed ' + response[0]['shop_name'] + " - " + response[0]['creation_tsz'] + '<' + dateCount)
       } else {
         console.log('updateShopInfo: ' + response[0].shop_id)
         response[0]['total_sales'] = dbData[index].total_sales
@@ -340,7 +339,8 @@ async function updateShopInfo() {
   }
 }
 
-async function deleteShop(dbo, shopName) {
+async function deleteShop(shopName) {
+  console.log('delete ' + shopName)
   await dbo.collection("shopBlackList").updateOne({ shop_name: shopName }, { $set: { shop_name: shopName } }, { upsert: true })
   await dbo.collection("shopName").deleteMany({ shop_name: shopName })
   await dbo.collection("shopCategory").deleteMany({ shop_name: shopName })
@@ -747,7 +747,7 @@ async function fetchData(siteUrl) {
   if (result == 404) {
     return 0
   }
-
+  console.log('get url success')
   return cheerio.load(result.data)
 }
 
