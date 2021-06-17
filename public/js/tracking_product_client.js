@@ -416,7 +416,10 @@ function handleDuplicates() {
       for (let j = 0; j < arrPos.length - 1; j++) {
         if (listingData[arrPos[j]].date_update != listingData[arrPos[j + 1]].date_update) {
           diff = listingData[arrPos[j]].quantity - listingData[arrPos[j + 1]].quantity
-          if (diff >= 0) {
+          if (diff > 100 && (1 - listingData[arrPos[j + 1]].quantity/listingData[arrPos[j]].quantity > 0.5)){
+
+          }
+          else if (diff >= 0 && diff < 2000) {
             numDays += listingData[arrPos[j + 1]].date_update - listingData[arrPos[j]].date_update
             totalCount += diff
           }
