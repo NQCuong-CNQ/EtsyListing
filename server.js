@@ -81,7 +81,7 @@ async function updateCate() {
 
 async function updateData() {
   isUpdate = true
-  
+
   await getListing()
   // await getShopName()
   // await updateShopInfo()
@@ -227,24 +227,20 @@ async function getShopName() {
   //   }
   // }
 
-  console.log('?')
   let shopName = await dbo.collection("shopName").find().toArray()
   for (let index = 0; index < shopName.length; index++) {
     siteUrl = "https://www.etsy.com/shop/" + shopName[index].shop_name
     let shopData = await getTotalSalesAndImgFromWeb()
 
-    if(shopData == 0){
+    let total_sales = parseInt(shopData.totalSales)
+    let imgs = shopData.imgs
+
+    console.log(shopName[index].shop_name + ":" + total_sales)
+    if (total_sales >= minTotalSales && total_sales <= maxTotalSales) {
+      await dbo.collection("shopName").updateOne({ shop_name: shopName[index].shop_name }, { $set: { total_sales: total_sales, imgs_listing: imgs } }, { upsert: true })
+      console.log('ok')
     } else {
-      let total_sales = parseInt(shopData.totalSales)
-      let imgs = shopData.imgs
-  
-      console.log(shopName[index].shop_name + ":" + total_sales)
-      if (total_sales >= minTotalSales && total_sales <= maxTotalSales) {
-        await dbo.collection("shopName").updateOne({ shop_name: shopName[index].shop_name }, { $set: { total_sales: total_sales, imgs_listing: imgs } }, { upsert: true })
-        console.log('ok')
-      } else {
-        await deleteShop(dbo, shopName[index].shop_name)
-      }
+      await deleteShop(dbo, shopName[index].shop_name)
     }
   }
 }
@@ -751,7 +747,7 @@ async function fetchData(siteUrl) {
   if (result == 404) {
     return 0
   }
-  
+
   return cheerio.load(result.data)
 }
 
