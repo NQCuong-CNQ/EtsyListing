@@ -31,7 +31,6 @@ socket.on("reload-etsy", function () {
 
 socket.on("track-order-return", async function (dataReceive) {
     data = dataReceive
-    console.log('receive data: ' + data)
     await addTracking()
 })
 
