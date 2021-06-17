@@ -53,7 +53,8 @@ async function main() {
   dbo = clientDB.db("trackingdb")
   isUpdate = true
   // await updateCate()
-  await getShopName()
+  // await getShopName()
+  await updateShopInfo()
   // updateData()
   isUpdate = false
 }
@@ -517,25 +518,25 @@ io.on("connection", async function (client) {
       createdAt: Date.now() / 1000 | 0,
       updatedAr: Date.now() / 1000 | 0
     }
-    await dboBraumstar.collection("users").insertOne(data)
-    // let isSuccess = 0
-    // let getOldUser = await dboBraumstar.collection("users").findOne({ username: dataUser.userName })
-    // if (getOldUser == '') {
-    //   await dboBraumstar.collection("users").insertOne(data)
-    // }
-    // else if (getOldUser.username == dataUser.userName) {
-    //   isSuccess = -1
-    //   client.emit("return-new-user-braumstar", isSuccess)
-    //   clientDBBraumstar.close()
-    //   return
-    // }
+    let isSuccess = 0
+    let getOldUser = await dboBraumstar.collection("users").findOne({ username: dataUser.userName })
 
-    // let getNewUser = await dboBraumstar.collection("users").findOne({ username: dataUser.userName })
-    // console.log(getNewUser)
-    // if (getNewUser != '') {
-    //   isSuccess = 1
-    // }
-    client.emit("return-new-user-braumstar", 1)
+    if (getOldUser == null) {
+      await dboBraumstar.collection("users").insertOne(data)
+    }
+    else if (getOldUser.username == dataUser.userName) {
+      isSuccess = -1
+      client.emit("return-new-user-braumstar", isSuccess)
+      clientDBBraumstar.close()
+      return
+    }
+
+    let getNewUser = await dboBraumstar.collection("users").findOne({ username: dataUser.userName })
+    console.log(getNewUser)
+    if (getNewUser != null) {
+      isSuccess = 1
+    }
+    client.emit("return-new-user-braumstar", isSuccess)
   })
 
   client.on("add-shop-braumstar", async function (dataShop) {
@@ -564,7 +565,7 @@ io.on("connection", async function (client) {
         isSuccess = 0
 
         let getShop = await dboBraumstar.collection("etsyAccounts").findOne({ brandName: dataShop.shopname[i] })
-        if (getShop != '') {
+        if (getShop != null) {
           isSuccess = 1
         }
       }
@@ -580,7 +581,7 @@ io.on("connection", async function (client) {
     dataShop.shopname = dataShop.shopname.split("\n")
     for (let i = 0; i < dataShop.shopname.length; i++) {
       dataShop.shopname[i] = dataShop.shopname[i].trim()
-      if (dataShop.shopname[i] != '') {
+      if (dataShop.shopname[i] != null) {
         await dboBraumstar.collection("etsyAccounts").deleteOne({ brandName: dataShop.shopname[i] })
       }
     }

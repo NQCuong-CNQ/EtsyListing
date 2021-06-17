@@ -1,7 +1,7 @@
 // const MongoClient = require('mongodb').MongoClient;
 // const url = "mongodb://localhost:27017/trackingdb"
 
-const $ = require("jquery")
+// const $ = require("jquery")
 
 // test()
 // async function test(){
@@ -39,31 +39,31 @@ const $ = require("jquery")
 //   console.log(dbData.length)
 // }
 
-let data = {
-    "product": {
-        "title": "Burton Custom Freestyle 151",
-        "body_html": "<strong>Good snowboard!</strong>",
-        "vendor": "Burton",
-        "product_type": "Snowboard",
-        "tags": [
-            "Barnes & Noble",
-            "Big Air",
-            "John's Fav"
-        ],
-        "status": "draft"
-    }
-}
+// let data = {
+//     "product": {
+//         "title": "Burton Custom Freestyle 151",
+//         "body_html": "<strong>Good snowboard!</strong>",
+//         "vendor": "Burton",
+//         "product_type": "Snowboard",
+//         "tags": [
+//             "Barnes & Noble",
+//             "Big Air",
+//             "John's Fav"
+//         ],
+//         "status": "draft"
+//     }
+// }
 
 
-othertest()
-async function othertest() {
-    $.ajax({
-        url: "https://f5a9307c03434fd67f30e4e86c0fc779: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@kidstoreboutique.myshopify.com/admin/api/2021-04/products.json",
-        data: data,
-        type: 'POST'
-    }).done(function () {
-        $(this).addClass("done");
-    });
+// othertest()
+// async function othertest() {
+//     $.ajax({
+//         url: "https://f5a9307c03434fd67f30e4e86c0fc779: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@kidstoreboutique.myshopify.com/admin/api/2021-04/products.json",
+//         data: data,
+//         type: 'POST'
+//     }).done(function () {
+//         $(this).addClass("done");
+//     });
 
     // let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
     // var dbo = client.db("trackingdb")
@@ -73,8 +73,8 @@ async function othertest() {
     // var dboBraumstar = clientDBBraumstar.db("zicDb")
     // let dbData = await dboBraumstar.collection("etsyAccounts").find({ username: 'vi' }).toArray()
     // console.log(dbData)
-}
-
+// }
+// 
 
 // function getUpdateHistoryEpoch(input){
 //     var date = new Date(0)
@@ -100,12 +100,10 @@ async function othertest() {
 //       case 'Dec': return '12'
 //     }
 //   }
-// var date = new Date().getTime()
-// date = Math.floor(date / 3600000)
-// for (let i = 0; i < 1000; i++) {
-//     console.log(i%26)
+var date = new Date().getTime()
+date = Math.floor(date / 3600000)
 
-// }
+    console.log(26 - date%26)
 // console.log(date+1)
 // console.log((date+1)%26)
 
