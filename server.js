@@ -33,7 +33,7 @@ app.use(function (req, res, next) {
 })
 
 const limit = 100
-var limitPage = 10
+var limitPage = 30
 const api_key = '2mlnbmgdqv6esclz98opmmuq'
 const api_key_2 = 'v2jgfkortd8sy3w393hcqtob'
 var siteUrl
@@ -209,12 +209,12 @@ async function getShopName() {
 
   for (let index = 0; index < categoryList.length; index++) {
     if (index == 0 || index == 1)  {
-      limitPage = 30
+      limitPage = 50
     } else {
-      limitPage = 20
+      limitPage = 30
     }
     console.log('category: ' + categoryList[index])
-    for (let i = 10; i < limitPage; i++) {
+    for (let i = 0; i < limitPage; i++) {
       let siteUrlPage = categoryLink[index] + (i + 1)
       console.log('siteUrlPage: ' + siteUrlPage)
 
