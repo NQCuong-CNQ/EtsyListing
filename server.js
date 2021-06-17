@@ -228,7 +228,6 @@ async function getShopName() {
   let shopName = await dbo.collection("shopName").find().toArray()
   for (let index = 0; index < shopName.length; index++) {
     siteUrl = "https://www.etsy.com/shop/" + shopName[index].shop_name
-    console.log('getting from web')
     let shopData = await getTotalSalesAndImgFromWeb()
 
     let total_sales = parseInt(shopData.totalSales)
@@ -242,6 +241,7 @@ async function getShopName() {
       await deleteShop(shopName[index].shop_name)
     }
   }
+  console.log('getting shop name done!')
 }
 
 async function saveShopNameToDB(dataShopName, shopCategory) {
@@ -747,7 +747,6 @@ async function fetchData(siteUrl) {
   if (result == 404) {
     return 0
   }
-  console.log('get url success')
   return cheerio.load(result.data)
 }
 
