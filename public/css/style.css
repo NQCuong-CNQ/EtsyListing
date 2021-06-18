@@ -695,5 +695,6 @@ html {
   display: flex;
   justify-content: space-between;
 }
-.refresh-container{
+.refresh-btn:hover{
+  color:rgb(0, 132, 255) !important;
 }
