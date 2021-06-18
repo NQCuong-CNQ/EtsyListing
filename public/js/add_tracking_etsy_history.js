@@ -330,3 +330,8 @@ socket.on("return-check-limit-api", async function (data) {
     toastr.clear()
     toastr.success(data)
 })
+
+$('#refresh-btn').on('click', async function () {
+    $('#loading').css('display', 'block')
+    socket.emit("tracking-history-join")
+})
