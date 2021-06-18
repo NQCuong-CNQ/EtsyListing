@@ -51,12 +51,12 @@ main()
 async function main() {
   clientDB = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
   dbo = clientDB.db("trackingdb")
-  // isUpdate = true
+  isUpdate = true
   // await updateCate()
   // await getShopName()
-  // await updateShopInfo()
+  await updateShopInfo()
   // await completeUpdate()
-  // isUpdate = false
+  isUpdate = false
 }
 
 setInterval(scheduleUpdate, 3600000) // 1h
@@ -64,7 +64,7 @@ async function scheduleUpdate() {
   var date = new Date().getTime()
   date = Math.floor(date / 3600000)
   if (date % 26 == 0) {
-    await updateData()
+    // await updateData()
   }
 }
 
@@ -80,7 +80,6 @@ async function updateCate() {
 async function updateData() {
   isUpdate = true
 
-  // await updateCate()
   await getListing()
   await getShopName()
   await updateShopInfo()
@@ -133,8 +132,8 @@ async function getListing() {
 
   idListings = [...new Set(idListings)]
   console.log(idListings.length)
-  if (idListings.length > 15000) {
-    idListings = idListings.slice(idListings.length - 15000, idListings.length)
+  if (idListings.length > 7000) {
+    idListings = idListings.slice(idListings.length - 7000, idListings.length)
   }
   console.log(idListings.length)
 
@@ -205,26 +204,26 @@ async function getListing() {
 }
 
 async function getShopName() {
-  let category = await dbo.collection("category").findOne()
-  let categoryList = category.CategoryList.split(',')
-  let categoryLink = category.CategoryLink.split('|')
+  // let category = await dbo.collection("category").findOne()
+  // let categoryList = category.CategoryList.split(',')
+  // let categoryLink = category.CategoryLink.split('|')
 
-  for (let index = 0; index < categoryList.length; index++) {
-    if (index == 0 || index == 1)  {
-      limitPage = 50
-    } else {
-      limitPage = 30
-    }
-    console.log('category: ' + categoryList[index])
-    for (let i = 0; i < limitPage; i++) {
-      let siteUrlPage = categoryLink[index] + (i + 1)
-      console.log('siteUrlPage: ' + siteUrlPage)
+  // for (let index = 0; index < categoryList.length; index++) {
+  //   if (index == 0 || index == 1)  {
+  //     limitPage = 50
+  //   } else {
+  //     limitPage = 30
+  //   }
+  //   console.log('category: ' + categoryList[index])
+  //   for (let i = 0; i < limitPage; i++) {
+  //     let siteUrlPage = categoryLink[index] + (i + 1)
+  //     console.log('siteUrlPage: ' + siteUrlPage)
 
-      let dataShopName = await getShopNameFromWeb(siteUrlPage)
-      console.log('page: ' + i)
-      await saveShopNameToDB(dataShopName, categoryList[index])
-    }
-  }
+  //     let dataShopName = await getShopNameFromWeb(siteUrlPage)
+  //     console.log('page: ' + i)
+  //     await saveShopNameToDB(dataShopName, categoryList[index])
+  //   }
+  // }
 
   let shopName = await dbo.collection("shopName").find().toArray()
   for (let index = 0; index < shopName.length; index++) {
