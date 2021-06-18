@@ -691,6 +691,9 @@ html {
   display: none;
 }
 
+.checkbox-container{
+  display: flex;
+  justify-content: space-between;
+}
 .refresh-container{
-  
 }
