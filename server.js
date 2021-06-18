@@ -98,7 +98,7 @@ async function getListing() {
     "independence day tshirt", "independence day canvas", "independence day art print", "independence day mug", "independence day blanket",
   ]
 
-  for (let i = 1; i <= 1; i++) {
+  for (let i = 1; i <= 2; i++) {
     siteUrl = `https://www.etsy.com/search?q=tumbler&page=${i}&ref=pagination`
     let data = await getSearchProductFromWeb()
     console.log(i)
@@ -109,7 +109,7 @@ async function getListing() {
 
   for (let i = 0; i < listKeyWord.length; i++) {
     console.log(listKeyWord[i])
-    for (let j = 1; j <= 3; j++) {
+    for (let j = 1; j <= 5; j++) {
       siteUrl = `https://www.etsy.com/search?q=${listKeyWord[i]}&page=${j}&ref=pagination`
       let data = await getSearchProductFromWeb()
       console.log(j)
@@ -211,9 +211,9 @@ async function getShopName() {
 
   for (let index = 0; index < categoryList.length; index++) {
     if (index == 0 || index == 1)  {
-      limitPage = 50
+      limitPage = 60
     } else {
-      limitPage = 30
+      limitPage = 40
     }
     console.log('category: ' + categoryList[index])
     for (let i = 0; i < limitPage; i++) {
