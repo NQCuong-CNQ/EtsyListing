@@ -417,7 +417,7 @@ function handleDuplicates() {
       for (let j = 0; j < arrPos.length - 1; j++) {
         if (listingData[arrPos[j]].date_update != listingData[arrPos[j + 1]].date_update) {
           diff = listingData[arrPos[j]].quantity - listingData[arrPos[j + 1]].quantity
-          if (diff > 100 && (1 - listingData[arrPos[j + 1]].quantity/listingData[arrPos[j]].quantity > 0.5)){
+          if (diff > 100 && (1 - listingData[arrPos[j + 1]].quantity / listingData[arrPos[j]].quantity > 0.5)) {
 
           }
           else if (diff >= 0 && diff < 2000) {
@@ -458,7 +458,13 @@ function handleDuplicates() {
 
     tempDataForSave[i] = tempForSave
   }
-  window.localStorage.setItem('listing-data', JSON.stringify(tempDataForSave))
+
+  console.log(listingData.length)
+  try {
+    window.localStorage.setItem('listing-data', JSON.stringify(tempDataForSave))
+  } catch (err) {
+    console.log(err)
+  }
 }
 
 /* ------------------------------------------------END SOCKET SECTION------------------------------------------------ */
