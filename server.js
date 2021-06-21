@@ -484,7 +484,7 @@ io.on("connection", async function (client) {
       response[0]['total_sales'] = shopData.totalSales
 
       var date = new Date().getTime()
-      date = Math.floor(date / 1000) - (365 * 86400)
+      date = Math.floor(date / 1000) - (maxDateShop * 86400)
 
       if (shopData.totalSales <= maxTotalSales && shopData.totalSales >= minTotalSales && response[0].creation_tsz >= date) {
         await dbo.collection("shopName").updateOne({ shop_name: response[0].shop_name }, { $set: { shop_name: response[0].shop_name, total_sales: response[0]['total_sales'], imgs_listing: response[0]['imgs_listing'] } }, { upsert: true })

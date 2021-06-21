@@ -338,6 +338,10 @@ socket.on("return-shop-data", async function (data) {
   let tempData = []
 
   for (let i = 0; i < data.length; i++) {
+    if(i > 4000){
+      break
+    }
+
     temp = new Object()
     temp['shop_name'] = data[i].shop_name
     temp['url'] = data[i].url
@@ -355,7 +359,13 @@ socket.on("return-shop-data", async function (data) {
 
   toastr.clear()
   toastr.success('Data Updated')
-  window.localStorage.setItem('listing-shop', JSON.stringify(tempData))
+
+  try {
+    window.localStorage.setItem('listing-shop', JSON.stringify(tempData))
+  } catch (error) {
+    console.log(error)
+  }
+  
   socket.emit("get-total-shop")
 })
 
@@ -365,14 +375,14 @@ socket.on("return-find-shop-by-name", function (data) {
     updateData(data)
 
     var date = new Date().getTime()
-    date = Math.floor(date / 1000) - (365 * 86400)
+    date = Math.floor(date / 1000) - (547 * 86400)
 
     if (data[0].creation_tsz < date) {
       toastr.clear()
-      toastr.warning(`Can not save for tracking! \n Shop ${data[0].shop_name} has creation time more than 1 years`, { timeOut: 8000 })
-    } else if (data[0].total_sales < 100) {
+      toastr.warning(`Can not save for tracking! \n Shop ${data[0].shop_name} has creation time more than 1.5 years`, { timeOut: 8000 })
+    } else if (data[0].total_sales < 10) {
       toastr.clear()
-      toastr.warning(`Can not save for tracking! \n Shop ${data[0].shop_name} has total sales less than 100`, { timeOut: 8000 })
+      toastr.warning(`Can not save for tracking! \n Shop ${data[0].shop_name} has total sales less than 10`, { timeOut: 8000 })
     } else if (data[0].total_sales > 5000) {
       toastr.clear()
       toastr.warning(`Can not save for tracking! \n Shop ${data[0].shop_name} has total sales more than 5000`, { timeOut: 8000 })
@@ -397,7 +407,6 @@ socket.on("last-updated", function (data) {
 
 socket.on("shop-tracking-data", function (data) {
   $('#loading').css('display', 'none')
-
   $('.popup-analytic-container').css('display', 'block')
   $('.popup-analytic-background').css('display', 'block')
 
@@ -416,6 +425,7 @@ socket.on("shop-tracking-data", function (data) {
   let total_sales = []
   let num_favorers = []
   let listing_active_count = []
+
   for (let index = 0; index < data.length; index++) {
     label.push(getEpochTimeChart(data[index].time_update))
     total_sales.push(data[index].total_sales)
@@ -498,7 +508,11 @@ $('.popup-analytic-background').on('click', function () {
 
 socket.on("return-shop-category-data", function (data) {
   shopCategory = data
-  window.localStorage.setItem('listing-shop-category', JSON.stringify(shopCategory))
+  try {
+    window.localStorage.setItem('listing-shop-category', JSON.stringify(shopCategory))
+  } catch (error) {
+    console.log(error)
+  }
 })
 
 socket.on("return-user-data", function (data) {
