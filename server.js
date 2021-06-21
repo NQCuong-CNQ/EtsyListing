@@ -6,6 +6,7 @@ var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest
 const https = require("https")
 const axios = require("axios")
 const cheerio = require('cheerio')
+const { exec } = require("child_process")
 
 //ssl from Certbot
 var server = https.createServer({
@@ -386,27 +387,27 @@ async function completeUpdate() {
 }
 
 app.get("/", function (req, res, next) {
-  res.sendFile(__dirname + "/public/index.html", {cache: true})
+  res.sendFile(__dirname + "/public/index.html", { cache: true })
 })
 
 app.get("/tracking-shop", function (req, res, next) {
-  res.sendFile(__dirname + "/public/tracking_shop.html", {cache: true})
+  res.sendFile(__dirname + "/public/tracking_shop.html", { cache: true })
 })
 
 app.get("/tracking-product", function (req, res, next) {
-  res.sendFile(__dirname + "/public/tracking_product.html", {cache: true})
+  res.sendFile(__dirname + "/public/tracking_product.html", { cache: true })
 })
 
 app.get("/tools", function (req, res, next) {
-  res.sendFile(__dirname + "/public/tools.html", {cache: true})
+  res.sendFile(__dirname + "/public/tools.html", { cache: true })
 })
 
 app.get("/listing", function (req, res, next) {
-  res.sendFile(__dirname + "/public/etsy_listing.html", {cache: true})
+  res.sendFile(__dirname + "/public/etsy_listing.html", { cache: true })
 })
 
 app.get("/add_tracking_history", function (req, res, next) {
-  res.sendFile(__dirname + "/public/add_tracking_etsy_history.html", {cache: true})
+  res.sendFile(__dirname + "/public/add_tracking_etsy_history.html", { cache: true })
 })
 
 app.get("/undefined", function (req, res, next) {
@@ -414,7 +415,7 @@ app.get("/undefined", function (req, res, next) {
 })
 
 app.get("/mockup", function (req, res, next) {
-  res.sendFile(__dirname + "/public/mockup.html", {cache: true})
+  res.sendFile(__dirname + "/public/mockup.html", { cache: true })
 })
 
 app.use(express.static("public"))
@@ -648,7 +649,8 @@ io.on("connection", async function (client) {
     }
 
     client.broadcast.emit("get-email-customer-order")
-    await sleep(3000)
+    await refreshRPC()
+
     console.log('reload etsy')
     client.broadcast.emit("reload-etsy")
     await sleep(25000)
@@ -748,6 +750,48 @@ io.on("connection", async function (client) {
 //     }
 //   }
 // }
+
+async function refreshRPC(){
+  exec("taskkill /im mstsc.exe /t", (error, stdout, stderr) => {
+    console.log(`close all RDC`)
+  })
+  await sleep(500)
+  exec("mstsc /v:64.190.87.132", (error, stdout, stderr) => {
+    console.log(`connect to 64.190.87.132`)
+  })
+  await sleep(500)
+  exec("mstsc /v:192.227.121.235:64738", (error, stdout, stderr) => {
+    console.log(`connect to 192.227.121.235:64738`)
+  })
+  await sleep(500)
+  exec("mstsc /v:64.52.175.86:48384", (error, stdout, stderr) => {
+    console.log(`connect to 64.52.175.86:48384`)
+  })
+  await sleep(500)
+  exec("mstsc /v:64.52.168.149:31072", (error, stdout, stderr) => {
+    console.log(`connect to 64.52.168.149:31072`)
+  })
+  await sleep(500)
+  exec("mstsc /v:74.81.39.30:42535", (error, stdout, stderr) => {
+    console.log(`connect to 74.81.39.30:42535`)
+  })
+  await sleep(500)
+  exec("mstsc /v:155.138.146.185", (error, stdout, stderr) => {
+    console.log(`connect to 155.138.146.185`)
+  })
+  await sleep(500)
+  exec("mstsc /v:149.248.60.29", (error, stdout, stderr) => {
+    console.log(`connect to 149.248.60.29`)
+  })
+  await sleep(500)
+  exec("mstsc /v:64.190.86.250:40661", (error, stdout, stderr) => {
+    console.log(`connect to 64.190.86.250:40661`)
+  })
+  await sleep(500)
+  exec("mstsc /v:199.34.28.113:44176", (error, stdout, stderr) => {
+    console.log(`connect to 199.34.28.113:44176`)
+  })
+}
 
 async function getSearchProductFromWeb() {
   const $ = await fetchData(siteUrl)
