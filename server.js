@@ -752,10 +752,9 @@ io.on("connection", async function (client) {
 // }
 
 async function refreshRPC(){
-  exec("taskkill /im mstsc.exe /t", (error, stdout, stderr) => {
-    console.log(`closed all RDC`)
-  })
-  await sleep(500)
+  console.log(`closed all RDC`)
+  exec("taskkill /im mstsc.exe /t")
+  await sleep(1000)
   console.log(`connect to 64.190.87.132`)
   exec("mstsc /v:64.190.87.132")
   await sleep(400)
