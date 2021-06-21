@@ -362,6 +362,7 @@ socket.on("updating", function () {
 })
 
 socket.on("return-product-tracking-join", function (data) {
+  console.log('get pro')
   listingData = data
   dataOriginal = data
   handleDuplicates()

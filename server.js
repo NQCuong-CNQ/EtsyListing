@@ -500,6 +500,7 @@ io.on("connection", async function (client) {
     }
     let dbData = await dbo.collection("listing").find().toArray()
     client.emit("return-product-tracking-join", dbData)
+    console.log('send pro')
   })
 
   client.on("get-list-shop-braumstar", async function (dataUser) {
