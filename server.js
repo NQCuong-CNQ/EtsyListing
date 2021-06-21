@@ -100,7 +100,13 @@ async function getListing() {
 
   for (let i = 1; i <= 2; i++) {
     siteUrl = `https://www.etsy.com/search?q=tumbler&page=${i}&ref=pagination`
-    let data = await getSearchProductFromWeb()
+    let data
+    try {
+      data = await getSearchProductFromWeb()
+    } catch (err) {
+      continue
+    }
+
     console.log(i)
     for (let j = 0; j < data.length; j++) {
       idListings.push(data[j])
@@ -111,7 +117,13 @@ async function getListing() {
     console.log(listKeyWord[i])
     for (let j = 1; j <= 5; j++) {
       siteUrl = `https://www.etsy.com/search?q=${listKeyWord[i]}&page=${j}&ref=pagination`
-      let data = await getSearchProductFromWeb()
+      let data
+      try {
+        data = await getSearchProductFromWeb()
+      } catch (err) {
+        continue
+      }
+
       console.log(j)
       for (let k = 0; k < data.length; k++) {
         idListings.push(data[k])
@@ -163,6 +175,7 @@ async function getListing() {
           if (oldListing != null) {
             listingTracking['img_url'] = oldListing.img_url
             listingTracking['img_url_original'] = oldListing.img_url_original
+            console.log('get old img')
           } else {
             let resultImgs = await makeRequest("GET", `https://openapi.etsy.com/v2/listings/${idListings[i]}/images?api_key=${api_key}`)
 
@@ -210,7 +223,7 @@ async function getShopName() {
   let categoryLink = category.CategoryLink.split('|')
 
   for (let index = 0; index < categoryList.length; index++) {
-    if (index == 0 || index == 1)  {
+    if (index == 0 || index == 1) {
       limitPage = 60
     } else {
       limitPage = 40
@@ -220,7 +233,12 @@ async function getShopName() {
       let siteUrlPage = categoryLink[index] + (i + 1)
       console.log('siteUrlPage: ' + siteUrlPage)
 
-      let dataShopName = await getShopNameFromWeb(siteUrlPage)
+      let dataShopName
+      try {
+        dataShopName = await getShopNameFromWeb(siteUrlPage)
+      } catch (error) {
+        continue
+      }
       console.log('page: ' + i)
       await saveShopNameToDB(dataShopName, categoryList[index])
     }
@@ -229,7 +247,12 @@ async function getShopName() {
   let shopName = await dbo.collection("shopName").find().toArray()
   for (let index = 0; index < shopName.length; index++) {
     siteUrl = "https://www.etsy.com/shop/" + shopName[index].shop_name
-    let shopData = await getTotalSalesAndImgFromWeb()
+    let shopData
+    try {
+      shopData = await getTotalSalesAndImgFromWeb()
+    } catch (error) {
+      continue
+    }
 
     let total_sales = parseInt(shopData.totalSales)
     let imgs = shopData.imgs
@@ -450,7 +473,12 @@ io.on("connection", async function (client) {
     if (IsJsonString(response)) {
       response = JSON.parse(response).results
       siteUrl = "https://www.etsy.com/shop/" + shopName
-      let shopData = await getTotalSalesAndImgFromWeb()
+      let shopData
+      try {
+        shopData = await getTotalSalesAndImgFromWeb()
+      } catch (error) {
+        console.log("can't get shop name")
+      }
 
       response[0]['imgs_listing'] = shopData.imgs
       response[0]['total_sales'] = shopData.totalSales
@@ -690,7 +718,6 @@ io.on("connection", async function (client) {
     let headers = req.getAllResponseHeaders()
     client.emit("return-check-limit-api", headers)
 
-    await sleep(2000)
     req = new XMLHttpRequest()
     req.open('GET', `https://openapi.etsy.com/v2/shops?api_key=${api_key_2}`, false)
     req.send(null)
@@ -723,7 +750,6 @@ io.on("connection", async function (client) {
 // }
 
 async function getSearchProductFromWeb() {
-  await sleep(100)
   const $ = await fetchData(siteUrl)
   if ($ == 0) {
     return 0

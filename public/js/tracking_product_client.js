@@ -462,7 +462,6 @@ function handleDuplicates() {
     tempDataForSave[i] = tempForSave
   }
 
-  console.log(JSON.stringify(tempDataForSave).length)
   try {
     window.localStorage.setItem('listing-data', JSON.stringify(tempDataForSave))
   } catch (err) {
