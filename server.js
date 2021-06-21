@@ -143,7 +143,7 @@ async function getListing() {
   for (let i = 0; i < idListings.length; i++) {
     let idBlackList = await dbo.collection("listingBlackList").findOne({ listing_id: idListings[i] })
     if (idBlackList != null) {
-      console.log('pass' + idBlackList)
+      console.log('pass' + idListings[i])
     } else {
       let result = await makeRequest("GET", `https://openapi.etsy.com/v2/listings/${idListings[i]}?api_key=${api_key}`)
 
@@ -688,6 +688,13 @@ io.on("connection", async function (client) {
     req.open('GET', `https://openapi.etsy.com/v2/shops?api_key=${api_key}`, false)
     req.send(null)
     let headers = req.getAllResponseHeaders()
+    client.emit("return-check-limit-api", headers)
+
+    await sleep(2000)
+    req = new XMLHttpRequest()
+    req.open('GET', `https://openapi.etsy.com/v2/shops?api_key=${api_key_2}`, false)
+    req.send(null)
+    headers = req.getAllResponseHeaders()
     client.emit("return-check-limit-api", headers)
   })
 })
