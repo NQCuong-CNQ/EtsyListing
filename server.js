@@ -753,44 +753,35 @@ io.on("connection", async function (client) {
 
 async function refreshRPC(){
   exec("taskkill /im mstsc.exe /t", (error, stdout, stderr) => {
-    console.log(`close all RDC`)
+    console.log(`closed all RDC`)
   })
   await sleep(500)
-  exec("mstsc /v:64.190.87.132", (error, stdout, stderr) => {
-    console.log(`connect to 64.190.87.132`)
-  })
-  await sleep(500)
-  exec("mstsc /v:192.227.121.235:64738", (error, stdout, stderr) => {
-    console.log(`connect to 192.227.121.235:64738`)
-  })
-  await sleep(500)
-  exec("mstsc /v:64.52.175.86:48384", (error, stdout, stderr) => {
-    console.log(`connect to 64.52.175.86:48384`)
-  })
-  await sleep(500)
-  exec("mstsc /v:64.52.168.149:31072", (error, stdout, stderr) => {
-    console.log(`connect to 64.52.168.149:31072`)
-  })
-  await sleep(500)
-  exec("mstsc /v:74.81.39.30:42535", (error, stdout, stderr) => {
-    console.log(`connect to 74.81.39.30:42535`)
-  })
-  await sleep(500)
-  exec("mstsc /v:155.138.146.185", (error, stdout, stderr) => {
-    console.log(`connect to 155.138.146.185`)
-  })
-  await sleep(500)
-  exec("mstsc /v:149.248.60.29", (error, stdout, stderr) => {
-    console.log(`connect to 149.248.60.29`)
-  })
-  await sleep(500)
-  exec("mstsc /v:64.190.86.250:40661", (error, stdout, stderr) => {
-    console.log(`connect to 64.190.86.250:40661`)
-  })
-  await sleep(500)
-  exec("mstsc /v:199.34.28.113:44176", (error, stdout, stderr) => {
-    console.log(`connect to 199.34.28.113:44176`)
-  })
+  console.log(`connect to 64.190.87.132`)
+  exec("mstsc /v:64.190.87.132")
+  await sleep(400)
+  console.log(`connect to 192.227.121.235:64738`)
+  exec("mstsc /v:192.227.121.235:64738")
+  await sleep(400)
+  console.log(`connect to 64.52.175.86:48384`)
+  exec("mstsc /v:64.52.175.86:48384")
+  await sleep(400)
+  console.log(`connect to 64.52.168.149:31072`)
+  exec("mstsc /v:64.52.168.149:31072")
+  await sleep(400)
+  console.log(`connect to 74.81.39.30:42535`)
+  exec("mstsc /v:74.81.39.30:42535")
+  await sleep(400)
+  console.log(`connect to 155.138.146.185`)
+  exec("mstsc /v:155.138.146.185")
+  await sleep(400)
+  console.log(`connect to 149.248.60.29`)
+  exec("mstsc /v:149.248.60.29")
+  await sleep(400)
+  console.log(`connect to 64.190.86.250:40661`)
+  exec("mstsc /v:64.190.86.250:40661")
+  await sleep(400)
+  console.log(`connect to 199.34.28.113:44176`)
+  exec("mstsc /v:199.34.28.113:44176")
 }
 
 async function getSearchProductFromWeb() {
