@@ -362,7 +362,6 @@ socket.on("updating", function () {
 })
 
 socket.on("return-product-tracking-join", function (data) {
-  console.log('get pro')
   listingData = data
   dataOriginal = data
   handleDuplicates()
@@ -439,6 +438,10 @@ function handleDuplicates() {
   let tempDataForSave = []
 
   for (let i = 0; i < listingData.length; i++) {
+    if (i > 4000) {
+      break
+    }
+
     tempForSave = new Object()
     tempForSave['listing_id'] = listingData[i].listing_id
     tempForSave['title'] = listingData[i].title
@@ -459,7 +462,7 @@ function handleDuplicates() {
     tempDataForSave[i] = tempForSave
   }
 
-  console.log(listingData.length)
+  console.log(JSON.stringify(tempDataForSave).length)
   try {
     window.localStorage.setItem('listing-data', JSON.stringify(tempDataForSave))
   } catch (err) {
