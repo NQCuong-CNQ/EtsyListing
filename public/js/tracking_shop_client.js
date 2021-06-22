@@ -10,6 +10,14 @@ var timeCreatedShopFilter, salesLargerThan, monthFilterShop, filterType = 0
 var gettingData = 1
 
 /* ------------------------------------------------MAIN SECTION------------------------------------------------ */
+IsJsonString = str => {
+  try {
+    JSON.parse(str)
+  } catch (e) {
+    return false
+  }
+  return true
+}
 
 $('#listing-back-btn').on('click', () => {
   $('#list-shop-section').css("display", "block")
@@ -284,8 +292,8 @@ getListingOption = id => {
 }
 
 getUserOption = id => {
-  console.log(shopData.find( shop_id => shop_id === id ))
-  
+  console.log(shopData.find(shop_id => shop_id === id))
+
   socket.emit("get_user_by_user_id", getShopUserByID(id))
   $('#loading').css('display', 'block')
   $('#title-page').text('User Detail')
@@ -621,14 +629,7 @@ convertMonthInString = month => {
   }
 }
 
-IsJsonString = str => {
-  try {
-    JSON.parse(str)
-  } catch (e) {
-    return false
-  }
-  return true
-}
+
 
 /* ------------------------------------------------END ADDITIONAL SECTION------------------------------------------------ */
 
