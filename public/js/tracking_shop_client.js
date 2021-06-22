@@ -147,7 +147,7 @@ timeCreatedShopFilterAction = dataFilter => {
 
 getSalesLargerThan = data => {
   let filterData = []
-  for (let item in data) {
+  for (let item of data) {
     console.log(item.total_sales >= salesLargerThan)
     if (item.total_sales >= salesLargerThan) {
       filterData.push(item)
