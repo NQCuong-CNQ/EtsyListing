@@ -104,7 +104,6 @@ date = new Date().getTime()
 date = Math.floor(date / 3600000)
 
 console.log(26 - date % 26)
-
 // let car = {
 
 // }

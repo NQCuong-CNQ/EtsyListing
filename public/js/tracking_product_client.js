@@ -220,6 +220,161 @@ $('#find-product-by-keyword-button').on('click', () => {
   searchOrFilterData()
 })
 
+compareViews = (a, b) => {
+  const bandA = a.views
+  const bandB = b.views
+  return compareAction(bandA, bandB)
+}
+
+compareFavorites = (a, b) => {
+  const bandA = a.num_favorers
+  const bandB = b.num_favorers
+  return compareAction(bandA, bandB)
+}
+
+compareDay = (a, b) => {
+  const bandA = a.original_creation_tsz
+  const bandB = b.original_creation_tsz
+  return compareAction(bandA, bandB)
+}
+
+comparePercentFavorites = (a, b) => {
+  const bandA = a.percent_favor
+  const bandB = b.percent_favor
+  return compareAction(bandA, bandB)
+}
+
+compareSaleDay = (a, b) => {
+  const bandA = a.sales_day
+  const bandB = b.sales_day
+  return compareAction(bandA, bandB)
+}
+
+compareAction = (bandA, bandB) => {
+  bandA = parseFloat(bandA)
+  bandB = parseFloat(bandB)
+  let comparison = 0;
+  if (bandA > bandB) {
+    comparison = 1;
+  } else if (bandA < bandB) {
+    comparison = -1;
+  }
+  return comparison * -1;
+}
+
+getDayTimeLife = creation_time => {
+  let timeNow = new Date().getTime()
+  let life_time = Math.floor(timeNow / 1000) - creation_time
+  return life_time / 86400
+}
+
+convertMonthInString = month => {
+  switch (month) {
+    case 'Jan': return '01'
+    case 'Feb': return '02'
+    case 'Mar': return '03'
+    case 'Apr': return '04'
+    case 'May': return '05'
+    case 'Jun': return '06'
+    case 'Jul': return '07'
+    case 'Aug': return '08'
+    case 'Sep': return '09'
+    case 'Oct': return '10'
+    case 'Nov': return '11'
+    case 'Dec': return '12'
+  }
+}
+
+getEpochTime = input => {
+  var date = new Date(0)
+  date.setUTCSeconds(input)
+  time = String(date)
+  time = time.split(' ')
+  time = time[2] + '/' + convertMonthInString(time[1])
+  return time
+}
+
+formatForSearch = string => {
+  string = string.replace(/[^0-9a-zA-Z ]/g, '').replace(/s /g, ' ').toLowerCase()
+  return string
+}
+
+getSearchLevel = keyword => {
+  let searchData = []
+  searchData['level1'], searchData['level2'], searchData['level3'] = []
+
+  let level1 = ["Father's Day", "Pride Month", "Independence Day", "Mother's Day", "Valentine's Day", "Patrick's Day", "Wedding's Day", "New Year's Day",
+    "Memorial Day", "Thanksgiving", "Christmas", "Presidents' Day", "Easter", "Halloween"]
+  let level2 = ["Canvas", "Art Print", "Mug", "Shirt", "Blanket", "Tumbler"]
+  let level3 = ["Personalize"]
+
+  for (let i = 0; i < keyword.length; i++) {
+    if (level1.includes(keyword[i])) {
+      searchData['level1'].push(formatForSearch(keyword[i]))
+    } else if (level2.includes(keyword[i])) {
+      searchData['level2'].push(formatForSearch(keyword[i]))
+    } else if (level3.includes(keyword[i])) {
+      searchData['level3'].push(formatForSearch(keyword[i]))
+    }
+  }
+  return searchData
+}
+
+searchByLevel = (key, data) => {
+  let searchData = []
+  for (let i = 0; i < data.length; i++) {
+    for (let j = 0; j < key.length; j++) {
+      if (formatForSearch(data[i].title).indexOf(key[j]) != -1) {
+        searchData.push(data[i])
+      }
+    }
+  }
+  return searchData
+}
+
+searchByLevelCate = (key, data) => {
+  let searchData = []
+  for (let i = 0; i < data.length; i++) {
+    for (let j = 0; j < key.length; j++) {
+      if (formatForSearch(data[i].title).indexOf(key[j]) != -1) {
+        searchData.push(data[i])
+      }
+      else if (formatForSearch(data[i].taxonomy_path[data[i].taxonomy_path.length - 1]).indexOf(key[j]) != -1) {
+        searchData.push(data[i])
+      }
+    }
+  }
+  return searchData
+}
+
+
+searchByKeyword = (keyword, data) => {
+  let dataSearch = data
+  let searchKeyData = getSearchLevel(keyword)
+
+  if (searchKeyData['level1'].length > 0) {
+    dataSearch = searchByLevel(searchKeyData['level1'], dataSearch)
+  }
+  if (searchKeyData['level2'].length > 0) {
+    dataSearch = searchByLevelCate(searchKeyData['level2'], dataSearch)
+  }
+  if (searchKeyData['level3'].length > 0) {
+    dataSearch = searchByLevel(searchKeyData['level3'], dataSearch)
+  }
+
+  return dataSearch
+}
+
+filterByDate = (data, days) => {
+  let filterData = []
+  for (let i = 0; i < data.length; i++) {
+    if (getDayTimeLife(data[i].original_creation_tsz) <= days) {
+      filterData.push(data[i])
+    }
+  }
+  return filterData
+}
+
 searchOrFilterData = () => {
   $('#loading').css('display', 'block')
   dataFilter = listingData
@@ -265,6 +420,31 @@ searchOrFilterData = () => {
   updateData(dataFilter)
 }
 
+updatePaginationBtn = data => {
+  if (pagEnd == data.length) {
+    $('#next-pagination').css('pointer-events', 'none')
+    $('#last-pagination').css('pointer-events', 'none')
+    $('#next-pagination').css('color', 'lightgray')
+    $('#last-pagination').css('color', 'lightgray')
+  } else {
+    $('#next-pagination').css('pointer-events', 'auto')
+    $('#last-pagination').css('pointer-events', 'auto')
+    $('#next-pagination').css('color', 'black')
+    $('#last-pagination').css('color', 'black')
+  }
+  if (pagStart == 0) {
+    $('#back-pagination').css('pointer-events', 'none')
+    $('#first-pagination').css('pointer-events', 'none')
+    $('#back-pagination').css('color', 'lightgray')
+    $('#first-pagination').css('color', 'lightgray')
+  } else {
+    $('#back-pagination').css('pointer-events', 'auto')
+    $('#first-pagination').css('pointer-events', 'auto')
+    $('#back-pagination').css('color', 'black')
+    $('#first-pagination').css('color', 'black')
+  }
+}
+
 $('#first-pagination').on('click', () => {
   pagStart = 0
   pagEnd = pagLenght
@@ -295,6 +475,11 @@ $('#back-pagination').on('click', () => {
   }
   updateData(dataFilter)
 })
+
+scrollToTop = () => {
+  document.body.scrollTop = 0;
+  document.documentElement.scrollTop = 0;
+}
 
 updateData = (dataFilter = listingData) => {
   $('#product-list').empty()
@@ -364,16 +549,6 @@ socket.emit("product-tracking-join")
 socket.on("updating", () => {
   toastr.clear()
   toastr.warning('Data Server is updating, comeback later for updated products!')
-})
-
-socket.on("return-product-tracking-join", data => {
-  listingData = data
-  dataOriginal = data
-  handleDuplicates()
-  searchOrFilterData()
-  toastr.clear()
-  toastr.success('Data Updated')
-  isGettingData = false
 })
 
 handleDuplicates = () => {
@@ -471,17 +646,21 @@ handleDuplicates = () => {
   }
 }
 
-/* ------------------------------------------------END SOCKET SECTION------------------------------------------------ */
-
-/* ------------------------------------------------ADDITIONAL SECTION------------------------------------------------ */
+socket.on("return-product-tracking-join", data => {
+  listingData = data
+  dataOriginal = data
+  handleDuplicates()
+  searchOrFilterData()
+  toastr.clear()
+  toastr.success('Data Updated')
+  isGettingData = false
+})
 
 // $("body").on('click', e=>{
 //   if (e.target.className != "popup-analytic-container") {
 //     $(".popup-analytic-container").css('display', 'none')
 //   }
 // })
-
-
 
 showAnalytic = id => {
   if (isGettingData) {
@@ -614,119 +793,11 @@ $('#find-product-by-keyword').on('change', e => {
   $('.select2-results__option--selected').on('unbind')
 })
 
-scrollToTop = () => {
-  document.body.scrollTop = 0;
-  document.documentElement.scrollTop = 0;
-}
-
-compareViews = (a, b) => {
-  const bandA = a.views
-  const bandB = b.views
-  return compareAction(bandA, bandB)
-}
-
-compareFavorites = (a, b) => {
-  const bandA = a.num_favorers
-  const bandB = b.num_favorers
-  return compareAction(bandA, bandB)
-}
-
-compareDay = (a, b) => {
-  const bandA = a.original_creation_tsz
-  const bandB = b.original_creation_tsz
-  return compareAction(bandA, bandB)
-}
-
-comparePercentFavorites = (a, b) => {
-  const bandA = a.percent_favor
-  const bandB = b.percent_favor
-  return compareAction(bandA, bandB)
-}
-
-compareSaleDay = (a, b) => {
-  const bandA = a.sales_day
-  const bandB = b.sales_day
-  return compareAction(bandA, bandB)
-}
-
-compareAction = (bandA, bandB) => {
-  bandA = parseFloat(bandA)
-  bandB = parseFloat(bandB)
-  let comparison = 0;
-  if (bandA > bandB) {
-    comparison = 1;
-  } else if (bandA < bandB) {
-    comparison = -1;
-  }
-  return comparison * -1;
-}
-
-getDayTimeLife = creation_time => {
-  let timeNow = new Date().getTime()
-  let life_time = Math.floor(timeNow / 1000) - creation_time
-  return life_time / 86400
-}
-
-getEpochTime = input => {
-  var date = new Date(0)
-  date.setUTCSeconds(input)
-  time = String(date)
-  time = time.split(' ')
-  time = time[2] + '/' + convertMonthInString(time[1])
-  return time
-}
-
-convertMonthInString = month => {
-  switch (month) {
-    case 'Jan': return '01'
-    case 'Feb': return '02'
-    case 'Mar': return '03'
-    case 'Apr': return '04'
-    case 'May': return '05'
-    case 'Jun': return '06'
-    case 'Jul': return '07'
-    case 'Aug': return '08'
-    case 'Sep': return '09'
-    case 'Oct': return '10'
-    case 'Nov': return '11'
-    case 'Dec': return '12'
-  }
-}
-
 // function isDigital(data) {
 //   if (data.is_digital == true || data.title.toLowerCase().includes('digital')) {
 //     return true
 //   } return false
 // }
-
-updatePaginationBtn = data => {
-  if (pagEnd == data.length) {
-    $('#next-pagination').css('pointer-events', 'none')
-    $('#last-pagination').css('pointer-events', 'none')
-    $('#next-pagination').css('color', 'lightgray')
-    $('#last-pagination').css('color', 'lightgray')
-  } else {
-    $('#next-pagination').css('pointer-events', 'auto')
-    $('#last-pagination').css('pointer-events', 'auto')
-    $('#next-pagination').css('color', 'black')
-    $('#last-pagination').css('color', 'black')
-  }
-  if (pagStart == 0) {
-    $('#back-pagination').css('pointer-events', 'none')
-    $('#first-pagination').css('pointer-events', 'none')
-    $('#back-pagination').css('color', 'lightgray')
-    $('#first-pagination').css('color', 'lightgray')
-  } else {
-    $('#back-pagination').css('pointer-events', 'auto')
-    $('#first-pagination').css('pointer-events', 'auto')
-    $('#back-pagination').css('color', 'black')
-    $('#first-pagination').css('color', 'black')
-  }
-}
-
-/* ------------------------------------------------END ADDITIONAL SECTION------------------------------------------------ */
-
-/* ------------------------------------------------FILTER SECTION------------------------------------------------ */
 
 // function filterByType(data, isDigit = false) {
 //   let filterData = []
@@ -753,85 +824,3 @@ updatePaginationBtn = data => {
 
 //   return filterData
 // }
-
-filterByDate = data, days => {
-  let filterData = []
-  for (let i = 0; i < data.length; i++) {
-    if (getDayTimeLife(data[i].original_creation_tsz) <= days) {
-      filterData.push(data[i])
-    }
-  }
-  return filterData
-}
-
-searchByKeyword = keyword, data => {
-  let dataSearch = data
-  let searchKeyData = getSearchLevel(keyword)
-
-  if (searchKeyData['level1'].length > 0) {
-    dataSearch = searchByLevel(searchKeyData['level1'], dataSearch)
-  }
-  if (searchKeyData['level2'].length > 0) {
-    dataSearch = searchByLevelCate(searchKeyData['level2'], dataSearch)
-  }
-  if (searchKeyData['level3'].length > 0) {
-    dataSearch = searchByLevel(searchKeyData['level3'], dataSearch)
-  }
-
-  return dataSearch
-}
-
-getSearchLevel = keyword => {
-  let searchData = []
-  searchData['level1'], searchData['level2'], searchData['level3'] = []
-
-  let level1 = ["Father's Day", "Pride Month", "Independence Day", "Mother's Day", "Valentine's Day", "Patrick's Day", "Wedding's Day", "New Year's Day",
-    "Memorial Day", "Thanksgiving", "Christmas", "Presidents' Day", "Easter", "Halloween"]
-  let level2 = ["Canvas", "Art Print", "Mug", "Shirt", "Blanket", "Tumbler"]
-  let level3 = ["Personalize"]
-
-  for (let i = 0; i < keyword.length; i++) {
-    if (level1.includes(keyword[i])) {
-      searchData['level1'].push(formatForSearch(keyword[i]))
-    } else if (level2.includes(keyword[i])) {
-      searchData['level2'].push(formatForSearch(keyword[i]))
-    } else if (level3.includes(keyword[i])) {
-      searchData['level3'].push(formatForSearch(keyword[i]))
-    }
-  }
-  return searchData
-}
-
-searchByLevel = key, data => {
-  let searchData = []
-  for (let i = 0; i < data.length; i++) {
-    for (let j = 0; j < key.length; j++) {
-      if (formatForSearch(data[i].title).indexOf(key[j]) != -1) {
-        searchData.push(data[i])
-      }
-    }
-  }
-  return searchData
-}
-
-searchByLevelCate = key, data => {
-  let searchData = []
-  for (let i = 0; i < data.length; i++) {
-    for (let j = 0; j < key.length; j++) {
-      if (formatForSearch(data[i].title).indexOf(key[j]) != -1) {
-        searchData.push(data[i])
-      }
-      else if (formatForSearch(data[i].taxonomy_path[data[i].taxonomy_path.length - 1]).indexOf(key[j]) != -1) {
-        searchData.push(data[i])
-      }
-    }
-  }
-  return searchData
-}
-
-formatForSearch = string => {
-  string = string.replace(/[^0-9a-zA-Z ]/g, '').replace(/s /g, ' ').toLowerCase()
-  return string
-}
-/* ------------------------------------------------END FILTER SECTION------------------------------------------------ */
-

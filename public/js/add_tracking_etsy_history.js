@@ -9,8 +9,65 @@ var isAddedChecked, isMyAccount = true
 var isTrangAccount, isShowAll = false
 
 $('#loading').css('display', 'block')
-
 socket.emit("tracking-history-join")
+
+compareAction = (bandA, bandB) => {
+    bandA = parseFloat(bandA)
+    bandB = parseFloat(bandB)
+    let comparison = 0;
+    if (bandA > bandB) {
+        comparison = 1;
+    } else if (bandA < bandB) {
+        comparison = -1;
+    }
+    return comparison * -1;
+}
+
+compareDay = (a, b) => {
+    const bandA = a.time_add_tracking
+    const bandB = b.time_add_tracking
+    return compareAction(bandA, bandB)
+}
+
+convertMonthInString = month => {
+    switch (month) {
+        case 'Jan': return '01'
+        case 'Feb': return '02'
+        case 'Mar': return '03'
+        case 'Apr': return '04'
+        case 'May': return '05'
+        case 'Jun': return '06'
+        case 'Jul': return '07'
+        case 'Aug': return '08'
+        case 'Sep': return '09'
+        case 'Oct': return '10'
+        case 'Nov': return '11'
+        case 'Dec': return '12'
+    } return month
+}
+
+getEpochTime = input => {
+    if (input === undefined) {
+        return '-- / -- / --'
+    }
+    var date = new Date(0)
+    date.setUTCSeconds(input)
+    time = String(date)
+    time = time.split(' ')
+    time = time[4] + ' ' + time[2] + '/' + convertMonthInString(time[1])
+    return time
+}
+
+getCarrierName = (track, name) => {
+    if (name === undefined || name == '') {
+        return '---'
+    } else if (track.startsWith('9') && name == 'USPS') {
+        return `<p class="p-input-true">${name}</p>`
+    } else if ((track.startsWith('8') || track.startsWith('1Z')) && name == 'UPS') {
+        return `<p class="p-input-true">${name}</p>`
+    }
+    return `<p class="p-input-wrong">${name}</p>`
+}
 
 let isAddedCheckedStorage = window.localStorage.getItem('is-tracking-history-checked')
 if (isAddedCheckedStorage == 1) {
@@ -44,26 +101,6 @@ socket.on("tracking-history-return-data", data => {
     filterData()
 })
 
-filterData = () => {
-    let filterData = historyData
-
-    if (isMyAccount && isTrangAccount) {
-    } else if (isMyAccount) {
-        filterData = filterMyAccount(filterData)
-    } else if (isTrangAccount) {
-        filterData = filterTrangAccount(filterData)
-    } else {
-        filterData = []
-    }
-
-    if (isAddedChecked) {
-        filterData = filterAdded(filterData)
-    }
-
-    filterData.sort(compareDay)
-    updateData(filterData)
-}
-
 filterTrangAccount = data => {
     let dataFilter = []
     for (let i = 0; i < data.length; i++) {
@@ -84,6 +121,36 @@ filterMyAccount = data => {
     return dataFilter
 }
 
+filterAdded = data => {
+    let dataFilter = []
+    for (let i = 0; i < data.length; i++) {
+        if (data[i].time_add_tracking !== undefined) {
+            dataFilter.push(data[i])
+        }
+    }
+    return dataFilter
+}
+
+filterData = () => {
+    let filterData = historyData
+
+    if (isMyAccount && isTrangAccount) {
+    } else if (isMyAccount) {
+        filterData = filterMyAccount(filterData)
+    } else if (isTrangAccount) {
+        filterData = filterTrangAccount(filterData)
+    } else {
+        filterData = []
+    }
+
+    if (isAddedChecked) {
+        filterData = filterAdded(filterData)
+    }
+
+    filterData.sort(compareDay)
+    updateData(filterData)
+}
+
 $('#show-added-tracking').on('change', () => {
     if ($(this).prop("checked")) {
         isAddedChecked = true
@@ -97,7 +164,6 @@ $('#show-added-tracking').on('change', () => {
     }
 })
 
-
 $('#show-my-account-tracking').on('change', () => {
     if ($(this).prop("checked")) {
         isMyAccount = true
@@ -110,7 +176,6 @@ $('#show-my-account-tracking').on('change', () => {
         window.localStorage.setItem('is-my-account-checked', 0)
     }
 })
-
 
 $('#show-trang-account-tracking').on('change', () => {
     if ($(this).prop("checked")) {
@@ -135,41 +200,6 @@ $('#show-all-tracking').on('change', () => {
         filterData()
     }
 })
-
-filterAdded = data => {
-    let dataFilter = []
-    for (let i = 0; i < data.length; i++) {
-        if (data[i].time_add_tracking !== undefined) {
-            dataFilter.push(data[i])
-        }
-    }
-    return dataFilter
-}
-
-updateData = (data = historyData) => {
-    $('#table_id-tracking-history').DataTable().clear().destroy()
-    for (let i = 0; i < data.length; i++) {
-        $('#table_id-tracking-history-body').append(`<tr>
-            <td>${data[i].id}</td>
-            <td>${formatShopName(data[i].name)}</td>
-            <td>${formatCustomerName(data[i].customer_name)}</td>
-            <td>${formatCustomerEmail(data[i].customer_email)}</td>
-            <td>${getCarrierCode(data[i].number_tracking)}</td>
-            <td>${getActualCarrierCode(data[i].number_tracking, data[i].actual_input)}</td>
-            <td>${getCarrierName(data[i].number_tracking, data[i].carrier_name)}</td>
-            <td>${formatOrderDate(data[i].order_date)}</td>
-            <td>${formatOrderStatus(data[i].order_status)}</td>
-            <td>${getEpochTime(data[i].time_add_tracking)}</td>
-        </tr>`)
-    }
-
-    $('#table_id-tracking-history').DataTable({
-        pageLength: 25,
-        scrollX: 0,
-        ordering: false
-    })
-    $('#loading').css('display', 'none')
-}
 
 formatCustomerName = name => {
     if (name === undefined) {
@@ -221,62 +251,29 @@ getCarrierCode = code => {
     } return code
 }
 
-compareDay = (a, b) => {
-    const bandA = a.time_add_tracking
-    const bandB = b.time_add_tracking
-    return compareAction(bandA, bandB)
-}
-
-compareAction = (bandA, bandB) => {
-    bandA = parseFloat(bandA)
-    bandB = parseFloat(bandB)
-    let comparison = 0;
-    if (bandA > bandB) {
-        comparison = 1;
-    } else if (bandA < bandB) {
-        comparison = -1;
+updateData = (data = historyData) => {
+    $('#table_id-tracking-history').DataTable().clear().destroy()
+    for (let i = 0; i < data.length; i++) {
+        $('#table_id-tracking-history-body').append(`<tr>
+            <td>${data[i].id}</td>
+            <td>${formatShopName(data[i].name)}</td>
+            <td>${formatCustomerName(data[i].customer_name)}</td>
+            <td>${formatCustomerEmail(data[i].customer_email)}</td>
+            <td>${getCarrierCode(data[i].number_tracking)}</td>
+            <td>${getActualCarrierCode(data[i].number_tracking, data[i].actual_input)}</td>
+            <td>${getCarrierName(data[i].number_tracking, data[i].carrier_name)}</td>
+            <td>${formatOrderDate(data[i].order_date)}</td>
+            <td>${formatOrderStatus(data[i].order_status)}</td>
+            <td>${getEpochTime(data[i].time_add_tracking)}</td>
+        </tr>`)
     }
-    return comparison * -1;
-}
 
-getEpochTime = input => {
-    if (input === undefined) {
-        return '-- / -- / --'
-    }
-    var date = new Date(0)
-    date.setUTCSeconds(input)
-    time = String(date)
-    time = time.split(' ')
-    time = time[4] + ' ' + time[2] + '/' + convertMonthInString(time[1])
-    return time
-}
-
-getCarrierName = (track, name) => {
-    if (name === undefined || name == '') {
-        return '---'
-    } else if (track.startsWith('9') && name == 'USPS') {
-        return `<p class="p-input-true">${name}</p>`
-    } else if ((track.startsWith('8') || track.startsWith('1Z')) && name == 'UPS') {
-        return `<p class="p-input-true">${name}</p>`
-    }
-    return `<p class="p-input-wrong">${name}</p>`
-}
-
-convertMonthInString = month => {
-    switch (month) {
-        case 'Jan': return '01'
-        case 'Feb': return '02'
-        case 'Mar': return '03'
-        case 'Apr': return '04'
-        case 'May': return '05'
-        case 'Jun': return '06'
-        case 'Jul': return '07'
-        case 'Aug': return '08'
-        case 'Sep': return '09'
-        case 'Oct': return '10'
-        case 'Nov': return '11'
-        case 'Dec': return '12'
-    } return month
+    $('#table_id-tracking-history').DataTable({
+        pageLength: 25,
+        scrollX: 0,
+        ordering: false
+    })
+    $('#loading').css('display', 'none')
 }
 
 $('#fix-tracking-history-btn').on('click', () => {
@@ -312,7 +309,6 @@ $('#submit-fix-btn').on('click', () => {
         toastr.warning('Vui lòng nhập Code hoặc Carrier !')
         return
     }
-
     socket.emit("fix-tracking-history", fixData)
 })
 

@@ -40,79 +40,41 @@ $("input").on('dragenter', e => {
   })
 })
 
-handleFileSelect = async evt => {
-  let files = evt.target.files
-  let img
-  count = 0
-  idNum = 0
-  progressRange = 0
-  progressVal = 0
-  let valuemax = 0
-  $('.progress').css('display', 'block')
-  $('.progress-bar').css('width', `0%`)
-  $('#canvas-container').empty()
-
-  for (let i = 0; i < files.length; i++) {
-    img = new Image
-    img.src = URL.createObjectURL(files[i])
-    await img.decode()
-    if (img.naturalWidth > img.naturalHeight) {
-      valuemax += srcBackgroundHor.length
-    } else if (img.naturalWidth < img.naturalHeight) {
-      valuemax += srcBackgroundVer.length
+checkSelectedAction = list => {
+  let count = 0
+  for (let i = 0; i < list.length; i++) {
+    if (list[i]) {
+      count++
     }
   }
-  progressRange = (100 / valuemax)
-  toastr.clear()
-  toastr.info('Rendering Mockup...')
-  await createCanvas(files)
 
-  $('.select-all-container').css('display', 'flex')
-  $('#download-all').css('display', 'block')
-  $(`#select-all-cb`).prop("checked", false)
+  if (count >= list.length) {
+    return 1
+  } else if (count == 0) {
+    return 0
+  } return -1
 }
 
-$('#select-all-cb').on('change', () => {
-  if ($('#select-all-cb').prop("checked")) {
-    for (let i = 0; i < idNum; i++) {
-      $(`#select-${i}`).prop("checked", true)
-    }
+listSelected = () => {
+  let list = []
+  for (let i = 0; i < idNum; i++) {
+    list.push($(`#select-${i}`).prop("checked"))
+  }
+  return list
+}
+
+onCheckCB = id => {
+  if ($(`#select-${id}`).prop("checked")) {
+    $(`#select-${id}`).prop("checked", false)
   } else {
-    for (let i = 0; i < idNum; i++) {
-      $(`#select-${i}`).prop("checked", false)
-    }
-  }
-})
-
-createCanvas = async files => {
-  let img
-  img = new Image
-  img.src = URL.createObjectURL(files[count])
-  await img.decode()
-
-  minimizeUpload()
-
-  if (img.naturalWidth >= img.naturalHeight) {
-    await drawCanvas(srcBackgroundHor, putLocationHor, img)
-  } else if (img.naturalWidth < img.naturalHeight) {
-    await drawCanvas(srcBackgroundVer, putLocationVer, img)
+    $(`#select-${id}`).prop("checked", true)
   }
 
-  if (count < files.length - 1) {
-    count++
-    await createCanvas(files)
-    return
+  if (checkSelectedAction(listSelected()) == 1) {
+    $(`#select-all-cb`).prop("checked", true)
+  } else {
+    $(`#select-all-cb`).prop("checked", false)
   }
-  toastr.clear()
-  toastr.success('Complete!')
-}
-
-minimizeUpload = () => {
-  $('.tit').css('display', 'none')
-  $('button.browse').css('display', 'none')
-  $('.upload-container').css('height', '100px')
-  $('.drop').css('height', '100px')
-  $('.drop .cont').css('height', '50px')
 }
 
 drawCanvas = async (srcBackground, putLocation, img) => {
@@ -157,6 +119,81 @@ drawCanvas = async (srcBackground, putLocation, img) => {
   }
 }
 
+minimizeUpload = () => {
+  $('.tit').css('display', 'none')
+  $('button.browse').css('display', 'none')
+  $('.upload-container').css('height', '100px')
+  $('.drop').css('height', '100px')
+  $('.drop .cont').css('height', '50px')
+}
+
+createCanvas = async files => {
+  let img
+  img = new Image
+  img.src = URL.createObjectURL(files[count])
+  await img.decode()
+
+  minimizeUpload()
+
+  if (img.naturalWidth >= img.naturalHeight) {
+    await drawCanvas(srcBackgroundHor, putLocationHor, img)
+  } else if (img.naturalWidth < img.naturalHeight) {
+    await drawCanvas(srcBackgroundVer, putLocationVer, img)
+  }
+
+  if (count < files.length - 1) {
+    count++
+    await createCanvas(files)
+    return
+  }
+  toastr.clear()
+  toastr.success('Complete!')
+}
+
+handleFileSelect = async evt => {
+  let files = evt.target.files
+  let img
+  count = 0
+  idNum = 0
+  progressRange = 0
+  progressVal = 0
+  let valuemax = 0
+  $('.progress').css('display', 'block')
+  $('.progress-bar').css('width', `0%`)
+  $('#canvas-container').empty()
+
+  for (let i = 0; i < files.length; i++) {
+    img = new Image
+    img.src = URL.createObjectURL(files[i])
+    await img.decode()
+    if (img.naturalWidth > img.naturalHeight) {
+      valuemax += srcBackgroundHor.length
+    } else if (img.naturalWidth < img.naturalHeight) {
+      valuemax += srcBackgroundVer.length
+    }
+  }
+  progressRange = (100 / valuemax)
+  toastr.clear()
+  toastr.info('Rendering Mockup...')
+  await createCanvas(files)
+
+  $('.select-all-container').css('display', 'flex')
+  $('#download-all').css('display', 'block')
+  $(`#select-all-cb`).prop("checked", false)
+}
+
+$('#select-all-cb').on('change', () => {
+  if ($('#select-all-cb').prop("checked")) {
+    for (let i = 0; i < idNum; i++) {
+      $(`#select-${i}`).prop("checked", true)
+    }
+  } else {
+    for (let i = 0; i < idNum; i++) {
+      $(`#select-${i}`).prop("checked", false)
+    }
+  }
+})
+
 $('#files').on('change', handleFileSelect)
 
 downloadCanvas = (canvasId, filename) => {
@@ -181,40 +218,3 @@ $('#download-all').on('click', () => {
     }
   }
 })
-
-onCheckCB = id => {
-  if ($(`#select-${id}`).prop("checked")) {
-    $(`#select-${id}`).prop("checked", false)
-  } else {
-    $(`#select-${id}`).prop("checked", true)
-  }
-
-  if (checkSelectedAction(listSelected()) == 1) {
-    $(`#select-all-cb`).prop("checked", true)
-  } else {
-    $(`#select-all-cb`).prop("checked", false)
-  }
-}
-
-listSelected = () => {
-  let list = []
-  for (let i = 0; i < idNum; i++) {
-    list.push($(`#select-${i}`).prop("checked"))
-  }
-  return list
-}
-
-checkSelectedAction = list => {
-  let count = 0
-  for (let i = 0; i < list.length; i++) {
-    if (list[i]) {
-      count++
-    }
-  }
-
-  if (count >= list.length) {
-    return 1
-  } else if (count == 0) {
-    return 0
-  } return -1
-}

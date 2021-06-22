@@ -9,7 +9,6 @@ var category = 'All'
 var timeCreatedShopFilter, salesLargerThan, monthFilterShop, filterType = 0
 var gettingData = 1
 
-/* ------------------------------------------------MAIN SECTION------------------------------------------------ */
 IsJsonString = str => {
   try {
     JSON.parse(str)
@@ -44,6 +43,15 @@ $('#digital-type-product-filter').on('click', () => {
   searchOrFilterData()
 })
 
+searchLocalShop = shopName => {
+  let shop = []
+  for (let i = 0; i < shopData.length; i++) {
+    if (shopData[i].shop_name.toLowerCase().includes(shopName)) {
+      shop.push(shopData[i])
+    }
+  } return shop
+}
+
 $('#find-shop-by-name-button').on('click', () => {
   let shopName = $('#find-shop-by-name').val().trim()
   if (shopName == '') {
@@ -65,52 +73,79 @@ $('#find-shop-by-name-button').on('click', () => {
   }
 })
 
-searchLocalShop = shopName => {
-  let shop = []
-  for (let i = 0; i < shopData.length; i++) {
-    if (shopData[i].shop_name.toLowerCase().includes(shopName)) {
-      shop.push(shopData[i])
-    }
-  } return shop
+getDayTimeLife = creation_time => {
+  let timeNow = new Date().getTime()
+  let life_time = ~~(timeNow / 1000) - creation_time
+  return ~~(life_time / 86400)
 }
 
-searchOrFilterData = () => {
-  let dataFilter = shopData
+getAvgSales = (total_sales, creation_time) => {
+  let avgSales = total_sales / getDayTimeLife(creation_time)
+  return avgSales.toFixed(2)
+}
 
-  if (filterType == 0) {
-    dataFilter = getTypeProduct(dataFilter)
-  } else if (filterType == 1) {
-    dataFilter = getTypeProduct(dataFilter, true)
+convertMonthInString = month => {
+  switch (month) {
+    case 'Jan': return '01'
+    case 'Feb': return '02'
+    case 'Mar': return '03'
+    case 'Apr': return '04'
+    case 'May': return '05'
+    case 'Jun': return '06'
+    case 'Jul': return '07'
+    case 'Aug': return '08'
+    case 'Sep': return '09'
+    case 'Oct': return '10'
+    case 'Nov': return '11'
+    case 'Dec': return '12'
+  }
+}
+
+getEpochTime = input => {
+  var date = new Date(0)
+  date.setUTCSeconds(input)
+  time = String(date)
+  time = time.split(' ')
+  time = `${time[2]}-${convertMonthInString(time[1])}-${time[3]}`
+  return time
+}
+
+getUpdateHistoryEpoch = input => {
+  var date = new Date(0)
+  date.setUTCSeconds(input)
+  time = String(date)
+  time = time.split(' ')
+  time = time[2] + '/' + convertMonthInString(time[1]) + ' ' + time[4]
+  return time
+}
+
+getEpochTimeChart = input => {
+  var date = new Date(0)
+  date.setUTCSeconds(input)
+  time = String(date)
+  time = time.split(' ')
+  time = time[2] + '/' + convertMonthInString(time[1])
+  return time
+}
+
+timeCreatedShopFilterAction = dataFilter => {
+  let shopTimeDataFilter = []
+  let daysInTime = 0
+
+  if (timeCreatedShopFilter == 1) {
+    daysInTime = 30
+  } else if (timeCreatedShopFilter == 2) {
+    daysInTime = 91
+  } else if (timeCreatedShopFilter == 3) {
+    daysInTime = 182
   }
 
-  if (category == 'All') {
-  } else if (category == 'Canvas') {
-    dataFilter = getCategoryProduct(dataFilter)
-  } else if (category == 'Mug') {
-    dataFilter = getCategoryProduct(dataFilter)
-  } else if (category == 'Shirt') {
-    dataFilter = getCategoryProduct(dataFilter)
-  } else if (category == 'Blanket') {
-    dataFilter = getCategoryProduct(dataFilter)
-  } else if (category == 'Tumbler') {
-    dataFilter = getCategoryProduct(dataFilter)
+  for (let i = 0; i < dataFilter.length; i++) {
+    if (getDayTimeLife(dataFilter[i].creation_tsz) <= daysInTime) {
+      shopTimeDataFilter.push(dataFilter[i])
+    }
   }
-
-  if (salesLargerThan > 10) {
-    dataFilter = getSalesLargerThan(dataFilter)
-  }
-
-  if (monthFilterShop >= 1 && monthFilterShop <= 12) {
-    dataFilter = getMonthFilter(dataFilter)
-  }
-
-  if (timeCreatedShopFilter > 0) {
-    dataFilter = timeCreatedShopFilterAction(dataFilter)
-  } else if (timeCreatedShopFilter == 'custom') {
-    dataFilter = timeCreatedShopFilterCustom(dataFilter)
-  }
-
-  updateData(dataFilter)
+  return shopTimeDataFilter
 }
 
 getSalesLargerThan = data => {
@@ -124,6 +159,15 @@ getSalesLargerThan = data => {
   return filterData
 }
 
+getMonthTime = input => {
+  var date = new Date(0)
+  date.setUTCSeconds(input)
+  time = String(date)
+  time = time.split(' ')
+  time = convertMonthInString(time[1])
+  return parseInt(time)
+}
+
 getMonthFilter = data => {
   let filterData = []
   for (let i = 0; i < data.length; i++) {
@@ -132,15 +176,6 @@ getMonthFilter = data => {
     }
   }
   return filterData
-}
-
-getMonthTime = input => {
-  var date = new Date(0)
-  date.setUTCSeconds(input)
-  time = String(date)
-  time = time.split(' ')
-  time = convertMonthInString(time[1])
-  return parseInt(time)
 }
 
 timeCreatedShopFilterCustom = data => {
@@ -156,6 +191,12 @@ timeCreatedShopFilterCustom = data => {
     }
   }
   return filterData
+}
+
+isDigitShop = data => {
+  if (data.digital_listing_count > (data.listing_active_count / 10)) {
+    return true
+  } return false
 }
 
 getCategoryProduct = dataFilter => {
@@ -188,10 +229,34 @@ getTypeProduct = (dataFilter, isDigit = false) => {
   return filterData
 }
 
-isDigitShop = data => {
-  if (data.digital_listing_count > (data.listing_active_count / 10)) {
-    return true
-  } return false
+getShopNameByID = id => {
+  for (let i = 0; i < shopData.length; i++) {
+    if (shopData[i].shop_id == id) {
+      return shopData[i].shop_name
+    }
+  }
+  return 'Shop'
+}
+
+getShopUserByID = id => {
+  for (let i = 0; i < shopData.length; i++) {
+    if (shopData[i].shop_id == id) {
+      return shopData[i].user_id
+    }
+  }
+  return null
+}
+
+getShopDetail = id => {
+  selected_shop = id
+  if (gettingData) {
+    toastr.clear()
+    toastr.warning('Please wait until data is updated!')
+  } else {
+    socket.emit("shop-tracking", id)
+    $('#loading').css('display', 'block')
+    $('#shop-name-chart').text(getShopNameByID(id) + ` Analytics`)
+  }
 }
 
 updateData = (data = shopData) => {
@@ -238,48 +303,43 @@ updateData = (data = shopData) => {
   })
 }
 
-getShopDetail = id => {
-  selected_shop = id
-  if (gettingData) {
-    toastr.clear()
-    toastr.warning('Please wait until data is updated!')
-  } else {
-    socket.emit("shop-tracking", id)
-    $('#loading').css('display', 'block')
-    $('#shop-name-chart').text(getShopNameByID(id) + ` Analytics`)
+searchOrFilterData = () => {
+  let dataFilter = shopData
+
+  if (filterType == 0) {
+    dataFilter = getTypeProduct(dataFilter)
+  } else if (filterType == 1) {
+    dataFilter = getTypeProduct(dataFilter, true)
   }
-}
 
-$('#listing-option-button').on('click', () => {
-  getListingOption(selected_shop)
-  $('.popup-analytic-container').css('display', 'none')
-  $('.popup-analytic-background').css('display', 'none')
-  chart.destroy()
-})
-
-$('#user-option-button').on('click', () => {
-  getUserOption(selected_shop)
-  $('.popup-analytic-container').css('display', 'none')
-  $('.popup-analytic-background').css('display', 'none')
-  chart.destroy()
-})
-
-getShopNameByID = id => {
-  for (let i = 0; i < shopData.length; i++) {
-    if (shopData[i].shop_id == id) {
-      return shopData[i].shop_name
-    }
+  if (category == 'All') {
+  } else if (category == 'Canvas') {
+    dataFilter = getCategoryProduct(dataFilter)
+  } else if (category == 'Mug') {
+    dataFilter = getCategoryProduct(dataFilter)
+  } else if (category == 'Shirt') {
+    dataFilter = getCategoryProduct(dataFilter)
+  } else if (category == 'Blanket') {
+    dataFilter = getCategoryProduct(dataFilter)
+  } else if (category == 'Tumbler') {
+    dataFilter = getCategoryProduct(dataFilter)
   }
-  return 'Shop'
-}
 
-getShopUserByID = id => {
-  for (let i = 0; i < shopData.length; i++) {
-    if (shopData[i].shop_id == id) {
-      return shopData[i].user_id
-    }
+  if (salesLargerThan > 10) {
+    dataFilter = getSalesLargerThan(dataFilter)
   }
-  return null
+
+  if (monthFilterShop >= 1 && monthFilterShop <= 12) {
+    dataFilter = getMonthFilter(dataFilter)
+  }
+
+  if (timeCreatedShopFilter > 0) {
+    dataFilter = timeCreatedShopFilterAction(dataFilter)
+  } else if (timeCreatedShopFilter == 'custom') {
+    dataFilter = timeCreatedShopFilterCustom(dataFilter)
+  }
+
+  updateData(dataFilter)
 }
 
 getListingOption = id => {
@@ -302,9 +362,19 @@ getUserOption = id => {
   $('#user-shop-section').css("display", "block")
 }
 
-/* ------------------------------------------------END MAIN SECTION------------------------------------------------ */
+$('#listing-option-button').on('click', () => {
+  getListingOption(selected_shop)
+  $('.popup-analytic-container').css('display', 'none')
+  $('.popup-analytic-background').css('display', 'none')
+  chart.destroy()
+})
 
-/* ------------------------------------------------SOCKET SECTION------------------------------------------------ */
+$('#user-option-button').on('click', () => {
+  getUserOption(selected_shop)
+  $('.popup-analytic-container').css('display', 'none')
+  $('.popup-analytic-background').css('display', 'none')
+  chart.destroy()
+})
 
 let shopLocalData = window.localStorage.getItem('listing-shop')
 let categoryLocalData = window.localStorage.getItem('listing-shop-category')
@@ -574,66 +644,7 @@ $('#find-shop-by-name').on('keypress', e => {
   }
 })
 
-getDayTimeLife = creation_time => {
-  let timeNow = new Date().getTime()
-  let life_time = ~~(timeNow / 1000) - creation_time
-  return ~~(life_time / 86400)
-}
 
-getAvgSales = (total_sales, creation_time) => {
-  let avgSales = total_sales / getDayTimeLife(creation_time)
-  return avgSales.toFixed(2)
-}
-
-getEpochTime = input => {
-  var date = new Date(0)
-  date.setUTCSeconds(input)
-  time = String(date)
-  time = time.split(' ')
-  time = `${time[2]}-${convertMonthInString(time[1])}-${time[3]}`
-  return time
-}
-
-getUpdateHistoryEpoch = input => {
-  var date = new Date(0)
-  date.setUTCSeconds(input)
-  time = String(date)
-  time = time.split(' ')
-  time = time[2] + '/' + convertMonthInString(time[1]) + ' ' + time[4]
-  return time
-}
-
-getEpochTimeChart = input => {
-  var date = new Date(0)
-  date.setUTCSeconds(input)
-  time = String(date)
-  time = time.split(' ')
-  time = time[2] + '/' + convertMonthInString(time[1])
-  return time
-}
-
-convertMonthInString = month => {
-  switch (month) {
-    case 'Jan': return '01'
-    case 'Feb': return '02'
-    case 'Mar': return '03'
-    case 'Apr': return '04'
-    case 'May': return '05'
-    case 'Jun': return '06'
-    case 'Jul': return '07'
-    case 'Aug': return '08'
-    case 'Sep': return '09'
-    case 'Oct': return '10'
-    case 'Nov': return '11'
-    case 'Dec': return '12'
-  }
-}
-
-
-
-/* ------------------------------------------------END ADDITIONAL SECTION------------------------------------------------ */
-
-/* ------------------------------------------------FILTER SECTION------------------------------------------------ */
 
 $('#all-shop-filter').on('click', () => {
   category = 'All'
@@ -738,25 +749,3 @@ $('#month-filter-shop').on('change', () => {
     }
   }
 })
-
-timeCreatedShopFilterAction = dataFilter => {
-  let shopTimeDataFilter = []
-  let daysInTime = 0
-
-  if (timeCreatedShopFilter == 1) {
-    daysInTime = 30
-  } else if (timeCreatedShopFilter == 2) {
-    daysInTime = 91
-  } else if (timeCreatedShopFilter == 3) {
-    daysInTime = 182
-  }
-
-  for (let i = 0; i < dataFilter.length; i++) {
-    if (getDayTimeLife(dataFilter[i].creation_tsz) <= daysInTime) {
-      shopTimeDataFilter.push(dataFilter[i])
-    }
-  }
-  return shopTimeDataFilter
-}
-
-/* ------------------------------------------------END FILTER SECTION------------------------------------------------ */
