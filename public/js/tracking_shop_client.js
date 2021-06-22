@@ -4,16 +4,10 @@ var socket = io.connect("https://giftsvk.com", {
   transports: ['websocket']
 })
 
-var shopData
+var shopData, shopCategory, chart, selected_shop
 var category = 'All'
-var shopCategory
-var timeCreatedShopFilter = 0
-var filterType = 0
+var timeCreatedShopFilter, salesLargerThan, monthFilterShop, filterType = 0
 var gettingData = 1
-var chart
-var selected_shop
-var salesLargerThan = 0
-var monthFilterShop = 0
 
 /* ------------------------------------------------MAIN SECTION------------------------------------------------ */
 
@@ -63,7 +57,7 @@ $('#find-shop-by-name-button').on('click', async function () {
   }
 })
 
-function searchLocalShop(shopName) {
+searchLocalShop = shopName =>{
   let shop = []
   for (let i = 0; i < shopData.length; i++) {
     if (shopData[i].shop_name.toLowerCase().includes(shopName)) {
@@ -72,7 +66,11 @@ function searchLocalShop(shopName) {
   } return shop
 }
 
-function searchOrFilterData() {
+// function searchLocalShop(shopName) {
+  
+// }
+
+searchOrFilterData = () =>{
   let dataFilter = shopData
 
   if (filterType == 0) {
@@ -111,17 +109,31 @@ function searchOrFilterData() {
   updateData(dataFilter)
 }
 
-function getSalesLargerThan(data) {
+// function searchOrFilterData() {
+  
+// }
+
+getSalesLargerThan = data => {
   let filterData = []
-  for (let i = 0; i < data.length; i++) {
-    if (data[i].total_sales >= salesLargerThan) {
-      filterData.push(data[i])
+  for (let item in data) {
+    if (item.total_sales >= salesLargerThan) {
+      filterData.push(item)
     }
   }
   return filterData
 }
 
-function getMonthFilter(data) {
+// function getSalesLargerThan(data) {
+  
+//   // for (let i = 0; i < data.length; i++) {
+//   //   if (data[i].total_sales >= salesLargerThan) {
+//   //     filterData.push(data[i])
+//   //   }
+//   // }
+  
+// }
+
+getMonthFilter = data => {
   let filterData = []
   for (let i = 0; i < data.length; i++) {
     if (getMonthTime(data[i].creation_tsz) == parseInt(monthFilterShop)) {
@@ -130,6 +142,10 @@ function getMonthFilter(data) {
   }
   return filterData
 }
+
+// function getMonthFilter(data) {
+
+// }
 
 function getMonthTime(input) {
   var date = new Date(0)
@@ -148,18 +164,17 @@ function timeCreatedShopFilterCustom(data) {
   let dateTo = new Date(dateRange[1]).getTime()
 
   for (let i = 0; i < data.length; i++) {
-    if (data[i].creation_tsz >= Math.floor(dateFrom / 1000) && data[i].creation_tsz <= Math.floor(dateTo / 1000)) {
+    if (data[i].creation_tsz >= ~~(dateFrom / 1000) && data[i].creation_tsz <= ~~(dateTo / 1000)) {
       filterData.push(data[i])
     }
   }
   return filterData
 }
 
-function getCategoryProduct(dataFilter) {
+getCategoryProduct = dataFilter => {
   $('#dropdown-filter-shop').text(category)
 
-  let filterData = []
-  let listShopName = []
+  let filterData, listShopName = []
   for (let i = 0; i < shopCategory.length; i++) {
     if (shopCategory[i].category.includes(category)) {
       listShopName.push(shopCategory[i].shop_name)
@@ -176,7 +191,11 @@ function getCategoryProduct(dataFilter) {
   return filterData
 }
 
-function getTypeProduct(dataFilter, isDigit = false) {
+// function getCategoryProduct(dataFilter) {
+
+// }
+
+getTypeProduct = (dataFilter, isDigit = false) => {
   let filterData = []
   for (let i = 0; i < dataFilter.length; i++) {
     if (isDigitShop(dataFilter[i]) == isDigit) {
@@ -185,6 +204,10 @@ function getTypeProduct(dataFilter, isDigit = false) {
   }
   return filterData
 }
+
+// function getTypeProduct(dataFilter, isDigit = false) {
+
+// }
 
 function isDigitShop(data) {
   if (data.digital_listing_count > (data.listing_active_count / 10)) {
@@ -338,7 +361,7 @@ socket.on("return-shop-data", async function (data) {
   let tempData = []
 
   for (let i = 0; i < data.length; i++) {
-    if(i > 1500){
+    if (i > 1500) {
       break
     }
 
@@ -365,7 +388,7 @@ socket.on("return-shop-data", async function (data) {
   } catch (error) {
     console.log(error)
   }
-  
+
   socket.emit("get-total-shop")
 })
 
@@ -375,7 +398,7 @@ socket.on("return-find-shop-by-name", function (data) {
     updateData(data)
 
     var date = new Date().getTime()
-    date = Math.floor(date / 1000) - (547 * 86400)
+    date = ~~(date / 1000) - (547 * 86400)
 
     if (data[0].creation_tsz < date) {
       toastr.clear()
@@ -398,7 +421,7 @@ socket.on("return-find-shop-by-name", function (data) {
 })
 
 socket.on("total-shop", function (data) {
-  $('#fun-fact').text("Bạn có biết? Tổng số shop được tạo ra trên Etsy lên đến " + data.toLocaleString() + " shop")
+  $('#fun-fact').text(`Bạn có biết? Tổng số shop được tạo ra trên Etsy lên đến ${data.toLocaleString()} shop`)
 })
 
 socket.on("last-updated", function (data) {
@@ -421,10 +444,7 @@ socket.on("shop-tracking-data", function (data) {
   gradientgreen.addColorStop(0, "rgba(47,208,87,0.3)")
   gradientgreen.addColorStop(1, "rgba(47,208,87, 0)")
 
-  let label = []
-  let total_sales = []
-  let num_favorers = []
-  let listing_active_count = []
+  let label, total_sales, num_favorers, listing_active_count = []
 
   for (let index = 0; index < data.length; index++) {
     label.push(getEpochTimeChart(data[index].time_update))
@@ -575,8 +595,8 @@ $('#find-shop-by-name').on('keypress', function (e) {
 
 function getDayTimeLife(creation_time) {
   let timeNow = new Date().getTime()
-  let life_time = Math.floor(timeNow / 1000) - creation_time
-  return Math.floor(life_time / 86400)
+  let life_time = ~~(timeNow / 1000) - creation_time
+  return ~~(life_time / 86400)
 }
 
 function getAvgSales(total_sales, creation_time) {
@@ -589,11 +609,11 @@ function getEpochTime(input) {
   date.setUTCSeconds(input)
   time = String(date)
   time = time.split(' ')
-  time = time[2] + '-' + convertMonthInString(time[1]) + '-' + time[3]
+  time = `${time[2]}-${convertMonthInString(time[1])}-${time[3]}`
   return time
 }
 
-function getUpdateHistoryEpoch(input){
+function getUpdateHistoryEpoch(input) {
   var date = new Date(0)
   date.setUTCSeconds(input)
   time = String(date)
