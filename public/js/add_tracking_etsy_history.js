@@ -8,6 +8,7 @@ var historyData = []
 var isAddedChecked = true
 var isMyAccount = true
 var isTrangAccount = false
+var isShowAll = false
 
 $('#loading').css('display', 'block')
 
@@ -61,7 +62,7 @@ function filterData() {
         filterData = filterAdded(filterData)
     }
 
-    filterData.sort(compareDay)
+    filterData.reverse()
     updateData(filterData)
 }
 
@@ -123,6 +124,17 @@ $('#show-trang-account-tracking').on('change', function () {
         isTrangAccount = false
         filterData()
         window.localStorage.setItem('is-trang-account-checked', 0)
+    }
+})
+
+$('#show-all-tracking').on('change', function () {
+    if ($(this).prop("checked")) {
+        $('#loading').css('display', 'block')
+        socket.emit("tracking-history-get-all")
+    }
+    else {
+        historyData.splice(0, historyData.length - 100)
+        filterData()
     }
 })
 
