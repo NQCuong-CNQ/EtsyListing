@@ -62,7 +62,7 @@ function filterData() {
         filterData = filterAdded(filterData)
     }
 
-    filterData.reverse()
+    filterData.sort(compareDay)
     updateData(filterData)
 }
 
@@ -152,7 +152,6 @@ function updateData(data = historyData) {
     $('#table_id-tracking-history').DataTable().clear().destroy()
     for (var i = 0; i < data.length; i++) {
         $('#table_id-tracking-history-body').append(`<tr>
-            <td>${i + 1}</td>
             <td>${data[i].id}</td>
             <td>${formatShopName(data[i].name)}</td>
             <td>${formatCustomerName(data[i].customer_name)}</td>
@@ -168,7 +167,6 @@ function updateData(data = historyData) {
 
     $('#table_id-tracking-history').DataTable({
         pageLength: 25,
-        order: [[0, "desc"]],
         scrollX: 0,
     })
     $('#loading').css('display', 'none')
@@ -239,7 +237,7 @@ function compareAction(bandA, bandB) {
     } else if (bandA < bandB) {
         comparison = -1;
     }
-    return comparison;
+    return comparison * -1;
 }
 
 function getEpochTime(input) {
