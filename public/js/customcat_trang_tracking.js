@@ -20,7 +20,7 @@
         reconnect: true,
         transports: ['websocket']
     })
-
+    //tét update
     console.log('Getting data...')
 
     var options = { year: 'numeric', month: '2-digit', day: '2-digit' };
