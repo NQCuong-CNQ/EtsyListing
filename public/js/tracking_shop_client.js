@@ -199,7 +199,7 @@ isDigitShop = data => {
 getCategoryProduct = dataFilter => {
   $('#dropdown-filter-shop').text(category)
 
-  let filterData, listShopName = []
+  let filterData = [], listShopName = []
   for (let i = 0; i < shopCategory.length; i++) {
     if (shopCategory[i].category.includes(category)) {
       listShopName.push(shopCategory[i].shop_name)
