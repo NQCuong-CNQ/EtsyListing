@@ -149,6 +149,7 @@ function filterAdded(data) {
 }
 
 function updateData(data = historyData) {
+    console.log(data)
     $('#table_id-tracking-history').DataTable().clear().destroy()
     for (var i = 0; i < data.length; i++) {
         $('#table_id-tracking-history-body').append(`<tr>
