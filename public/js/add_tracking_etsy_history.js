@@ -168,6 +168,7 @@ function updateData(data = historyData) {
     $('#table_id-tracking-history').DataTable({
         pageLength: 25,
         scrollX: 0,
+        ordering: false
     })
     $('#loading').css('display', 'none')
 }

@@ -701,6 +701,7 @@ io.on("connection", async function (client) {
 
   client.on("tracking-history-join", async function () {
     let dbdata = await dbo.collection("tracking_etsy_history").find().skip(dbo.collection("tracking_etsy_history").estimatedDocumentCount() - 100).toArray()
+    console.log(dbdata.length)
     client.emit("tracking-history-return-data", dbdata)
   })
 
