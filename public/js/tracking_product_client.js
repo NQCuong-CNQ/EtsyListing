@@ -91,6 +91,14 @@ var dataSelect = [
 ]
 /* ------------------------------------------------MAIN SECTION------------------------------------------------ */
 
+IsJsonString = str => {
+  try {
+    JSON.parse(str)
+  } catch (e) {
+    return false
+  }
+  return true
+}
 // $('#pod-filter-listing').on('click', ()=>{
 //   filterByTypeOption = 0
 //   searchOrFilterData()
@@ -473,14 +481,7 @@ handleDuplicates = () => {
 //   }
 // })
 
-IsJsonString = str => {
-  try {
-    JSON.parse(str)
-  } catch (e) {
-    return false
-  }
-  return true
-}
+
 
 showAnalytic = id => {
   if (isGettingData) {
