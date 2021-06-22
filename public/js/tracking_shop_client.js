@@ -188,7 +188,7 @@ isDigitShop = data => {
 
 updateData = (data = shopData) => {
   $('#table-shop').DataTable().clear().destroy()
-  for (var i = 0; i < data.length; i++) {
+  for (let i = 0; i < data.length; i++) {
     if (data[i].imgs_listing === undefined || data[i].imgs_listing == null) {
       console.log(data[i].shop_name + "doesn't have img, removed!")
       continue
@@ -530,7 +530,7 @@ socket.on("return-user-data", data => {
 socket.on("return-listing-data", data => {
   $('#loading').css('display', 'none')
   $('#table_id-list').DataTable().clear().destroy()
-  for (var i = 0; i < data.length; i++) {
+  for (let i = 0; i < data.length; i++) {
     let taxonomy = data[i].taxonomy_path
     taxonomy = taxonomy[taxonomy.length - 1]
     $('#table-list').append(`<tr>

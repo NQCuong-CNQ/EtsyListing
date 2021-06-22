@@ -1,8 +1,4 @@
-var count = 0
-var idNum = 0
-var progressRange = 0
-var progressVal = 0
-// var progressRange = 0
+var count, idNum, progressVal, progressRange = 0
 
 var srcBackgroundHor = [
   '/img/mockup/mk1.jpg',
@@ -26,7 +22,7 @@ var putLocationVer = {
   mk3: [233, 26, 607, 577],
 }
 
-$("input").on('dragenter', function (e) {
+$("input").on('dragenter', e => {
   $(".drop").css({
     "border": "4px dashed #09f",
     "background": "rgba(0, 153, 255, .05)"
@@ -34,7 +30,7 @@ $("input").on('dragenter', function (e) {
   $(".cont").css({
     "color": "#09f"
   })
-}).on('dragleave dragend mouseout drop', function (e) {
+}).on('dragleave dragend mouseout drop', e => {
   $(".drop").css({
     "border": "3px dashed #DADFE3",
     "background": "transparent"
@@ -44,7 +40,7 @@ $("input").on('dragenter', function (e) {
   })
 })
 
-async function handleFileSelect(evt) {
+handleFileSelect = async evt => {
   let files = evt.target.files
   let img
   count = 0
@@ -76,7 +72,7 @@ async function handleFileSelect(evt) {
   $(`#select-all-cb`).prop("checked", false)
 }
 
-$('#select-all-cb').on('change', function () {
+$('#select-all-cb').on('change', () => {
   if ($('#select-all-cb').prop("checked")) {
     for (let i = 0; i < idNum; i++) {
       $(`#select-${i}`).prop("checked", true)
@@ -88,7 +84,7 @@ $('#select-all-cb').on('change', function () {
   }
 })
 
-async function createCanvas(files) {
+createCanvas = async files => {
   let img
   img = new Image
   img.src = URL.createObjectURL(files[count])
@@ -111,7 +107,7 @@ async function createCanvas(files) {
   toastr.success('Complete!')
 }
 
-function minimizeUpload(){  
+minimizeUpload = () => {
   $('.tit').css('display', 'none')
   $('button.browse').css('display', 'none')
   $('.upload-container').css('height', '100px')
@@ -119,14 +115,9 @@ function minimizeUpload(){
   $('.drop .cont').css('height', '50px')
 }
 
-async function drawCanvas(srcBackground, putLocation, img) {
-  let imgBackground
-  let canvas
-  let context
-  let startX = 0
-  let startY = 0
-  let width = 0
-  let height = 0
+drawCanvas = async (srcBackground, putLocation, img) => {
+  let imgBackground, canvas, context
+  let startX, startY, width, height = 0
 
   for (let j = 0; j < srcBackground.length; j++) {
     imgBackground = new Image
@@ -168,14 +159,14 @@ async function drawCanvas(srcBackground, putLocation, img) {
 
 $('#files').on('change', handleFileSelect)
 
-function downloadCanvas(canvasId, filename) {
+downloadCanvas = (canvasId, filename) => {
   var aLink = document.createElement('a')
   aLink.download = filename
   aLink.href = document.getElementById(canvasId).toDataURL()
   aLink.click()
 }
 
-$('#download-all').on('click', function () {
+$('#download-all').on('click', () => {
   let list = []
   list = listSelected()
   if (checkSelectedAction(list) == 0) {
@@ -191,7 +182,7 @@ $('#download-all').on('click', function () {
   }
 })
 
-function onCheckCB(id) {
+onCheckCB = id => {
   if ($(`#select-${id}`).prop("checked")) {
     $(`#select-${id}`).prop("checked", false)
   } else {
@@ -205,7 +196,7 @@ function onCheckCB(id) {
   }
 }
 
-function listSelected() {
+listSelected = () => {
   let list = []
   for (let i = 0; i < idNum; i++) {
     list.push($(`#select-${i}`).prop("checked"))
@@ -213,7 +204,7 @@ function listSelected() {
   return list
 }
 
-function checkSelectedAction(list) {
+checkSelectedAction = list => {
   let count = 0
   for (let i = 0; i < list.length; i++) {
     if (list[i]) {

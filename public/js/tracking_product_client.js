@@ -4,8 +4,7 @@ var socket = io.connect("https://giftsvk.com", {
   transports: ['websocket']
 })
 
-var listingData = []
-var dataFilter = []
+var listingData, dataFilter, dataOriginal = []
 var filterByDateOption = 14
 // var filterByTypeOption = 0
 var isSearch = false
@@ -13,9 +12,7 @@ var sortOption = 5
 var pagLenght = 30
 var pagStart = 0
 var pagEnd = pagLenght
-var isGridView = true
-var dataOriginal = []
-var isGettingData = true
+var isGridView, isGettingData = true
 var chart
 
 var dataSelect = [
@@ -94,49 +91,49 @@ var dataSelect = [
 ]
 /* ------------------------------------------------MAIN SECTION------------------------------------------------ */
 
-// $('#pod-filter-listing').on('click', async function () {
+// $('#pod-filter-listing').on('click', ()=>{
 //   filterByTypeOption = 0
 //   searchOrFilterData()
 //   $('#filter-listing-type').text('POD')
 // })
 
-// $('#digital-filter-listing').on('click', async function () {
+// $('#digital-filter-listing').on('click', ()=>{
 //   filterByTypeOption = 1
 //   searchOrFilterData()
 //   $('#filter-listing-type').text('Digital')
 // })
 
-$('#all-filter-listing-creation-date').on('click', async function () {
+$('#all-filter-listing-creation-date').on('click', () => {
   filterByDateOption = 0
   searchOrFilterData()
   $('#filter-listing-creation-date').text('All')
 })
 
-$('#1d-filter-listing-creation-date').on('click', async function () {
+$('#1d-filter-listing-creation-date').on('click', () => {
   filterByDateOption = 1
   searchOrFilterData()
   $('#filter-listing-creation-date').text('Last 1 day')
 })
 
-$('#3d-filter-listing-creation-date').on('click', async function () {
+$('#3d-filter-listing-creation-date').on('click', () => {
   filterByDateOption = 3
   searchOrFilterData()
   $('#filter-listing-creation-date').text('Last 3 days')
 })
 
-$('#7d-filter-listing-creation-date').on('click', async function () {
+$('#7d-filter-listing-creation-date').on('click', () => {
   filterByDateOption = 7
   searchOrFilterData()
   $('#filter-listing-creation-date').text('Last 7 days')
 })
 
-$('#14d-filter-listing-creation-date').on('click', async function () {
+$('#14d-filter-listing-creation-date').on('click', () => {
   filterByDateOption = 14
   searchOrFilterData()
   $('#filter-listing-creation-date').text('Last 14 days')
 })
 
-$('#show-15-entries-listing').on('click', async function () {
+$('#show-15-entries-listing').on('click', () => {
   pagLenght = 15
   pagStart = 0
   pagEnd = pagLenght
@@ -144,7 +141,7 @@ $('#show-15-entries-listing').on('click', async function () {
   $('#show-entries-listing').text('15')
 })
 
-$('#show-30-entries-listing').on('click', async function () {
+$('#show-30-entries-listing').on('click', () => {
   pagLenght = 30
   pagStart = 0
   pagEnd = pagLenght
@@ -152,7 +149,7 @@ $('#show-30-entries-listing').on('click', async function () {
   $('#show-entries-listing').text('30')
 })
 
-$('#show-50-entries-listing').on('click', async function () {
+$('#show-50-entries-listing').on('click', () => {
   pagLenght = 50
   pagStart = 0
   pagEnd = pagLenght
@@ -160,7 +157,7 @@ $('#show-50-entries-listing').on('click', async function () {
   $('#show-entries-listing').text('50')
 })
 
-$('#show-100-entries-listing').on('click', async function () {
+$('#show-100-entries-listing').on('click', () => {
   pagLenght = 100
   pagStart = 0
   pagEnd = pagLenght
@@ -180,42 +177,42 @@ $('#show-100-entries-listing').on('click', async function () {
 //   searchOrFilterData()
 // })
 
-$('#sort-by-view-listing').on('click', async function () {
+$('#sort-by-view-listing').on('click', () => {
   sortOption = 1
   searchOrFilterData()
   $('#sort-by-listing').text('Views')
 })
 
-$('#sort-by-favorite-listing').on('click', async function () {
+$('#sort-by-favorite-listing').on('click', () => {
   sortOption = 2
   searchOrFilterData()
   $('#sort-by-listing').text('Favorites')
 })
 
-$('#sort-by-day-listing').on('click', async function () {
+$('#sort-by-day-listing').on('click', () => {
   sortOption = 3
   searchOrFilterData()
   $('#sort-by-listing').text('Days')
 })
 
-$('#sort-by-percent-favorite-listing').on('click', async function () {
+$('#sort-by-percent-favorite-listing').on('click', () => {
   sortOption = 4
   searchOrFilterData()
   $('#sort-by-listing').text('% Favorites')
 })
 
-$('#sort-by-sale-day-listing').on('click', async function () {
+$('#sort-by-sale-day-listing').on('click', () => {
   sortOption = 5
   searchOrFilterData()
   $('#sort-by-listing').text('Sales/day')
 })
 
-$('#find-product-by-keyword-button').on('click', async function () {
+$('#find-product-by-keyword-button').on('click', () => {
   isSearch = true
   searchOrFilterData()
 })
 
-function searchOrFilterData() {
+searchOrFilterData = () => {
   $('#loading').css('display', 'block')
   dataFilter = listingData
 
@@ -260,19 +257,19 @@ function searchOrFilterData() {
   updateData(dataFilter)
 }
 
-$('#first-pagination').on('click', async function () {
+$('#first-pagination').on('click', () => {
   pagStart = 0
   pagEnd = pagLenght
   updateData(dataFilter)
 })
 
-$('#last-pagination').on('click', async function () {
+$('#last-pagination').on('click', () => {
   pagStart = Math.floor(dataFilter.length / pagLenght) * pagLenght
   pagEnd = dataFilter.length
   updateData(dataFilter)
 })
 
-$('#next-pagination').on('click', async function () {
+$('#next-pagination').on('click', () => {
   pagStart += pagLenght
   pagEnd += pagLenght
   if (pagEnd > Math.floor(dataFilter.length / pagLenght) * pagLenght) {
@@ -281,7 +278,7 @@ $('#next-pagination').on('click', async function () {
   updateData(dataFilter)
 })
 
-$('#back-pagination').on('click', async function () {
+$('#back-pagination').on('click', () => {
   pagStart -= pagLenght
   pagEnd = pagStart + pagLenght
   if (pagStart < 0) {
@@ -291,7 +288,7 @@ $('#back-pagination').on('click', async function () {
   updateData(dataFilter)
 })
 
-function updateData(dataFilter = listingData) {
+updateData = (dataFilter = listingData) => {
   $('#product-list').empty()
   if (dataFilter == 1) {
     $('#loading').css('display', 'none')
@@ -310,7 +307,7 @@ function updateData(dataFilter = listingData) {
   $('#number-entries').text('Showing ' + pagStart + ' - ' + pagEnd + ' of ' + dataFilter.length + ' listing')
   $('#pagination-number').text(pagStart / pagLenght + 1)
 
-  for (var i = pagStart; i < pagEnd; i++) {
+  for (let i = pagStart; i < pagEnd; i++) {
     $('#product-list').append(`
         <div class="list-product-search-container">
           <div class="product-img-container">
@@ -356,12 +353,12 @@ if (listingLocalData != null && IsJsonString(listingLocalData)) {
 
 socket.emit("product-tracking-join")
 
-socket.on("updating", function () {
+socket.on("updating", () => {
   toastr.clear()
   toastr.warning('Data Server is updating, comeback later for updated products!')
 })
 
-socket.on("return-product-tracking-join", function (data) {
+socket.on("return-product-tracking-join", data => {
   listingData = data
   dataOriginal = data
   handleDuplicates()
@@ -371,9 +368,9 @@ socket.on("return-product-tracking-join", function (data) {
   isGettingData = false
 })
 
-function handleDuplicates() {
+handleDuplicates = () => {
   let dataDupPos = new Object
-  let dataDupById
+  let dataDupById, temp
 
   for (let i = 0; i < listingData.length; i++) {
     dataDupPos[`${listingData[i].listing_id}`] = ''
@@ -385,7 +382,6 @@ function handleDuplicates() {
 
   dataDupById = Object.keys(dataDupPos)
   let newData = []
-  let temp
 
   for (let i = 0; i < dataDupById.length; i++) {
     let arrPos = dataDupPos[dataDupById[i]].slice(0, -1).split(',')
@@ -409,9 +405,7 @@ function handleDuplicates() {
 
     //caculate sales fer day
     if (arrPos.length > 1) {
-      let numDays = 0
-      let totalCount = 0
-      let diff = 0
+      let numDays, totalCount, diff = 0
 
       for (let j = 0; j < arrPos.length - 1; j++) {
         if (listingData[arrPos[j]].date_update != listingData[arrPos[j + 1]].date_update) {
@@ -473,13 +467,13 @@ function handleDuplicates() {
 
 /* ------------------------------------------------ADDITIONAL SECTION------------------------------------------------ */
 
-// $("body").on('click', function (e) {
+// $("body").on('click', e=>{
 //   if (e.target.className != "popup-analytic-container") {
 //     $(".popup-analytic-container").css('display', 'none')
 //   }
 // })
 
-function IsJsonString(str) {
+IsJsonString = str => {
   try {
     JSON.parse(str)
   } catch (e) {
@@ -488,7 +482,7 @@ function IsJsonString(str) {
   return true
 }
 
-function showAnalytic(id) {
+showAnalytic = id => {
   if (isGettingData) {
     toastr.clear()
     toastr.warning('Please wait until data is updated!', { timeOut: 0 })
@@ -513,10 +507,7 @@ function showAnalytic(id) {
     gradientgreen.addColorStop(0, "rgba(47,208,87,0.3)")
     gradientgreen.addColorStop(1, "rgba(47,208,87, 0)")
 
-    let label = []
-    let quantity = []
-    let num_favorers = []
-    let views = []
+    let label, quantity, num_favorers, views = []
 
     for (let i = 0; i < tempData.length - 1; i++) {
       if (tempData[i].date_update != tempData[i + 1].date_update) {
@@ -595,19 +586,19 @@ function showAnalytic(id) {
   }
 }
 
-$('#btn-close-chart').on('click', function () {
+$('#btn-close-chart').on('click', () => {
   $('.popup-analytic-container').css('display', 'none')
   $('.popup-analytic-background').css('display', 'none')
   chart.destroy()
 })
 
-$('.popup-analytic-background').on('click', function () {
+$('.popup-analytic-background').on('click', () => {
   $('.popup-analytic-container').css('display', 'none')
   $('.popup-analytic-background').css('display', 'none')
   chart.destroy()
 })
 
-$('#find-product-by-keyword').on('keypress', function (e) {
+$('#find-product-by-keyword').on('keypress', e => {
   if (e.key == 'Enter') {
     $('#find-product-by-keyword-button').trigger('click')
   }
@@ -618,46 +609,46 @@ $('#find-product-by-keyword').select2({
   data: dataSelect,
 })
 
-$('#find-product-by-keyword').on('change', function (e) {
+$('#find-product-by-keyword').on('change', e => {
   $('.select2-results__option--selected').on('unbind')
 })
 
-function scrollToTop() {
+scrollToTop = () => {
   document.body.scrollTop = 0;
   document.documentElement.scrollTop = 0;
 }
 
-function compareViews(a, b) {
+compareViews = (a, b) => {
   const bandA = a.views
   const bandB = b.views
   return compareAction(bandA, bandB)
 }
 
-function compareFavorites(a, b) {
+compareFavorites = (a, b) => {
   const bandA = a.num_favorers
   const bandB = b.num_favorers
   return compareAction(bandA, bandB)
 }
 
-function compareDay(a, b) {
+compareDay = (a, b) => {
   const bandA = a.original_creation_tsz
   const bandB = b.original_creation_tsz
   return compareAction(bandA, bandB)
 }
 
-function comparePercentFavorites(a, b) {
+comparePercentFavorites = (a, b) => {
   const bandA = a.percent_favor
   const bandB = b.percent_favor
   return compareAction(bandA, bandB)
 }
 
-function compareSaleDay(a, b) {
+compareSaleDay = (a, b) => {
   const bandA = a.sales_day
   const bandB = b.sales_day
   return compareAction(bandA, bandB)
 }
 
-function compareAction(bandA, bandB) {
+compareAction = (bandA, bandB) => {
   bandA = parseFloat(bandA)
   bandB = parseFloat(bandB)
   let comparison = 0;
@@ -669,13 +660,13 @@ function compareAction(bandA, bandB) {
   return comparison * -1;
 }
 
-function getDayTimeLife(creation_time) {
+getDayTimeLife = creation_time => {
   let timeNow = new Date().getTime()
   let life_time = Math.floor(timeNow / 1000) - creation_time
   return life_time / 86400
 }
 
-function getEpochTime(input) {
+getEpochTime = input => {
   var date = new Date(0)
   date.setUTCSeconds(input)
   time = String(date)
@@ -684,7 +675,7 @@ function getEpochTime(input) {
   return time
 }
 
-function convertMonthInString(month) {
+convertMonthInString = month => {
   switch (month) {
     case 'Jan': return '01'
     case 'Feb': return '02'
@@ -707,7 +698,7 @@ function convertMonthInString(month) {
 //   } return false
 // }
 
-function updatePaginationBtn(data) {
+updatePaginationBtn = data => {
   if (pagEnd == data.length) {
     $('#next-pagination').css('pointer-events', 'none')
     $('#last-pagination').css('pointer-events', 'none')
@@ -738,7 +729,7 @@ function updatePaginationBtn(data) {
 
 // function filterByType(data, isDigit = false) {
 //   let filterData = []
-//   for (var i = 0; i < data.length; i++) {
+//   for (let i = 0; i < data.length; i++) {
 //     if (isDigital(data[i]) == isDigit) {
 //       filterData.push(data[i])
 //     }
@@ -762,7 +753,7 @@ function updatePaginationBtn(data) {
 //   return filterData
 // }
 
-function filterByDate(data, days) {
+filterByDate = data, days => {
   let filterData = []
   for (let i = 0; i < data.length; i++) {
     if (getDayTimeLife(data[i].original_creation_tsz) <= days) {
@@ -772,7 +763,7 @@ function filterByDate(data, days) {
   return filterData
 }
 
-function searchByKeyword(keyword, data) {
+searchByKeyword = keyword, data => {
   let dataSearch = data
   let searchKeyData = getSearchLevel(keyword)
 
@@ -789,11 +780,9 @@ function searchByKeyword(keyword, data) {
   return dataSearch
 }
 
-function getSearchLevel(keyword) {
+getSearchLevel = keyword => {
   let searchData = []
-  searchData['level1'] = []
-  searchData['level2'] = []
-  searchData['level3'] = []
+  searchData['level1'], searchData['level2'], searchData['level3'] = []
 
   let level1 = ["Father's Day", "Pride Month", "Independence Day", "Mother's Day", "Valentine's Day", "Patrick's Day", "Wedding's Day", "New Year's Day",
     "Memorial Day", "Thanksgiving", "Christmas", "Presidents' Day", "Easter", "Halloween"]
@@ -812,7 +801,7 @@ function getSearchLevel(keyword) {
   return searchData
 }
 
-function searchByLevel(key, data) {
+searchByLevel = key, data => {
   let searchData = []
   for (let i = 0; i < data.length; i++) {
     for (let j = 0; j < key.length; j++) {
@@ -824,7 +813,7 @@ function searchByLevel(key, data) {
   return searchData
 }
 
-function searchByLevelCate(key, data) {
+searchByLevelCate = key, data => {
   let searchData = []
   for (let i = 0; i < data.length; i++) {
     for (let j = 0; j < key.length; j++) {
@@ -839,7 +828,7 @@ function searchByLevelCate(key, data) {
   return searchData
 }
 
-function formatForSearch(string) {
+formatForSearch = string => {
   string = string.replace(/[^0-9a-zA-Z ]/g, '').replace(/s /g, ' ').toLowerCase()
   return string
 }

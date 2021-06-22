@@ -5,10 +5,8 @@ var socket = io.connect("https://giftsvk.com", {
 })
 
 var historyData = []
-var isAddedChecked = true
-var isMyAccount = true
-var isTrangAccount = false
-var isShowAll = false
+var isAddedChecked, isMyAccount = true
+var isTrangAccount, isShowAll = false
 
 $('#loading').css('display', 'block')
 
@@ -41,12 +39,12 @@ if (isTrangCheckedStorage == 1) {
     isTrangAccount = false
 }
 
-socket.on("tracking-history-return-data", async function (data) {
+socket.on("tracking-history-return-data", data => {
     historyData = data
     filterData()
 })
 
-function filterData() {
+filterData = () => {
     let filterData = historyData
 
     if (isMyAccount && isTrangAccount) {
@@ -66,9 +64,9 @@ function filterData() {
     updateData(filterData)
 }
 
-function filterTrangAccount(data) {
+filterTrangAccount = data => {
     let dataFilter = []
-    for (var i = 0; i < data.length; i++) {
+    for (let i = 0; i < data.length; i++) {
         if (data[i].user == 'Trang') {
             dataFilter.push(data[i])
         }
@@ -76,9 +74,9 @@ function filterTrangAccount(data) {
     return dataFilter
 }
 
-function filterMyAccount(data) {
+filterMyAccount = data => {
     let dataFilter = []
-    for (var i = 0; i < data.length; i++) {
+    for (let i = 0; i < data.length; i++) {
         if (data[i].user == 'My') {
             dataFilter.push(data[i])
         }
@@ -86,7 +84,7 @@ function filterMyAccount(data) {
     return dataFilter
 }
 
-$('#show-added-tracking').on('change', function () {
+$('#show-added-tracking').on('change', () => {
     if ($(this).prop("checked")) {
         isAddedChecked = true
         filterData()
@@ -100,7 +98,7 @@ $('#show-added-tracking').on('change', function () {
 })
 
 
-$('#show-my-account-tracking').on('change', function () {
+$('#show-my-account-tracking').on('change', () => {
     if ($(this).prop("checked")) {
         isMyAccount = true
         filterData()
@@ -114,7 +112,7 @@ $('#show-my-account-tracking').on('change', function () {
 })
 
 
-$('#show-trang-account-tracking').on('change', function () {
+$('#show-trang-account-tracking').on('change', () => {
     if ($(this).prop("checked")) {
         isTrangAccount = true
         filterData()
@@ -127,7 +125,7 @@ $('#show-trang-account-tracking').on('change', function () {
     }
 })
 
-$('#show-all-tracking').on('change', function () {
+$('#show-all-tracking').on('change', () => {
     if ($(this).prop("checked")) {
         $('#loading').css('display', 'block')
         socket.emit("tracking-history-get-all")
@@ -138,9 +136,9 @@ $('#show-all-tracking').on('change', function () {
     }
 })
 
-function filterAdded(data) {
+filterAdded = data => {
     let dataFilter = []
-    for (var i = 0; i < data.length; i++) {
+    for (let i = 0; i < data.length; i++) {
         if (data[i].time_add_tracking !== undefined) {
             dataFilter.push(data[i])
         }
@@ -148,9 +146,9 @@ function filterAdded(data) {
     return dataFilter
 }
 
-function updateData(data = historyData) {
+updateData = (data = historyData) => {
     $('#table_id-tracking-history').DataTable().clear().destroy()
-    for (var i = 0; i < data.length; i++) {
+    for (let i = 0; i < data.length; i++) {
         $('#table_id-tracking-history-body').append(`<tr>
             <td>${data[i].id}</td>
             <td>${formatShopName(data[i].name)}</td>
@@ -173,38 +171,38 @@ function updateData(data = historyData) {
     $('#loading').css('display', 'none')
 }
 
-function formatCustomerName(name) {
+formatCustomerName = name => {
     if (name === undefined) {
         return '---'
     } return name
 }
 
-function formatOrderStatus(status) {
+formatOrderStatus = status => {
     if (status === undefined) {
         return '---'
     } return status
 }
 
-function formatCustomerEmail(email) {
+formatCustomerEmail = email => {
     if (email === undefined) {
         return '---'
     } return email
 }
 
-function formatShopName(shopName) {
+formatShopName = shopName => {
     if (shopName === undefined) {
         return '---'
     } return shopName
 }
 
-function formatOrderDate(date) {
+formatOrderDate = date => {
     if (date === undefined) {
         return '---'
     }
     return date.substring(5).split('.')[0].replace('-', '/')
 }
 
-function getActualCarrierCode(code, actualCode) {
+getActualCarrierCode = (code, actualCode) => {
     if (actualCode === undefined || actualCode == '') {
         return '---'
     } else if (code == actualCode) {
@@ -213,7 +211,7 @@ function getActualCarrierCode(code, actualCode) {
     return `<p class="p-input-wrong">${actualCode}</p>`
 }
 
-function getCarrierCode(code) {
+getCarrierCode = code => {
     if (code === undefined || code == '') {
         return '---'
     } else if (code.startsWith('9')) {
@@ -223,13 +221,13 @@ function getCarrierCode(code) {
     } return code
 }
 
-function compareDay(a, b) {
+compareDay = (a, b) => {
     const bandA = a.time_add_tracking
     const bandB = b.time_add_tracking
     return compareAction(bandA, bandB)
 }
 
-function compareAction(bandA, bandB) {
+compareAction = (bandA, bandB) => {
     bandA = parseFloat(bandA)
     bandB = parseFloat(bandB)
     let comparison = 0;
@@ -241,7 +239,7 @@ function compareAction(bandA, bandB) {
     return comparison * -1;
 }
 
-function getEpochTime(input) {
+getEpochTime = input => {
     if (input === undefined) {
         return '-- / -- / --'
     }
@@ -253,7 +251,7 @@ function getEpochTime(input) {
     return time
 }
 
-function getCarrierName(track, name) {
+getCarrierName = (track, name) => {
     if (name === undefined || name == '') {
         return '---'
     } else if (track.startsWith('9') && name == 'USPS') {
@@ -264,7 +262,7 @@ function getCarrierName(track, name) {
     return `<p class="p-input-wrong">${name}</p>`
 }
 
-function convertMonthInString(month) {
+convertMonthInString = month => {
     switch (month) {
         case 'Jan': return '01'
         case 'Feb': return '02'
@@ -281,7 +279,7 @@ function convertMonthInString(month) {
     } return month
 }
 
-$('#fix-tracking-history-btn').on('click', function () {
+$('#fix-tracking-history-btn').on('click', () => {
     this.classList.toggle("active-fix-tracking")
     var content = this.nextElementSibling
     if (content.style.display === "block") {
@@ -291,7 +289,7 @@ $('#fix-tracking-history-btn').on('click', function () {
     }
 })
 
-$('#submit-fix-btn').on('click', async function () {
+$('#submit-fix-btn').on('click', () => {
     let fixData = new Object
 
     fixData['id'] = $('#id-fix-tracking-history').val().trim()
@@ -318,31 +316,31 @@ $('#submit-fix-btn').on('click', async function () {
     socket.emit("fix-tracking-history", fixData)
 })
 
-$('#run-add-tracking-my-btn').on('click', async function () {
+$('#run-add-tracking-my-btn').on('click', () => {
     socket.emit("run-add-tracking", 'My')
 })
 
-$('#run-add-tracking-trang-btn').on('click', async function () {
+$('#run-add-tracking-trang-btn').on('click', () => {
     socket.emit("run-add-tracking", 'Trang')
 })
 
-socket.on("return-fix-tracking-history", async function (data) {
+socket.on("return-fix-tracking-history", data => {
     toastr.clear()
     toastr.success('Thành công!')
 })
 
-$('#check-limit-btn').on('click', async function () {
+$('#check-limit-btn').on('click', () => {
     socket.emit("check-limit-api")
 })
 
-socket.on("return-check-limit-api", async function (data) {
+socket.on("return-check-limit-api", data => {
     let index = data.indexOf('x-ratelimit-remaining')
     data = data.slice(index, index + 28).trim()
     toastr.clear()
     toastr.success(data)
 })
 
-$('#refresh-btn').on('click', async function () {
+$('#refresh-btn').on('click', () => {
     $('#loading').css('display', 'block')
     socket.emit("tracking-history-join")
 })

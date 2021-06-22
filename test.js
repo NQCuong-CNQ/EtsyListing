@@ -65,14 +65,14 @@
 //         $(this).addClass("done");
 //     });
 
-    // let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
-    // var dbo = client.db("trackingdb")
-    // console.log('oldListing')
+// let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
+// var dbo = client.db("trackingdb")
+// console.log('oldListing')
 
-    // let clientDBBraumstar = await MongoClient.connect('mongodb://zic:Mynewpassword%400@braumstar.com:27020/zicDb?authSource=zicDb', { useNewUrlParser: true, useUnifiedTopology: true })
-    // var dboBraumstar = clientDBBraumstar.db("zicDb")
-    // let dbData = await dboBraumstar.collection("etsyAccounts").find({ username: 'vi' }).toArray()
-    // console.log(dbData)
+// let clientDBBraumstar = await MongoClient.connect('mongodb://zic:Mynewpassword%400@braumstar.com:27020/zicDb?authSource=zicDb', { useNewUrlParser: true, useUnifiedTopology: true })
+// var dboBraumstar = clientDBBraumstar.db("zicDb")
+// let dbData = await dboBraumstar.collection("etsyAccounts").find({ username: 'vi' }).toArray()
+// console.log(dbData)
 // }
 // 
 
@@ -100,10 +100,16 @@
 //       case 'Dec': return '12'
 //     }
 //   }
-var date = new Date().getTime()
+date = new Date().getTime()
 date = Math.floor(date / 3600000)
 
-    console.log(26 - date%26)
+console.log(26 - date % 26)
+
+// let car = {
+
+// }
+// let consumption = car?.[1]?.engine;
+// console.log(consumption);
 // console.log(date+1)
 // console.log((date+1)%26)
 

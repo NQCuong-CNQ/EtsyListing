@@ -4,7 +4,7 @@ var socket = io.connect("https://giftsvk.com", {
     transports: ['websocket']
 })
 
-$('#submit-user-button').on('click', async function () {
+$('#submit-user-button').on('click', () => {
     if ($('#input-user-name').val().trim() == '' || $('#input-user-pass').val().trim() == '') {
         toastr.clear()
         toastr.warning('Vui lòng điền đầy đủ thông tin!')
@@ -15,7 +15,7 @@ $('#submit-user-button').on('click', async function () {
     socket.emit("new-user-braumstar", data)
 })
 
-socket.on("return-new-user-braumstar", function (data) {
+socket.on("return-new-user-braumstar", data => {
     $('#loading').css('display', 'none')
     if (data == -1) {
         toastr.clear()
@@ -31,7 +31,7 @@ socket.on("return-new-user-braumstar", function (data) {
     }
 })
 
-$('#submit-shop-button').on('click', async function () {
+$('#submit-shop-button').on('click', () => {
     if ($('#input-shop-name').val().trim() == '' || $('#input-user-shop-name').val().trim() == '' || $('#input-country-shop-name').val().trim() == '') {
         toastr.clear()
         toastr.warning('Vui lòng điền đầy đủ thông tin!')
@@ -42,7 +42,7 @@ $('#submit-shop-button').on('click', async function () {
     socket.emit("add-shop-braumstar", data)
 })
 
-socket.on("return-add-shop-braumstar", function (data) {
+socket.on("return-add-shop-braumstar", data => {
     $('#loading').css('display', 'none')
     if (data == 1) {
         toastr.clear()
@@ -55,7 +55,7 @@ socket.on("return-add-shop-braumstar", function (data) {
     }
 })
 
-$('#submit-shop-die-button').on('click', async function () {
+$('#submit-shop-die-button').on('click', () => {
     if ($('#input-shop-die-name').val().trim() == '') {
         toastr.clear()
         toastr.warning('Vui lòng điền đầy đủ thông tin!')
@@ -66,12 +66,12 @@ $('#submit-shop-die-button').on('click', async function () {
     socket.emit("delete-shop-braumstar", data)
 })
 
-socket.on("return-delete-shop-braumstar", function (data) {
+socket.on("return-delete-shop-braumstar", data => {
     $('#loading').css('display', 'none')
     if (data == 1) {
         toastr.clear()
         toastr.success('Xóa thành công')
-        $('#input-shop-die-name').val('') 
+        $('#input-shop-die-name').val('')
     }
     else {
         toastr.clear()
@@ -79,7 +79,7 @@ socket.on("return-delete-shop-braumstar", function (data) {
     }
 })
 
-$('#submit-shop-list-button').on('click', async function () {
+$('#submit-shop-list-button').on('click', () => {
     if ($('#input-user-shop-list').val().trim() == '') {
         toastr.clear()
         toastr.warning('Vui lòng điền đầy đủ thông tin!')
@@ -91,7 +91,7 @@ $('#submit-shop-list-button').on('click', async function () {
     socket.emit("get-list-shop-braumstar", data)
 })
 
-socket.on("list-shop-braumstar", function (data) {
+socket.on("list-shop-braumstar", data => {
     $('#loading').css('display', 'none')
 
     if (data == '') {
@@ -106,28 +106,28 @@ socket.on("list-shop-braumstar", function (data) {
     $('#list-shop').text(shop)
 })
 
-$('#input-user-shop-list').on('keypress', function (e) {
+$('#input-user-shop-list').on('keypress', e => {
     if (e.key == 'Enter') {
         $('#submit-shop-list-button').trigger('click')
     }
 })
 
-$('#input-user-name').on('keypress', function (e) {
+$('#input-user-name').on('keypress', e => {
     if (e.key == 'Enter') {
         $('#submit-user-button').trigger('click')
     }
 })
-$('#input-user-pass').on('keypress', function (e) {
+$('#input-user-pass').on('keypress', e => {
     if (e.key == 'Enter') {
         $('#submit-user-button').trigger('click')
     }
 })
-$('#input-user-shop-name').on('keypress', function (e) {
+$('#input-user-shop-name').on('keypress', e => {
     if (e.key == 'Enter') {
         $('#submit-shop-button').trigger('click')
     }
 })
-$('#input-country-shop-name').on('keypress', function (e) {
+$('#input-country-shop-name').on('keypress', e => {
     if (e.key == 'Enter') {
         $('#submit-shop-button').trigger('click')
     }
