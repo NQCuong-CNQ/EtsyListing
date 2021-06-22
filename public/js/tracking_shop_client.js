@@ -11,32 +11,32 @@ var gettingData = 1
 
 /* ------------------------------------------------MAIN SECTION------------------------------------------------ */
 
-$('#listing-back-btn').on('click', async function () {
+$('#listing-back-btn').on('click', () => {
   $('#list-shop-section').css("display", "block")
   $('#listing-shop-section').css("display", "none")
   $('#user-shop-section').css("display", "none")
   $('#table_id-list').DataTable().clear().destroy()
 })
 
-$('#user-back-btn').on('click', async function () {
+$('#user-back-btn').on('click', () => {
   $('#list-shop-section').css("display", "block")
   $('#listing-shop-section').css("display", "none")
   $('#user-shop-section').css("display", "none")
 })
 
-$('#pod-type-product-filter').on('click', async function () {
+$('#pod-type-product-filter').on('click', () => {
   filterType = 0
   $('#dropdown-filter-type-product').text('POD')
   searchOrFilterData()
 })
 
-$('#digital-type-product-filter').on('click', async function () {
+$('#digital-type-product-filter').on('click', () => {
   filterType = 1
   $('#dropdown-filter-type-product').text('Digital')
   searchOrFilterData()
 })
 
-$('#find-shop-by-name-button').on('click', async function () {
+$('#find-shop-by-name-button').on('click', () => {
   let shopName = $('#find-shop-by-name').val().trim()
   if (shopName == '') {
     searchOrFilterData()
@@ -57,7 +57,7 @@ $('#find-shop-by-name-button').on('click', async function () {
   }
 })
 
-searchLocalShop = shopName =>{
+searchLocalShop = shopName => {
   let shop = []
   for (let i = 0; i < shopData.length; i++) {
     if (shopData[i].shop_name.toLowerCase().includes(shopName)) {
@@ -66,11 +66,7 @@ searchLocalShop = shopName =>{
   } return shop
 }
 
-// function searchLocalShop(shopName) {
-  
-// }
-
-searchOrFilterData = () =>{
+searchOrFilterData = () => {
   let dataFilter = shopData
 
   if (filterType == 0) {
@@ -109,29 +105,16 @@ searchOrFilterData = () =>{
   updateData(dataFilter)
 }
 
-// function searchOrFilterData() {
-  
-// }
-
 getSalesLargerThan = data => {
   let filterData = []
   for (let item in data) {
+    console.log(item.total_sales >= salesLargerThan)
     if (item.total_sales >= salesLargerThan) {
       filterData.push(item)
     }
   }
   return filterData
 }
-
-// function getSalesLargerThan(data) {
-  
-//   // for (let i = 0; i < data.length; i++) {
-//   //   if (data[i].total_sales >= salesLargerThan) {
-//   //     filterData.push(data[i])
-//   //   }
-//   // }
-  
-// }
 
 getMonthFilter = data => {
   let filterData = []
@@ -143,11 +126,7 @@ getMonthFilter = data => {
   return filterData
 }
 
-// function getMonthFilter(data) {
-
-// }
-
-function getMonthTime(input) {
+getMonthTime = input => {
   var date = new Date(0)
   date.setUTCSeconds(input)
   time = String(date)
@@ -156,7 +135,7 @@ function getMonthTime(input) {
   return parseInt(time)
 }
 
-function timeCreatedShopFilterCustom(data) {
+timeCreatedShopFilterCustom = data => {
   let filterData = []
   let dateRange = $('#dropdown-filter-shop-time-created').text().split(' to ')
 
@@ -191,10 +170,6 @@ getCategoryProduct = dataFilter => {
   return filterData
 }
 
-// function getCategoryProduct(dataFilter) {
-
-// }
-
 getTypeProduct = (dataFilter, isDigit = false) => {
   let filterData = []
   for (let i = 0; i < dataFilter.length; i++) {
@@ -205,17 +180,13 @@ getTypeProduct = (dataFilter, isDigit = false) => {
   return filterData
 }
 
-// function getTypeProduct(dataFilter, isDigit = false) {
-
-// }
-
-function isDigitShop(data) {
+isDigitShop = data => {
   if (data.digital_listing_count > (data.listing_active_count / 10)) {
     return true
   } return false
 }
 
-function updateData(data = shopData) {
+updateData = (data = shopData) => {
   $('#table-shop').DataTable().clear().destroy()
   for (var i = 0; i < data.length; i++) {
     if (data[i].imgs_listing === undefined || data[i].imgs_listing == null) {
@@ -259,7 +230,7 @@ function updateData(data = shopData) {
   })
 }
 
-async function getShopDetail(id) {
+getShopDetail = id => {
   selected_shop = id
   if (gettingData) {
     toastr.clear()
@@ -271,21 +242,21 @@ async function getShopDetail(id) {
   }
 }
 
-$('#listing-option-button').on('click', async function () {
-  await getListingOption(selected_shop)
+$('#listing-option-button').on('click', () => {
+  getListingOption(selected_shop)
   $('.popup-analytic-container').css('display', 'none')
   $('.popup-analytic-background').css('display', 'none')
   chart.destroy()
 })
 
-$('#user-option-button').on('click', async function () {
-  await getUserOption(selected_shop)
+$('#user-option-button').on('click', () => {
+  getUserOption(selected_shop)
   $('.popup-analytic-container').css('display', 'none')
   $('.popup-analytic-background').css('display', 'none')
   chart.destroy()
 })
 
-function getShopNameByID(id) {
+getShopNameByID = id => {
   for (let i = 0; i < shopData.length; i++) {
     if (shopData[i].shop_id == id) {
       return shopData[i].shop_name
@@ -294,7 +265,7 @@ function getShopNameByID(id) {
   return 'Shop'
 }
 
-function getShopUserByID(id) {
+getShopUserByID = id => {
   for (let i = 0; i < shopData.length; i++) {
     if (shopData[i].shop_id == id) {
       return shopData[i].user_id
@@ -303,7 +274,7 @@ function getShopUserByID(id) {
   return null
 }
 
-async function getListingOption(id) {
+getListingOption = id => {
   socket.emit("get_listing_shop_id", id)
   $('#loading').css('display', 'block')
   $('#title-page').text('Listing Detail')
@@ -312,7 +283,9 @@ async function getListingOption(id) {
   $('#user-shop-section').css("display", "none")
 }
 
-async function getUserOption(id) {
+getUserOption = id => {
+  console.log(shopData.find( shop_id => shop_id === id ))
+  
   socket.emit("get_user_by_user_id", getShopUserByID(id))
   $('#loading').css('display', 'block')
   $('#title-page').text('User Detail')
@@ -346,12 +319,12 @@ if (categoryLocalData != null && IsJsonString(categoryLocalData)) {
 
 socket.emit("shop-tracking-join")
 
-socket.on("updating", function (data) {
+socket.on("updating", () => {
   toastr.clear()
   toastr.warning('Data Server is updating, comeback later for updated shops!')
 })
 
-socket.on("return-shop-data", async function (data) {
+socket.on("return-shop-data", data => {
   shopData = data
   gettingData = 0
   $('#loading').css('display', 'none')
@@ -392,7 +365,7 @@ socket.on("return-shop-data", async function (data) {
   socket.emit("get-total-shop")
 })
 
-socket.on("return-find-shop-by-name", function (data) {
+socket.on("return-find-shop-by-name", data => {
   $('#loading').css('display', 'none')
   if (data != 0) {
     updateData(data)
@@ -420,15 +393,15 @@ socket.on("return-find-shop-by-name", function (data) {
   }
 })
 
-socket.on("total-shop", function (data) {
+socket.on("total-shop", data => {
   $('#fun-fact').text(`Bạn có biết? Tổng số shop được tạo ra trên Etsy lên đến ${data.toLocaleString()} shop`)
 })
 
-socket.on("last-updated", function (data) {
+socket.on("last-updated", data => {
   $('#last-updated').text("Last updated: " + getUpdateHistoryEpoch(data.updateHistory))
 })
 
-socket.on("shop-tracking-data", function (data) {
+socket.on("shop-tracking-data", data => {
   $('#loading').css('display', 'none')
   $('.popup-analytic-container').css('display', 'block')
   $('.popup-analytic-background').css('display', 'block')
@@ -514,19 +487,19 @@ socket.on("shop-tracking-data", function (data) {
   })
 })
 
-$('#btn-close-chart').on('click', function () {
+$('#btn-close-chart').on('click', () => {
   $('.popup-analytic-container').css('display', 'none')
   $('.popup-analytic-background').css('display', 'none')
   chart.destroy()
 })
 
-$('.popup-analytic-background').on('click', function () {
+$('.popup-analytic-background').on('click', () => {
   $('.popup-analytic-container').css('display', 'none')
   $('.popup-analytic-background').css('display', 'none')
   chart.destroy()
 })
 
-socket.on("return-shop-category-data", function (data) {
+socket.on("return-shop-category-data", data => {
   shopCategory = data
   try {
     window.localStorage.setItem('listing-shop-category', JSON.stringify(shopCategory))
@@ -535,7 +508,7 @@ socket.on("return-shop-category-data", function (data) {
   }
 })
 
-socket.on("return-user-data", function (data) {
+socket.on("return-user-data", data => {
   $('#loading').css('display', 'none')
   $('#user_img').attr('src', data.image_url_75x75)
   $('#user_id').text(data.user_id)
@@ -554,7 +527,7 @@ socket.on("return-user-data", function (data) {
   $('#user_sold_count').text(data.transaction_sold_count.toLocaleString())
 })
 
-socket.on("return-listing-data", function (data) {
+socket.on("return-listing-data", data => {
   $('#loading').css('display', 'none')
   $('#table_id-list').DataTable().clear().destroy()
   for (var i = 0; i < data.length; i++) {
@@ -587,24 +560,24 @@ socket.on("return-listing-data", function (data) {
 
 /* ------------------------------------------------ADDITIONAL SECTION------------------------------------------------ */
 
-$('#find-shop-by-name').on('keypress', function (e) {
+$('#find-shop-by-name').on('keypress', e => {
   if (e.key == 'Enter') {
     $('#find-shop-by-name-button').trigger('click')
   }
 })
 
-function getDayTimeLife(creation_time) {
+getDayTimeLife = creation_time => {
   let timeNow = new Date().getTime()
   let life_time = ~~(timeNow / 1000) - creation_time
   return ~~(life_time / 86400)
 }
 
-function getAvgSales(total_sales, creation_time) {
+getAvgSales = (total_sales, creation_time) => {
   let avgSales = total_sales / getDayTimeLife(creation_time)
   return avgSales.toFixed(2)
 }
 
-function getEpochTime(input) {
+getEpochTime = input => {
   var date = new Date(0)
   date.setUTCSeconds(input)
   time = String(date)
@@ -613,7 +586,7 @@ function getEpochTime(input) {
   return time
 }
 
-function getUpdateHistoryEpoch(input) {
+getUpdateHistoryEpoch = input => {
   var date = new Date(0)
   date.setUTCSeconds(input)
   time = String(date)
@@ -622,7 +595,7 @@ function getUpdateHistoryEpoch(input) {
   return time
 }
 
-function getEpochTimeChart(input) {
+getEpochTimeChart = input => {
   var date = new Date(0)
   date.setUTCSeconds(input)
   time = String(date)
@@ -631,7 +604,7 @@ function getEpochTimeChart(input) {
   return time
 }
 
-function convertMonthInString(month) {
+convertMonthInString = month => {
   switch (month) {
     case 'Jan': return '01'
     case 'Feb': return '02'
@@ -648,7 +621,7 @@ function convertMonthInString(month) {
   }
 }
 
-function IsJsonString(str) {
+IsJsonString = str => {
   try {
     JSON.parse(str)
   } catch (e) {
@@ -661,56 +634,56 @@ function IsJsonString(str) {
 
 /* ------------------------------------------------FILTER SECTION------------------------------------------------ */
 
-$('#all-shop-filter').on('click', async function () {
+$('#all-shop-filter').on('click', () => {
   category = 'All'
   $('#dropdown-filter-shop').text('All')
   searchOrFilterData()
 })
 
-$('#canvas-shop-filter').on('click', async function () {
+$('#canvas-shop-filter').on('click', () => {
   category = 'Canvas'
   searchOrFilterData()
 })
 
-$('#shirt-shop-filter').on('click', async function () {
+$('#shirt-shop-filter').on('click', () => {
   category = 'Shirt'
   searchOrFilterData()
 })
 
-$('#mug-shop-filter').on('click', async function () {
+$('#mug-shop-filter').on('click', () => {
   category = 'Mug'
   searchOrFilterData()
 })
 
-$('#blanket-shop-filter').on('click', async function () {
+$('#blanket-shop-filter').on('click', () => {
   category = 'Blanket'
   searchOrFilterData()
 })
 
-$('#tumbler-shop-filter').on('click', async function () {
+$('#tumbler-shop-filter').on('click', () => {
   category = 'Tumbler'
   searchOrFilterData()
 })
 
-$('#all-time-created-shop-filter').on('click', async function () {
+$('#all-time-created-shop-filter').on('click', () => {
   timeCreatedShopFilter = 0
   $('#dropdown-filter-shop-time-created').text('All')
   searchOrFilterData()
 })
 
-$('#1m-time-created-shop-filter').on('click', async function () {
+$('#1m-time-created-shop-filter').on('click', () => {
   timeCreatedShopFilter = 1
   $('#dropdown-filter-shop-time-created').text('In 1 months')
   searchOrFilterData()
 })
 
-$('#3m-time-created-shop-filter').on('click', async function () {
+$('#3m-time-created-shop-filter').on('click', () => {
   timeCreatedShopFilter = 2
   $('#dropdown-filter-shop-time-created').text('In 3 months')
   searchOrFilterData()
 })
 
-$('#6m-time-created-shop-filter').on('click', async function () {
+$('#6m-time-created-shop-filter').on('click', () => {
   timeCreatedShopFilter = 3
   $('#dropdown-filter-shop-time-created').text('In 6 months')
   searchOrFilterData()
@@ -728,7 +701,7 @@ $('#custom-time-created-shop-filter').daterangepicker({
   searchOrFilterData()
 })
 
-$('#sales-larger-than').on('change', async function () {
+$('#sales-larger-than').on('change', () => {
   salesLargerThan = $('#sales-larger-than').val().trim()
   if (salesLargerThan == '') {
     salesLargerThan = 0
@@ -748,7 +721,7 @@ $('#sales-larger-than').on('change', async function () {
   }
 })
 
-$('#month-filter-shop').on('change', async function () {
+$('#month-filter-shop').on('change', () => {
   monthFilterShop = $('#month-filter-shop').val().trim()
   if (monthFilterShop == '') {
     monthFilterShop = 0
@@ -765,7 +738,7 @@ $('#month-filter-shop').on('change', async function () {
   }
 })
 
-function timeCreatedShopFilterAction(dataFilter) {
+timeCreatedShopFilterAction = dataFilter => {
   let shopTimeDataFilter = []
   let daysInTime = 0
 
