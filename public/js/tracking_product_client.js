@@ -4,16 +4,9 @@ var socket = io.connect("https://giftsvk.com", {
   transports: ['websocket']
 })
 
-var listingData, dataFilter, dataOriginal = []
-var filterByDateOption = 14
-// var filterByTypeOption = 0
-var isSearch = false
-var sortOption = 5
-var pagLenght = 30
-var pagStart = 0
-var pagEnd = pagLenght
-var isGridView, isGettingData = true
-var chart
+var listingData = dataFilter = dataOriginal = [], filterByDateOption = 14,
+  isSearch = false, sortOption = 5, pagLenght = 30, pagStart = 0,
+  isGridView = isGettingData = true, pagEnd = pagLenght, chart
 
 var dataSelect = [
   {
@@ -301,7 +294,9 @@ formatForSearch = string => {
 
 getSearchLevel = keyword => {
   let searchData = []
-  searchData['level1'], searchData['level2'], searchData['level3'] = []
+  searchData['level1'] = []
+  searchData['level2'] = []
+  searchData['level3'] = []
 
   let level1 = ["Father's Day", "Pride Month", "Independence Day", "Mother's Day", "Valentine's Day", "Patrick's Day", "Wedding's Day", "New Year's Day",
     "Memorial Day", "Thanksgiving", "Christmas", "Presidents' Day", "Easter", "Halloween"]
@@ -346,7 +341,6 @@ searchByLevelCate = (key, data) => {
   }
   return searchData
 }
-
 
 searchByKeyword = (keyword, data) => {
   let dataSearch = data
@@ -529,10 +523,6 @@ updateData = (dataFilter = listingData) => {
   scrollToTop()
 }
 
-/* ------------------------------------------------END MAIN SECTION------------------------------------------------ */
-
-/* ------------------------------------------------SOCKET SECTION------------------------------------------------ */
-
 let listingLocalData = window.localStorage.getItem('listing-data')
 if (listingLocalData != null && IsJsonString(listingLocalData)) {
   listingData = JSON.parse(listingLocalData)
@@ -611,8 +601,7 @@ handleDuplicates = () => {
   listingData = newData
 
   // handle for saving data to local
-  let tempForSave
-  let tempDataForSave = []
+  let tempForSave, tempDataForSave = []
 
   for (let i = 0; i < listingData.length; i++) {
     if (i > 4000) {
@@ -687,7 +676,7 @@ showAnalytic = id => {
     gradientgreen.addColorStop(0, "rgba(47,208,87,0.3)")
     gradientgreen.addColorStop(1, "rgba(47,208,87, 0)")
 
-    let label, quantity, num_favorers, views = []
+    let label = [], quantity = [], num_favorers = [], views = []
 
     for (let i = 0; i < tempData.length - 1; i++) {
       if (tempData[i].date_update != tempData[i + 1].date_update) {

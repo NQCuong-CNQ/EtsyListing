@@ -4,9 +4,8 @@ var socket = io.connect("https://giftsvk.com", {
     transports: ['websocket']
 })
 
-var historyData = []
-var isAddedChecked, isMyAccount = true
-var isTrangAccount, isShowAll = false
+var historyData = [], isAddedChecked = true, isMyAccount = true,
+    isTrangAccount = false, isShowAll = false
 
 $('#loading').css('display', 'block')
 socket.emit("tracking-history-join")

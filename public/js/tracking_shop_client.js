@@ -4,10 +4,8 @@ var socket = io.connect("https://giftsvk.com", {
   transports: ['websocket']
 })
 
-var shopData, shopCategory, chart, selected_shop
-var category = 'All'
-var timeCreatedShopFilter, salesLargerThan, monthFilterShop, filterType = 0
-var gettingData = 1
+var shopData, shopCategory, chart, selected_shop, category = 'All',
+  timeCreatedShopFilter, salesLargerThan, monthFilterShop, filterType = 0, gettingData = 1
 
 IsJsonString = str => {
   try {
@@ -129,8 +127,7 @@ getEpochTimeChart = input => {
 }
 
 timeCreatedShopFilterAction = dataFilter => {
-  let shopTimeDataFilter = []
-  let daysInTime = 0
+  let shopTimeDataFilter = [], daysInTime = 0
 
   if (timeCreatedShopFilter == 1) {
     daysInTime = 30
@@ -495,7 +492,7 @@ socket.on("shop-tracking-data", data => {
   gradientgreen.addColorStop(0, "rgba(47,208,87,0.3)")
   gradientgreen.addColorStop(1, "rgba(47,208,87, 0)")
 
-  let label, total_sales, num_favorers, listing_active_count = []
+  let label = [], total_sales = [], num_favorers = [], listing_active_count = []
 
   for (let index = 0; index < data.length; index++) {
     label.push(getEpochTimeChart(data[index].time_update))
@@ -643,8 +640,6 @@ $('#find-shop-by-name').on('keypress', e => {
     $('#find-shop-by-name-button').trigger('click')
   }
 })
-
-
 
 $('#all-shop-filter').on('click', () => {
   category = 'All'

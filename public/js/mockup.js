@@ -1,4 +1,4 @@
-var count, idNum, progressVal, progressRange = 0
+var count = 0, idNum = 0, progressVal = 0, progressRange = 0
 
 var srcBackgroundHor = [
   '/img/mockup/mk1.jpg',
@@ -78,8 +78,8 @@ onCheckCB = id => {
 }
 
 drawCanvas = async (srcBackground, putLocation, img) => {
-  let imgBackground, canvas, context
-  let startX, startY, width, height = 0
+  let imgBackground, canvas, context,
+    startX = 0, startY = 0, width = 0, height = 0
 
   for (let j = 0; j < srcBackground.length; j++) {
     imgBackground = new Image
@@ -128,8 +128,7 @@ minimizeUpload = () => {
 }
 
 createCanvas = async files => {
-  let img
-  img = new Image
+  let img = new Image
   img.src = URL.createObjectURL(files[count])
   await img.decode()
 
@@ -152,12 +151,11 @@ createCanvas = async files => {
 
 handleFileSelect = async evt => {
   let files = evt.target.files
-  let img
+  let img, valuemax = 0
   count = 0
   idNum = 0
   progressRange = 0
   progressVal = 0
-  let valuemax = 0
   $('.progress').css('display', 'block')
   $('.progress-bar').css('width', `0%`)
   $('#canvas-container').empty()
@@ -197,7 +195,7 @@ $('#select-all-cb').on('change', () => {
 $('#files').on('change', handleFileSelect)
 
 downloadCanvas = (canvasId, filename) => {
-  var aLink = document.createElement('a')
+  let aLink = document.createElement('a')
   aLink.download = filename
   aLink.href = document.getElementById(canvasId).toDataURL()
   aLink.click()
