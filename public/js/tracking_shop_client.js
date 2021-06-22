@@ -338,7 +338,7 @@ socket.on("return-shop-data", async function (data) {
   let tempData = []
 
   for (let i = 0; i < data.length; i++) {
-    if(i > 4000){
+    if(i > 1500){
       break
     }
 
