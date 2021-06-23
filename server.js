@@ -753,7 +753,7 @@ io.on("connection", async function (client) {
   })
 
   client.on("add-tracking-complete", async function (data) {
-    await dbo.collection("add_complete").insertOne(data)
+    await dbo.collection("add_complete").insertOne({ item: data })
 
     let complete = await dbo.collection("add_complete").find().toArray()
     if (complete.length == 9) {
