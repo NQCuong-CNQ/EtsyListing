@@ -633,6 +633,7 @@ handleDuplicates = () => {
           }
         }
       }
+      console.log(totalCount +'/'+ numDays)
       if (totalCount > 0) {
         temp['sales_day'] = (totalCount / numDays).toFixed(2)
       }
