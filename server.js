@@ -820,6 +820,7 @@ async function fetchData(siteUrl) {
   }
 
   if (result == 404) {
+    console.log('error 404')
     return 0
   }
   return cheerio.load(result.data)

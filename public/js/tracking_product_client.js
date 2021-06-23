@@ -578,13 +578,13 @@ handleDuplicates = () => {
   let dataDupPos = new Object
   let dataDupById, temp
 
-  for (let item of listingData){
-    dataDupPos[`${item.listing_id}`] = ''
-  }
-
-  // for (let i = 0; i < listingData.length; i++) {
-  //   dataDupPos[`${listingData[i].listing_id}`] = ''
+  // for (let item of listingData){
+  //   dataDupPos[`${item.listing_id}`] = ''
   // }
+
+  for (let i = 0; i < listingData.length; i++) {
+    dataDupPos[`${listingData[i].listing_id}`] = ''
+  }
 
   // for (let item of listingData){
   //   dataDupPos[`${item.listing_id}`] += i + ','

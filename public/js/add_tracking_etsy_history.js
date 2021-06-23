@@ -293,10 +293,10 @@ updateData = (data = historyData) => {
 $('#fix-tracking-history-btn').on('click', () => {
     $('#fix-tracking-history-btn').toggleClass("active-fix-tracking")
     let content = $('#fix-tracking-history-btn').next()
-    if (content.style.display === "block") {
-        content.style.display = "none"
+    if (content.css("display") === "block") {
+        content.css("display", "none")
     } else {
-        content.style.display = "block"
+        content.css("display", "block")
     }
 })
 

@@ -42,11 +42,13 @@ $("input").on('dragenter', e => {
 
 checkSelectedAction = list => {
   let count = 0
+  console.log(list)
   for (let item of list) {
     if (item) {
       count++
     }
   }
+  console.log(count)
   // for (let i = 0; i < list.length; i++) {
   //   if (list[i]) {
   //     count++

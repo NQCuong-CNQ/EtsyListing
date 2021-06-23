@@ -394,7 +394,9 @@ searchOrFilterData = () => {
 }
 
 getListingOption = id => {
-  console.log(shopData.find(({ id }) => id == id).id)
+  console.log(shopData.find(({ id }) => id == id))
+  let asdf = shopData.find(({ id }) => id == id)
+  console.log(asdf[id])
   socket.emit("get_listing_shop_id", shopData.find(({ id }) => id == id).id)
   $('#loading').css('display', 'block')
   $('#title-page').text('Listing Detail')

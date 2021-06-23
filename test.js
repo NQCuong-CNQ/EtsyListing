@@ -100,15 +100,12 @@
 //       case 'Dec': return '12'
 //     }
 //   }
+const axios = require("axios")
 date = new Date().getTime()
 date = Math.floor(date / 3600000)
 
 console.log(26 - date % 26)
 // let car = {
-
-    let salesLargerThan = '666fgg'
-    salesLargerThan += 'zz'.repeat(10)
-    console.log( salesLargerThan);
 
 // }
 // let consumption = car?.[1]?.engine;
