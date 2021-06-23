@@ -752,7 +752,7 @@ io.on("connection", async function (client) {
     client.broadcast.emit("return-ping-customcat", data)
   })
 
-  client.on("add-tracking-complete", function (data) {
+  client.on("add-tracking-complete", async function (data) {
     await dbo.collection("add_complete").insertOne(data)
 
     let complete = await dbo.collection("add_complete").find().toArray()
