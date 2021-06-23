@@ -102,31 +102,46 @@ socket.on("tracking-history-return-data", data => {
 
 filterTrangAccount = data => {
     let dataFilter = []
-    for (let i = 0; i < data.length; i++) {
-        if (data[i].user == 'Trang') {
-            dataFilter.push(data[i])
+    for (let item of data){
+        if (item.user == 'Trang') {
+            dataFilter.push(item)
         }
     }
+    // for (let i = 0; i < data.length; i++) {
+    //     if (data[i].user == 'Trang') {
+    //         dataFilter.push(data[i])
+    //     }
+    // }
     return dataFilter
 }
 
 filterMyAccount = data => {
     let dataFilter = []
-    for (let i = 0; i < data.length; i++) {
-        if (data[i].user == 'My') {
-            dataFilter.push(data[i])
+    for (let item of data){
+        if (item.user == 'My') {
+            dataFilter.push(item)
         }
     }
+    // for (let i = 0; i < data.length; i++) {
+    //     if (data[i].user == 'My') {
+    //         dataFilter.push(data[i])
+    //     }
+    // }
     return dataFilter
 }
 
 filterAdded = data => {
     let dataFilter = []
-    for (let i = 0; i < data.length; i++) {
-        if (data[i].time_add_tracking !== undefined) {
-            dataFilter.push(data[i])
+    for (let item of data){
+        if (item.time_add_tracking !== undefined) {
+            dataFilter.push(item)
         }
     }
+    // for (let i = 0; i < data.length; i++) {
+    //     if (data[i].time_add_tracking !== undefined) {
+    //         dataFilter.push(data[i])
+    //     }
+    // }
     return dataFilter
 }
 
@@ -252,18 +267,18 @@ getCarrierCode = code => {
 
 updateData = (data = historyData) => {
     $('#table_id-tracking-history').DataTable().clear().destroy()
-    for (let i = 0; i < data.length; i++) {
+    for (let item of data) {
         $('#table_id-tracking-history-body').append(`<tr>
-            <td>${data[i].id}</td>
-            <td>${formatShopName(data[i].name)}</td>
-            <td>${formatCustomerName(data[i].customer_name)}</td>
-            <td>${formatCustomerEmail(data[i].customer_email)}</td>
-            <td>${getCarrierCode(data[i].number_tracking)}</td>
-            <td>${getActualCarrierCode(data[i].number_tracking, data[i].actual_input)}</td>
-            <td>${getCarrierName(data[i].number_tracking, data[i].carrier_name)}</td>
-            <td>${formatOrderDate(data[i].order_date)}</td>
-            <td>${formatOrderStatus(data[i].order_status)}</td>
-            <td>${getEpochTime(data[i].time_add_tracking)}</td>
+            <td>${item.id}</td>
+            <td>${formatShopName(item.name)}</td>
+            <td>${formatCustomerName(item.customer_name)}</td>
+            <td>${formatCustomerEmail(item.customer_email)}</td>
+            <td>${getCarrierCode(item.number_tracking)}</td>
+            <td>${getActualCarrierCode(item.number_tracking, item.actual_input)}</td>
+            <td>${getCarrierName(item.number_tracking, item.carrier_name)}</td>
+            <td>${formatOrderDate(item.order_date)}</td>
+            <td>${formatOrderStatus(item.order_status)}</td>
+            <td>${getEpochTime(item.time_add_tracking)}</td>
         </tr>`)
     }
 

@@ -42,11 +42,16 @@ $("input").on('dragenter', e => {
 
 checkSelectedAction = list => {
   let count = 0
-  for (let i = 0; i < list.length; i++) {
-    if (list[i]) {
+  for (let item of files) {
+    if (item) {
       count++
     }
   }
+  // for (let i = 0; i < list.length; i++) {
+  //   if (list[i]) {
+  //     count++
+  //   }
+  // }
 
   if (count >= list.length) {
     return 1
@@ -160,9 +165,9 @@ handleFileSelect = async evt => {
   $('.progress-bar').css('width', `0%`)
   $('#canvas-container').empty()
 
-  for (let i = 0; i < files.length; i++) {
+  for (let item of files) {
     img = new Image
-    img.src = URL.createObjectURL(files[i])
+    img.src = URL.createObjectURL(item)
     await img.decode()
     if (img.naturalWidth > img.naturalHeight) {
       valuemax += srcBackgroundHor.length
@@ -170,6 +175,16 @@ handleFileSelect = async evt => {
       valuemax += srcBackgroundVer.length
     }
   }
+  // for (let i = 0; i < files.length; i++) {
+  //   img = new Image
+  //   img.src = URL.createObjectURL(files[i])
+  //   await img.decode()
+  //   if (img.naturalWidth > img.naturalHeight) {
+  //     valuemax += srcBackgroundHor.length
+  //   } else if (img.naturalWidth < img.naturalHeight) {
+  //     valuemax += srcBackgroundVer.length
+  //   }
+  // }
   progressRange = (100 / valuemax)
   toastr.clear()
   toastr.info('Rendering Mockup...')

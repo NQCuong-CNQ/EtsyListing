@@ -303,42 +303,70 @@ getSearchLevel = keyword => {
   let level2 = ["Canvas", "Art Print", "Mug", "Shirt", "Blanket", "Tumbler"]
   let level3 = ["Personalize"]
 
-  for (let i = 0; i < keyword.length; i++) {
-    if (level1.includes(keyword[i])) {
-      searchData['level1'].push(formatForSearch(keyword[i]))
-    } else if (level2.includes(keyword[i])) {
-      searchData['level2'].push(formatForSearch(keyword[i]))
-    } else if (level3.includes(keyword[i])) {
-      searchData['level3'].push(formatForSearch(keyword[i]))
+  for (let item of keyword){
+    if (level1.includes(item)) {
+      searchData['level1'].push(formatForSearch(item))
+    } else if (level2.includes(item)) {
+      searchData['level2'].push(formatForSearch(item))
+    } else if (level3.includes(item)) {
+      searchData['level3'].push(formatForSearch(item))
     }
   }
+  // for (let i = 0; i < keyword.length; i++) {
+  //   if (level1.includes(keyword[i])) {
+  //     searchData['level1'].push(formatForSearch(keyword[i]))
+  //   } else if (level2.includes(keyword[i])) {
+  //     searchData['level2'].push(formatForSearch(keyword[i]))
+  //   } else if (level3.includes(keyword[i])) {
+  //     searchData['level3'].push(formatForSearch(keyword[i]))
+  //   }
+  // }
   return searchData
 }
 
 searchByLevel = (key, data) => {
   let searchData = []
-  for (let i = 0; i < data.length; i++) {
-    for (let j = 0; j < key.length; j++) {
-      if (formatForSearch(data[i].title).indexOf(key[j]) != -1) {
-        searchData.push(data[i])
+  for (let item of data){
+    for (let itemKey of key){
+      if (formatForSearch(item.title).indexOf(itemKey) != -1) {
+        searchData.push(item)
       }
     }
   }
+  // for (let i = 0; i < data.length; i++) {
+  //   for (let j = 0; j < key.length; j++) {
+  //     if (formatForSearch(data[i].title).indexOf(key[j]) != -1) {
+  //       searchData.push(data[i])
+  //     }
+  //   }
+  // }
   return searchData
 }
 
 searchByLevelCate = (key, data) => {
   let searchData = []
-  for (let i = 0; i < data.length; i++) {
-    for (let j = 0; j < key.length; j++) {
-      if (formatForSearch(data[i].title).indexOf(key[j]) != -1) {
-        searchData.push(data[i])
+
+  for (let item of data){
+    for (let itemKey of key){
+      if (formatForSearch(item.title).indexOf(itemKey) != -1) {
+        searchData.push(item)
       }
-      else if (formatForSearch(data[i].taxonomy_path[data[i].taxonomy_path.length - 1]).indexOf(key[j]) != -1) {
-        searchData.push(data[i])
+      else if (formatForSearch(item.taxonomy_path[item.taxonomy_path.length - 1]).indexOf(itemKey) != -1) {
+        searchData.push(item)
       }
     }
   }
+
+  // for (let i = 0; i < data.length; i++) {
+  //   for (let j = 0; j < key.length; j++) {
+  //     if (formatForSearch(data[i].title).indexOf(key[j]) != -1) {
+  //       searchData.push(data[i])
+  //     }
+  //     else if (formatForSearch(data[i].taxonomy_path[data[i].taxonomy_path.length - 1]).indexOf(key[j]) != -1) {
+  //       searchData.push(data[i])
+  //     }
+  //   }
+  // }
   return searchData
 }
 
@@ -361,11 +389,16 @@ searchByKeyword = (keyword, data) => {
 
 filterByDate = (data, days) => {
   let filterData = []
-  for (let i = 0; i < data.length; i++) {
-    if (getDayTimeLife(data[i].original_creation_tsz) <= days) {
-      filterData.push(data[i])
+  for (let item of data){
+    if (getDayTimeLife(item.original_creation_tsz) <= days) {
+      filterData.push(item)
     }
   }
+  // for (let i = 0; i < data.length; i++) {
+  //   if (getDayTimeLife(data[i].original_creation_tsz) <= days) {
+  //     filterData.push(data[i])
+  //   }
+  // }
   return filterData
 }
 
@@ -545,13 +578,21 @@ handleDuplicates = () => {
   let dataDupPos = new Object
   let dataDupById, temp
 
-  for (let i = 0; i < listingData.length; i++) {
-    dataDupPos[`${listingData[i].listing_id}`] = ''
+  for (let item of listingData){
+    dataDupPos[`${item.listing_id}`] = ''
   }
 
-  for (let i = 0; i < listingData.length; i++) {
-    dataDupPos[`${listingData[i].listing_id}`] += i + ','
+  // for (let i = 0; i < listingData.length; i++) {
+  //   dataDupPos[`${listingData[i].listing_id}`] = ''
+  // }
+
+  for (let item of listingData){
+    dataDupPos[`${item.listing_id}`] += i + ','
   }
+
+  // for (let i = 0; i < listingData.length; i++) {
+  //   dataDupPos[`${listingData[i].listing_id}`] += i + ','
+  // }
 
   dataDupById = Object.keys(dataDupPos)
   let newData = []
@@ -636,8 +677,7 @@ handleDuplicates = () => {
 }
 
 socket.on("return-product-tracking-join", data => {
-  listingData = data
-  dataOriginal = data
+  listingData = dataOriginal = data
   handleDuplicates()
   searchOrFilterData()
   toastr.clear()
@@ -659,11 +699,16 @@ showAnalytic = id => {
     $('.popup-analytic-container').css('display', 'block')
     $('.popup-analytic-background').css('display', 'block')
     let tempData = []
-    for (let i = 0; i < dataOriginal.length; i++) {
-      if (dataOriginal[i].listing_id == id) {
-        tempData.push(dataOriginal[i])
+    for(let item of dataOriginal){
+      if (item.listing_id == id) {
+        tempData.push(item)
       }
     }
+    // for (let i = 0; i < dataOriginal.length; i++) {
+    //   if (dataOriginal[i].listing_id == id) {
+    //     tempData.push(dataOriginal[i])
+    //   }
+    // }
 
     var ctx = document.getElementById("chart-analytic-product").getContext("2d")
     var gradientblue = ctx.createLinearGradient(0, 0, 0, 225)

@@ -432,7 +432,7 @@ io.on("connection", async function (client) {
     client.emit("return-shop-data", dbData)
 
     let lastUpdated = await dbo.collection("log").find().toArray()
-    client.emit("last-updated", lastUpdated[lastUpdated.length - 1])
+    client.emit("last-updated", lastUpdated.slice(-1))
   })
 
   client.on("get-total-shop", async function () {

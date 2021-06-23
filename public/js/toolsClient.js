@@ -100,9 +100,12 @@ socket.on("list-shop-braumstar", data => {
         $('#input-user-shop-list').val('')
     }
     let shop = ''
-    for (let i = 0; i < data.length; i++) {
-        shop += data[i].brandName + '\n'
+    for(let item of data){
+        shop += item.brandName + '\n'
     }
+    // for (let i = 0; i < data.length; i++) {
+    //     shop += data[i].brandName + '\n'
+    // }
     $('#list-shop').text(shop)
 })
 

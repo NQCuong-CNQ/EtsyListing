@@ -43,11 +43,17 @@ $('#digital-type-product-filter').on('click', () => {
 
 searchLocalShop = shopName => {
   let shop = []
-  for (let i = 0; i < shopData.length; i++) {
-    if (shopData[i].shop_name.toLowerCase().includes(shopName)) {
-      shop.push(shopData[i])
+  for (let item of shopData) {
+    if (item.shop_name.toLowerCase().includes(shopName)) {
+      shop.push(item)
     }
-  } return shop
+  }
+  // for (let i = 0; i < shopData.length; i++) {
+  //   if (shopData[i].shop_name.toLowerCase().includes(shopName)) {
+  //     shop.push(shopData[i])
+  //   }
+  // } 
+  return shop
 }
 
 $('#find-shop-by-name-button').on('click', () => {
@@ -137,11 +143,20 @@ timeCreatedShopFilterAction = dataFilter => {
     daysInTime = 182
   }
 
-  for (let i = 0; i < dataFilter.length; i++) {
-    if (getDayTimeLife(dataFilter[i].creation_tsz) <= daysInTime) {
-      shopTimeDataFilter.push(dataFilter[i])
+  for (let item of dataFilter) {
+    // if (item.total_sales >= salesLargerThan) {
+    //   filterData.push(item)
+    // }
+
+    if (getDayTimeLife(item.creation_tsz) <= daysInTime) {
+      shopTimeDataFilter.push(item)
     }
   }
+  // for (let i = 0; i < dataFilter.length; i++) {
+  //   if (getDayTimeLife(dataFilter[i].creation_tsz) <= daysInTime) {
+  //     shopTimeDataFilter.push(dataFilter[i])
+  //   }
+  // }
   return shopTimeDataFilter
 }
 
@@ -166,11 +181,16 @@ getMonthTime = input => {
 
 getMonthFilter = data => {
   let filterData = []
-  for (let i = 0; i < data.length; i++) {
-    if (getMonthTime(data[i].creation_tsz) == parseInt(monthFilterShop)) {
-      filterData.push(data[i])
+  for (let item of data) {
+    if (getMonthTime(item.creation_tsz) == parseInt(monthFilterShop)) {
+      filterData.push(item)
     }
   }
+  // for (let i = 0; i < data.length; i++) {
+  //   if (getMonthTime(data[i].creation_tsz) == parseInt(monthFilterShop)) {
+  //     filterData.push(data[i])
+  //   }
+  // }
   return filterData
 }
 
@@ -181,11 +201,16 @@ timeCreatedShopFilterCustom = data => {
   let dateFrom = new Date(dateRange[0]).getTime()
   let dateTo = new Date(dateRange[1]).getTime()
 
-  for (let i = 0; i < data.length; i++) {
-    if (data[i].creation_tsz >= ~~(dateFrom / 1000) && data[i].creation_tsz <= ~~(dateTo / 1000)) {
-      filterData.push(data[i])
+  for (let item of data) {
+    if (item.creation_tsz >= ~~(dateFrom / 1000) && item.creation_tsz <= ~~(dateTo / 1000)) {
+      filterData.push(item)
     }
   }
+  // for (let i = 0; i < data.length; i++) {
+  //   if (data[i].creation_tsz >= ~~(dateFrom / 1000) && data[i].creation_tsz <= ~~(dateTo / 1000)) {
+  //     filterData.push(data[i])
+  //   }
+  // }
   return filterData
 }
 
@@ -199,47 +224,77 @@ getCategoryProduct = dataFilter => {
   $('#dropdown-filter-shop').text(category)
 
   let filterData = [], listShopName = []
-  for (let i = 0; i < shopCategory.length; i++) {
-    if (shopCategory[i].category.includes(category)) {
-      listShopName.push(shopCategory[i].shop_name)
+  for (let item of shopCategory) {
+    if (item.category.includes(category)) {
+      listShopName.push(item.shop_name)
     }
   }
+  // for (let i = 0; i < shopCategory.length; i++) {
+  //   if (shopCategory[i].category.includes(category)) {
+  //     listShopName.push(shopCategory[i].shop_name)
+  //   }
+  // }
 
-  for (let index = 0; index < listShopName.length; index++) {
-    for (let j = 0; j < dataFilter.length; j++) {
-      if (listShopName[index] == dataFilter[j].shop_name) {
-        filterData.push(dataFilter[j])
+  for (let item of listShopName) {
+    for (let itemFilter of dataFilter) {
+      if (item == itemFilter.shop_name) {
+        filterData.push(itemFilter)
       }
     }
   }
+
+  // for (let index = 0; index < listShopName.length; index++) {
+  //   for (let j = 0; j < dataFilter.length; j++) {
+  //     if (listShopName[index] == dataFilter[j].shop_name) {
+  //       filterData.push(dataFilter[j])
+  //     }
+  //   }
+  // }
   return filterData
 }
 
 getTypeProduct = (dataFilter, isDigit = false) => {
   let filterData = []
-  for (let i = 0; i < dataFilter.length; i++) {
-    if (isDigitShop(dataFilter[i]) == isDigit) {
-      filterData.push(dataFilter[i])
+
+  for (let item of dataFilter) {
+    if (isDigitShop(item) == isDigit) {
+      filterData.push(item)
     }
   }
+  // for (let i = 0; i < dataFilter.length; i++) {
+  //   if (isDigitShop(dataFilter[i]) == isDigit) {
+  //     filterData.push(dataFilter[i])
+  //   }
+  // }
   return filterData
 }
 
 getShopNameByID = id => {
-  for (let i = 0; i < shopData.length; i++) {
-    if (shopData[i].shop_id == id) {
-      return shopData[i].shop_name
+
+  for (let item of dataFilter) {
+    if (item.shop_id == id) {
+      return item.shop_name
     }
   }
+  // for (let i = 0; i < shopData.length; i++) {
+  //   if (shopData[i].shop_id == id) {
+  //     return shopData[i].shop_name
+  //   }
+  // }
   return 'Shop'
 }
 
 getShopUserByID = id => {
-  for (let i = 0; i < shopData.length; i++) {
-    if (shopData[i].shop_id == id) {
-      return shopData[i].user_id
+  for (let item of shopData) {
+    if (item.shop_id == id) {
+      return item.user_id
     }
   }
+  // for (let i = 0; i < shopData.length; i++) {
+  //   if (shopData[i].shop_id == id) {
+  //     return shopData[i].user_id
+  //   }
+  // }
   return null
 }
 
@@ -257,38 +312,38 @@ getShopDetail = id => {
 
 updateData = (data = shopData) => {
   $('#table-shop').DataTable().clear().destroy()
-  for (let i = 0; i < data.length; i++) {
-    if (data[i].imgs_listing === undefined || data[i].imgs_listing == null) {
-      console.log(data[i].shop_name + "doesn't have img, removed!")
+  for (let item of data) {
+    if (item.imgs_listing === undefined || item.imgs_listing == null) {
+      console.log(item.shop_name + "doesn't have img, removed!")
       continue
     }
     $('#table-shop-body').append(`<tr>
-        <td onclick="getShopDetail(${data[i].shop_id})"><i class="fas fa-info-circle pointer"></i></td>
+        <td onclick="getShopDetail(${item.shop_id})"><i class="fas fa-info-circle pointer"></i></td>
         <td>
-          <a href="${data[i].url}" target="_blank">${data[i].shop_name}
+          <a href="${item.url}" target="_blank">${item.shop_name}
             <div> 
-              <img src="${data[i].imgs_listing[0]}" alt="Empty" width="70px" height="70px">
-              <img src="${data[i].imgs_listing[1]}" alt="Empty" width="70px" height="70px">
-              <img src="${data[i].imgs_listing[2]}" alt="Empty" width="70px" height="70px">
-              <img src="${data[i].imgs_listing[3]}" alt="Empty" width="70px" height="70px">
+              <img src="${item.imgs_listing[0]}" alt="Empty" width="70px" height="70px">
+              <img src="${item.imgs_listing[1]}" alt="Empty" width="70px" height="70px">
+              <img src="${item.imgs_listing[2]}" alt="Empty" width="70px" height="70px">
+              <img src="${item.imgs_listing[3]}" alt="Empty" width="70px" height="70px">
             </div>
             <div class="mt-1">
-              <img src="${data[i].imgs_listing[4]}" alt="Empty" width="70px" height="70px">
-              <img src="${data[i].imgs_listing[5]}" alt="Empty" width="70px" height="70px">
-              <img src="${data[i].imgs_listing[6]}" alt="Empty" width="70px" height="70px">
-              <img src="${data[i].imgs_listing[7]}" alt="Empty" width="70px" height="70px">
+              <img src="${item.imgs_listing[4]}" alt="Empty" width="70px" height="70px">
+              <img src="${item.imgs_listing[5]}" alt="Empty" width="70px" height="70px">
+              <img src="${item.imgs_listing[6]}" alt="Empty" width="70px" height="70px">
+              <img src="${item.imgs_listing[7]}" alt="Empty" width="70px" height="70px">
             </div>
           </a>
         </td>
-        <td>${getAvgSales(data[i].total_sales, data[i].creation_tsz)}</td>
-        <td>${data[i].total_sales.toLocaleString()}</td>
-        <td>${data[i].num_favorers.toLocaleString()}</td>
-        <td>${getEpochTime(data[i].creation_tsz)}</td>
-        <td>${data[i].listing_active_count.toLocaleString()}</td>
-        <td>${data[i].digital_listing_count.toLocaleString()}</td>
-        <td>${data[i].currency_code}</td>
-        <td>${data[i].languages}</td>
-        <td>${data[i].shop_id}</td>
+        <td>${getAvgSales(item.total_sales, item.creation_tsz)}</td>
+        <td>${item.total_sales.toLocaleString()}</td>
+        <td>${item.num_favorers.toLocaleString()}</td>
+        <td>${getEpochTime(item.creation_tsz)}</td>
+        <td>${item.listing_active_count.toLocaleString()}</td>
+        <td>${item.digital_listing_count.toLocaleString()}</td>
+        <td>${item.currency_code}</td>
+        <td>${item.languages}</td>
+        <td>${item.shop_id}</td>
     </tr>`)
   }
 
@@ -493,12 +548,13 @@ socket.on("shop-tracking-data", data => {
 
   let label = [], total_sales = [], num_favorers = [], listing_active_count = []
 
-  for (let index = 0; index < data.length; index++) {
-    label.push(getEpochTimeChart(data[index].time_update))
-    total_sales.push(data[index].total_sales)
-    num_favorers.push(data[index].num_favorers)
-    listing_active_count.push(data[index].listing_active_count)
+  for (let item of data) {
+    label.push(getEpochTimeChart(item.time_update))
+    total_sales.push(item.total_sales)
+    num_favorers.push(item.num_favorers)
+    listing_active_count.push(item.listing_active_count)
   }
+
   chart = new Chart(document.getElementById("chart-total-sales"), {
     type: "line",
     data: {
