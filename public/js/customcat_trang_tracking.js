@@ -57,7 +57,7 @@ async function getData() {
             let userData = new Object
             userData['data'] = result
             userData['name'] = accountName
-            await socket.emit("track-order-join", userData)
+            // await socket.emit("track-order-join", userData)
             console.log('Data sent to server successful')
         }
     })
