@@ -4,6 +4,7 @@ var socket = io.connect("https://giftsvk.com", {
     transports: ['websocket']
 })
 
+socket.emit("get-add-tracking-status")
 
 $('#ping-vps').on('click', () => {
     $('#status').empty()
@@ -25,4 +26,8 @@ socket.on("return-ping-vps", data => {
 
 socket.on("return-ping-customcat", data => {
     $('#status').append(`<h4>${data} online</h4>`)
+})
+
+socket.on("add-tracking-status", data => {
+    $('#auto-add-status').append(`<h4>${data} done</h4>`)
 })

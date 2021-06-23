@@ -769,6 +769,15 @@ io.on("connection", async function (client) {
     console.log(`update server`)
     exec("git pull origin master")
   })
+
+  client.on("get-add-tracking-status", function () {
+    let complete = await dbo.collection("add_complete").find().toArray()
+    if (complete.length == 9) {
+      client.broadcast.emit("add-tracking-status", 1)
+    } else {
+      client.broadcast.emit("add-tracking-status", complete)
+    }
+  })
 })
 
 // fixTrackingHistory()
