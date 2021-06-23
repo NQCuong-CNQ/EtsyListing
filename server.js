@@ -770,7 +770,7 @@ io.on("connection", async function (client) {
     exec("git pull origin master")
   })
 
-  client.on("get-add-tracking-status", function () {
+  client.on("get-add-tracking-status", async function () {
     let complete = await dbo.collection("add_complete").find().toArray()
     if (complete.length == 9) {
       client.broadcast.emit("add-tracking-status", 1)
