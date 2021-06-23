@@ -57,7 +57,7 @@ async function main() {
   // await getShopName()
   // await updateShopInfo()
   // await completeUpdate()
-  await updateData()
+  // await updateData()
   isUpdate = false
 }
 
@@ -83,7 +83,7 @@ async function updateData() {
   isUpdate = true
 
   // await updateCate()
-  // await getListing()
+  await getListing()
   await getShopName()
   await updateShopInfo()
   await completeUpdate()
