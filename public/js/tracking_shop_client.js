@@ -394,8 +394,8 @@ searchOrFilterData = () => {
 }
 
 getListingOption = id => {
-  console.log(shopData.find(({ id }) => id == id))
-  socket.emit("get_listing_shop_id", id)
+  console.log(shopData.find(({ id }) => id == id).id)
+  socket.emit("get_listing_shop_id", shopData.find(({ id }) => id == id).id)
   $('#loading').css('display', 'block')
   $('#title-page').text('Listing Detail')
   $('#list-shop-section').css("display", "none")
@@ -404,9 +404,8 @@ getListingOption = id => {
 }
 
 getUserOption = id => {
-  console.log(shopData.find(({ shop_id }) => shop_id == id))
-
-  socket.emit("get_user_by_user_id", getShopUserByID(id))
+  console.log(shopData.find(({ shop_id }) => shop_id == id).id)
+  socket.emit("get_user_by_user_id", shopData.find(({ shop_id }) => shop_id == id).id)
   $('#loading').css('display', 'block')
   $('#title-page').text('User Detail')
   $('#list-shop-section').css("display", "none")
