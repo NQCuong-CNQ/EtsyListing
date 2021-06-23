@@ -28,6 +28,7 @@ socket.on("run-add-tracking-by-user", async function (user) {
 })
 
 socket.on("ping-customcat", function () {
+    console.log('ping back '+accountName)
     socket.emit("ping-customcat-res", accountName)
 })
 
