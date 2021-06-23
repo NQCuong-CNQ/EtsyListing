@@ -166,7 +166,7 @@ filterData = () => {
 }
 
 $('#show-added-tracking').on('change', () => {
-    if ($(this).prop("checked")) {
+    if ($('#show-added-tracking').prop("checked")) {
         isAddedChecked = true
         filterData()
         window.localStorage.setItem('is-tracking-history-checked', 1)
@@ -179,7 +179,7 @@ $('#show-added-tracking').on('change', () => {
 })
 
 $('#show-my-account-tracking').on('change', () => {
-    if ($(this).prop("checked")) {
+    if ($('#show-my-account-tracking').prop("checked")) {
         isMyAccount = true
         filterData()
         window.localStorage.setItem('is-my-account-checked', 1)
@@ -192,7 +192,7 @@ $('#show-my-account-tracking').on('change', () => {
 })
 
 $('#show-trang-account-tracking').on('change', () => {
-    if ($(this).prop("checked")) {
+    if ($('#show-trang-account-tracking').prop("checked")) {
         isTrangAccount = true
         filterData()
         window.localStorage.setItem('is-trang-account-checked', 1)
@@ -205,7 +205,7 @@ $('#show-trang-account-tracking').on('change', () => {
 })
 
 $('#show-all-tracking').on('change', () => {
-    if ($(this).prop("checked")) {
+    if ($('#show-all-tracking').prop("checked")) {
         $('#loading').css('display', 'block')
         socket.emit("tracking-history-get-all")
     }
@@ -291,8 +291,8 @@ updateData = (data = historyData) => {
 }
 
 $('#fix-tracking-history-btn').on('click', () => {
-    this.classList.toggle("active-fix-tracking")
-    var content = this.nextElementSibling
+    $('#fix-tracking-history-btn').toggleClass("active-fix-tracking")
+    let content = $('#fix-tracking-history-btn').next()
     if (content.style.display === "block") {
         content.style.display = "none"
     } else {

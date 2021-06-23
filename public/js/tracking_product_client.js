@@ -586,13 +586,13 @@ handleDuplicates = () => {
   //   dataDupPos[`${listingData[i].listing_id}`] = ''
   // }
 
-  for (let item of listingData){
-    dataDupPos[`${item.listing_id}`] += i + ','
-  }
-
-  // for (let i = 0; i < listingData.length; i++) {
-  //   dataDupPos[`${listingData[i].listing_id}`] += i + ','
+  // for (let item of listingData){
+  //   dataDupPos[`${item.listing_id}`] += i + ','
   // }
+
+  for (let i = 0; i < listingData.length; i++) {
+    dataDupPos[`${listingData[i].listing_id}`] += i + ','
+  }
 
   dataDupById = Object.keys(dataDupPos)
   let newData = []

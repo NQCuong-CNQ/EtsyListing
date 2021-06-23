@@ -42,7 +42,7 @@ $("input").on('dragenter', e => {
 
 checkSelectedAction = list => {
   let count = 0
-  for (let item of files) {
+  for (let item of list) {
     if (item) {
       count++
     }

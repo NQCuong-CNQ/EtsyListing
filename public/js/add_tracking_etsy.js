@@ -29,6 +29,10 @@ socket.on("reload-etsy", function () {
     location.href = 'https://www.etsy.com/your/orders/sold'
 })
 
+socket.on("ping-vps", function () {
+    socket.emit("ping-vps-res", shopName)
+})
+
 socket.on("track-order-return", async function (dataReceive) {
     data = dataReceive
     await addTracking()
@@ -38,6 +42,7 @@ async function addTracking() {
     console.log(index + '/' + data.length)
     if (index == data.length) {
         index = 0
+        socket.emit("add-tracking-status", shopName)
         return
     }
 
