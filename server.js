@@ -749,7 +749,7 @@ io.on("connection", async function (client) {
   })
 
   client.on("ping-customcat-res", function (data) {
-    client.emit("return-ping-customcat", data)
+    client.broadcast.emit("return-ping-customcat", data)
   })
 
   client.on("add-tracking-complete", async function (data) {
