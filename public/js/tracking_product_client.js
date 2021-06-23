@@ -619,7 +619,7 @@ handleDuplicates = () => {
 
     //caculate sales fer day
     if (arrPos.length > 1) {
-      let numDays, totalCount, diff = 0
+      let numDays = 0, totalCount = 0, diff = 0
 
       for (let j = 0; j < arrPos.length - 1; j++) {
         if (listingData[arrPos[j]].date_update != listingData[arrPos[j + 1]].date_update) {
@@ -633,7 +633,6 @@ handleDuplicates = () => {
           }
         }
       }
-      console.log(totalCount +'/'+ numDays)
       if (totalCount > 0) {
         temp['sales_day'] = (totalCount / numDays).toFixed(2)
       }
