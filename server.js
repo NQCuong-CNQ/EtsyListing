@@ -764,6 +764,11 @@ io.on("connection", async function (client) {
       client.broadcast.emit("add-tracking-status", complete)
     }
   })
+
+  client.on("run-update-server", function (data) {
+    console.log(`update server`)
+    exec("git pull origin master")
+  })
 })
 
 // fixTrackingHistory()

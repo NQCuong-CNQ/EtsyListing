@@ -15,6 +15,10 @@ $('#ping-customcat').on('click', () => {
     socket.emit("run-ping-customcat")
 })
 
+$('#update-server').on('click', () => {
+    socket.emit("run-update-server")
+})
+
 socket.on("return-ping-vps", data => {
     $('#status').append(`<h4>${data} online</h4>`)
 })
