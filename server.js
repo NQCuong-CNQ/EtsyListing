@@ -687,11 +687,11 @@ io.on("connection", async function (client) {
     }
   })
 
-  client.on("track-order-step1", async function (data) {
+  client.on("track-order-step1", function (data) {
     client.broadcast.emit("track-order-step2", data)
   })
 
-  client.on("track-order-step3", async function (name) {
+  client.on("track-order-step3", function (name) {
     client.broadcast.emit("track-order-step4", name)
   })
 
@@ -716,11 +716,11 @@ io.on("connection", async function (client) {
     client.emit("return-fix-tracking-history")
   })
 
-  client.on("run-add-tracking", async function (user) {
+  client.on("run-add-tracking", function (user) {
     client.broadcast.emit("run-add-tracking-by-user", user)
   })
 
-  client.on("check-limit-api", async function (user) {
+  client.on("check-limit-api", async function () {
     let req = new XMLHttpRequest()
     req.open('GET', `https://openapi.etsy.com/v2/shops?api_key=${api_key}`, false)
     req.send(null)
@@ -732,6 +732,22 @@ io.on("connection", async function (client) {
     req.send(null)
     headers = req.getAllResponseHeaders()
     client.emit("return-check-limit-api", headers)
+  })
+
+  client.on("run-ping-vps", function () {
+    client.broadcast.emit("ping-vps")
+  })
+
+  client.on("run-ping-customcat", function () {
+    client.broadcast.emit("ping-customcat")
+  })
+
+  client.on("ping-vps-res", function (data) {
+    client.broadcast.emit("return-ping-vps", data)
+  })
+
+  client.on("ping-customcat-res", function (data) {
+    client.broadcast.emit("return-ping-customcat", data)
   })
 })
 
