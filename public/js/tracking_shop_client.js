@@ -271,7 +271,7 @@ getTypeProduct = (dataFilter, isDigit = false) => {
 
 getShopNameByID = id => {
 
-  for (let item of dataFilter) {
+  for (let item of shopData) {
     if (item.shop_id == id) {
       return item.shop_name
     }
@@ -394,6 +394,7 @@ searchOrFilterData = () => {
 }
 
 getListingOption = id => {
+  console.log(shopData.find(({ id }) => id == id))
   socket.emit("get_listing_shop_id", id)
   $('#loading').css('display', 'block')
   $('#title-page').text('Listing Detail')
@@ -403,7 +404,7 @@ getListingOption = id => {
 }
 
 getUserOption = id => {
-  console.log(shopData.find(shop_id => shop_id === id))
+  console.log(shopData.find(({ shop_id }) => shop_id == id))
 
   socket.emit("get_user_by_user_id", getShopUserByID(id))
   $('#loading').css('display', 'block')
