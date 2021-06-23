@@ -52,12 +52,13 @@ main()
 async function main() {
   clientDB = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
   dbo = clientDB.db("trackingdb")
-  // isUpdate = true
+  isUpdate = true
   // await updateCate()
   // await getShopName()
   // await updateShopInfo()
   // await completeUpdate()
-  // isUpdate = false
+  await updateData()
+  isUpdate = false
 }
 
 setInterval(scheduleUpdate, 3600000) // 1h
