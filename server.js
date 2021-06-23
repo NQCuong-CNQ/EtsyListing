@@ -650,6 +650,8 @@ io.on("connection", async function (client) {
     }
 
     client.broadcast.emit("get-email-customer-order")
+    await dbo.collection("add_complete").deleteMany()
+    // client.broadcast.emit("add-tracking-status", 0)
     await refreshRPC()
 
     console.log('reload etsy')
@@ -749,6 +751,19 @@ io.on("connection", async function (client) {
   client.on("ping-customcat-res", function (data) {
     client.broadcast.emit("return-ping-customcat", data)
   })
+
+  client.on("add-tracking-complete", function (data) {
+    await dbo.collection("add_complete").insertOne(data)
+
+    let complete = await dbo.collection("add_complete").find().toArray()
+    if (complete.length == 9) {
+      console.log(`closed all RDC`)
+      exec("taskkill /im mstsc.exe /t")
+      client.broadcast.emit("add-tracking-status", 1)
+    } else {
+      client.broadcast.emit("add-tracking-status", complete)
+    }
+  })
 })
 
 // fixTrackingHistory()
@@ -774,7 +789,7 @@ io.on("connection", async function (client) {
 //   }
 // }
 
-async function refreshRPC(){
+async function refreshRPC() {
   console.log(`closed all RDC`)
   exec("taskkill /im mstsc.exe /t")
   await sleep(1000)

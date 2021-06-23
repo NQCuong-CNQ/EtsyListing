@@ -42,7 +42,7 @@ async function addTracking() {
     console.log(index + '/' + data.length)
     if (index == data.length) {
         index = 0
-        socket.emit("add-tracking-status", shopName)
+        socket.emit("add-tracking-complete", shopName)
         return
     }
 
