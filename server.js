@@ -721,7 +721,7 @@ io.on("connection", async function (client) {
     client.emit("return-fix-tracking-history")
   })
 
-  client.on("run-add-tracking", function (user) {
+  client.on("run-add-tracking", async function (user) {
     client.broadcast.emit("run-add-tracking-by-user", user)
     await sleep(100)
     client.broadcast.emit("add-tracking-status-server-to-client", {name: 'server', status: 1})
