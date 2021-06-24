@@ -778,7 +778,7 @@ io.on("connection", async function (client) {
   })
 
   client.on("add-tracking-status-vps-to-server", function (data) {
-    client.broadcast.emit("add-tracking-status-server-to-client", complete)
+    client.broadcast.emit("add-tracking-status-server-to-client", data)
   })
 })
 
