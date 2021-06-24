@@ -54,7 +54,7 @@ $('#run-add-tracking-trang-btn').on('click', () => {
     socket.emit("run-add-tracking", 'Trang')
 })
 
-socket.on("return-fix-tracking-history", data => {
+socket.on("return-fix-tracking-history", () => {
     toastr.clear()
     toastr.success('Thành công!')
 })
