@@ -5,6 +5,7 @@ var socket = io.connect("https://giftsvk.com", {
 })
 
 socket.emit("get-add-tracking-status")
+socket.emit("get-server-status")
 
 $('#ping-vps').on('click', () => {
     $('#status').empty()
@@ -18,6 +19,10 @@ $('#ping-customcat').on('click', () => {
 
 $('#update-server').on('click', () => {
     socket.emit("run-update-server")
+})
+
+socket.on("return-server-status", data => {
+    $('#process-status').text(data)
 })
 
 socket.on("return-ping-vps", data => {

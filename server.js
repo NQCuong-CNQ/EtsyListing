@@ -786,6 +786,14 @@ io.on("connection", async function (client) {
   client.on("add-tracking-status-vps-to-server", function (data) {
     client.broadcast.emit("add-tracking-status-server-to-client", data)
   })
+
+  client.on("get-server-status", function () {
+    if(!isUpdate){
+      client.broadcast.emit("return-server-status", 'Server is idle')
+    } else {
+      client.broadcast.emit("return-server-status", 'Server is updating database')
+    }
+  })
 })
 
 // fixTrackingHistory()
