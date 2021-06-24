@@ -789,10 +789,11 @@ io.on("connection", async function (client) {
 
   client.on("get-server-status", function () {
     if(!isUpdate){
-      client.broadcast.emit("return-server-status", 'Server is idle')
+      client.emit("return-server-status", 'Server is idle')
     } else {
-      client.broadcast.emit("return-server-status", 'Server is updating database')
+      client.emit("return-server-status", 'Server is updating database')
     }
+    client.emit("return-server-status", 'Server iss updating database')
   })
 })
 
