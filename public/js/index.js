@@ -33,5 +33,5 @@ socket.on("add-tracking-status", data => {
     for (let item of data) {
         $('#auto-add-status').append(`<h4>${item} done</h4>`)
     }
-    
+    console.log(data)
 })

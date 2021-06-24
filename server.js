@@ -759,10 +759,8 @@ io.on("connection", async function (client) {
     if (complete.length == 9) {
       console.log(`closed all RDC`)
       exec("taskkill /im mstsc.exe /t")
-      client.broadcast.emit("add-tracking-status", 1)
-    } else {
-      client.broadcast.emit("add-tracking-status", complete)
     }
+    client.broadcast.emit("add-tracking-status", complete)
   })
 
   client.on("run-update-server", function () {
@@ -772,15 +770,11 @@ io.on("connection", async function (client) {
 
   client.on("get-add-tracking-status", async function () {
     let complete = await dbo.collection("add_complete").find().toArray()
-    if (complete.length == 9) {
-      client.broadcast.emit("add-tracking-status", 1)
-    } else {
-      client.broadcast.emit("add-tracking-status", complete)
-    }
+    client.broadcast.emit("add-tracking-status", complete)
   })
 
   client.on("add-tracking-status-vps-to-server", function (data) {
-    
+    client.broadcast.emit("add-tracking-status-server-to-client", complete)
   })
 })
 
