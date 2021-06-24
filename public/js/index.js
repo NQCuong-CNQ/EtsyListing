@@ -87,6 +87,7 @@ getContent = data => {
 }
 
 socket.on("add-tracking-status-server-to-client", (data) => {
+    console.log(data)
     let content = getContent(data)
     $('#process-status').text(content)
 })
