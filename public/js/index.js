@@ -35,3 +35,37 @@ socket.on("add-tracking-status", data => {
     }
     console.log(data)
 })
+
+$('#fix-tracking-history-btn').on('click', () => {
+    $('#fix-tracking-history-btn').toggleClass("active-fix-tracking")
+    let content = $('#fix-tracking-history-btn').next()
+    if (content.css("display") === "block") {
+        content.css("display", "none")
+    } else {
+        content.css("display", "block")
+    }
+})
+
+$('#run-add-tracking-my-btn').on('click', () => {
+    socket.emit("run-add-tracking", 'My')
+})
+
+$('#run-add-tracking-trang-btn').on('click', () => {
+    socket.emit("run-add-tracking", 'Trang')
+})
+
+socket.on("return-fix-tracking-history", data => {
+    toastr.clear()
+    toastr.success('Thành công!')
+})
+
+$('#check-limit-btn').on('click', () => {
+    socket.emit("check-limit-api")
+})
+
+socket.on("return-check-limit-api", data => {
+    let index = data.indexOf('x-ratelimit-remaining')
+    data = data.slice(index, index + 28).trim()
+    toastr.clear()
+    toastr.success(data)
+})
