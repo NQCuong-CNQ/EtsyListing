@@ -823,7 +823,7 @@ async function refreshRPC() {
 
   for (let item of arrVPS) {
     console.log(`connect to ${item}`)
-    exec("mstsc /v:${item}")
+    exec(`mstsc /v:${item}`)
     await sleep(400)
   }
 }

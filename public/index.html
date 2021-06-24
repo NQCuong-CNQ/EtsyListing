@@ -104,14 +104,25 @@
             <main class="content">
                 <div class="container-fluid">
                     <h3>Dashboard</h3>
+
+                    <div style="display: flex; justify-content: space-around;">
+                        <img src="img/server.gif" alt="" height="100px">
+                        <img src="img/cc.png" alt="" height="100px">
+                        <img src="img/etsy.png" alt="" height="100px">
+                    </div>
+
+                    <div style="display: flex; justify-content: space-around;">
+                        <div id="process-status"></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+
                     <button class="button-primary" id="ping-vps">Ping VPS</button>
                     <button class="button-primary" id="ping-customcat">Ping Customcat</button>
                     <h5>ping status</h5>
                     <div id="status"></div>
                     <h5>add status</h5>
                     <div id="auto-add-status"></div>
-                    <h5>Process Status</h5>
-                    <div id="process-status"></div>
 
                     <a id="fix-tracking-history-btn">For Dev</a>
                     <div class="fix-tracking-history">
