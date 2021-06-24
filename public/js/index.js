@@ -22,6 +22,7 @@ $('#update-server').on('click', () => {
 })
 
 socket.on("return-server-status", data => {
+    console.log(data)
     $('#process-status').text(data)
 })
 
