@@ -793,7 +793,6 @@ io.on("connection", async function (client) {
     } else {
       client.emit("return-server-status", 'Server is updating database')
     }
-    client.emit("return-server-status", 'Server iss updating database')
   })
 })
 
