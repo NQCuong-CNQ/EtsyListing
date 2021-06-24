@@ -723,10 +723,12 @@ io.on("connection", async function (client) {
   })
 
   client.on("check-limit-api", async function () {
-    let req = new XMLHttpRequest()
+    let headers, req
+    
+    req = new XMLHttpRequest()
     req.open('GET', `https://openapi.etsy.com/v2/shops?api_key=${api_key}`, false)
     req.send(null)
-    let headers = req.getAllResponseHeaders()
+    headers = req.getAllResponseHeaders()
     client.emit("return-check-limit-api", headers)
 
     req = new XMLHttpRequest()
