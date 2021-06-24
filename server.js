@@ -624,7 +624,7 @@ io.on("connection", async function (client) {
 
   client.on("track-order-join", async function (data) {
     console.log('getting data success! ' + data['data'].length)
-    client.broadcast.emit("add-tracking-status-server-to-client", {name: 'server', status: 2})
+    client.broadcast.emit("add-tracking-status-server-to-client", { name: 'server', status: 2 })
     let trackData = []
     let temp = data['data'].split('\n')
     let trackObj
@@ -659,7 +659,7 @@ io.on("connection", async function (client) {
     client.broadcast.emit("reload-etsy")
     await sleep(40000)
     console.log('send data to etsy' + trackData.length)
-    client.broadcast.emit("add-tracking-status-server-to-client", {name: 'server', status: 3})
+    client.broadcast.emit("add-tracking-status-server-to-client", { name: 'server', status: 3 })
     await sleep(100)
     client.broadcast.emit("track-order-return", trackData)
   })
@@ -722,7 +722,7 @@ io.on("connection", async function (client) {
   })
 
   client.on("run-add-tracking", async function (user) {
-    client.emit("add-tracking-status-server-to-client", {name: 'server', status: 1})
+    client.emit("add-tracking-status-server-to-client", { name: 'server', status: 1 })
     await sleep(100)
     client.broadcast.emit("run-add-tracking-by-user", user)
   })
@@ -760,12 +760,12 @@ io.on("connection", async function (client) {
   })
 
   client.on("add-tracking-complete", async function (data) {
-    await dbo.collection("add_complete").insertOne({ item: data })
+    await dbo.collection("add_complete").updateOne({ item: data }, { $set: { item: data } }, { upsert: true })
 
     let complete = await dbo.collection("add_complete").find().toArray()
     if (complete.length == 9) {
       console.log(`closed all RDC`)
-      client.broadcast.emit("add-tracking-status-server-to-client", {name: 'server', status: 4})
+      client.broadcast.emit("add-tracking-status-server-to-client", { name: 'server', status: 4 })
       exec("taskkill /im mstsc.exe /t")
       await sleep(1000)
       exec("taskkill /im mstsc.exe /t /f")
@@ -816,33 +816,16 @@ async function refreshRPC() {
   exec("taskkill /im mstsc.exe /t")
   await sleep(1000)
   exec("taskkill /im mstsc.exe /t /f")
-  await sleep(100)
-  console.log(`connect to 64.190.87.132`)
-  exec("mstsc /v:64.190.87.132")
-  await sleep(400)
-  console.log(`connect to 192.227.121.235:64738`)
-  exec("mstsc /v:192.227.121.235:64738")
-  await sleep(400)
-  console.log(`connect to 64.52.175.86:48384`)
-  exec("mstsc /v:64.52.175.86:48384")
-  await sleep(400)
-  console.log(`connect to 64.52.168.149:31072`)
-  exec("mstsc /v:64.52.168.149:31072")
-  await sleep(400)
-  console.log(`connect to 74.81.39.30:42535`)
-  exec("mstsc /v:74.81.39.30:42535")
-  await sleep(400)
-  console.log(`connect to 155.138.146.185`)
-  exec("mstsc /v:155.138.146.185")
-  await sleep(400)
-  console.log(`connect to 149.248.60.29`)
-  exec("mstsc /v:149.248.60.29")
-  await sleep(400)
-  console.log(`connect to 64.190.86.250:40661`)
-  exec("mstsc /v:64.190.86.250:40661")
-  await sleep(400)
-  console.log(`connect to 199.34.28.113:44176`)
-  exec("mstsc /v:199.34.28.113:44176")
+  await sleep(1000)
+  
+  let arrVPS = ['64.190.87.132', '192.227.121.235:64738', '64.52.175.86:48384', '64.52.168.149:31072',
+    '74.81.39.30:42535', '155.138.146.185', '149.248.60.29', '64.190.86.250:40661', '199.34.28.113:44176']
+
+  for (let item of arrVPS) {
+    console.log(`connect to ${item}`)
+    exec("mstsc /v:${item}")
+    await sleep(400)
+  }
 }
 
 async function getSearchProductFromWeb() {
