@@ -724,7 +724,7 @@ io.on("connection", async function (client) {
 
   client.on("check-limit-api", async function () {
     let headers, req
-    
+
     req = new XMLHttpRequest()
     req.open('GET', `https://openapi.etsy.com/v2/shops?api_key=${api_key}`, false)
     req.send(null)
@@ -761,6 +761,8 @@ io.on("connection", async function (client) {
     if (complete.length == 9) {
       console.log(`closed all RDC`)
       exec("taskkill /im mstsc.exe /t")
+      await sleep(1000)
+      exec("taskkill /im mstsc.exe /t /f")
     }
     client.broadcast.emit("add-tracking-status", complete)
   })
@@ -807,6 +809,8 @@ async function refreshRPC() {
   console.log(`closed all RDC`)
   exec("taskkill /im mstsc.exe /t")
   await sleep(1000)
+  exec("taskkill /im mstsc.exe /t /f")
+  await sleep(100)
   console.log(`connect to 64.190.87.132`)
   exec("mstsc /v:64.190.87.132")
   await sleep(400)

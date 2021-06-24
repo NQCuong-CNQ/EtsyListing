@@ -11,7 +11,7 @@ let trackData
 
 main()
 async function main() {
-    await sleep(10000)
+    await sleep(2000)
     shopName = $('[data-tour-anchor="etsy-channel"] [data-test-id="unsanitize"]').text().trim()
     console.log(shopName)
 }

@@ -31,7 +31,7 @@ socket.on("return-ping-customcat", data => {
 socket.on("add-tracking-status", data => {
     $('#auto-add-status').empty()
     for (let item of data) {
-        $('#auto-add-status').append(`<h4>${item} done</h4>`)
+        $('#auto-add-status').append(`<h4>${item.item} done</h4>`)
     }
     console.log(data)
 })
