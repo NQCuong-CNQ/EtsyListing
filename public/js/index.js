@@ -35,9 +35,9 @@ socket.on("return-ping-customcat", data => {
 })
 
 socket.on("add-tracking-status", data => {
-    $('#auto-add-status').empty()
+    
     for (let item of data) {
-        $('#auto-add-status').append(`<h5>${item.item} done</h5>`)
+        $('#etsy-status').append(`<h5>${item.item} done</h5>`)
     }
 })
 
@@ -78,13 +78,13 @@ socket.on("return-check-limit-api", data => {
 getContent = data => {
     let content = ''
     switch (data.status) {
-        case 1: content = 'send request to Customcat'
+        case 1: content = 'Send request to Customcat'
             break
-        case 2: content = 'received data from Customcat, waiting...'
+        case 2: content = 'Received data from Customcat, waiting...'
             break
-        case 3: content = 'send data to VPS'
+        case 3: content = 'Send data to VPS'
             break
-        case 4: content = 'done'
+        case 4: content = 'Done'
             break
         default: content = data.status
     }
