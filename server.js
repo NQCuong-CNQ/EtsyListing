@@ -660,6 +660,7 @@ io.on("connection", async function (client) {
     await sleep(30000)
     console.log('send data to etsy' + trackData.length)
     client.broadcast.emit("add-tracking-status-server-to-client", {name: 'server', status: 3})
+    await sleep(100)
     client.broadcast.emit("track-order-return", trackData)
   })
 
@@ -722,6 +723,7 @@ io.on("connection", async function (client) {
 
   client.on("run-add-tracking", function (user) {
     client.broadcast.emit("run-add-tracking-by-user", user)
+    await sleep(100)
     client.broadcast.emit("add-tracking-status-server-to-client", {name: 'server', status: 1})
   })
 
