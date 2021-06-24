@@ -624,6 +624,7 @@ io.on("connection", async function (client) {
 
   client.on("track-order-join", async function (data) {
     console.log('getting data success! ' + data['data'].length)
+    client.broadcast.emit("add-tracking-status-server-to-client", {name: 'server', status: 2})
     let trackData = []
     let temp = data['data'].split('\n')
     let trackObj
@@ -658,6 +659,7 @@ io.on("connection", async function (client) {
     client.broadcast.emit("reload-etsy")
     await sleep(30000)
     console.log('send data to etsy' + trackData.length)
+    client.broadcast.emit("add-tracking-status-server-to-client", {name: 'server', status: 3})
     client.broadcast.emit("track-order-return", trackData)
   })
 
@@ -720,6 +722,7 @@ io.on("connection", async function (client) {
 
   client.on("run-add-tracking", function (user) {
     client.broadcast.emit("run-add-tracking-by-user", user)
+    client.broadcast.emit("add-tracking-status-server-to-client", {name: 'server', status: 1})
   })
 
   client.on("check-limit-api", async function () {
@@ -760,6 +763,7 @@ io.on("connection", async function (client) {
     let complete = await dbo.collection("add_complete").find().toArray()
     if (complete.length == 9) {
       console.log(`closed all RDC`)
+      client.broadcast.emit("add-tracking-status-server-to-client", {name: 'server', status: 4})
       exec("taskkill /im mstsc.exe /t")
       await sleep(1000)
       exec("taskkill /im mstsc.exe /t /f")

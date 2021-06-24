@@ -33,7 +33,6 @@ socket.on("add-tracking-status", data => {
     for (let item of data) {
         $('#auto-add-status').append(`<h4>${item.item} done</h4>`)
     }
-    console.log(data)
 })
 
 $('#fix-tracking-history-btn').on('click', () => {
@@ -68,4 +67,26 @@ socket.on("return-check-limit-api", data => {
     data = data.slice(index, index + 28).trim()
     toastr.clear()
     toastr.success(data)
+})
+
+getContent = data => {
+    let content = ''
+    switch (data.status) {
+        case 1: content = 'send request to Customcat'
+            break
+        case 2: content = 'received data from Customcat, waiting...'
+            break
+        case 3: content = 'send data to VPS'
+            break
+        case 4: content = 'done'
+            break
+        default: content = data.status
+    }
+
+    return `${data.name}: ${content}`
+}
+
+socket.on("add-tracking-status-server-to-client", (data) => {
+    let content = getContent(data)
+    $('#process-status').text(content)
 })

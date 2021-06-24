@@ -153,7 +153,7 @@ async function addTrackingAction(id, number) {
     trackData['find_query'] = findQuery
 
     socket.emit("track-order-step1", trackData)
-    socket.emit("add-tracking-status-vps-to-server", {shopName, index})
+    socket.emit("add-tracking-status-vps-to-server", {name: shopName, status: id})
 }
 
 async function sleep(ms) {
