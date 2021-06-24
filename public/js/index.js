@@ -28,6 +28,10 @@ socket.on("return-ping-customcat", data => {
     $('#status').append(`<h4>${data} online</h4>`)
 })
 
-socket.on("add-tracking-status-vps-to-server", data => {
-    $('#auto-add-status').append(`<h4>${data} done</h4>`)
+socket.on("add-tracking-status", data => {
+    $('#auto-add-status').empty()
+    for (let item of data) {
+        $('#auto-add-status').append(`<h4>${item} done</h4>`)
+    }
+    
 })
