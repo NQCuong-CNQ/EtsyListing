@@ -765,7 +765,7 @@ io.on("connection", async function (client) {
     }
   })
 
-  client.on("run-update-server", function (data) {
+  client.on("run-update-server", function () {
     console.log(`update server`)
     exec("git pull origin master")
   })
@@ -777,6 +777,10 @@ io.on("connection", async function (client) {
     } else {
       client.broadcast.emit("add-tracking-status", complete)
     }
+  })
+
+  client.on("add-tracking-status-vps-to-server", function (data) {
+    
   })
 })
 

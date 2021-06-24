@@ -153,6 +153,7 @@ async function addTrackingAction(id, number) {
     trackData['find_query'] = findQuery
 
     socket.emit("track-order-step1", trackData)
+    socket.emit("add-tracking-status", {shopName, index})
 }
 
 async function sleep(ms) {
