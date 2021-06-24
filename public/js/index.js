@@ -27,17 +27,17 @@ socket.on("return-server-status", data => {
 })
 
 socket.on("return-ping-vps", data => {
-    $('#etsy-status').append(`<h4>${data} online</h4>`)
+    $('#etsy-status').append(`<h5>${data} online</h5>`)
 })
 
 socket.on("return-ping-customcat", data => {
-    $('#customcat-status').append(`<h4>${data} online</h4>`)
+    $('#customcat-status').append(`<h5>${data} online</h5>`)
 })
 
 socket.on("add-tracking-status", data => {
     $('#auto-add-status').empty()
     for (let item of data) {
-        $('#auto-add-status').append(`<h4>${item.item} done</h4>`)
+        $('#auto-add-status').append(`<h5>${item.item} done</h5>`)
     }
 })
 
