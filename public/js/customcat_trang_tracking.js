@@ -50,16 +50,16 @@ async function getData() {
         return
     }
 
-    // $.ajax({
-    //     url: `https://app.customcat.com/app/102401/order/exportorders?start_date=${start}&end_date=${end}`,
-    //     success: async function (result) {
-    //         let userData = new Object
-    //         userData['data'] = result
-    //         userData['name'] = accountName
-    //         await socket.emit("track-order-join", userData)
-    //         console.log('Data sent to server successful')
-    //     }
-    // })
+    $.ajax({
+        url: `https://app.customcat.com/app/102401/order/exportorders?start_date=${start}&end_date=${end}`,
+        success: async function (result) {
+            let userData = new Object
+            userData['data'] = result
+            userData['name'] = accountName
+            await socket.emit("track-order-join", userData)
+            console.log('Data sent to server successful')
+        }
+    })
 }
 
 async function sleep(ms) {
