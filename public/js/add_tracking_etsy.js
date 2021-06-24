@@ -30,6 +30,7 @@ socket.on("reload-etsy", function () {
 })
 
 socket.on("ping-vps", function () {
+    console.log('ping back')
     socket.emit("ping-vps-res", shopName)
 })
 
