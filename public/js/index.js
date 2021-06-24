@@ -8,12 +8,12 @@ socket.emit("get-add-tracking-status")
 socket.emit("get-server-status")
 
 $('#ping-vps').on('click', () => {
-    $('#status').empty()
+    $('#etsy-status').empty()
     socket.emit("run-ping-vps")
 })
 
 $('#ping-customcat').on('click', () => {
-    $('#status').empty()
+    $('#customcat-status').empty()
     socket.emit("run-ping-customcat")
 })
 
