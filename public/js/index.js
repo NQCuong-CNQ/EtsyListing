@@ -35,7 +35,6 @@ socket.on("return-ping-customcat", data => {
 })
 
 socket.on("add-tracking-status", data => {
-    
     for (let item of data) {
         $('#etsy-status').append(`<h5>${item.item} done</h5>`)
     }
@@ -52,10 +51,12 @@ $('#fix-tracking-history-btn').on('click', () => {
 })
 
 $('#run-add-tracking-my-btn').on('click', () => {
+    $('#etsy-status').empty()
     socket.emit("run-add-tracking", 'My')
 })
 
 $('#run-add-tracking-trang-btn').on('click', () => {
+    $('#etsy-status').empty()
     socket.emit("run-add-tracking", 'Trang')
 })
 
