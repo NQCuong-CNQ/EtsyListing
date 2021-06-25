@@ -421,7 +421,12 @@ app.get("/mockup", function (req, res) {
 })
 
 app.get("/test", function (req, res) {
-  return 'asdfdsfdsasd'
+  return res.send('asdfdsfdsasd')
+})
+
+app.get("/test/:id", function (req, res) {
+  let user_id = req.params.id;
+  return res.send(`sdfs ${user_id}`)
 })
 
 app.use(express.static("public"))
