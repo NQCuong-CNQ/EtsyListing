@@ -798,7 +798,7 @@ io.on("connection", async function (client) {
     }
   })
 
-  client.on("open-all-vps", function () {
+  client.on("open-all-vps", async function () {
     await refreshRPC()
   })
 })
