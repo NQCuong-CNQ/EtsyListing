@@ -7,11 +7,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <link rel="shortcut icon" href="img/icons/icon-48x48.png" />
-    <title>Dashboard</title>
+    <title>Add Tracking History</title>
 
-    <link rel="stylesheet" type="text/css" href="../css/app.css" />
-    <link rel="stylesheet" type="text/css" href="../css/style.css" />
-    <link rel="stylesheet" type="text/css" href="../css/toastr.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/app.css" />
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <link rel="stylesheet" type="text/css" href="css/dataTables.css" />
+    <link rel="stylesheet" type="text/css" href="css/toastr.min.css" />
+
 </head>
 
 <body>
@@ -27,22 +29,24 @@
                         Pages
                     </li>
 
-                    <li class="sidebar-item active">
+                    <li class="sidebar-item">
                         <a class="sidebar-link" href="/">
                             <i class="align-middle" data-feather="sliders"></i> <span
                                 class="align-middle">Dashboard</span>
                         </a>
                     </li>
+
                     <li class="sidebar-header">
                         Tools & Components
                     </li>
+
                     <!-- <li class="sidebar-item">
                         <a class="sidebar-link" href="listing">
                             <i class="align-middle" data-feather="coffee"></i> <span class="align-middle">Etsy
                                 Listing</span>
                         </a>
                     </li> -->
-                    <li class="sidebar-item ">
+                    <li class="sidebar-item">
                         <a data-target="#ui" data-toggle="collapse" class="sidebar-link collapsed">
                             <i class="align-middle" data-feather="pie-chart"></i> <span
                                 class="align-middle">Tracking</span>
@@ -58,7 +62,7 @@
                                 Braumstar</span>
                         </a>
                     </li>
-                    <li class="sidebar-item">
+                    <li class="sidebar-item active">
                         <a class="sidebar-link" href="add_tracking_history">
                             <i class="align-middle" data-feather="calendar"></i> <span class="align-middle">Add Tracking
                                 History</span>
@@ -82,6 +86,7 @@
 
                 <div class="navbar-collapse collapse">
                     <ul class="navbar-nav navbar-align">
+
                         <li class="nav-item dropdown">
                             <a class="nav-icon dropdown-toggle d-inline-block d-sm-none" href="#"
                                 data-toggle="dropdown">
@@ -102,45 +107,70 @@
             </nav>
 
             <main class="content">
-                <div class="container-fluid">
-                    <h3>Dashboard</h3>
+                <div id="loading">
+                    <div class="lds-ellipsis">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                    <h3>Getting Data...</h3>
+                    <h4>In the meantime, eat a piece of cake, drink some water, and take a deep breath</h4>
+                </div>
 
-                    <div class="status-container mt-2">
+                <div class="container-fluid">
+                    <div class="checkbox-container">
                         <div>
-                            <img src="img/server.png" alt="" height="100px">
-                            <h5 id="process-status"></h5>
+                            <input class="mb-3" type="checkbox" id="show-added-tracking"> Only show added tracking
+                            <input class="ml-3" type="checkbox" id="show-my-account-tracking" checked> Show My's
+                            accounts
+                            <input class="ml-3" type="checkbox" id="show-trang-account-tracking"> Show Trang's accounts
                         </div>
-                        <div>
-                            <img id="cc-img" src="img/cc.png" alt="" height="100px">
-                            <div id="customcat-status"></div>
-                        </div>
-                        <div>
-                            <img id="etsy-img" src="img/etsy.png" alt="" height="100px">
-                            <div id="etsy-status"></div>
+
+                        <div class="refresh-container">
+                            <input class="mr-1" type="checkbox" id="show-all-tracking">Show all tracking
+                            <a class="ml-3" id="refresh-btn">Refresh</a>
                         </div>
                     </div>
 
-                    <button class="button-primary" id="ping-vps">Ping VPS</button>
-                    <button class="ml-2 button-primary" id="ping-customcat">Ping Customcat</button>
+                    <table id="table_id-tracking-history">
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Shop Name</th>
+                                <th>Customer Name</th>
+                                <th>Customer Email</th>
+                                <th>Tracking Code</th>
+                                <th>Input Code</th>
+                                <th>Input Carrier</th>
+                                <th>Order Date</th>
+                                <th>Order Status</th>
+                                <th>Added Time</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table_id-tracking-history-body">
+                        </tbody>
+                    </table>
 
-                    <h4 class="mt-3">For developer only</h4>
-                    <button class="button-primary" id='update-server'>Update Server</button>
-                    <button class="ml-2 button-primary" id="run-add-tracking-my-btn">Run My's Tracking</button>
-                    <button class="ml-2 button-primary" id="run-add-tracking-trang-btn">Run Trang's
-                        Tracking</button>
-                    <button class="ml-2 button-primary" id="check-limit-btn">Check limit</button>
-                    <button class="ml-2 button-primary" id="open-all-vps-btn">Open VPS</button>
+                    <a id="fix-tracking-history-btn">For Dev</a>
+                    <div class="fix-tracking-history">
+                        <input type="text" id="id-fix-tracking-history" placeholder="ID">
+                        <input class="ml-2" type="text" id="input-code-tracking-history" placeholder="Tracking Code">
+                        <input class="ml-2" type="text" id="input-carrier-tracking-history" placeholder="Carrier">
+                        <button class="ml-2 button-primary" id="submit-fix-btn">Submit</button>
+                    </div>
                 </div>
             </main>
         </div>
     </div>
-
-    <script type="text/javascript" src="../js/extension/jquery.js"></script>
-    <script type="text/javascript" src="../js/extension/socket.io.js"></script>
-    <script type="text/javascript" src="../js/extension/toastr.min.js"></script>
-    <script type="text/javascript" src="../js/extension/app.js"></script>
-    <script type="text/javascript" src="../js/index.js"></script>
-
+    </div>
 </body>
+
+<script type="text/javascript" src="js/extension/jquery.js"></script>
+<script type="text/javascript" src="js/extension/socket.io.js"></script>
+<script type="text/javascript" src="js/extension/dataTables.js"></script>
+<script type="text/javascript" src="js/extension/toastr.min.js"></script>
+<script type="text/javascript" src="js/add_tracking_etsy_history.js"></script>
+<script type="text/javascript" src="js/extension/app.js"></script>
 
 </html>

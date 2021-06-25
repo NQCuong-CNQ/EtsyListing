@@ -4,28 +4,28 @@ var router = express.Router()
 var dirname = __dirname.slice(0, -7)
 
 router.get("/", function (req, res) {
-    console.log(dirname + "public/views/index.html")
-    res.sendFile(dirname + "public/views/index.html")
+    console.log(dirname + "public/index.html")
+    res.sendFile(dirname + "public/index.html")
 })
 
 router.get("/tracking-shop", function (req, res) {
-    res.sendFile(dirname + "public/views/tracking_shop.html")
+    res.sendFile(dirname + "public/tracking_shop.html")
 })
 
 router.get("/tracking-product", function (req, res) {
-    res.sendFile(dirname + "public/views/tracking_product.html")
+    res.sendFile(dirname + "public/tracking_product.html")
 })
 
 router.get("/tools", function (req, res) {
-    res.sendFile(dirname + "public/views/tools.html")
+    res.sendFile(dirname + "public/tools.html")
 })
 
 router.get("/listing", function (req, res) {
-    res.sendFile(dirname + "public/views/etsy_listing.html")
+    res.sendFile(dirname + "public/etsy_listing.html")
 })
 
 router.get("/add_tracking_history", function (req, res) {
-    res.sendFile(dirname + "public/views/add_tracking_etsy_history.html")
+    res.sendFile(dirname + "public/add_tracking_etsy_history.html")
 })
 
 router.get("/undefined", function (req, res) {
@@ -33,7 +33,7 @@ router.get("/undefined", function (req, res) {
 })
 
 router.get("/mockup", function (req, res) {
-    res.sendFile(dirname + "public/views/mockup.html")
+    res.sendFile(dirname + "public/mockup.html")
 })
 
 module.exports = router
