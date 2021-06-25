@@ -24,6 +24,7 @@ var io = require("socket.io")(server, {
 })
 
 app.use('/', mainRoute)
+app.use(express.static("public"))
 
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*")
@@ -391,8 +392,6 @@ async function completeUpdate() {
   await dbo.collection("log").insertOne({ updateHistory: timeNow })
   console.log("Update completed at: " + timeNow)
 }
-
-app.use(express.static("public"))
 
 io.on("connection", async function (client) {
   client.on("shop-tracking-join", async function () {
