@@ -230,7 +230,7 @@ async function getShopName() {
     } else {
       limitPage = 40
     }
-    
+
     console.log('category: ' + categoryList[index])
     for (let i = 0; i < limitPage; i++) {
       let siteUrlPage = categoryLink[index] + (i + 1)
@@ -796,6 +796,10 @@ io.on("connection", async function (client) {
     } else {
       client.emit("return-server-status", 'Server is updating database')
     }
+  })
+
+  client.on("open-all-vps", function () {
+    await refreshRPC()
   })
 })
 

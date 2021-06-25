@@ -85,6 +85,10 @@ $('#check-limit-btn').on('click', () => {
     socket.emit("check-limit-api")
 })
 
+$('#open-all-vps-btn').on('click', () => {
+    socket.emit("open-all-vps")
+})
+
 socket.on("return-check-limit-api", data => {
     let index = data.indexOf('x-ratelimit-remaining')
     data = data.slice(index, index + 28).trim()
@@ -105,10 +109,10 @@ getContent = data => {
             break
         case 5: content = 'Done'
             break
-        default: content = data.status
+        default: content = `adding #` + data.status
     }
 
-    return `${data.name}: adding #${content}`
+    return `${data.name}: ${content}`
 }
 
 socket.on("add-tracking-status-server-to-client", (data) => {
