@@ -4,7 +4,6 @@ var router = express.Router()
 var dirname = __dirname.slice(0, -7)
 
 router.get("/", function (req, res) {
-    console.log(dirname + "public/views/index.html")
     res.sendFile(dirname + "public/views/index.html")
 })
 
@@ -34,6 +33,10 @@ router.get("/undefined", function (req, res) {
 
 router.get("/mockup", function (req, res) {
     res.sendFile(dirname + "public/views/mockup.html")
+})
+
+router.get("/login", function (req, res) {
+    res.sendFile(dirname + "public/views/login.html")
 })
 
 module.exports = router
