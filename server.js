@@ -389,27 +389,27 @@ async function completeUpdate() {
 }
 
 app.get("/", function (req, res, next) {
-  res.sendFile(__dirname + "/public/index.html", { cache: true })
+  res.sendFile(__dirname + "/public/index.html")
 })
 
 app.get("/tracking-shop", function (req, res, next) {
-  res.sendFile(__dirname + "/public/tracking_shop.html", { cache: true })
+  res.sendFile(__dirname + "/public/tracking_shop.html")
 })
 
 app.get("/tracking-product", function (req, res, next) {
-  res.sendFile(__dirname + "/public/tracking_product.html", { cache: true })
+  res.sendFile(__dirname + "/public/tracking_product.html")
 })
 
 app.get("/tools", function (req, res, next) {
-  res.sendFile(__dirname + "/public/tools.html", { cache: true })
+  res.sendFile(__dirname + "/public/tools.html")
 })
 
 app.get("/listing", function (req, res, next) {
-  res.sendFile(__dirname + "/public/etsy_listing.html", { cache: true })
+  res.sendFile(__dirname + "/public/etsy_listing.html")
 })
 
 app.get("/add_tracking_history", function (req, res, next) {
-  res.sendFile(__dirname + "/public/add_tracking_etsy_history.html", { cache: true })
+  res.sendFile(__dirname + "/public/add_tracking_etsy_history.html")
 })
 
 app.get("/undefined", function (req, res, next) {
@@ -417,7 +417,7 @@ app.get("/undefined", function (req, res, next) {
 })
 
 app.get("/mockup", function (req, res, next) {
-  res.sendFile(__dirname + "/public/mockup.html", { cache: true })
+  res.sendFile(__dirname + "/public/mockup.html")
 })
 
 app.use(express.static("public"))
