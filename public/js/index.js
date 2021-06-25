@@ -25,7 +25,7 @@ $('#ping-customcat').on('click', () => {
     socket.emit("run-ping-customcat")
 })
 
-$('#update-server').on('click', () => {
+$('#update-server').on('click', async () => {
     toastr.clear()
     toastr.info('Reloading server!')
     socket.emit("run-update-server")
