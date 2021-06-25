@@ -700,16 +700,20 @@ html {
   color: rgb(0, 132, 255) !important;
 }
 
-.status-container{
-  display: flex; 
-  justify-content: space-around; 
+.status-container {
+  display: flex;
+  justify-content: space-around;
   margin-bottom: 1rem;
 }
 
-.status-container div{
+.status-container div {
   text-align: center;
 }
 
-.status-container h5{
+.status-container h5 {
   margin-top: 0.5rem;
+}
+
+#cc-img, #etsy-img {
+  mix-blend-mode: luminosity;
 }

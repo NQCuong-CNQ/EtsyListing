@@ -789,11 +789,13 @@ io.on("connection", async function (client) {
 
   client.on("get-server-status", function () {
     if(!isUpdate){
-      client.emit("return-server-status", 'Server is idle')
+      client.emit("return-server-status", 'Idle')
     } else {
       client.emit("return-server-status", 'Server is updating database')
     }
   })
+
+  client.emit("reload-client")
 })
 
 // fixTrackingHistory()
