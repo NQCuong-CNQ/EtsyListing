@@ -429,6 +429,11 @@ app.get("/test/:id", function (req, res) {
   return res.send(`sdfs ${user_id}`)
 })
 
+app.delete("/test/:id", function (req, res) {
+  let user_id = req.params.id;
+  return res.send(`delete ${user_id}`)
+})
+
 app.use(express.static("public"))
 
 io.on("connection", async function (client) {
