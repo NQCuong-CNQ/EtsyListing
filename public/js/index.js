@@ -14,13 +14,13 @@ sleep = async ms => {
 }
 
 $('#ping-vps').on('click', () => {
-    $('##etsy-img').css('mix-blend-mode', 'luminosity')
+    $('#etsy-img').css('mix-blend-mode', 'luminosity')
     $('#etsy-status').empty()
     socket.emit("run-ping-vps")
 })
 
 $('#ping-customcat').on('click', () => {
-    $('##cc-img').css('mix-blend-mode', 'luminosity')
+    $('#cc-img').css('mix-blend-mode', 'luminosity')
     $('#customcat-status').empty()
     socket.emit("run-ping-customcat")
 })
@@ -39,12 +39,12 @@ socket.on("return-server-status", data => {
 })
 
 socket.on("return-ping-vps", data => {
-    $('##etsy-img').css('mix-blend-mode', 'normal')
+    $('#etsy-img').css('mix-blend-mode', 'normal')
     $('#etsy-status').append(`<h5>${data} online</h5>`)
 })
 
 socket.on("return-ping-customcat", data => {
-    $('##cc-img').css('mix-blend-mode', 'normal')
+    $('#cc-img').css('mix-blend-mode', 'normal')
     $('#customcat-status').append(`<h5>${data} online</h5>`)
 })
 
