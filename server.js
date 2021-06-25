@@ -8,6 +8,8 @@ const axios = require("axios")
 const cheerio = require('cheerio')
 const { exec } = require("child_process")
 
+var mainRoute = require('/routers/main-router')
+
 //ssl from Certbot
 var server = https.createServer({
   cert: fs.readFileSync("./ssl/fullchain.pem"),
@@ -20,6 +22,8 @@ var io = require("socket.io")(server, {
   },
   transports: ['websocket']
 })
+
+app.use(mainRoute)
 
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*")
@@ -387,52 +391,6 @@ async function completeUpdate() {
   await dbo.collection("log").insertOne({ updateHistory: timeNow })
   console.log("Update completed at: " + timeNow)
 }
-
-app.get("/", function (req, res) {
-  res.sendFile(__dirname + "/public/index.html")
-})
-
-app.get("/tracking-shop", function (req, res) {
-  res.sendFile(__dirname + "/public/tracking_shop.html")
-})
-
-app.get("/tracking-product", function (req, res) {
-  res.sendFile(__dirname + "/public/tracking_product.html")
-})
-
-app.get("/tools", function (req, res) {
-  res.sendFile(__dirname + "/public/tools.html")
-})
-
-app.get("/listing", function (req, res) {
-  res.sendFile(__dirname + "/public/etsy_listing.html")
-})
-
-app.get("/add_tracking_history", function (req, res) {
-  res.sendFile(__dirname + "/public/add_tracking_etsy_history.html")
-})
-
-app.get("/undefined", function (req, res) {
-  res.send('null')
-})
-
-app.get("/mockup", function (req, res) {
-  res.sendFile(__dirname + "/public/mockup.html")
-})
-
-app.get("/test", function (req, res) {
-  return res.send('asdfdsfdsasd')
-})
-
-app.get("/test/:id", function (req, res) {
-  let user_id = req.params.id;
-  return res.send(`sdfs ${user_id}`)
-})
-
-app.delete("/test/:id", function (req, res) {
-  let user_id = req.params.id;
-  return res.send(`delete ${user_id}`)
-})
 
 app.use(express.static("public"))
 
