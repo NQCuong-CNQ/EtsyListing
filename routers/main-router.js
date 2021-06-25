@@ -2,7 +2,8 @@ var express = require("express")
 var router = express.Router()
 
 router.get("/", function (req, res) {
-    res.sendFile(__dirname + "/../../public/index.html")
+    console.log(__dirname + "/../public/index.html")
+    res.sendFile(__dirname + "/../public/index.html")
 })
 
 router.get("/tracking-shop", function (req, res) {
