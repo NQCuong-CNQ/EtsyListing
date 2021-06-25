@@ -388,36 +388,40 @@ async function completeUpdate() {
   console.log("Update completed at: " + timeNow)
 }
 
-app.get("/", function (req, res, next) {
+app.get("/", function (req, res) {
   res.sendFile(__dirname + "/public/index.html")
 })
 
-app.get("/tracking-shop", function (req, res, next) {
+app.get("/tracking-shop", function (req, res) {
   res.sendFile(__dirname + "/public/tracking_shop.html")
 })
 
-app.get("/tracking-product", function (req, res, next) {
+app.get("/tracking-product", function (req, res) {
   res.sendFile(__dirname + "/public/tracking_product.html")
 })
 
-app.get("/tools", function (req, res, next) {
+app.get("/tools", function (req, res) {
   res.sendFile(__dirname + "/public/tools.html")
 })
 
-app.get("/listing", function (req, res, next) {
+app.get("/listing", function (req, res) {
   res.sendFile(__dirname + "/public/etsy_listing.html")
 })
 
-app.get("/add_tracking_history", function (req, res, next) {
+app.get("/add_tracking_history", function (req, res) {
   res.sendFile(__dirname + "/public/add_tracking_etsy_history.html")
 })
 
-app.get("/undefined", function (req, res, next) {
+app.get("/undefined", function (req, res) {
   res.send('null')
 })
 
-app.get("/mockup", function (req, res, next) {
+app.get("/mockup", function (req, res) {
   res.sendFile(__dirname + "/public/mockup.html")
+})
+
+app.get("/test", function (req, res) {
+  return 'asdfdsfdsasd'
 })
 
 app.use(express.static("public"))
