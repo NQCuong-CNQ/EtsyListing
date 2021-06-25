@@ -23,7 +23,7 @@ var io = require("socket.io")(server, {
   transports: ['websocket']
 })
 
-// app.use(express.static("/public"))
+app.use(express.static("/public"))
 app.use('/', mainRoute)
 
 app.use(function (req, res, next) {
