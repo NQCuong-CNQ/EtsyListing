@@ -29,7 +29,7 @@ $('#update-server').on('click', async () => {
     toastr.clear()
     toastr.info('Reloading server!')
     socket.emit("run-update-server")
-    await sleep(3000)
+    await sleep(5000)
     location.reload()
 })
 
@@ -108,7 +108,7 @@ getContent = data => {
         default: content = data.status
     }
 
-    return `${data.name}: ${content}`
+    return `${data.name}: adding #${content}`
 }
 
 socket.on("add-tracking-status-server-to-client", (data) => {

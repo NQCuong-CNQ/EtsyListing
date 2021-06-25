@@ -220,31 +220,32 @@ async function getListing() {
 }
 
 async function getShopName() {
-  // let category = await dbo.collection("category").findOne()
-  // let categoryList = category.CategoryList.split(',')
-  // let categoryLink = category.CategoryLink.split('|')
+  let category = await dbo.collection("category").findOne()
+  let categoryList = category.CategoryList.split(',')
+  let categoryLink = category.CategoryLink.split('|')
 
-  // for (let index = 0; index < categoryList.length; index++) {
-  //   if (index == 0 || index == 1) {
-  //     limitPage = 60
-  //   } else {
-  //     limitPage = 40
-  //   }
-  //   console.log('category: ' + categoryList[index])
-  //   for (let i = 0; i < limitPage; i++) {
-  //     let siteUrlPage = categoryLink[index] + (i + 1)
-  //     console.log('siteUrlPage: ' + siteUrlPage)
+  for (let index = 0; index < categoryList.length; index++) {
+    if (index == 0 || index == 1) {
+      limitPage = 80
+    } else {
+      limitPage = 40
+    }
+    
+    console.log('category: ' + categoryList[index])
+    for (let i = 0; i < limitPage; i++) {
+      let siteUrlPage = categoryLink[index] + (i + 1)
+      console.log('siteUrlPage: ' + siteUrlPage)
 
-  //     let dataShopName
-  //     try {
-  //       dataShopName = await getShopNameFromWeb(siteUrlPage)
-  //     } catch (error) {
-  //       continue
-  //     }
-  //     console.log('page: ' + i)
-  //     await saveShopNameToDB(dataShopName, categoryList[index])
-  //   }
-  // }
+      let dataShopName
+      try {
+        dataShopName = await getShopNameFromWeb(siteUrlPage)
+      } catch (error) {
+        continue
+      }
+      console.log('page: ' + i)
+      await saveShopNameToDB(dataShopName, categoryList[index])
+    }
+  }
 
   let shopName = await dbo.collection("shopName").find().toArray()
   for (let index = 0; index < shopName.length; index++) {
