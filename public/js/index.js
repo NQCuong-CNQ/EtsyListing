@@ -48,6 +48,7 @@ socket.on("return-ping-customcat", data => {
 })
 
 socket.on("add-tracking-status", data => {
+    $('#etsy-img').css('mix-blend-mode', 'normal')
     $('#etsy-status').empty()
     for (let item of data) {
         $('#etsy-status').append(`<h5>${item.item} done</h5>`)
@@ -112,11 +113,13 @@ getContent = data => {
         default: content = `adding #` + data.status
     }
 
+    if(data.name == 'server'){
+        return content
+    }
     return `${data.name}: ${content}`
 }
 
 socket.on("add-tracking-status-server-to-client", (data) => {
-    console.log(data)
     let content = getContent(data)
     $('#process-status').text(content)
 })
