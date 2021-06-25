@@ -794,8 +794,6 @@ io.on("connection", async function (client) {
       client.emit("return-server-status", 'Server is updating database')
     }
   })
-
-  client.emit("reload-client")
 })
 
 // fixTrackingHistory()

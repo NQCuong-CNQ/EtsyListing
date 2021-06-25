@@ -29,6 +29,8 @@ $('#update-server').on('click', () => {
     toastr.clear()
     toastr.info('Reloading server!')
     socket.emit("run-update-server")
+    await sleep(3000)
+    location.reload()
 })
 
 socket.on("return-server-status", data => {
@@ -39,13 +41,6 @@ socket.on("return-server-status", data => {
 socket.on("return-ping-vps", data => {
     $('##etsy-img').css('mix-blend-mode', 'normal')
     $('#etsy-status').append(`<h5>${data} online</h5>`)
-})
-
-socket.on("reload-client", async () => {
-    toastr.clear()
-    toastr.success('Reload server success!')
-    await sleep(1000)
-    location.reload()
 })
 
 socket.on("return-ping-customcat", data => {
