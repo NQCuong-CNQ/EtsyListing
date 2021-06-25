@@ -34,7 +34,6 @@ $('#update-server').on('click', async () => {
 })
 
 socket.on("return-server-status", data => {
-    console.log(data)
     $('#process-status').text(data)
 })
 
@@ -49,6 +48,7 @@ socket.on("return-ping-customcat", data => {
 })
 
 socket.on("add-tracking-status", data => {
+    $('#etsy-status').empty()
     for (let item of data) {
         $('#etsy-status').append(`<h5>${item.item} done</h5>`)
     }
@@ -81,7 +81,7 @@ socket.on("return-fix-tracking-history", () => {
 
 $('#check-limit-btn').on('click', () => {
     toastr.clear()
-    toastr.info('Checking API limit')
+    toastr.info('Checking API limit...')
     socket.emit("check-limit-api")
 })
 
@@ -97,11 +97,13 @@ getContent = data => {
     switch (data.status) {
         case 1: content = 'Send request to Customcat'
             break
-        case 2: content = 'Received data from Customcat, waiting...'
+        case 2: content = 'Received data from Customcat'
             break
-        case 3: content = 'Send data to VPS'
+        case 3: content = 'Reload Etsy, waiting...'
             break
-        case 4: content = 'Done'
+        case 4: content = 'Send data to VPS'
+            break
+        case 5: content = 'Done'
             break
         default: content = data.status
     }

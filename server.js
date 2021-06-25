@@ -657,9 +657,11 @@ io.on("connection", async function (client) {
 
     console.log('reload etsy')
     client.broadcast.emit("reload-etsy")
+    await sleep(100)
+    client.broadcast.emit("add-tracking-status-server-to-client", { name: 'server', status: 3 })
     await sleep(40000)
     console.log('send data to etsy' + trackData.length)
-    client.broadcast.emit("add-tracking-status-server-to-client", { name: 'server', status: 3 })
+    client.broadcast.emit("add-tracking-status-server-to-client", { name: 'server', status: 4 })
     await sleep(100)
     client.broadcast.emit("track-order-return", trackData)
   })
@@ -765,7 +767,7 @@ io.on("connection", async function (client) {
     let complete = await dbo.collection("add_complete").find().toArray()
     if (complete.length == 9) {
       console.log(`closed all RDC`)
-      client.broadcast.emit("add-tracking-status-server-to-client", { name: 'server', status: 4 })
+      client.broadcast.emit("add-tracking-status-server-to-client", { name: 'server', status: 5 })
       exec("taskkill /im mstsc.exe /t")
       await sleep(1000)
       exec("taskkill /im mstsc.exe /t /f")
