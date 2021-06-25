@@ -8,7 +8,7 @@ const axios = require("axios")
 const cheerio = require('cheerio')
 const { exec } = require("child_process")
 
-var mainRoute = require('/routers/main-router')
+var mainRoute = require('./routers/main-router')
 
 //ssl from Certbot
 var server = https.createServer({
@@ -23,7 +23,7 @@ var io = require("socket.io")(server, {
   transports: ['websocket']
 })
 
-app.use(mainRoute)
+app.use('/', mainRoute)
 
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*")
