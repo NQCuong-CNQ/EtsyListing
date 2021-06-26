@@ -16,7 +16,7 @@ var accountName = 'My'
 console.log(end + start)
 getData()
 
-setInterval(scheduleUpdate, 14400000) // 4h
+setInterval(scheduleUpdate, 10800000) // 3h
 function scheduleUpdate() {
     location.href = 'https://app.customcat.com/app/122009/main/vieworders'
 }
