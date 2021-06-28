@@ -2,15 +2,15 @@ var input = $('.validate-input .input100');
 
 $('.validate-form').on('submit', function () {
 
-    $.ajax({
-        type: "POST",
-        url: '/login',
-        data: $('.validate-form').serialize(),
-        success: function(data)
-        {
-            // alert(data); 
-        }
-      });
+    // $.ajax({
+    //     type: "POST",
+    //     url: '/login',
+    //     data: $('.validate-form').serialize(),
+    //     success: function(data)
+    //     {
+    //         // alert(data); 
+    //     }
+    //   });
 
     // var check = true;
 

@@ -8,10 +8,6 @@ router.get("/", function (req, res) {
     res.sendFile(dirname + "public/views/index.html")
 })
 
-router.get("/dashboard", function (req, res) {
-    res.sendFile(dirname + "public/views/index.html")
-})
-
 router.get("/tracking-shop", function (req, res) {
     res.sendFile(dirname + "public/views/tracking_shop.html")
 })
