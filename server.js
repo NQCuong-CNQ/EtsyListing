@@ -27,7 +27,7 @@ var io = require("socket.io")(server, {
 
 app.use(express.static("public"))
 app.use('/', mainRoute)
-app.use('/auth', authRoute)
+app.use('/', authRoute)
 app.use(cookieParser())
 
 app.use(function (req, res, next) {
