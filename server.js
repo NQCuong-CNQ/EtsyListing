@@ -8,6 +8,7 @@ const axios = require("axios")
 const cheerio = require('cheerio')
 const { exec } = require("child_process")
 var cookieParser = require('cookie-parser')
+// var bodyParser = require('body-parser')
 
 var mainRoute = require('./routers/main-router')
 
@@ -19,11 +20,15 @@ var server = https.createServer({
 
 var io = require("socket.io")(server, {
   cors: {
-    origin: '*',
+    origin: '*',  
   },
   transports: ['websocket']
 })
 
+app.use(express.json())
+app.use(express.urlencoded({
+  extended: true
+}))
 app.use(express.static("public"))
 app.use('/', mainRoute)
 app.use(cookieParser())
