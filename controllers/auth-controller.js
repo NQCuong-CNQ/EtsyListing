@@ -11,25 +11,25 @@ module.exports.login = function(req, res){
 
 module.exports.postLogin = async function(req, res){
     console.log(req.body)
-    let user_name = req.body.user_name
+    let uName = req.body.user_name
     let pass = req.body.pass
 
     clientDB = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
     dbo = clientDB.db("trackingdb")
 
-    let user = await dbo.collection("user").findOne({ user_name: 'cuong' })
-    console.log('///'+user.user_name)
-    console.log('--'+user[0].user_name)
+    let user = await dbo.collection("user").findOne({ user_name: uName })
     
     if(!user){
+        console.log('ko có user')
         res.sendFile(dirname + "public/views/login.html")
         return
     }
 
     if(user.pass !== pass){
+        console.log('sai pass')
         res.sendFile(dirname + "public/views/login.html")
         return
     }
-
+    console.log('ok')
     res.redirect('/')
 }
