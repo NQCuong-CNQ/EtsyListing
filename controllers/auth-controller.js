@@ -32,6 +32,6 @@ module.exports.postLogin = async function(req, res){
     }
     console.log('ok')
 
-    res.cookie('user_name', user_name)
+    res.cookie('user_name', uName)
     res.redirect('/')
 }
