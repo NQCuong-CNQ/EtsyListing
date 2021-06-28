@@ -13,7 +13,7 @@ module.exports.login = function(req, res){
 }
 
 module.exports.postLogin = async function(req, res){
-    console.log(req)
+    console.log(req.body)
     let user_name = req.body.user_name
     let pass = req.body.pass
 
