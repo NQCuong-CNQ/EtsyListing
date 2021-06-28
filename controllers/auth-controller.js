@@ -35,8 +35,6 @@ module.exports.postLogin = async function(req, res){
         res.sendFile(dirname + "public/views/login.html")
         return
     }
-    console.log('ok')
-
     res.cookie('user_name', uName)
     res.redirect('/')
 }

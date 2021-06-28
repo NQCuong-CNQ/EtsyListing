@@ -215,10 +215,8 @@ iframe {
   text-align: center;
   width: 100%;
   display: block;
-  padding-bottom: 54px;
+  padding-bottom: 2.5rem;
 }
-
-/*---------------------------------------------*/
 
 .wrap-input {
   position: relative;
@@ -253,7 +251,7 @@ iframe {
   color: rgba(87, 184, 70, 0.8);
 }
 
-.input100:focus+.focus-input {
+.input:focus+.focus-input {
   -webkit-animation: anim-shadow 0.5s ease-in-out forwards;
   animation: anim-shadow 0.5s ease-in-out forwards;
 }
@@ -295,7 +293,7 @@ iframe {
   transition: all 0.4s;
 }
 
-.input100:focus+.focus-input+.symbol-input {
+.input:focus+.focus-input+.symbol-input {
   color: #57b846;
   padding-left: 28px;
 }
