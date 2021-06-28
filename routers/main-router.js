@@ -10,11 +10,11 @@ router.get("/", function (req, res) {
 })
 
 router.get("/tracking-shop", function (req, res) {
-    res.render("tracking_shop", {title: 'Tracking Shops', active: 'tracking_shop'})
+    res.render("tracking_shop", {title: 'Tracking Shops', active: 'tracking-shop'})
 })
 
 router.get("/tracking-product", function (req, res) {
-    res.render("tracking_product", {title: 'Tracking Products', active: 'tracking_product'})
+    res.render("tracking_product", {title: 'Tracking Products', active: 'tracking-product'})
 })
 
 router.get("/tools", function (req, res) {
