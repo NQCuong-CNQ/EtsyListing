@@ -23,12 +23,12 @@ module.exports.postLogin = async function(req, res){
     let user = await dbo.collection("user").findOne({ user_name: uName })
     
     if(!user){
-        res.sendFile(dirname + "public/views/login.html")
+        res.sendFile(dirname + "public/views/login")
         return
     }
 
     if(user.pass !== md5(pass)){
-        res.sendFile(dirname + "public/views/login.html")
+        res.sendFile(dirname + "public/views/login")
         return
     }
     res.cookie('user_name', uName)
