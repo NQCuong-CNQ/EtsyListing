@@ -5,7 +5,7 @@ var dirname = __dirname.slice(0, -7)
 var controller = require('../controllers/auth-controller')
 var authMiddleware = require('../middleware/auth-middleware')
 
-router.get("/", authMiddleware.requireAuth, function (req, res) {
+router.get("/", function (req, res) {
     res.sendFile(dirname + "public/views/index.html")
 })
 
@@ -33,7 +33,7 @@ router.get("/undefined", function (req, res) {
     res.send('null')
 })
 
-router.get("/mockup", function (req, res) {
+router.get("/mockup", authMiddleware.requireAuth, function (req, res) {
     res.sendFile(dirname + "public/views/mockup.html")
 })
 
