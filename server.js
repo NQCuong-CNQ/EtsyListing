@@ -24,13 +24,13 @@ var io = require("socket.io")(server, {
   transports: ['websocket']
 })
 
+app.use(cookieParser())
 app.use(express.json())
 app.use(express.urlencoded({
   extended: true
 }))
 app.use(express.static("public"))
 app.use('/', mainRoute)
-app.use(cookieParser())
 
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*")
