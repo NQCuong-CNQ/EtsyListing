@@ -77,6 +77,11 @@ input {
   color: white;
 }
 
+.active a{
+  background-color: #0081ff;
+  color: white !important;
+}
+
 .content-collap-shop-info {
   padding: 1rem;
   display: none;

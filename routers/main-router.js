@@ -26,7 +26,7 @@ router.get("/tools", function (req, res) {
 // })
 
 router.get("/add_tracking_history", function (req, res) {
-    res.render("add_tracking_etsy_history", {title: 'Add Tracking History', active: 'add_tracking_etsy_history'})
+    res.render("add_tracking_etsy_history", {title: 'Add Tracking History', active: 'add_tracking_history'})
 })
 
 router.get("/undefined", function (req, res) {
