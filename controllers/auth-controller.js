@@ -6,7 +6,7 @@ const md5 = require('md5')
 var dirname = __dirname.slice(0, -11)
 
 module.exports.login = function(req, res){
-    res.sendFile(dirname + "public/views/login.html")
+    res.sendFile(dirname + "public/views/login")
 }
 
 module.exports.logout = function(req, res){
