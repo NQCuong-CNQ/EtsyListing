@@ -6,27 +6,27 @@ var controller = require('../controllers/auth-controller')
 var authMiddleware = require('../middleware/auth-middleware')
 
 router.get("/", function (req, res) {
-    res.sendFile(dirname + "public/views/index.html")
+    res.render(dirname + "public/views/index.ejs")
 })
 
 router.get("/tracking-shop", function (req, res) {
-    res.sendFile(dirname + "public/views/tracking_shop.html")
+    res.render(dirname + "public/views/tracking_shop.ejs")
 })
 
 router.get("/tracking-product", function (req, res) {
-    res.sendFile(dirname + "public/views/tracking_product.html")
+    res.render(dirname + "public/views/tracking_product.ejs")
 })
 
 router.get("/tools", function (req, res) {
-    res.sendFile(dirname + "public/views/tools.html")
+    res.render(dirname + "public/views/tools.ejs")
 })
 
 router.get("/listing", function (req, res) {
-    res.sendFile(dirname + "public/views/etsy_listing.html")
+    res.render(dirname + "public/views/etsy_listing.ejs")
 })
 
 router.get("/add_tracking_history", function (req, res) {
-    res.sendFile(dirname + "public/views/add_tracking_etsy_history.html")
+    res.render(dirname + "public/views/add_tracking_etsy_history.ejs")
 })
 
 router.get("/undefined", function (req, res) {
@@ -34,7 +34,7 @@ router.get("/undefined", function (req, res) {
 })
 
 router.get("/mockup", authMiddleware.requireAuth, function (req, res) {
-    res.sendFile(dirname + "public/views/mockup.html")
+    res.render(dirname + "public/views/mockup.ejs")
 })
 
 router.get("/login", controller.login)

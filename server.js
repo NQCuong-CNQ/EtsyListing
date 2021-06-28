@@ -25,6 +25,7 @@ var io = require("socket.io")(server, {
   transports: ['websocket']
 })
 
+app.set('view engine', 'ejs')
 app.use(cookieParser())
 app.use(express.json())
 app.use(express.urlencoded({
@@ -71,8 +72,8 @@ async function main() {
   // await completeUpdate()
   // await updateData()
   isUpdate = false
-  await dbo.collection("user").deleteMany()
-  await dbo.collection("user").updateOne({ user_name: 'admin' }, { $set: { user_name: 'admin', pass: md5('Vhy!65@ljHgd8863') } }, { upsert: true })
+  // await dbo.collection("user").deleteMany()
+  // await dbo.collection("user").updateOne({ user_name: 'admin' }, { $set: { user_name: 'admin', pass: md5('Vhy!65@ljHgd8863') } }, { upsert: true })
 }
 
 setInterval(scheduleUpdate, 3600000) // 1h
