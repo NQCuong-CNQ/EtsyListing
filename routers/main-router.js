@@ -6,27 +6,27 @@ var controller = require('../controllers/auth-controller')
 var authMiddleware = require('../middleware/auth-middleware')
 
 router.get("/", function (req, res) {
-    res.render("public/views/index")
+    res.render("index")
 })
 
 router.get("/tracking-shop", function (req, res) {
-    res.render("public/views/tracking_shop")
+    res.render("tracking_shop")
 })
 
 router.get("/tracking-product", function (req, res) {
-    res.render("public/views/tracking_product")
+    res.render("tracking_product")
 })
 
 router.get("/tools", function (req, res) {
-    res.render("public/views/tools")
+    res.render("tools")
 })
 
 router.get("/listing", function (req, res) {
-    res.render("public/views/etsy_listing")
+    res.render("etsy_listing")
 })
 
 router.get("/add_tracking_history", function (req, res) {
-    res.render("public/views/add_tracking_etsy_history")
+    res.render("add_tracking_etsy_history")
 })
 
 router.get("/undefined", function (req, res) {
@@ -34,7 +34,7 @@ router.get("/undefined", function (req, res) {
 })
 
 router.get("/mockup", authMiddleware.requireAuth, function (req, res) {
-    res.render("public/views/mockup")
+    res.render("mockup")
 })
 
 router.get("/login", controller.login)
