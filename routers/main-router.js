@@ -35,13 +35,4 @@ router.get("/mockup", function (req, res) {
     res.sendFile(dirname + "public/views/mockup.html")
 })
 
-router.get("/login", function (req, res) {
-    res.sendFile(dirname + "public/views/login.html")
-})
-
-router.get("/cookie", function (req, res) {
-    res.cookie('id', '324545334')
-    res.send('hello')
-})
-
 module.exports = router

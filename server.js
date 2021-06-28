@@ -7,8 +7,10 @@ const https = require("https")
 const axios = require("axios")
 const cheerio = require('cheerio')
 const { exec } = require("child_process")
+var cookieParser = require('cookie-parser')
 
 var mainRoute = require('./routers/main-router')
+var authRoute = require('./routers/auth-router')
 
 //ssl from Certbot
 var server = https.createServer({
@@ -25,6 +27,8 @@ var io = require("socket.io")(server, {
 
 app.use(express.static("public"))
 app.use('/', mainRoute)
+app.use('/auth', authRoute)
+app.use(cookieParser())
 
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*")
