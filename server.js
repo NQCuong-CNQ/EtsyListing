@@ -67,7 +67,7 @@ async function main() {
   // await updateData()
   isUpdate = false
 
-  await dbo.collection("user").insertOne({ user_name: 'cuong', pass: '12345' })
+  // await dbo.collection("user").insertOne({ user_name: 'cuong', pass: '12345' })
 }
 
 setInterval(scheduleUpdate, 3600000) // 1h

@@ -13,6 +13,7 @@ module.exports.login = function(req, res){
 }
 
 module.exports.postLogin = async function(req, res){
+    console.log(req)
     let user_name = req.body.user_name
     let pass = req.body.pass
 
@@ -29,5 +30,6 @@ module.exports.postLogin = async function(req, res){
         res.sendFile(dirname + "public/views/login.html")
         return
     }
+
     res.redirect('/')
 }
