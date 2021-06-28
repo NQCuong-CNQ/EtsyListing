@@ -3,8 +3,9 @@ var router = express.Router()
 
 var dirname = __dirname.slice(0, -7)
 var controller = require('../controllers/auth-controller')
+var authMiddleware = require('../middleware/auth-middleware')
 
-router.get("/", function (req, res) {
+router.get("/", authMiddleware.requireAuth, function (req, res) {
     res.sendFile(dirname + "public/views/index.html")
 })
 

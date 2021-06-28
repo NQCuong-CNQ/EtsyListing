@@ -1,5 +1,9 @@
 var input = $('.validate-input .input100');
 
+$('.js-tilt').tilt({
+    scale: 1.1
+})
+
 $('.validate-form').on('submit', function () {
 
     // $.ajax({
