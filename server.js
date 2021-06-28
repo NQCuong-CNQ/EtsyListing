@@ -26,6 +26,7 @@ var io = require("socket.io")(server, {
 })
 
 app.set('view engine', 'ejs')
+app.set('views', './public')
 app.use(cookieParser())
 app.use(express.json())
 app.use(express.urlencoded({
