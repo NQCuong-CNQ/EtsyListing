@@ -39,4 +39,9 @@ router.get("/login", function (req, res) {
     res.sendFile(dirname + "public/views/login.html")
 })
 
+router.get("/cookie", function (req, res) {
+    res.cookie('id', sdfgds)
+    res.send('hello')
+})
+
 module.exports = router
