@@ -20,13 +20,13 @@ var server = https.createServer({
 
 var io = require("socket.io")(server, {
   cors: {
-    origin: '*',  
+    origin: '*',
   },
   transports: ['websocket']
 })
 
 app.set('view engine', 'ejs')
-app.set('views', '/public/views/')
+app.set('views', __dirname + '/public/views/')
 app.use(cookieParser())
 app.use(express.json())
 app.use(express.urlencoded({
@@ -773,7 +773,7 @@ io.on("connection", async function (client) {
   })
 
   client.on("get-server-status", function () {
-    if(!isUpdate){
+    if (!isUpdate) {
       client.emit("return-server-status", 'Idle')
     } else {
       client.emit("return-server-status", 'Server is updating database')
@@ -814,7 +814,7 @@ async function refreshRPC() {
   await sleep(1000)
   exec("taskkill /im mstsc.exe /t /f")
   await sleep(1000)
-  
+
   let arrVPS = ['64.190.87.132', '192.227.121.235:64738', '64.52.175.86:48384', '64.52.168.149:31072',
     '74.81.39.30:42535', '155.138.146.185', '149.248.60.29', '64.190.86.250:40661', '199.34.28.113:44176']
 
