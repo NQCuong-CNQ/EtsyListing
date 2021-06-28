@@ -40,7 +40,7 @@ router.get("/login", function (req, res) {
 })
 
 router.get("/cookie", function (req, res) {
-    res.cookies('id', 324545334)
+    res.cookie('id', '324545334')
     res.send('hello')
 })
 
