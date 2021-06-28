@@ -17,7 +17,7 @@ module.exports.postLogin = async function(req, res){
     clientDB = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
     dbo = clientDB.db("trackingdb")
 
-    let user = await dbo.collection("user").findOne({ user_name: user_name })
+    let user = await dbo.collection("user").findOne({ user_name: 'cuong' })
     console.log('àá'+user)
     
     if(!user){
