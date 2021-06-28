@@ -10,7 +10,7 @@ const { exec } = require("child_process")
 var cookieParser = require('cookie-parser')
 
 var mainRoute = require('./routers/main-router')
-var authRoute = require('./routers/auth-router')
+// var authRoute = require('./routers/auth-router')
 
 //ssl from Certbot
 var server = https.createServer({
@@ -27,7 +27,7 @@ var io = require("socket.io")(server, {
 
 app.use(express.static("public"))
 app.use('/', mainRoute)
-app.use('/', authRoute)
+// app.use('/', authRoute)
 app.use(cookieParser())
 
 app.use(function (req, res, next) {

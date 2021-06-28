@@ -2,6 +2,7 @@ var express = require("express")
 var router = express.Router()
 
 var dirname = __dirname.slice(0, -7)
+var controller = require('../controllers/auth-controller')
 
 router.get("/", function (req, res) {
     res.sendFile(dirname + "public/views/index.html")
@@ -34,5 +35,7 @@ router.get("/undefined", function (req, res) {
 router.get("/mockup", function (req, res) {
     res.sendFile(dirname + "public/views/mockup.html")
 })
+
+router.get("/login", controller.login)
 
 module.exports = router
