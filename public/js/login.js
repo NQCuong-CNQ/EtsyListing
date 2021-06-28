@@ -1,22 +1,32 @@
-
 var input = $('.validate-input .input100');
 
 $('.validate-form').on('submit', function () {
-    var check = true;
 
-    for (var i = 0; i < input.length; i++) {
-        if (validate(input[i]) == false) {
-            showValidate(input[i]);
-            check = false;
+    $.ajax({
+        type: "POST",
+        url: '/login',
+        data: $('.validate-form').serialize(),
+        success: function(data)
+        {
+            alert(data); 
         }
-    }
+      });
 
-    return check;
+    // var check = true;
+
+    // for (var i = 0; i < input.length; i++) {
+    //     if (validate(input[i]) == false) {
+    //         showValidate(input[i]);
+    //         check = false;
+    //     }
+    // }
+
+    // return check;
 });
 
 
 $('.validate-form .input100').each(function () {
-    $(this).focus(function () {
+    $(this).on('focus', function () {
         hideValidate(this);
     });
 });

@@ -10,7 +10,6 @@ const { exec } = require("child_process")
 var cookieParser = require('cookie-parser')
 
 var mainRoute = require('./routers/main-router')
-// var authRoute = require('./routers/auth-router')
 
 //ssl from Certbot
 var server = https.createServer({
@@ -27,7 +26,6 @@ var io = require("socket.io")(server, {
 
 app.use(express.static("public"))
 app.use('/', mainRoute)
-// app.use('/', authRoute)
 app.use(cookieParser())
 
 app.use(function (req, res, next) {
@@ -68,6 +66,8 @@ async function main() {
   // await completeUpdate()
   // await updateData()
   isUpdate = false
+
+  await dbo.collection("user").insertOne({ user_name: 'cuong', pass: '12345' })
 }
 
 setInterval(scheduleUpdate, 3600000) // 1h
