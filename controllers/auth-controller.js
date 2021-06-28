@@ -31,5 +31,5 @@ module.exports.postLogin = async function(req, res){
         return
     }
     console.log('ok')
-    res.redirect('/dashboard')
+    res.sendFile(dirname + "public/views/index.html")
 }
