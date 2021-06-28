@@ -8,6 +8,10 @@ router.get("/", function (req, res) {
     res.sendFile(dirname + "public/views/index.html")
 })
 
+router.get("/dashboard", function (req, res) {
+    res.sendFile(dirname + "public/views/index.html")
+})
+
 router.get("/tracking-shop", function (req, res) {
     res.sendFile(dirname + "public/views/tracking_shop.html")
 })
@@ -37,7 +41,6 @@ router.get("/mockup", function (req, res) {
 })
 
 router.get("/login", controller.login)
-
 router.post('/login', controller.postLogin)
 
 module.exports = router
