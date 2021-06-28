@@ -19,6 +19,7 @@ module.exports.postLogin = async function(req, res){
 
     let user = await dbo.collection("user").findOne({ user_name: user_name })
     console.log('àá'+user)
+    
     if(!user){
         res.sendFile(dirname + "public/views/login.html")
         return
