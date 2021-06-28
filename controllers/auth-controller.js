@@ -18,7 +18,8 @@ module.exports.postLogin = async function(req, res){
     dbo = clientDB.db("trackingdb")
 
     let user = await dbo.collection("user").findOne({ user_name: 'cuong' })
-    console.log('àá'+user)
+    console.log('///'+user.user_name)
+    console.log('--'+user[0].user_name)
     
     if(!user){
         res.sendFile(dirname + "public/views/login.html")
