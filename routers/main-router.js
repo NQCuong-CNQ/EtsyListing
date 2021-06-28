@@ -6,27 +6,27 @@ var controller = require('../controllers/auth-controller')
 var authMiddleware = require('../middleware/auth-middleware')
 
 router.get("/", function (req, res) {
-    res.render(dirname + "public/views/index")
+    res.render(dirname + "public/views/index", {title: 'Etsy tools'})
 })
 
 router.get("/tracking-shop", function (req, res) {
-    res.render(dirname + "public/views/tracking_shop")
+    res.render(dirname + "public/views/tracking_shop", {title: 'Tracking Shops'})
 })
 
 router.get("/tracking-product", function (req, res) {
-    res.render(dirname + "public/views/tracking_product")
+    res.render(dirname + "public/views/tracking_product", {title: 'Tracking Products'})
 })
 
 router.get("/tools", function (req, res) {
-    res.render(dirname + "public/views/tools")
+    res.render(dirname + "public/views/tools", {title: 'Tools Braumstar'})
 })
 
-router.get("/listing", function (req, res) {
-    res.render(dirname + "public/views/etsy_listing")
-})
+// router.get("/listing", function (req, res) {
+//     res.render(dirname + "public/views/etsy_listing", {title: 'Etsy tools'})
+// })
 
 router.get("/add_tracking_history", function (req, res) {
-    res.render(dirname + "public/views/add_tracking_etsy_history")
+    res.render(dirname + "public/views/add_tracking_etsy_history", {title: 'Add Tracking History'})
 })
 
 router.get("/undefined", function (req, res) {
@@ -34,7 +34,7 @@ router.get("/undefined", function (req, res) {
 })
 
 router.get("/mockup", authMiddleware.requireAuth, function (req, res) {
-    res.render(dirname + "public/views/mockup")
+    res.render(dirname + "public/views/mockup", {title: 'Create Mockup'})
 })
 
 router.get("/login", controller.login)
