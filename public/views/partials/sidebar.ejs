@@ -1,0 +1,104 @@
+<nav id="sidebar" class="sidebar">
+    <div class="sidebar-content js-simplebar">
+        <a class="sidebar-brand" href="/">
+            <span class="align-middle">Etsy Tools</span>
+        </a>
+        <ul class="sidebar-nav">
+            <li class="sidebar-header">
+                Pages
+            </li>
+
+            <% if (active == 'index') { %>
+                <li class="sidebar-item active">
+                    <a class="sidebar-link" href="/">
+                        <i class="align-middle" data-feather="sliders"></i> <span
+                            class="align-middle">Dashboard</span>
+                    </a>
+                </li>
+            <% } else { %>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="/">
+                        <i class="align-middle" data-feather="sliders"></i> <span
+                            class="align-middle">Dashboard</span>
+                    </a>
+                </li>
+            <% } %>
+
+            
+            <li class="sidebar-header">
+                Tools & Components
+            </li>
+            <!-- <li class="sidebar-item ">
+                <a class="sidebar-link" href="listing">
+                    <i class="align-middle" data-feather="coffee"></i> <span class="align-middle">Etsy
+                        Listing</span>
+                </a>
+            </li> -->
+            <li class="sidebar-item">
+                <a data-target="#ui" data-toggle="collapse" class="sidebar-link collapsed">
+                    <i class="align-middle" data-feather="pie-chart"></i> <span
+                        class="align-middle">Tracking</span>
+                </a>
+                <ul id="ui" class="sidebar-dropdown list-unstyled collapse" data-parent="#sidebar">
+                    <% if (active == 'tracking-product') { %>
+                        <li class="sidebar-item"><a class="sidebar-link" href="tracking-product">Products</a></li>
+                    <% } else { %>
+                        <li class="sidebar-item"><a class="sidebar-link" href="tracking-product">Products</a></li>
+                    <% } %>
+
+                    <% if (active == 'tracking-shop') { %>
+                        <li class="sidebar-item"><a class="sidebar-link" href="tracking-shop">Shops</a></li>
+                    <% } else { %>
+                        <li class="sidebar-item"><a class="sidebar-link" href="tracking-shop">Shops</a></li>
+                    <% } %>
+                </ul>
+            </li>
+
+            <% if (active == 'tools') { %>
+                <li class="sidebar-item active">
+                    <a class="sidebar-link" href="tools">
+                        <i class="align-middle" data-feather="settings"></i> <span class="align-middle">Tools Braumstar</span>
+                    </a>
+                </li>
+            <% } else { %>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="tools">
+                        <i class="align-middle" data-feather="settings"></i> <span class="align-middle">Tools Braumstar</span>
+                    </a>
+                </li>
+            <% } %>
+
+            <% if (active == 'add_tracking_history') { %>
+                <li class="sidebar-item active">
+                    <a class="sidebar-link" href="add_tracking_history">
+                        <i class="align-middle" data-feather="calendar"></i> <span class="align-middle">Add Tracking
+                            History</span>
+                    </a>
+                </li>
+            <% } else { %>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="add_tracking_history">
+                        <i class="align-middle" data-feather="calendar"></i> <span class="align-middle">Add Tracking
+                            History</span>
+                    </a>
+                </li>
+            <% } %>
+
+            <% if (active == 'mockup') { %>
+                <li class="sidebar-item active">
+                    <a class="sidebar-link" href="mockup">
+                        <i class="align-middle" data-feather="image"></i> <span class="align-middle">Create
+                            Mockup</span>
+                    </a>
+                </li>
+            <% } else { %>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="mockup">
+                        <i class="align-middle" data-feather="image"></i> <span class="align-middle">Create
+                            Mockup</span>
+                    </a>
+                </li>
+            <% } %>
+        </ul>
+    </div>
+</nav>

@@ -2,12 +2,7 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <link rel="shortcut icon" href="img/icons/logo.png" />
-    <title></title>
+    <%- include('partials/header.ejs') %>
 
     <link rel="stylesheet" type="text/css" href="css/app.css" />
     <link rel="stylesheet" type="text/css" href="css/style.css" />
@@ -18,93 +13,10 @@
 
 <body>
     <div class="wrapper">
-        <nav id="sidebar" class="sidebar">
-            <div class="sidebar-content js-simplebar">
-                <a class="sidebar-brand" href="/">
-                    <span class="align-middle">Etsy Tools</span>
-                </a>
-
-                <ul class="sidebar-nav">
-                    <li class="sidebar-header">
-                        Pages
-                    </li>
-
-                    <li class="sidebar-item">
-                        <a class="sidebar-link" href="/">
-                            <i class="align-middle" data-feather="sliders"></i> <span
-                                class="align-middle">Dashboard</span>
-                        </a>
-                    </li>
-
-                    <li class="sidebar-header">
-                        Tools & Components
-                    </li>
-
-                    <!-- <li class="sidebar-item">
-                        <a class="sidebar-link" href="listing">
-                            <i class="align-middle" data-feather="coffee"></i> <span class="align-middle">Etsy
-                                Listing</span>
-                        </a>
-                    </li> -->
-                    <li class="sidebar-item">
-                        <a data-target="#ui" data-toggle="collapse" class="sidebar-link collapsed">
-                            <i class="align-middle" data-feather="pie-chart"></i> <span
-                                class="align-middle">Tracking</span>
-                        </a>
-                        <ul id="ui" class="sidebar-dropdown list-unstyled collapse" data-parent="#sidebar">
-                            <li class="sidebar-item"><a class="sidebar-link" href="tracking-product">Products</a></li>
-                            <li class="sidebar-item"><a class="sidebar-link" href="tracking-shop">Shops</a></li>
-                        </ul>
-                    </li>
-                    <li class="sidebar-item">
-                        <a class="sidebar-link" href="tools">
-                            <i class="align-middle" data-feather="settings"></i> <span class="align-middle">Tools
-                                Braumstar</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-item active">
-                        <a class="sidebar-link" href="add_tracking_history">
-                            <i class="align-middle" data-feather="calendar"></i> <span class="align-middle">Add Tracking
-                                History</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-item">
-                        <a class="sidebar-link" href="mockup">
-                            <i class="align-middle" data-feather="image"></i> <span class="align-middle">Create
-                                Mockup</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
+        <%- include('partials/sidebar.ejs', {active: active}) %>
 
         <div class="main">
-            <nav class="navbar navbar-expand navbar-light navbar-bg">
-                <a class="sidebar-toggle d-flex">
-                    <i class="hamburger align-self-center"></i>
-                </a>
-
-                <div class="navbar-collapse collapse">
-                    <ul class="navbar-nav navbar-align">
-
-                        <li class="nav-item dropdown">
-                            <a class="nav-icon dropdown-toggle d-inline-block d-sm-none" href="#"
-                                data-toggle="dropdown">
-                                <i class="align-middle" data-feather="settings"></i>
-                            </a>
-
-                            <a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#"
-                                data-toggle="dropdown">
-                                <img src="img/avatars/avatar.png" class="avatar img-fluid rounded mr-1"
-                                    alt="Charles Hall" /> <span class="text-dark">User</span>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right">
-                                <a class="dropdown-item" href="/logout">Log out</a>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
+            <%- include('partials/navbar.ejs') %>
 
             <main class="content">
                 <div id="loading">

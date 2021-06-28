@@ -6,19 +6,19 @@ var controller = require('../controllers/auth-controller')
 var authMiddleware = require('../middleware/auth-middleware')
 
 router.get("/", function (req, res) {
-    res.render("index", {title: 'Etsy tools'})
+    res.render("index", {title: 'Etsy tools', active: 'index'})
 })
 
 router.get("/tracking-shop", function (req, res) {
-    res.render("tracking_shop", {title: 'Tracking Shops'})
+    res.render("tracking_shop", {title: 'Tracking Shops', active: 'tracking_shop'})
 })
 
 router.get("/tracking-product", function (req, res) {
-    res.render("tracking_product", {title: 'Tracking Products'})
+    res.render("tracking_product", {title: 'Tracking Products', active: 'tracking_product'})
 })
 
 router.get("/tools", function (req, res) {
-    res.render("tools", {title: 'Tools Braumstar'})
+    res.render("tools", {title: 'Tools Braumstar', active: 'tools'})
 })
 
 // router.get("/listing", function (req, res) {
@@ -26,7 +26,7 @@ router.get("/tools", function (req, res) {
 // })
 
 router.get("/add_tracking_history", function (req, res) {
-    res.render("add_tracking_etsy_history", {title: 'Add Tracking History'})
+    res.render("add_tracking_etsy_history", {title: 'Add Tracking History', active: 'add_tracking_etsy_history'})
 })
 
 router.get("/undefined", function (req, res) {
@@ -34,7 +34,7 @@ router.get("/undefined", function (req, res) {
 })
 
 router.get("/mockup", authMiddleware.requireAuth, function (req, res) {
-    res.render("mockup", {title: 'Create Mockup'})
+    res.render("mockup", {title: 'Create Mockup', active: 'mockup'})
 })
 
 router.get("/login", controller.login)

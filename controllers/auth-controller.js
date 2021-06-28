@@ -3,10 +3,9 @@ const url = "mongodb://localhost:27017/trackingdb"
 var clientDB
 var dbo
 const md5 = require('md5')
-var dirname = __dirname.slice(0, -11)
 
 module.exports.login = function(req, res){
-    res.render(dirname + "public/views/login", {title: 'Login'})
+    res.render("login", {title: 'Login'})
 }
 
 module.exports.logout = function(req, res){
@@ -23,12 +22,12 @@ module.exports.postLogin = async function(req, res){
     let user = await dbo.collection("user").findOne({ user_name: uName })
     
     if(!user){
-        res.render(dirname + "public/views/login", {title: 'Login'})
+        res.render("login", {title: 'Login'})
         return
     }
 
     if(user.pass !== md5(pass)){
-        res.render(dirname + "public/views/login", {title: 'Login'})
+        res.render("login", {title: 'Login'})
         return
     }
     console.log(user._id)
