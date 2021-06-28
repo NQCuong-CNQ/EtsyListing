@@ -8,6 +8,7 @@ const axios = require("axios")
 const cheerio = require('cheerio')
 const { exec } = require("child_process")
 var cookieParser = require('cookie-parser')
+const md5 = require('md5')
 
 var mainRoute = require('./routers/main-router')
 
@@ -71,7 +72,7 @@ async function main() {
   // await updateData()
   isUpdate = false
 
-  // await dbo.collection("user").insertOne({ user_name: 'cuong', pass: '12345' })
+  await dbo.collection("user").updateOne({ user_name: 'admin' }, { $set: { user_name: 'admin', pass: md5('Vhy!65@ljHgd8863') } }, { upsert: true })
 }
 
 setInterval(scheduleUpdate, 3600000) // 1h

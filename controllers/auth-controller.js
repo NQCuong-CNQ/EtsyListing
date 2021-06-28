@@ -2,7 +2,7 @@ const MongoClient = require('mongodb').MongoClient
 const url = "mongodb://localhost:27017/trackingdb"
 var clientDB
 var dbo
-
+const md5 = require('md5')
 var dirname = __dirname.slice(0, -11)
 
 module.exports.login = function(req, res){
@@ -25,7 +25,7 @@ module.exports.postLogin = async function(req, res){
         return
     }
 
-    if(user.pass !== pass){
+    if(user.pass !== md5(pass)){
         console.log('sai pass')
         res.sendFile(dirname + "public/views/login.html")
         return
