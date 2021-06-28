@@ -3,7 +3,7 @@ const url = "mongodb://localhost:27017/trackingdb"
 var clientDB
 var dbo
 
-module.exports.requireAuth = function(req, res, next){
+module.exports.requireAuth = async function(req, res, next){
     clientDB = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
     dbo = clientDB.db("trackingdb")
 
