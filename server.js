@@ -8,7 +8,6 @@ const axios = require("axios")
 const cheerio = require('cheerio')
 const { exec } = require("child_process")
 var cookieParser = require('cookie-parser')
-// var bodyParser = require('body-parser')
 
 var mainRoute = require('./routers/main-router')
 
