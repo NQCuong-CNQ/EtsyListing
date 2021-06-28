@@ -9,6 +9,11 @@ module.exports.login = function(req, res){
     res.sendFile(dirname + "public/views/login.html")
 }
 
+module.exports.logout = function(req, res){
+    res.clearCookie('user_name')
+    res.redirect('/login')
+}
+
 module.exports.postLogin = async function(req, res){
     console.log(req.body)
     let uName = req.body.user_name
