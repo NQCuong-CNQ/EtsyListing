@@ -8,7 +8,7 @@ $('.validate-form').on('submit', function () {
         data: $('.validate-form').serialize(),
         success: function(data)
         {
-            alert(data); 
+            // alert(data); 
         }
       });
 
