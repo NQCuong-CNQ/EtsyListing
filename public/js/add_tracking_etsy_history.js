@@ -107,11 +107,6 @@ filterTrangAccount = data => {
             dataFilter.push(item)
         }
     }
-    // for (let i = 0; i < data.length; i++) {
-    //     if (data[i].user == 'Trang') {
-    //         dataFilter.push(data[i])
-    //     }
-    // }
     return dataFilter
 }
 
@@ -122,11 +117,6 @@ filterMyAccount = data => {
             dataFilter.push(item)
         }
     }
-    // for (let i = 0; i < data.length; i++) {
-    //     if (data[i].user == 'My') {
-    //         dataFilter.push(data[i])
-    //     }
-    // }
     return dataFilter
 }
 
@@ -137,11 +127,6 @@ filterAdded = data => {
             dataFilter.push(item)
         }
     }
-    // for (let i = 0; i < data.length; i++) {
-    //     if (data[i].time_add_tracking !== undefined) {
-    //         dataFilter.push(data[i])
-    //     }
-    // }
     return dataFilter
 }
 

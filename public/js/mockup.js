@@ -48,12 +48,6 @@ checkSelectedAction = list => {
       count++
     }
   }
-  console.log(count)
-  // for (let i = 0; i < list.length; i++) {
-  //   if (list[i]) {
-  //     count++
-  //   }
-  // }
 
   if (count >= list.length) {
     return 1
@@ -177,16 +171,7 @@ handleFileSelect = async evt => {
       valuemax += srcBackgroundVer.length
     }
   }
-  // for (let i = 0; i < files.length; i++) {
-  //   img = new Image
-  //   img.src = URL.createObjectURL(files[i])
-  //   await img.decode()
-  //   if (img.naturalWidth > img.naturalHeight) {
-  //     valuemax += srcBackgroundHor.length
-  //   } else if (img.naturalWidth < img.naturalHeight) {
-  //     valuemax += srcBackgroundVer.length
-  //   }
-  // }
+
   progressRange = (100 / valuemax)
   toastr.clear()
   toastr.info('Rendering Mockup...')

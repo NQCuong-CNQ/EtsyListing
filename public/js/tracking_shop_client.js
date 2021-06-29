@@ -48,11 +48,7 @@ searchLocalShop = shopName => {
       shop.push(item)
     }
   }
-  // for (let i = 0; i < shopData.length; i++) {
-  //   if (shopData[i].shop_name.toLowerCase().includes(shopName)) {
-  //     shop.push(shopData[i])
-  //   }
-  // } 
+
   return shop
 }
 
@@ -144,19 +140,11 @@ timeCreatedShopFilterAction = dataFilter => {
   }
 
   for (let item of dataFilter) {
-    // if (item.total_sales >= salesLargerThan) {
-    //   filterData.push(item)
-    // }
-
     if (getDayTimeLife(item.creation_tsz) <= daysInTime) {
       shopTimeDataFilter.push(item)
     }
   }
-  // for (let i = 0; i < dataFilter.length; i++) {
-  //   if (getDayTimeLife(dataFilter[i].creation_tsz) <= daysInTime) {
-  //     shopTimeDataFilter.push(dataFilter[i])
-  //   }
-  // }
+
   return shopTimeDataFilter
 }
 
@@ -186,11 +174,7 @@ getMonthFilter = data => {
       filterData.push(item)
     }
   }
-  // for (let i = 0; i < data.length; i++) {
-  //   if (getMonthTime(data[i].creation_tsz) == parseInt(monthFilterShop)) {
-  //     filterData.push(data[i])
-  //   }
-  // }
+
   return filterData
 }
 
@@ -206,11 +190,7 @@ timeCreatedShopFilterCustom = data => {
       filterData.push(item)
     }
   }
-  // for (let i = 0; i < data.length; i++) {
-  //   if (data[i].creation_tsz >= ~~(dateFrom / 1000) && data[i].creation_tsz <= ~~(dateTo / 1000)) {
-  //     filterData.push(data[i])
-  //   }
-  // }
+
   return filterData
 }
 
@@ -229,11 +209,6 @@ getCategoryProduct = dataFilter => {
       listShopName.push(item.shop_name)
     }
   }
-  // for (let i = 0; i < shopCategory.length; i++) {
-  //   if (shopCategory[i].category.includes(category)) {
-  //     listShopName.push(shopCategory[i].shop_name)
-  //   }
-  // }
 
   for (let item of listShopName) {
     for (let itemFilter of dataFilter) {
@@ -243,13 +218,6 @@ getCategoryProduct = dataFilter => {
     }
   }
 
-  // for (let index = 0; index < listShopName.length; index++) {
-  //   for (let j = 0; j < dataFilter.length; j++) {
-  //     if (listShopName[index] == dataFilter[j].shop_name) {
-  //       filterData.push(dataFilter[j])
-  //     }
-  //   }
-  // }
   return filterData
 }
 
@@ -261,11 +229,7 @@ getTypeProduct = (dataFilter, isDigit = false) => {
       filterData.push(item)
     }
   }
-  // for (let i = 0; i < dataFilter.length; i++) {
-  //   if (isDigitShop(dataFilter[i]) == isDigit) {
-  //     filterData.push(dataFilter[i])
-  //   }
-  // }
+
   return filterData
 }
 
@@ -276,11 +240,7 @@ getShopNameByID = id => {
       return item.shop_name
     }
   }
-  // for (let i = 0; i < shopData.length; i++) {
-  //   if (shopData[i].shop_id == id) {
-  //     return shopData[i].shop_name
-  //   }
-  // }
+
   return 'Shop'
 }
 
@@ -290,11 +250,7 @@ getShopUserByID = id => {
       return item.user_id
     }
   }
-  // for (let i = 0; i < shopData.length; i++) {
-  //   if (shopData[i].shop_id == id) {
-  //     return shopData[i].user_id
-  //   }
-  // }
+
   return null
 }
 
@@ -683,10 +639,6 @@ socket.on("return-listing-data", data => {
     pageLength: 25
   })
 })
-
-/* ------------------------------------------------END SOCKET SECTION------------------------------------------------ */
-
-/* ------------------------------------------------ADDITIONAL SECTION------------------------------------------------ */
 
 $('#find-shop-by-name').on('keypress', e => {
   if (e.key == 'Enter') {

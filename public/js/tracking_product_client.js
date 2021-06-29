@@ -82,7 +82,6 @@ var dataSelect = [
     text: "Personalize"
   }
 ]
-/* ------------------------------------------------MAIN SECTION------------------------------------------------ */
 
 IsJsonString = str => {
   try {
@@ -312,15 +311,7 @@ getSearchLevel = keyword => {
       searchData['level3'].push(formatForSearch(item))
     }
   }
-  // for (let i = 0; i < keyword.length; i++) {
-  //   if (level1.includes(keyword[i])) {
-  //     searchData['level1'].push(formatForSearch(keyword[i]))
-  //   } else if (level2.includes(keyword[i])) {
-  //     searchData['level2'].push(formatForSearch(keyword[i]))
-  //   } else if (level3.includes(keyword[i])) {
-  //     searchData['level3'].push(formatForSearch(keyword[i]))
-  //   }
-  // }
+
   return searchData
 }
 
@@ -333,13 +324,7 @@ searchByLevel = (key, data) => {
       }
     }
   }
-  // for (let i = 0; i < data.length; i++) {
-  //   for (let j = 0; j < key.length; j++) {
-  //     if (formatForSearch(data[i].title).indexOf(key[j]) != -1) {
-  //       searchData.push(data[i])
-  //     }
-  //   }
-  // }
+
   return searchData
 }
 
@@ -357,16 +342,6 @@ searchByLevelCate = (key, data) => {
     }
   }
 
-  // for (let i = 0; i < data.length; i++) {
-  //   for (let j = 0; j < key.length; j++) {
-  //     if (formatForSearch(data[i].title).indexOf(key[j]) != -1) {
-  //       searchData.push(data[i])
-  //     }
-  //     else if (formatForSearch(data[i].taxonomy_path[data[i].taxonomy_path.length - 1]).indexOf(key[j]) != -1) {
-  //       searchData.push(data[i])
-  //     }
-  //   }
-  // }
   return searchData
 }
 
@@ -394,11 +369,7 @@ filterByDate = (data, days) => {
       filterData.push(item)
     }
   }
-  // for (let i = 0; i < data.length; i++) {
-  //   if (getDayTimeLife(data[i].original_creation_tsz) <= days) {
-  //     filterData.push(data[i])
-  //   }
-  // }
+
   return filterData
 }
 
@@ -578,17 +549,9 @@ handleDuplicates = () => {
   let dataDupPos = new Object
   let dataDupById, temp
 
-  // for (let item of listingData){
-  //   dataDupPos[`${item.listing_id}`] = ''
-  // }
-
   for (let i = 0; i < listingData.length; i++) {
     dataDupPos[`${listingData[i].listing_id}`] = ''
   }
-
-  // for (let item of listingData){
-  //   dataDupPos[`${item.listing_id}`] += i + ','
-  // }
 
   for (let i = 0; i < listingData.length; i++) {
     dataDupPos[`${listingData[i].listing_id}`] += i + ','
@@ -685,12 +648,6 @@ socket.on("return-product-tracking-join", data => {
   isGettingData = false
 })
 
-// $("body").on('click', e=>{
-//   if (e.target.className != "popup-analytic-container") {
-//     $(".popup-analytic-container").css('display', 'none')
-//   }
-// })
-
 showAnalytic = id => {
   if (isGettingData) {
     toastr.clear()
@@ -704,11 +661,6 @@ showAnalytic = id => {
         tempData.push(item)
       }
     }
-    // for (let i = 0; i < dataOriginal.length; i++) {
-    //   if (dataOriginal[i].listing_id == id) {
-    //     tempData.push(dataOriginal[i])
-    //   }
-    // }
 
     var ctx = document.getElementById("chart-analytic-product").getContext("2d")
     var gradientblue = ctx.createLinearGradient(0, 0, 0, 225)
