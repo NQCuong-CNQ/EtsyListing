@@ -278,16 +278,16 @@ updateData = (data = shopData) => {
         <td>
           <a href="${item.url}" target="_blank">${item.shop_name}
             <div> 
-              <img src="${item.imgs_listing[0]}" alt="Empty" width="70px" height="70px">
-              <img src="${item.imgs_listing[1]}" alt="Empty" width="70px" height="70px">
-              <img src="${item.imgs_listing[2]}" alt="Empty" width="70px" height="70px">
-              <img src="${item.imgs_listing[3]}" alt="Empty" width="70px" height="70px">
+              <img src="${item.imgs_listing[0]}" loading="lazy" alt="Empty" width="70px" height="70px">
+              <img src="${item.imgs_listing[1]}" loading="lazy" alt="Empty" width="70px" height="70px">
+              <img src="${item.imgs_listing[2]}" loading="lazy" alt="Empty" width="70px" height="70px">
+              <img src="${item.imgs_listing[3]}" loading="lazy" alt="Empty" width="70px" height="70px">
             </div>
             <div class="mt-1">
-              <img src="${item.imgs_listing[4]}" alt="Empty" width="70px" height="70px">
-              <img src="${item.imgs_listing[5]}" alt="Empty" width="70px" height="70px">
-              <img src="${item.imgs_listing[6]}" alt="Empty" width="70px" height="70px">
-              <img src="${item.imgs_listing[7]}" alt="Empty" width="70px" height="70px">
+              <img src="${item.imgs_listing[4]}" loading="lazy" alt="Empty" width="70px" height="70px">
+              <img src="${item.imgs_listing[5]}" loading="lazy" alt="Empty" width="70px" height="70px">
+              <img src="${item.imgs_listing[6]}" loading="lazy" alt="Empty" width="70px" height="70px">
+              <img src="${item.imgs_listing[7]}" loading="lazy" alt="Empty" width="70px" height="70px">
             </div>
           </a>
         </td>
