@@ -71,7 +71,7 @@ async function main() {
   // await getShopName()
   // await updateShopInfo()
   // await completeUpdate()
-  // await updateData()
+  await updateData()
   isUpdate = false
   // await dbo.collection("user").deleteMany()
   // await dbo.collection("user").updateOne({ user_name: 'admin' }, { $set: { user_name: 'admin', pass: md5('Vhy!65@ljHgd8863') } }, { upsert: true })
@@ -234,7 +234,7 @@ async function getListing() {
       }
       await sleep(100)
     } catch (error) {
-      console.log(error)
+      console.log('getListing ' + error)
     }
   }
 }
@@ -389,7 +389,7 @@ async function updateShopInfo() {
         await sleep(100)
       }
     } catch (error) {
-      console.log(error)
+      console.log('updateShopInfo error ' + error)
     }
   }
 }
@@ -622,6 +622,10 @@ io.on("connection", async function (client) {
   })
 
   client.on("track-order-join", async function (data) {
+    if (isUpdate) {
+      console.log('server is updating, not run add tracking!')
+      return
+    }
     console.log('getting data success! ' + data['data'].length)
     client.broadcast.emit("add-tracking-status-server-to-client", { name: 'server', status: 2 })
     let trackData = []
@@ -649,7 +653,7 @@ io.on("connection", async function (client) {
         trackDataForSave['user'] = data['name']
         await dbo.collection("tracking_etsy_history").updateOne({ id: trackDataForSave['id'] }, { $set: trackDataForSave }, { upsert: true })
       } catch (error) {
-        console.log(error)
+        console.log('track-order-join error ' + error)
       }
     }
 
