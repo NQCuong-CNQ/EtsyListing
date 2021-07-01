@@ -147,13 +147,6 @@ async function addTrackingAction(id, number) {
     trackData['id'] = id
     trackData['number_tracking'] = number
 
-    let findQuery = 0
-    if (document.querySelector('html').innerText.indexOf('item purchased') == -1 && document.querySelector('html').innerText.indexOf('items purchased') != -1) {
-        findQuery = 1
-    }
-    trackData['find_query'] = findQuery
-
-    socket.emit("track-order-step1", trackData)
     socket.emit("add-tracking-status-vps-to-server", {name: shopName, status: id})
 }
 
