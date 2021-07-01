@@ -92,20 +92,24 @@ socket.on("track-order-step4", async function (name) {
         }
 
         if (nameCarrier == 'FedEx') {
+            console.log('FedEx')
             return
         }
 
         let actualInput = $('input[placeholder="Enter tracking number (recommended)"]').val()
 
         if (actualInput.length <= 16) {
+            console.log('actualInput.length <= 16')
             return
         }
 
         if (nameCarrier == 'USPS' && !trackData['number_tracking'].startsWith('9')) {
+            console.log('USPS ! 9')
             return
         }
 
         if (nameCarrier == 'UPS' && !(trackData['number_tracking'].startsWith('1Z') || trackData['number_tracking'].startsWith('8'))) {
+            console.log('UPS ! 1Z 8')
             return
         }
 
@@ -113,6 +117,7 @@ socket.on("track-order-step4", async function (name) {
         trackData['actual_input'] = actualInput
 
         if (actualInput == trackData['number_tracking']) {
+            console.log('click fn')
             $('#mark-as-complete-overlay .wt-overlay__footer__action button.wt-btn--filled').trigger('click')
         } else {
             return
