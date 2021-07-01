@@ -71,7 +71,7 @@ async function main() {
   // await getShopName()
   // await updateShopInfo()
   // await completeUpdate()
-  await updateData()
+  // await updateData()
   isUpdate = false
   // await dbo.collection("user").deleteMany()
   // await dbo.collection("user").updateOne({ user_name: 'admin' }, { $set: { user_name: 'admin', pass: md5('Vhy!65@ljHgd8863') } }, { upsert: true })
