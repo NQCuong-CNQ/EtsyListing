@@ -100,9 +100,9 @@
 //       case 'Dec': return '12'
 //     }
 //   }
-const axios = require("axios")
+// const axios = require("axios")
 date = new Date().getTime()
-date = Math.floor(date / 3600000)
+date = Math.floor(date / 3600000) + 1
 
 console.log(26 - date % 26)
 
