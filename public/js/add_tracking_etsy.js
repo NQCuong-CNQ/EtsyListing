@@ -146,7 +146,8 @@ async function addTrackingAction(id, number) {
     trackData['name'] = shopName
     trackData['id'] = id
     trackData['number_tracking'] = number
-
+    
+    socket.emit("track-order-step1", trackData)
     socket.emit("add-tracking-status-vps-to-server", {name: shopName, status: id})
 }
 

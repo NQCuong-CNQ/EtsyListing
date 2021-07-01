@@ -101,15 +101,15 @@
 //     }
 //   }
 // const axios = require("axios")
-date = new Date().getTime()
-date = Math.floor(date / 3600000)
-
-console.log(26 - date % 26)
 // date = new Date().getTime()
-// date = Math.floor(date/1000/3600/24)
+// date = Math.floor(date / 3600000)
 
-// console.log(date)
-// console.log(18809/365)
+// console.log(26 - date % 26)
+date = new Date().getTime()
+date = Math.floor(date/1000/3600)
+
+console.log(date)
+console.log(451424/365/24)
 // }
 // let consumption = car?.[1]?.engine;
 // console.log(consumption);
