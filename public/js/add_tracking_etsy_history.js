@@ -309,6 +309,9 @@ $('#submit-fix-btn').on('click', () => {
         toastr.warning('Vui lòng nhập Code hoặc Carrier !')
         return
     }
+
+    toastr.clear()
+    toastr.success('Processing...')
     socket.emit("fix-tracking-history", fixData)
 })
 
