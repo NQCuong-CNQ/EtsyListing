@@ -71,7 +71,7 @@ async function main() {
   // await getShopName()
   // await updateShopInfo()
   // await completeUpdate()
-  // await updateData()
+  await updateData()
   isUpdate = false
   // await dbo.collection("user").deleteMany()
   // await dbo.collection("user").updateOne({ user_name: 'admin' }, { $set: { user_name: 'admin', pass: md5('Vhy!65@ljHgd8863') } }, { upsert: true })
@@ -441,9 +441,9 @@ io.on("connection", async function (client) {
     if (IsJsonString(result)) {
       result = JSON.parse(result).results
       client.emit("return-listing-data", result)
-      return
+    } else {
+      client.emit("return-listing-data", 0)
     }
-    client.emit("return-listing-data", 0)
   })
 
   client.on("get_user_by_user_id", async function (user_id) {
@@ -451,9 +451,9 @@ io.on("connection", async function (client) {
     if (IsJsonString(result)) {
       result = JSON.parse(result).results
       client.emit("return-user-data", result[0])
-      return
+    } else {
+      client.emit("return-user-data", 0)
     }
-    client.emit("return-user-data", 0)
   })
 
   client.on("shop-tracking", async function (shop_id) {
@@ -555,20 +555,17 @@ io.on("connection", async function (client) {
 
     if (getOldUser == null) {
       await dboBraumstar.collection("users").insertOne(data)
+      let getNewUser = await dboBraumstar.collection("users").findOne({ username: dataUser.userName })
+      console.log(getNewUser)
+      if (getNewUser != null) {
+        isSuccess = 1
+      }
+      client.emit("return-new-user-braumstar", isSuccess)
     }
     else if (getOldUser.username == dataUser.userName) {
       isSuccess = -1
       client.emit("return-new-user-braumstar", isSuccess)
-      clientDBBraumstar.close()
-      return
     }
-
-    let getNewUser = await dboBraumstar.collection("users").findOne({ username: dataUser.userName })
-    console.log(getNewUser)
-    if (getNewUser != null) {
-      isSuccess = 1
-    }
-    client.emit("return-new-user-braumstar", isSuccess)
   })
 
   client.on("add-shop-braumstar", async function (dataShop) {
@@ -624,53 +621,52 @@ io.on("connection", async function (client) {
   client.on("track-order-join", async function (data) {
     if (isUpdate) {
       console.log('server is updating, not run add tracking!')
-      return
-    }
-    console.log('getting data success! ' + data['data'].length)
-    client.broadcast.emit("add-tracking-status-server-to-client", { name: 'server', status: 2 })
-    let trackData = []
-    let temp = data['data'].split('\n')
-    let trackObj
-    let trackDataForSave
+    } else {
+      console.log('getting data success! ' + data['data'].length)
+      client.broadcast.emit("add-tracking-status-server-to-client", { name: 'server', status: 2 })
+      let trackData = []
+      let temp = data['data'].split('\n')
+      let trackObj
+      let trackDataForSave
 
-    for (let i = 1; i < temp.length - 1; i++) {
-      try {
-        trackObj = new Object
-        trackObj['pro_ID'] = temp[i].split(',')[0].replace(/[^0-9]/g, '')
-        trackObj['track_number'] = temp[i].split(',')[19].replace(/[^0-9a-zA-Z]/g, '')
-        trackObj['order_status'] = temp[i].split(',')[3].replace(/[^0-9a-zA-Z]/g, '')
+      for (let i = 1; i < temp.length - 1; i++) {
+        try {
+          trackObj = new Object
+          trackObj['pro_ID'] = temp[i].split(',')[0].replace(/[^0-9]/g, '')
+          trackObj['track_number'] = temp[i].split(',')[19].replace(/[^0-9a-zA-Z]/g, '')
+          trackObj['order_status'] = temp[i].split(',')[3].replace(/[^0-9a-zA-Z]/g, '')
 
-        if (trackObj['track_number'] != '' && trackObj['order_status'] == 'Shipped') {
-          trackData.push(trackObj)
+          if (trackObj['track_number'] != '' && trackObj['order_status'] == 'Shipped') {
+            trackData.push(trackObj)
+          }
+
+          trackDataForSave = new Object
+          trackDataForSave['id'] = trackObj['pro_ID']
+          trackDataForSave['number_tracking'] = trackObj['track_number']
+          trackDataForSave['order_date'] = temp[i].split(',')[2].replace(/"/g, '')
+          trackDataForSave['order_status'] = trackObj['order_status']
+          trackDataForSave['customer_name'] = temp[i].split(',')[12].replace(/[^0-9a-zA-Z]/g, '')
+          trackDataForSave['user'] = data['name']
+          await dbo.collection("tracking_etsy_history").updateOne({ id: trackDataForSave['id'] }, { $set: trackDataForSave }, { upsert: true })
+        } catch (error) {
+          console.log('track-order-join error ' + error)
         }
-
-        trackDataForSave = new Object
-        trackDataForSave['id'] = trackObj['pro_ID']
-        trackDataForSave['number_tracking'] = trackObj['track_number']
-        trackDataForSave['order_date'] = temp[i].split(',')[2].replace(/"/g, '')
-        trackDataForSave['order_status'] = trackObj['order_status']
-        trackDataForSave['customer_name'] = temp[i].split(',')[12].replace(/[^0-9a-zA-Z]/g, '')
-        trackDataForSave['user'] = data['name']
-        await dbo.collection("tracking_etsy_history").updateOne({ id: trackDataForSave['id'] }, { $set: trackDataForSave }, { upsert: true })
-      } catch (error) {
-        console.log('track-order-join error ' + error)
       }
+
+      client.broadcast.emit("get-email-customer-order")
+      await dbo.collection("add_complete").deleteMany()
+      await refreshRPC()
+
+      console.log('reload etsy')
+      client.broadcast.emit("reload-etsy")
+      await sleep(100)
+      client.broadcast.emit("add-tracking-status-server-to-client", { name: 'server', status: 3 })
+      await sleep(40000)
+      console.log('send data to etsy' + trackData.length)
+      client.broadcast.emit("add-tracking-status-server-to-client", { name: 'server', status: 4 })
+      await sleep(100)
+      client.broadcast.emit("track-order-return", trackData)
     }
-
-    client.broadcast.emit("get-email-customer-order")
-    await dbo.collection("add_complete").deleteMany()
-    // client.broadcast.emit("add-tracking-status", 0)
-    await refreshRPC()
-
-    console.log('reload etsy')
-    client.broadcast.emit("reload-etsy")
-    await sleep(100)
-    client.broadcast.emit("add-tracking-status-server-to-client", { name: 'server', status: 3 })
-    await sleep(40000)
-    console.log('send data to etsy' + trackData.length)
-    client.broadcast.emit("add-tracking-status-server-to-client", { name: 'server', status: 4 })
-    await sleep(100)
-    client.broadcast.emit("track-order-return", trackData)
   })
 
   client.on("return-email-customer-order", async function (data) {

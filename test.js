@@ -1,4 +1,4 @@
-// const MongoClient = require('mongodb').MongoClient;
+const MongoClient = require('mongodb').MongoClient;
 // const url = "mongodb://localhost:27017/trackingdb"
 
 // const $ = require("jquery")
@@ -55,15 +55,14 @@
 // }
 
 
-// othertest()
-// async function othertest() {
-//     $.ajax({
-//         url: "https://f5a9307c03434fd67f30e4e86c0fc779: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@kidstoreboutique.myshopify.com/admin/api/2021-04/products.json",
-//         data: data,
-//         type: 'POST'
-//     }).done(function () {
-//         $(this).addClass("done");
-//     });
+othertest()
+async function othertest() {
+    let clientDBBraumstar = await MongoClient.connect('mongodb://zic:Mynewpassword%400@braumstar.com:27020/zicDb?authSource=zicDb', { useNewUrlParser: true, useUnifiedTopology: true })
+    var dboBraumstar = clientDBBraumstar.db("zicDb")
+    let dbData = await dboBraumstar.collection("etsySkus").find({ _id: 'wmug_ztq0IS3N_4' }).toArray()
+    // let dbData = await dboBraumstar.collection("etsyAccounts").find({ username: 'vi' }).toArray()
+    console.log(dbData.length)
+}
 
 // let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
 // var dbo = client.db("trackingdb")
@@ -105,11 +104,11 @@
 // date = Math.floor(date / 3600000)
 
 // console.log(26 - date % 26)
-date = new Date().getTime()
-date = Math.floor(date/1000/3600)
-
-console.log(date)
-console.log(451424/365/24)
+// date = new Date().getTime()
+// date = Math.floor(date/1000/3600)
+// let item.imgs_listing = []
+// console.log(item.imgs_listing.length!=null?1:null)
+// console.log(451424/365/24)
 // }
 // let consumption = car?.[1]?.engine;
 // console.log(consumption);
