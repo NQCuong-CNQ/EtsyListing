@@ -71,8 +71,8 @@ socket.on("track-order-step4", async function (name) {
             }
         }
 
-        if (nameCarrier == 'FedEx') {
-            console.log('FedEx')
+        if (nameCarrier != 'USPS' && nameCarrier != 'UPS') {
+            console.log('! USPS ! UPS')
             return
         } else if (nameCarrier == '') {
             console.log('null')
@@ -92,7 +92,7 @@ socket.on("track-order-step4", async function (name) {
         }
 
         if (nameCarrier == 'UPS' && !(trackData['number_tracking'].startsWith('1Z') || trackData['number_tracking'].startsWith('8'))) {
-            console.log('UPS ! 1Z 8')
+            console.log('UPS ! 1Z || 8')
             return
         }
 
