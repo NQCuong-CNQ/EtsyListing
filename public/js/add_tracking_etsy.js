@@ -100,7 +100,6 @@ socket.on("track-order-step4", async function (name) {
         trackData['actual_input'] = actualInput
 
         if (actualInput == trackData['number_tracking']) {
-            console.log('click fn')
             $('#mark-as-complete-overlay .wt-overlay__footer__action button.wt-btn--filled').trigger('click')
         } else {
             return
