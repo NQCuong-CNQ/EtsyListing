@@ -481,8 +481,7 @@ socket.on("total-shop", data => {
 })
 
 socket.on("last-updated", data => {
-  $('#last-updated').text("Last updated: " + getUpdateHistoryEpoch(data.updateHistory))
-  console.log(data)
+  $('#last-updated').text("Last updated: " + getUpdateHistoryEpoch(data[0].updateHistory))
 })
 
 socket.on("shop-tracking-data", data => {
