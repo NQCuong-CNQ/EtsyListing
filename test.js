@@ -55,24 +55,31 @@ const MongoClient = require('mongodb').MongoClient;
 // }
 
 
-othertest()
-async function othertest() {
-    let clientDBBraumstar = await MongoClient.connect('mongodb://zic:Mynewpassword%400@braumstar.com:27020/zicDb?authSource=zicDb', { useNewUrlParser: true, useUnifiedTopology: true })
-    var dboBraumstar = clientDBBraumstar.db("zicDb")
-    let dbData = await dboBraumstar.collection("etsySkus").find({ _id: 'wmug_ztq0IS3N_4' }).toArray()
-    // let dbData = await dboBraumstar.collection("etsyAccounts").find({ username: 'vi' }).toArray()
-    console.log(dbData.length)
-}
+// othertest()
+// async function othertest() {
+//     let clientDBBraumstar = await MongoClient.connect('mongodb://zic:Mynewpassword%400@braumstar.com:27020/zicDb?authSource=zicDb', { useNewUrlParser: true, useUnifiedTopology: true })
+//     var dboBraumstar = clientDBBraumstar.db("zicDb")
+//     let dbData = await dboBraumstar.collection("etsySkus").find({ _id: 'wmug_ztq0IS3N_4' }).toArray()
+//     // let dbData = await dboBraumstar.collection("etsyAccounts").find({ username: 'vi' }).toArray()
+//     console.log(dbData.length)
+// }
+
+// var date = new Date()
+// var end = date.toLocaleDateString("en-US")
+// console.log(end)
+// var d = new Date().getHours();
+// console.log(d)
 
 // let client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
 // var dbo = client.db("trackingdb")
 // console.log('oldListing')
-
-// let clientDBBraumstar = await MongoClient.connect('mongodb://zic:Mynewpassword%400@braumstar.com:27020/zicDb?authSource=zicDb', { useNewUrlParser: true, useUnifiedTopology: true })
-// var dboBraumstar = clientDBBraumstar.db("zicDb")
-// let dbData = await dboBraumstar.collection("etsyAccounts").find({ username: 'vi' }).toArray()
-// console.log(dbData)
-// }
+tr()
+async function tr(){
+let clientDBBraumstar = await MongoClient.connect('mongodb://zic:Mynewpassword%400@braumstar.com:27020/zicDb?authSource=zicDb', { useNewUrlParser: true, useUnifiedTopology: true })
+var dboBraumstar = clientDBBraumstar.db("zicDb")
+dboBraumstar.collection("users").deleteOne({ username: 'cuong1' })
+// console.log(dbData.length)
+}
 // 
 
 // function getUpdateHistoryEpoch(input){

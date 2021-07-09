@@ -107,6 +107,30 @@ socket.on("list-shop-braumstar", data => {
     $('#list-shop').text(shop)
 })
 
+$('#submit-user-delete-button').on('click', () => {
+    if ($('#input-user-name-delete').val().trim() == '') {
+        toastr.clear()
+        toastr.warning('Vui lòng điền đầy đủ thông tin!')
+        return
+    }
+    $('#loading').css('display', 'block')
+
+    let user = $('#input-user-name-delete').val().trim()
+    socket.emit("delete-user-braumstar", user)
+})
+
+socket.on("return-delete-user-braumstar", data => {
+    $('#loading').css('display', 'none')
+
+    if (data == 0) {
+        toastr.clear()
+        toastr.warning('User có chứa shop, không xóa!')
+    } else{
+        toastr.clear()
+        toastr.success('Thành công!')
+    }
+})
+
 $('#input-user-shop-list').on('keypress', e => {
     if (e.key == 'Enter') {
         $('#submit-shop-list-button').trigger('click')

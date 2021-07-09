@@ -35,15 +35,11 @@ async function getData() {
     await sleep(5000)
 
     if (location.href.includes("https://app.customcat.com/signin")) {
+        $('#email').val('nlhtrang2209@gmail.com')
+        await sleep(500)
+        $('#password').val('vikingteam')
+        await sleep(500)
         $('#signin-form button').trigger('click')
-        await sleep(3000)
-        if (location.href.includes("https://app.customcat.com/signin")) {
-            $('#email').val('nlhtrang2209@gmail.com')
-            await sleep(500)
-            $('#password').val('vikingteam')
-            await sleep(500)
-            $('#signin-form button').trigger('click')
-        }
         return
     } else if (location.href.includes("https://app.customcat.com/account/dashboard")) {
         location.href = 'https://app.customcat.com/app/102401/main/vieworders'
