@@ -77,8 +77,10 @@ tr()
 async function tr(){
 let clientDBBraumstar = await MongoClient.connect('mongodb://zic:Mynewpassword%400@braumstar.com:27020/zicDb?authSource=zicDb', { useNewUrlParser: true, useUnifiedTopology: true })
 var dboBraumstar = clientDBBraumstar.db("zicDb")
-dboBraumstar.collection("users").deleteOne({ username: 'cuong1' })
-// console.log(dbData.length)
+let shops = await dboBraumstar.collection("etsyAccounts").find({ username: 'cuongtest' }).toArray()
+console.log(shops.length)
+// dboBraumstar.collection("users").deleteOne({ username: 'cuongtest' })
+// console.log(shops.length)
 }
 // 
 

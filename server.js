@@ -622,10 +622,10 @@ io.on("connection", async function (client) {
     let clientDBBraumstar = await MongoClient.connect('mongodb://zic:Mynewpassword%400@braumstar.com:27020/zicDb?authSource=zicDb', { useNewUrlParser: true, useUnifiedTopology: true })
     let dboBraumstar = clientDBBraumstar.db("zicDb")
     let shops = await dboBraumstar.collection("etsyAccounts").find({ username: user }).toArray()
-    
-    if (shops.length == 0) {
+
+    if (shops.length > 0) {
       client.emit("return-delete-user-braumstar", 0)
-    } else if (shops.length > 0) {
+    } else if (shops.length == 0) {
       await dboBraumstar.collection("users").deleteOne({ username: user })
       client.emit("return-delete-user-braumstar", 1)
     }
