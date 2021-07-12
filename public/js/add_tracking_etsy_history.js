@@ -95,25 +95,33 @@ if (isTrangCheckedStorage == 1) {
     isTrangAccount = false
 }
 
-$.ajax({
-  url: '/add_tracking_history/getAll',
-  type: "get",
-  contentType: "application/json",
-  dataType: "json",
-  data: {
-    offset: 0,
-    limit: 100,
-  },
-  success: function (data) {
-    historyData = data.data
-    console.log(historyData)
-    filterData()
-  },
-  error: (jqXHR, textStatus, errorThrown) => {
-    // console.log(jqXHR, textStatus, errorThrown)
-    // reject(new Error(`!Error: statusCode - ${jqXHR.status} - ${errorThrown} While Getting Mockup.`))
-  }
+$('#table_id-tracking-history').DataTable({
+    serverSide: true,
+    ajax: '/add_tracking_history/getAll',
+    scrollX: 0,
+    length: 25,
+    ordering: false
 })
+
+// async function getData(offset = 0, limit = 100, showAdded = 0, showAccount)
+// $.ajax({
+//   url: '/add_tracking_history/getAll',
+//   type: "get",
+//   contentType: "application/json",
+//   dataType: "json",
+//   data: {
+//     offset: 0,
+//     limit: 100,
+//   },
+//   success: function (data) {
+//     historyData = data.data
+//     filterData()
+//   },
+//   error: (jqXHR, textStatus, errorThrown) => {
+//     // console.log(jqXHR, textStatus, errorThrown)
+//     // reject(new Error(`!Error: statusCode - ${jqXHR.status} - ${errorThrown} While Getting Mockup.`))
+//   }
+// })
 
 // socket.on("tracking-history-return-data", data => {
 //     historyData = data
