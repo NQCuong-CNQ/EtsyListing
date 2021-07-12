@@ -99,7 +99,7 @@ $('#table_id-tracking-history').DataTable({
     serverSide: true,
     ajax: '/add_tracking_history/getAll',
     scrollX: 0,
-    length: 25,
+    // length: 25,
     ordering: false
 })
 
