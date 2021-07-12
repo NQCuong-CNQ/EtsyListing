@@ -109,7 +109,8 @@ $.ajax({
   //   limit: 30,
   // },
   success: function (data) {
-    historyData = data
+    historyData = data.data
+    console.log(historyData)
     filterData()
   },
   error: (jqXHR, textStatus, errorThrown) => {
