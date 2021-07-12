@@ -102,7 +102,7 @@ $.ajax({
   dataType: "json",
   data: {
     offset: 0,
-    limit: 30,
+    limit: 100,
   },
   success: function (data) {
     historyData = data.data
