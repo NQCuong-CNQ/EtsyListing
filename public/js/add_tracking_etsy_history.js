@@ -114,9 +114,9 @@ async function getData(offset = 0, limit = 25, showAdded = null, showAccount = n
         data: {
             offset: offset,
             limit: limit,
-            showAdded = showAdded,
-            showAccount = showAccount,
-            search = search,
+            showAdded: showAdded,
+            showAccount: showAccount,
+            search: search,
         },
         success: function (data) {
             historyData = data.data
