@@ -7,7 +7,7 @@ var socket = io.connect("https://giftsvk.com", {
 var historyData = [], isAddedChecked = true, isMyAccount = true,
     isTrangAccount = false, isShowAll = false
 
-// $('#loading').css('display', 'block')
+$('#loading').css('display', 'block')
 // socket.emit("tracking-history-join")
 
 compareAction = (bandA, bandB) => {
