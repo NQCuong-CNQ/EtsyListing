@@ -69,8 +69,8 @@ async function main() {
   isUpdate = true
   // await updateCate()
   // await getShopName()
-  // await updateShopInfo()
-  // await completeUpdate()
+  await updateShopInfo()
+  await completeUpdate()
   // await updateData()
   isUpdate = false
   // await dbo.collection("user").deleteMany()

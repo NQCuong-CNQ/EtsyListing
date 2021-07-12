@@ -75,10 +75,60 @@ const MongoClient = require('mongodb').MongoClient;
 // console.log('oldListing')
 tr()
 async function tr(){
-let clientDBBraumstar = await MongoClient.connect('mongodb://zic:Mynewpassword%400@braumstar.com:27020/zicDb?authSource=zicDb', { useNewUrlParser: true, useUnifiedTopology: true })
-var dboBraumstar = clientDBBraumstar.db("zicDb")
-let shops = await dboBraumstar.collection("etsyAccounts").find({ username: 'cuongtest' }).toArray()
-console.log(shops.length)
+    let clientDBBraumstar = await MongoClient.connect('mongodb://zic:Mynewpassword%400@braumstar.com:27020/zicDb?authSource=zicDb', { useNewUrlParser: true, useUnifiedTopology: true })
+    var dboBraumstar = clientDBBraumstar.db("zicDb")
+    // let users = await dboBraumstar.collection("users").find().toArray()
+
+    let users = await Connection.db.collection('listings').find({})
+console.log(users)
+    // let name = ['trangviking',
+    // 'huyviking',
+    // 'hoaviking',
+    // 'phuongviking',
+    // 'hieuviking',
+    // 'uk',
+    // 'uk2',
+    // 'uk3',
+    // 'au',
+    // 'uk4',
+    // 'uk5',
+    // 'uk6',
+    // 'de1',
+    // 'ca1',
+    // 'au1',
+    // 'ca2',
+    // 'de2',
+    // 'us',
+    // 'vn',
+    // 'ae1',
+    // 'ae2',
+    // 'ca4',
+    // 'ca5',
+    // 'pule',
+    // 'ae7',
+    // 'ae8',
+    // 'bin',
+    // 'proxyca4',
+    // 'vi']
+    // for (let i = 0; i < name.length; i++) {
+    //     await dboBraumstar.collection("etsyAccounts").deleteMany({username: name[i]})
+    //     await dboBraumstar.collection("users").deleteMany({ username: name[i]})
+    //     console.log('done')
+    // }
+
+    // console.log(num.length)
+    // for (let i = 0; i < users.length; i++) {
+    //     console.log(users[i].username)
+    // }
+    // return
+    // for (let i = 0; i < users.length; i++) {
+    //     let num = await dboBraumstar.collection("etsyAccounts").find({username: users[i].username}).toArray()
+    //     if(num.length == 0){
+    //         console.log(users[i].username)
+    //         await dboBraumstar.collection("users").deleteOne({ username: users[i].username })
+    //     }
+        
+    // }
 // dboBraumstar.collection("users").deleteOne({ username: 'cuongtest' })
 // console.log(shops.length)
 }
