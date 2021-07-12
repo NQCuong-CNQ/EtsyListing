@@ -538,7 +538,7 @@ if (listingLocalData != null && IsJsonString(listingLocalData)) {
   $('#loading').css('display', 'block')
 }
 
-socket.emit("product-tracking-join")
+// socket.emit("product-tracking-join")
 
 socket.on("updating", () => {
   toastr.clear()
@@ -645,6 +645,14 @@ $.ajax({
   type: "get",
   contentType: "application/json",
   dataType: "json",
+  query: {
+    offset: 0,
+    limit: 30,
+  },
+  data: {
+    offset: 0,
+    limit: 30,
+  },
   success: function (data) {
     listingData = dataOriginal = data.data
     handleDuplicates()
@@ -660,9 +668,6 @@ $.ajax({
 })
 
 socket.on("return-product-tracking-join", data => {
-
-  
-
   listingData = dataOriginal = data
   handleDuplicates()
   searchOrFilterData()
