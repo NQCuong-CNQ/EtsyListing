@@ -105,7 +105,7 @@ if (isTrangCheckedStorage == 1) {
 
 getData()
 
-async function getData(offset = 0, limit = 25, showAdded = 1, showAccount = null, search = null) {
+async function getData(offset = 0, limit = 25, showAdded = true, showAccount = null, search = null) {
     $.ajax({
         url: '/add_tracking_history/getAll',
         type: "get",
@@ -119,10 +119,10 @@ async function getData(offset = 0, limit = 25, showAdded = 1, showAccount = null
             search: search,
         },
         success: function (data) {
-            historyData = data.data
-            console.log(historyData)
+            // historyData = data.data
+            // console.log(historyData)
             // filterData()
-            updateData(historyData)
+            updateData(data.data)
         },
         error: (jqXHR, textStatus, errorThrown) => {
             // console.log(jqXHR, textStatus, errorThrown)
@@ -167,23 +167,28 @@ filterAdded = data => {
 }
 
 filterData = () => {
-    let filterData = historyData
+    let offset = 0, limit = 25, showAdded = true, showAccount = null, search = null
+    // let filterData = historyData
 
     if (isMyAccount && isTrangAccount) {
+        showAccount = null
     } else if (isMyAccount) {
-        filterData = filterMyAccount(filterData)
+        showAccount = 'My'
     } else if (isTrangAccount) {
-        filterData = filterTrangAccount(filterData)
+        showAccount = 'Trang'
     } else {
-        filterData = []
+        showAccount = ''
     }
 
-    if (isAddedChecked) {
-        filterData = filterAdded(filterData)
-    }
+    showAdded = isAddedChecked
 
-    filterData.sort(compareDay)
-    updateData(filterData)
+    await getData(offset, limit, showAdded, showAccount, search)
+    // if (isAddedChecked) {
+        // filterData = filterAdded(filterData)
+    // }
+
+    // filterData.sort(compareDay)
+    // updateData(filterData)
 }
 
 $('#show-added-tracking').on('change', () => {
