@@ -39,7 +39,7 @@ module.exports.getAll = async function (req, res) {
     clientDB = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
     dbo = clientDB.db("trackingdb")
 
-    let total = await dbo.collection("tracking_etsy_history").count()
+    let total = await dbo.collection("tracking_etsy_history").find({ ...searchObj }).count()
     let dbData = await dbo.collection("tracking_etsy_history").find({ ...searchObj }).sort({ $natural: -1 }).skip(offset).limit(limit).toArray()
 
 

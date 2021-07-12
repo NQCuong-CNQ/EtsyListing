@@ -120,6 +120,7 @@ async function getData(offset = 0, limit = 25, showAdded = null, showAccount = n
         },
         success: function (data) {
             historyData = data.data
+            console.log(historyData)
             filterData()
         },
         error: (jqXHR, textStatus, errorThrown) => {
