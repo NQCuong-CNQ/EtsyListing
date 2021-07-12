@@ -649,10 +649,10 @@ $.ajax({
     offset: 0,
     limit: 30,
   },
-  data: {
-    offset: 0,
-    limit: 30,
-  },
+  // data: {
+  //   offset: 0,
+  //   limit: 30,
+  // },
   success: function (data) {
     listingData = dataOriginal = data.data
     handleDuplicates()
