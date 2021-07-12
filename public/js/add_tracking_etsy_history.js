@@ -105,7 +105,7 @@ if (isTrangCheckedStorage == 1) {
 
 getData()
 
-async function getData(offset = 0, limit = 25, showAdded = null, showAccount = null, search = null) {
+async function getData(offset = 0, limit = 25, showAdded = 1, showAccount = null, search = null) {
     $.ajax({
         url: '/add_tracking_history/getAll',
         type: "get",
