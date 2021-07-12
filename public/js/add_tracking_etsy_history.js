@@ -285,7 +285,8 @@ getCarrierCode = code => {
 }
 
 updateData = (data = historyData) => {
-    $('#table_id-tracking-history').DataTable().clear().destroy()
+    // $('#table_id-tracking-history').DataTable().clear().destroy()
+    $('#table_id-tracking-history').empty()
     for (let item of data) {
         $('#table_id-tracking-history-body').append(`<tr>
             <td>${item.id}</td>
