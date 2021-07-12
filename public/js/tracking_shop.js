@@ -704,8 +704,8 @@ $('#6m-time-created-shop-filter').on('click', () => {
 $('#custom-time-created-shop-filter').daterangepicker({
   "showDropdowns": true,
   "minYear": 2010,
-  "maxYear": 2023,
-  "startDate": "12/05/2021",
+  "maxYear": parseInt(moment().format('YYYY'), 10),
+  "startDate": moment().format('MM-DD-YYYY'),
   "opens": "center"
 }, function (start, end, label) {
   timeCreatedShopFilter = 'custom'
