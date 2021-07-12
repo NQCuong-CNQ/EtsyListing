@@ -166,7 +166,7 @@ filterAdded = data => {
     return dataFilter
 }
 
-filterData = () => {
+filterData = async () => {
     let offset = 0, limit = 25, showAdded = true, showAccount = null, search = null
     // let filterData = historyData
 
