@@ -12,6 +12,10 @@ router.get("/tracking-shop", authMiddleware.requireAuth, function (req, res) {
     res.render("tracking_shop", {title: 'Tracking Shops', active: 'tracking-shop'})
 })
 
+router.get("/tracking-shop-test", authMiddleware.requireAuth, function (req, res) {
+    res.render("tracking_shop_test", {title: 'Tracking Shops test', active: 'tracking-shop'})
+})
+
 router.get("/tracking-shop/data", authMiddleware.requireAuth, shopController.getAll)
 
 router.get("/tracking-product", authMiddleware.requireAuth, function (req, res) {

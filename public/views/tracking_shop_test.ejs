@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('partials/header.ejs') %>
+
+    <link rel="stylesheet" type="text/css" href="css/app.css?v=1.1" />
+    <link rel="stylesheet" type="text/css" href="css/style.css?v=1.1" />
+    <link rel="stylesheet" type="text/css" href="css/dataTables.css" />
+    <link rel="stylesheet" type="text/css" href="css/daterangepicker.css" />
+    <link rel="stylesheet" type="text/css" href="css/toastr.min.css" />
+
+</head>
+
+<body>
+    <div class="wrapper">
+        <%- include('partials/sidebar.ejs', {active: active}) %>
+
+        <div class="main">
+            <%- include('partials/navbar.ejs') %>
+
+            <main class="content">
+                <div id="loading">
+                    <div class="lds-ellipsis">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                    <h3>Getting Data...</h3>
+                </div>
+                <div class="container-fluid">
+                    <div id="list-shop-section">
+                        <div class="filter-shop-container">
+                            <h5 style="margin-right: 0.5rem; align-self: flex-end;">Type:
+                            </h5>
+                            <div class="dropdown">
+                                <button class="btn dropdown-toggle" type="button" data-toggle="dropdown"><span
+                                        id="dropdown-filter-type-product">POD</span>
+                                    <span class="caret"></span></button>
+                                <ul class="dropdown-menu">
+                                    <li id="pod-type-product-filter">
+                                        <p>POD
+                                        <p>
+                                    </li>
+                                    <li id="digital-type-product-filter">
+                                        <p>Digital
+                                        <p>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <h5 style="margin-right: 0.5rem; margin-left: 1.5rem; align-self: flex-end;">Products:</h5>
+                            <div class="dropdown">
+                                <button class="btn dropdown-toggle" type="button" data-toggle="dropdown"><span
+                                        id="dropdown-filter-shop">All</span>
+                                    <span class="caret"></span></button>
+                                <ul class="dropdown-menu">
+                                    <li id="canvas-shop-filter">
+                                        <p>Canvas
+                                        <p>
+                                    </li>
+                                    <li id="shirt-shop-filter">
+                                        <p>Shirt
+                                        <p>
+                                    </li>
+                                    <li id="mug-shop-filter">
+                                        <p>Mugs
+                                        <p>
+                                    </li>
+                                    <li id="blanket-shop-filter">
+                                        <p>Blanket
+                                        <p>
+                                    </li>
+                                    <li id="tumbler-shop-filter">
+                                        <p>Tumbler
+                                        <p>
+                                    </li>
+                                    <li id="all-shop-filter">
+                                        <p>All
+                                        <p>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <h5 style="margin-right: 0.5rem; margin-left: 1.5rem; align-self: flex-end;">Creation time:
+                            </h5>
+                            <div class="dropdown">
+                                <button class="btn dropdown-toggle" type="button" data-toggle="dropdown"><span
+                                        id="dropdown-filter-shop-time-created">All</span>
+                                    <span class="caret"></span></button>
+                                <ul class="dropdown-menu">
+                                    <li id="all-time-created-shop-filter">
+                                        <p>All
+                                        <p>
+                                    </li>
+                                    <li id="1m-time-created-shop-filter">
+                                        <p>In 1 months
+                                        <p>
+                                    </li>
+                                    <li id="3m-time-created-shop-filter">
+                                        <p>In 3 months
+                                        <p>
+                                    </li>
+                                    <li id="6m-time-created-shop-filter">
+                                        <p>In 6 months
+                                        <p>
+                                    </li>
+                                    <li id="custom-time-created-shop-filter">
+                                        <p>Custom
+                                        <p>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <h5 style="margin-right: 0.5rem; margin-left: 1.5rem; align-self: flex-end;">Sales >
+                            </h5>
+                            <input type="text" id="sales-larger-than" placeholder="All">
+
+                            <h5 style="margin-right: 0.5rem; margin-left: 1.5rem; align-self: flex-end;">Month:
+                            </h5>
+                            <input type="text" id="month-filter-shop" placeholder="All">
+
+                            <h5 style="margin-right: 0.5rem; margin-left: 1.5rem; align-self: flex-end;">Find Shop:
+                            </h5>
+                            <input id="find-shop-by-name" placeholder='Shop Name'>
+                            <button class='button-primary' id="find-shop-by-name-button">Search</button>
+                        </div>
+
+                        <div>
+                            <table id="table-shop" class="stripe">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Shop Name</th>
+                                        <th>Sales/Day</th>
+                                        <th>Total Sales</th>
+                                        <th>Num Favorers</th>
+                                        <th>Creation Time</th>
+                                        <th>Listing Count</th>
+                                        <th>Digital Count</th>
+                                        <th>Currency</th>
+                                        <th>Languages</th>
+                                        <th>Shop Id</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table-shop-body">
+                                </tbody>
+                            </table>
+                        </div>
+                        <h6 id="fun-fact"></h6>
+                        <h6 id='last-updated'></h6>
+                    </div>
+
+                    <div id="listing-shop-section" style="display: none">
+                        <button class='button-primary mb-3' id="listing-back-btn"><i
+                                class="fas fa-angle-left mr-1"></i>Back</button>
+                        <h4>Only show maximum 100 listing</h4>
+                        <div>
+                            <table id="table_id-list">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Title</th>
+                                        <th>Category</th>
+                                        <th>Price</th>
+                                        <th>Creation Time</th>
+                                        <th>Views</th>
+                                        <th>Num Favorers</th>
+                                        <th>Quantity</th>
+                                        <th>Customizable</th>
+                                        <th>Is Digital</th>
+                                        <th>Has Variations</th>
+                                        <th>State</th>
+                                        <th>Listing Id</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table-list">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div id="user-shop-section" style="display: none">
+                        <button class='button-primary mb-3' id="user-back-btn"><i
+                                class="fas fa-angle-left mr-1"></i>Back</button>
+                        <div class="user_img_container"><img id="user_img" alt=""></div>
+                        <h4>First Name: <span id="user_fname"></span></h4>
+                        <h4>Last Name: <span id="user_lname"></span></h4>
+                        <h4>Avata: <span id="user_avata"></span></h4>
+                        <h4>Creation Time: <span id="user_creation_time"></span></h4>
+                        <h4>Location: <span id="user_location"></span></h4>
+                        <h4>Region: <span id="user_region"></span></h4>
+                        <h4>User ID: <span id="user_id"></span></h4>
+                        <h4>Bio: <span id="user_bio"></span></h4>
+                        <h4>Birth Date: <span id="user_birth_day"></span></h4>
+                        <h4>Birth Month: <span id="user_birth_month"></span></h4>
+                        <h4>City: <span id="user_city"></span></h4>
+                        <h4>Country ID: <span id="user_country_id"></span></h4>
+                        <h4>Buy Count: <span id="user_buy_count"></span></h4>
+                        <h4>Sold Count: <span id="user_sold_count"></span></h4>
+                    </div>
+                </div>
+
+                <div class="popup-analytic-background">
+                </div>
+
+                <div class="popup-analytic-container">
+                    <button id="btn-close-chart"><i class="fas fa-times-circle"></i></button>
+                    <h2 id="shop-name-chart" class="title-chart-analytic-shop">Shop Analytics</h2>
+
+                    <button type="button" class='button-primary' id="listing-option-button">Listing Detail</button>
+                    <button type="button" class='button-primary ml-3' id="user-option-button">User Detail</button>
+
+                    <div class="chart chart-sm">
+                        <canvas id="chart-total-sales"></canvas>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+</body>
+
+<script type="text/javascript" src="js/extension/jquery.js"></script>
+<script type="text/javascript" src="js/extension/socket.io.js"></script>
+<script type="text/javascript" src="js/extension/moment.min.js"></script>
+<script type="text/javascript" src="js/extension/daterangepicker.min.js"></script>
+<script type="text/javascript" src="js/extension/toastr.min.js"></script>
+<script type="text/javascript" src="js/extension/dataTables.js"></script>
+<script type="text/javascript" src="js/tracking_shop_test.js?v=1.2"></script>
+<script type="text/javascript" src="js/extension/app.js"></script>
+<script type="text/javascript" src="js/extension/fontawesome.min.js"></script>
+<script type="text/javascript" src="js/extension/solid.min.js"></script>
+
+</html>
