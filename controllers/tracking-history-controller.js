@@ -12,13 +12,13 @@ var dbo
 //     res.redirect('/login')
 // }
 
-module.exports.getAll = async function(req, res){
-    let offset = parseInt(req.query.offset) 
+module.exports.getAll = async function (req, res) {
+    let offset = parseInt(req.query.offset)
     let limit = parseInt(req.query.limit)
     clientDB = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
     dbo = clientDB.db("trackingdb")
-    let dbData = await dbo.collection("tracking_etsy_history").find().sort({ $natural: -1 }).skip(offset).limit(limit).toArray()
-    
+    let dbData = await dbo.collection("tracking_etsy_history").find({ time_add_tracking: { $ne: null } }).sort({ $natural: -1 }).skip(offset).limit(limit).toArray()
+
     res.send({
         data: dbData
     })
