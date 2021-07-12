@@ -100,14 +100,10 @@ $.ajax({
   type: "get",
   contentType: "application/json",
   dataType: "json",
-  query: {
+  data: {
     offset: 0,
-    limit: 25,
+    limit: 30,
   },
-  // data: {
-  //   offset: 0,
-  //   limit: 30,
-  // },
   success: function (data) {
     historyData = data.data
     console.log(historyData)
