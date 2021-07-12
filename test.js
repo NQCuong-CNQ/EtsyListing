@@ -77,10 +77,9 @@ tr()
 async function tr(){
     let clientDBBraumstar = await MongoClient.connect('mongodb://zic:Mynewpassword%400@braumstar.com:27020/zicDb?authSource=zicDb', { useNewUrlParser: true, useUnifiedTopology: true })
     var dboBraumstar = clientDBBraumstar.db("zicDb")
-    let users = await dboBraumstar.collection("users").find().toArray()
-
+    let dbData = await dboBraumstar.collection("users").find().sort({ $natural: 1 }).toArray()
 //     let users = await Connection.db.collection('listings').find({})
-console.log(users)
+console.log(dbData)
     // let name = ['trangviking',
     // 'huyviking',
     // 'hoaviking',

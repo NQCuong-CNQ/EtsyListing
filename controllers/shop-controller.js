@@ -17,7 +17,7 @@ module.exports.getAll = async function (req, res) {
     let limit = parseInt(req.query.limit)
     clientDB = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
     dbo = clientDB.db("trackingdb")
-    let dbData = await dbo.collection("shop").find().sort({ $natural: -1 }).skip(offset).limit(limit).toArray()
+    let dbData = await dbo.collection("shop").find().skip(offset).limit(limit).toArray()
 
     res.send({
         data: dbData
