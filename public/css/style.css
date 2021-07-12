@@ -722,3 +722,26 @@ html {
 #cc-img, #etsy-img {
   mix-blend-mode: luminosity;
 }
+
+#table_id-tracking-history {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#table_id-tracking-history td, #table_id-tracking-history th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+#table_id-tracking-history tr:nth-child(even){background-color: #f2f2f2;}
+
+#table_id-tracking-history tr:hover {background-color: #ddd;}
+
+#table_id-tracking-history th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #04AA6D;
+  color: white;
+}
