@@ -7,8 +7,8 @@ var socket = io.connect("https://giftsvk.com", {
 var historyData = [], isAddedChecked = true, isMyAccount = true,
     isTrangAccount = false, isShowAll = false
 
-$('#loading').css('display', 'block')
-socket.emit("tracking-history-join")
+// $('#loading').css('display', 'block')
+// socket.emit("tracking-history-join")
 
 compareAction = (bandA, bandB) => {
     bandA = parseFloat(bandA)
@@ -95,10 +95,33 @@ if (isTrangCheckedStorage == 1) {
     isTrangAccount = false
 }
 
-socket.on("tracking-history-return-data", data => {
+$.ajax({
+  url: '/add_tracking_history/getAll',
+  type: "get",
+  contentType: "application/json",
+  dataType: "json",
+  query: {
+    offset: 0,
+    limit: 25,
+  },
+  // data: {
+  //   offset: 0,
+  //   limit: 30,
+  // },
+  success: function (data) {
     historyData = data
     filterData()
+  },
+  error: (jqXHR, textStatus, errorThrown) => {
+    // console.log(jqXHR, textStatus, errorThrown)
+    // reject(new Error(`!Error: statusCode - ${jqXHR.status} - ${errorThrown} While Getting Mockup.`))
+  }
 })
+
+// socket.on("tracking-history-return-data", data => {
+//     historyData = data
+//     filterData()
+// })
 
 filterTrangAccount = data => {
     let dataFilter = []

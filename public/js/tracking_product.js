@@ -538,7 +538,7 @@ if (listingLocalData != null && IsJsonString(listingLocalData)) {
   $('#loading').css('display', 'block')
 }
 
-// socket.emit("product-tracking-join")
+socket.emit("product-tracking-join")
 
 socket.on("updating", () => {
   toastr.clear()
@@ -640,32 +640,32 @@ handleDuplicates = () => {
 }
 
 
-$.ajax({
-  url: '/tracking-product/getAll',
-  type: "get",
-  contentType: "application/json",
-  dataType: "json",
-  query: {
-    offset: 0,
-    limit: 30,
-  },
-  // data: {
-  //   offset: 0,
-  //   limit: 30,
-  // },
-  success: function (data) {
-    listingData = dataOriginal = data.data
-    handleDuplicates()
-    searchOrFilterData()
-    toastr.clear()
-    toastr.success('Data Updated')
-    isGettingData = false
-  },
-  error: (jqXHR, textStatus, errorThrown) => {
-    // console.log(jqXHR, textStatus, errorThrown)
-    // reject(new Error(`!Error: statusCode - ${jqXHR.status} - ${errorThrown} While Getting Mockup.`))
-  }
-})
+// $.ajax({
+//   url: '/tracking-product/getAll',
+//   type: "get",
+//   contentType: "application/json",
+//   dataType: "json",
+//   query: {
+//     offset: 0,
+//     limit: 30,
+//   },
+//   // data: {
+//   //   offset: 0,
+//   //   limit: 30,
+//   // },
+//   success: function (data) {
+//     listingData = dataOriginal = data.data
+//     handleDuplicates()
+//     searchOrFilterData()
+//     toastr.clear()
+//     toastr.success('Data Updated')
+//     isGettingData = false
+//   },
+//   error: (jqXHR, textStatus, errorThrown) => {
+//     // console.log(jqXHR, textStatus, errorThrown)
+//     // reject(new Error(`!Error: statusCode - ${jqXHR.status} - ${errorThrown} While Getting Mockup.`))
+//   }
+// })
 
 socket.on("return-product-tracking-join", data => {
   listingData = dataOriginal = data
