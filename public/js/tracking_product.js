@@ -302,7 +302,7 @@ getSearchLevel = keyword => {
   let level2 = ["Canvas", "Art Print", "Mug", "Shirt", "Blanket", "Tumbler"]
   let level3 = ["Personalize"]
 
-  for (let item of keyword){
+  for (let item of keyword) {
     if (level1.includes(item)) {
       searchData['level1'].push(formatForSearch(item))
     } else if (level2.includes(item)) {
@@ -317,8 +317,8 @@ getSearchLevel = keyword => {
 
 searchByLevel = (key, data) => {
   let searchData = []
-  for (let item of data){
-    for (let itemKey of key){
+  for (let item of data) {
+    for (let itemKey of key) {
       if (formatForSearch(item.title).indexOf(itemKey) != -1) {
         searchData.push(item)
       }
@@ -331,8 +331,8 @@ searchByLevel = (key, data) => {
 searchByLevelCate = (key, data) => {
   let searchData = []
 
-  for (let item of data){
-    for (let itemKey of key){
+  for (let item of data) {
+    for (let itemKey of key) {
       if (formatForSearch(item.title).indexOf(itemKey) != -1) {
         searchData.push(item)
       }
@@ -364,7 +364,7 @@ searchByKeyword = (keyword, data) => {
 
 filterByDate = (data, days) => {
   let filterData = []
-  for (let item of data){
+  for (let item of data) {
     if (getDayTimeLife(item.original_creation_tsz) <= days) {
       filterData.push(item)
     }
@@ -639,7 +639,30 @@ handleDuplicates = () => {
   }
 }
 
+
+$.ajax({
+  url: '/tracking-product/getAll',
+  type: "get",
+  contentType: "application/json",
+  dataType: "json",
+  success: function (data) {
+    listingData = dataOriginal = data.data
+    handleDuplicates()
+    searchOrFilterData()
+    toastr.clear()
+    toastr.success('Data Updated')
+    isGettingData = false
+  },
+  error: (jqXHR, textStatus, errorThrown) => {
+    // console.log(jqXHR, textStatus, errorThrown)
+    // reject(new Error(`!Error: statusCode - ${jqXHR.status} - ${errorThrown} While Getting Mockup.`))
+  }
+})
+
 socket.on("return-product-tracking-join", data => {
+
+  
+
   listingData = dataOriginal = data
   handleDuplicates()
   searchOrFilterData()
@@ -656,7 +679,7 @@ showAnalytic = id => {
     $('.popup-analytic-container').css('display', 'block')
     $('.popup-analytic-background').css('display', 'block')
     let tempData = []
-    for(let item of dataOriginal){
+    for (let item of dataOriginal) {
       if (item.listing_id == id) {
         tempData.push(item)
       }

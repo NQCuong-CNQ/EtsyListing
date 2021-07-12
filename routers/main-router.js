@@ -2,6 +2,7 @@ var express = require("express")
 var router = express.Router()
 var authController = require('../controllers/auth-controller')
 var shopController = require('../controllers/shop-controller')
+var productController = require('../controllers/product-controller')
 var authMiddleware = require('../middleware/auth-middleware')
 
 router.get("/", authMiddleware.requireAuth, function (req, res) {
@@ -16,7 +17,9 @@ router.get("/tracking-shop-test", authMiddleware.requireAuth, function (req, res
     res.render("tracking_shop_test", {title: 'Tracking Shops test', active: 'tracking-shop'})
 })
 
-router.get("/tracking-shop/data", authMiddleware.requireAuth, shopController.getAll)
+router.get("/tracking-shop/getAll", authMiddleware.requireAuth, shopController.getAll)
+
+router.get("/tracking-product/getAll", authMiddleware.requireAuth, productController.getAll)
 
 router.get("/tracking-product", authMiddleware.requireAuth, function (req, res) {
     res.render("tracking_product", {title: 'Tracking Products', active: 'tracking-product'})
