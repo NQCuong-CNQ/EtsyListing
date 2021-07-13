@@ -6,7 +6,7 @@ var socket = io.connect("https://giftsvk.com", {
 
 var isAddedChecked = true, isMyAccount = true,
     isTrangAccount = false, isShowAll = false,
-    num_per_pag = 25, pag_num = 1, total = 0, search = null
+    num_per_pag = 25, pag_num = 1, total = 0, search = null, search_by = 'id'
 
 $('#loading').css('display', 'block')
 
@@ -106,6 +106,7 @@ getData = (offset, limit, showAccount) => {
             showAdded: isAddedChecked,
             showAccount: showAccount,
             search: search,
+            searchBy: search_by,
         },
         success: function (data) {
             total = data.total
@@ -240,7 +241,7 @@ updatePag = () => {
     if (pag_num == 1) {
         $('#first-pag').addClass('pag_disabled')
         $('#prev-pag').addClass('pag_disabled')
-    } else if (pag_num == ~~(total / num_per_pag) + 1){
+    } else if (pag_num == ~~(total / num_per_pag) + 1) {
         $('#last-pag').addClass('pag_disabled')
         $('#next-pag').addClass('pag_disabled')
     }
@@ -308,6 +309,22 @@ $('#submit-fix-btn').on('click', () => {
     toastr.clear()
     toastr.success('Processing...')
     socket.emit("fix-tracking-history", fixData)
+})
+
+
+$('#search-by-id').on('click', () => {
+    search_by = 1
+    filterData()
+})
+
+$('#search-by-shop').on('click', () => {
+    search_by = 2
+    filterData()
+})
+
+$('#search-by-customer').on('click', () => {
+    search_by = 3
+    filterData()
 })
 
 filterData()
