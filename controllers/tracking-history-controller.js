@@ -31,8 +31,7 @@ module.exports.getAll = async function (req, res) {
     }
 
     if (showAdded == 'true') {
-        customQuery.time_add_tracking = '{ $ne: null }'
-        searchObj = { ...customQuery }
+        searchObj = { ...customQuery, time_add_tracking: { $ne: null } }
         data = await dbo.collection("tracking_etsy_history").find({ ...searchObj }).sort({ time_add_tracking: -1 }).skip(offset).limit(limit).toArray()
     } else {
         searchObj = { ...customQuery }
