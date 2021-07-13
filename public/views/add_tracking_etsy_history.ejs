@@ -66,21 +66,29 @@
                                 </tbody>
                             </table>
 
+                            <p id="total-table">Showing 0 - 0 of 0 rows</p>
+
                             <nav aria-label="Page navigation example">
-                                <ul class="pagination">
+                                <ul class="pagination mt-3">
                                     <li class="page-item">
-                                        <a class="page-link" href="#" aria-label="Previous">
+                                        <a class="page-link" id="first-pag" aria-label="First">
                                             <span aria-hidden="true">&laquo;</span>
-                                            <span class="sr-only">Prev</span>
                                         </a>
                                     </li>
-                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
                                     <li class="page-item">
-                                        <a class="page-link" href="#" aria-label="Next">
+                                        <a class="page-link" id="prev-pag" aria-label="Prev">
+                                            <span aria-hidden="true">&lsaquo;</span>
+                                        </a>
+                                    </li>
+                                    <li class="page-item"><a id="num-pag" class="page-link">1</a></li>
+                                    <li class="page-item">
+                                        <a class="page-link" id="next-pag" aria-label="Next">
+                                            <span aria-hidden="true">&rsaquo;</span>
+                                        </a>
+                                    </li>
+                                    <li class="page-item">
+                                        <a class="page-link" id="last-pag" aria-label="Last">
                                             <span aria-hidden="true">&raquo;</span>
-                                            <span class="sr-only">Next</span>
                                         </a>
                                     </li>
                                 </ul>

@@ -5,7 +5,8 @@ var socket = io.connect("https://giftsvk.com", {
 })
 
 var historyData = [], isAddedChecked = true, isMyAccount = true,
-    isTrangAccount = false, isShowAll = false
+    isTrangAccount = false, isShowAll = false,
+    num_per_pag = 25, pag_num = 1, total = 0
 
 $('#loading').css('display', 'block')
 // socket.emit("tracking-history-join")
@@ -122,10 +123,11 @@ async function getData(offset = 0, limit = 25, showAdded = true, showAccount = n
             // historyData = data.data
             // console.log(historyData)
             // filterData()
+            total = data.total
             updateData(data.data)
         },
         error: (jqXHR, textStatus, errorThrown) => {
-            // console.log(jqXHR, textStatus, errorThrown)
+            console.log(jqXHR, textStatus, errorThrown)
             // reject(new Error(`!Error: statusCode - ${jqXHR.status} - ${errorThrown} While Getting Mockup.`))
         }
     })
@@ -167,7 +169,7 @@ async function getData(offset = 0, limit = 25, showAdded = true, showAccount = n
 // }
 
 filterData = async () => {
-    let offset = 0, limit = 25, showAdded = true, showAccount = null, search = null
+    let offset = num_per_pag * (pag_num - 1), limit = num_per_pag, showAdded = true, showAccount = null, search = null
     $('#loading').css('display', 'block')
     // let filterData = historyData
 
@@ -185,7 +187,7 @@ filterData = async () => {
 
     await getData(offset, limit, showAdded, showAccount, search)
     // if (isAddedChecked) {
-        // filterData = filterAdded(filterData)
+    // filterData = filterAdded(filterData)
     // }
 
     // filterData.sort(compareDay)
@@ -316,8 +318,41 @@ updateData = (data = historyData) => {
     //     ordering: false
     // })
     $('#loading').css('display', 'none')
+    $('#total-table').text(`Showing ${num_per_pag * (pag_num - 1)} - ${num_per_pag * pag_num} of ${total} rows`)
 }
 
+updatePag = () => {
+    $('#num-pag').text(`${pag_num}`)
+    if (pag_num == 1) {
+        //disable
+    }
+}
+
+$('#first-pag').on('click', () => {
+    pag_num = 1
+    filterData()
+    updatePag()
+})
+
+$('#prev-pag').on('click', () => {
+    if (pag_num > 1) {
+        pag_num--
+        filterData()
+        updatePag()
+    }
+})
+
+$('#next-pag').on('click', () => {
+    pag_num++
+    filterData()
+    updatePag()
+})
+
+$('#last-pag').on('click', () => {
+    pag_num = ~~(total / num_per_pag) + 1
+    filterData()
+    updatePag()
+})
 
 $('#fix-tracking-history-btn').on('click', () => {
     $('#fix-tracking-history-btn').toggleClass("active-fix-tracking")
