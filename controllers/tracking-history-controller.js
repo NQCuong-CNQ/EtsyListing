@@ -28,7 +28,7 @@ module.exports.getAll = async function (req, res) {
         customQuery.user = showAccount
     }
 
-    let searchStr = `{ $or:[ {"id":{"$eq":${search}}}, {"name":{"$eq":${search}}}, {"customer_name":{"$eq":${search}}}, {"customer_email":{"$eq":${search}}}, {"number_tracking":{"$eq":${search}}}] }`
+    let searchStr = `{ $or:[ {"id":{"$eq":"${search}"}}, {"name":{"$eq":"${search}"}}, {"customer_name":{"$eq":"${search}"}}, {"customer_email":{"$eq":"${search}"}}, {"number_tracking":{"$eq":"${search}"}}] }`
 
     if (showAdded == 'true') {
         customQuery.time_add_tracking = '{ $ne: null }'
