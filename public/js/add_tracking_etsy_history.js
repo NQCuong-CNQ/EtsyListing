@@ -10,23 +10,23 @@ var historyData = [], isAddedChecked = true, isMyAccount = true,
 $('#loading').css('display', 'block')
 // socket.emit("tracking-history-join")
 
-compareAction = (bandA, bandB) => {
-    bandA = parseFloat(bandA)
-    bandB = parseFloat(bandB)
-    let comparison = 0;
-    if (bandA > bandB) {
-        comparison = 1;
-    } else if (bandA < bandB) {
-        comparison = -1;
-    }
-    return comparison * -1;
-}
+// compareAction = (bandA, bandB) => {
+//     bandA = parseFloat(bandA)
+//     bandB = parseFloat(bandB)
+//     let comparison = 0;
+//     if (bandA > bandB) {
+//         comparison = 1;
+//     } else if (bandA < bandB) {
+//         comparison = -1;
+//     }
+//     return comparison * -1;
+// }
 
-compareDay = (a, b) => {
-    const bandA = a.time_add_tracking
-    const bandB = b.time_add_tracking
-    return compareAction(bandA, bandB)
-}
+// compareDay = (a, b) => {
+//     const bandA = a.time_add_tracking
+//     const bandB = b.time_add_tracking
+//     return compareAction(bandA, bandB)
+// }
 
 convertMonthInString = month => {
     switch (month) {
@@ -136,38 +136,39 @@ async function getData(offset = 0, limit = 25, showAdded = true, showAccount = n
 //     filterData()
 // })
 
-filterTrangAccount = data => {
-    let dataFilter = []
-    for (let item of data) {
-        if (item.user == 'Trang') {
-            dataFilter.push(item)
-        }
-    }
-    return dataFilter
-}
+// filterTrangAccount = data => {
+//     let dataFilter = []
+//     for (let item of data) {
+//         if (item.user == 'Trang') {
+//             dataFilter.push(item)
+//         }
+//     }
+//     return dataFilter
+// }
 
-filterMyAccount = data => {
-    let dataFilter = []
-    for (let item of data) {
-        if (item.user == 'My') {
-            dataFilter.push(item)
-        }
-    }
-    return dataFilter
-}
+// filterMyAccount = data => {
+//     let dataFilter = []
+//     for (let item of data) {
+//         if (item.user == 'My') {
+//             dataFilter.push(item)
+//         }
+//     }
+//     return dataFilter
+// }
 
-filterAdded = data => {
-    let dataFilter = []
-    for (let item of data) {
-        if (item.time_add_tracking !== undefined) {
-            dataFilter.push(item)
-        }
-    }
-    return dataFilter
-}
+// filterAdded = data => {
+//     let dataFilter = []
+//     for (let item of data) {
+//         if (item.time_add_tracking !== undefined) {
+//             dataFilter.push(item)
+//         }
+//     }
+//     return dataFilter
+// }
 
 filterData = async () => {
     let offset = 0, limit = 25, showAdded = true, showAccount = null, search = null
+    $('#loading').css('display', 'block')
     // let filterData = historyData
 
     if (isMyAccount && isTrangAccount) {
@@ -177,7 +178,7 @@ filterData = async () => {
     } else if (isTrangAccount) {
         showAccount = 'Trang'
     } else {
-        showAccount = ''
+        showAccount = ' '
     }
 
     showAdded = isAddedChecked
@@ -230,16 +231,16 @@ $('#show-trang-account-tracking').on('change', () => {
     }
 })
 
-$('#show-all-tracking').on('change', () => {
-    if ($('#show-all-tracking').prop("checked")) {
-        $('#loading').css('display', 'block')
-        socket.emit("tracking-history-get-all")
-    }
-    else {
-        historyData.splice(0, historyData.length - 100)
-        filterData()
-    }
-})
+// $('#show-all-tracking').on('change', () => {
+//     if ($('#show-all-tracking').prop("checked")) {
+//         $('#loading').css('display', 'block')
+//         socket.emit("tracking-history-get-all")
+//     }
+//     else {
+//         historyData.splice(0, historyData.length - 100)
+//         filterData()
+//     }
+// })
 
 formatCustomerName = name => {
     if (name === undefined) {
@@ -357,7 +358,7 @@ $('#submit-fix-btn').on('click', () => {
     socket.emit("fix-tracking-history", fixData)
 })
 
-$('#refresh-btn').on('click', () => {
-    $('#loading').css('display', 'block')
-    socket.emit("tracking-history-join")
-})
+// $('#refresh-btn').on('click', () => {
+//     $('#loading').css('display', 'block')
+//     socket.emit("tracking-history-join")
+// })

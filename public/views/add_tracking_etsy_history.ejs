@@ -4,10 +4,10 @@
 <head>
     <%- include('partials/header.ejs') %>
 
-    <link rel="stylesheet" type="text/css" href="css/app.css" />
-    <link rel="stylesheet" type="text/css" href="css/style.css" />
-    <!-- <link rel="stylesheet" type="text/css" href="css/dataTables.css" /> -->
-    <link rel="stylesheet" type="text/css" href="css/toastr.min.css" />
+        <link rel="stylesheet" type="text/css" href="css/app.css" />
+        <link rel="stylesheet" type="text/css" href="css/style.css" />
+        <!-- <link rel="stylesheet" type="text/css" href="css/dataTables.css" /> -->
+        <link rel="stylesheet" type="text/css" href="css/toastr.min.css" />
 
 </head>
 
@@ -15,65 +15,89 @@
     <div class="wrapper">
         <%- include('partials/sidebar.ejs', {active: active}) %>
 
-        <div class="main">
-            <%- include('partials/navbar.ejs') %>
+            <div class="main">
+                <%- include('partials/navbar.ejs') %>
 
-            <main class="content">
-                <div id="loading">
-                    <div class="lds-ellipsis">
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                    </div>
-                    <h3>Getting Data...</h3>
-                    <h4>In the meantime, eat a piece of cake, drink some water, and take a deep breath</h4>
-                </div>
-
-                <div class="container-fluid">
-                    <div class="checkbox-container">
-                        <div>
-                            <input class="mb-3" type="checkbox" id="show-added-tracking"> Only show added tracking
-                            <input class="ml-3" type="checkbox" id="show-my-account-tracking" checked> Show My's
-                            accounts
-                            <input class="ml-3" type="checkbox" id="show-trang-account-tracking"> Show Trang's accounts
+                    <main class="content">
+                        <div id="loading">
+                            <div class="lds-ellipsis">
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                            </div>
+                            <h3>Getting Data...</h3>
+                            <h4>In the meantime, eat a piece of cake, drink some water, and take a deep breath</h4>
                         </div>
 
-                        <div class="refresh-container">
+                        <div class="container-fluid">
+                            <div class="checkbox-container">
+                                <div>
+                                    <input class="mb-3" type="checkbox" id="show-added-tracking"> Only show added
+                                    tracking
+                                    <input class="ml-3" type="checkbox" id="show-my-account-tracking" checked> Show My's
+                                    accounts
+                                    <input class="ml-3" type="checkbox" id="show-trang-account-tracking"> Show Trang's
+                                    accounts
+                                </div>
+
+                                <!-- <div class="refresh-container">
                             <input class="mr-1" type="checkbox" id="show-all-tracking">Show all tracking
                             <a class="ml-3" id="refresh-btn">Refresh</a>
+                        </div> -->
+                            </div>
+
+                            <table id="table_id-tracking-history">
+                                <thead>
+                                    <tr>
+                                        <th>Order ID</th>
+                                        <th>Shop Name</th>
+                                        <th>Customer Name</th>
+                                        <th>Customer Email</th>
+                                        <th>Tracking Code</th>
+                                        <th>Input Code</th>
+                                        <th>Input Carrier</th>
+                                        <th>Order Date</th>
+                                        <th>Order Status</th>
+                                        <th>Added Time</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table_id-tracking-history-body">
+                                </tbody>
+                            </table>
+
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination">
+                                    <li class="page-item">
+                                        <a class="page-link" href="#" aria-label="Previous">
+                                            <span aria-hidden="true">&laquo;</span>
+                                            <span class="sr-only">Prev</span>
+                                        </a>
+                                    </li>
+                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="#" aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                            <span class="sr-only">Next</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+
+                            <a id="fix-tracking-history-btn">For Dev</a>
+                            <div class="fix-tracking-history">
+                                <input type="text" id="id-fix-tracking-history" placeholder="ID">
+                                <input class="ml-2" type="text" id="input-code-tracking-history"
+                                    placeholder="Tracking Code">
+                                <input class="ml-2" type="text" id="input-carrier-tracking-history"
+                                    placeholder="Carrier">
+                                <button class="ml-2 button-primary" id="submit-fix-btn">Submit</button>
+                            </div>
                         </div>
-                    </div>
-
-                    <table id="table_id-tracking-history">
-                        <thead>
-                            <tr>
-                                <th>Order ID</th>
-                                <th>Shop Name</th>
-                                <th>Customer Name</th>
-                                <th>Customer Email</th>
-                                <th>Tracking Code</th>
-                                <th>Input Code</th>
-                                <th>Input Carrier</th>
-                                <th>Order Date</th>
-                                <th>Order Status</th>
-                                <th>Added Time</th>
-                            </tr>
-                        </thead>
-                        <tbody id="table_id-tracking-history-body">
-                        </tbody>
-                    </table>
-
-                    <a id="fix-tracking-history-btn">For Dev</a>
-                    <div class="fix-tracking-history">
-                        <input type="text" id="id-fix-tracking-history" placeholder="ID">
-                        <input class="ml-2" type="text" id="input-code-tracking-history" placeholder="Tracking Code">
-                        <input class="ml-2" type="text" id="input-carrier-tracking-history" placeholder="Carrier">
-                        <button class="ml-2 button-primary" id="submit-fix-btn">Submit</button>
-                    </div>
-                </div>
-            </main>
-        </div>
+                    </main>
+            </div>
     </div>
     </div>
 </body>

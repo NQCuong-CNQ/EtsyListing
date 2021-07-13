@@ -14,7 +14,9 @@ var dbo
 
 module.exports.getAll = async function (req, res) {
 
-    let customQuery = {}, searchObj = {}
+    clientDB = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
+    dbo = clientDB.db("trackingdb")
+    let customQuery = {}, searchObj = {}, data = '', total = 0
 
     let offset = parseInt(req.query.offset)
     let limit = parseInt(req.query.limit)
@@ -30,21 +32,18 @@ module.exports.getAll = async function (req, res) {
         customQuery.id = search
     }
 
-    searchObj = { ...customQuery }
-
     if (showAdded) {
         searchObj = { ...customQuery, time_add_tracking: { $ne: null } }
+        data = await dbo.collection("tracking_etsy_history").find({ ...searchObj }).sort({ time_add_tracking: -1 }).skip(offset).limit(limit).toArray()
+    } else {
+        searchObj = { ...customQuery }
+        data = await dbo.collection("tracking_etsy_history").find({ ...searchObj }).sort({ $natural: -1 }).skip(offset).limit(limit).toArray()
     }
 
-    clientDB = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
-    dbo = clientDB.db("trackingdb")
-
-    let total = await dbo.collection("tracking_etsy_history").find({ ...searchObj }).count()
-    let dbData = await dbo.collection("tracking_etsy_history").find({ ...searchObj }).sort({ $natural: -1 }).skip(offset).limit(limit).toArray()
-
+    total = await dbo.collection("tracking_etsy_history").find({ ...searchObj }).count()
 
     res.send({
         total: total,
-        data: dbData
+        data: data
     })
 }
