@@ -35,11 +35,12 @@ module.exports.getAll = async function (req, res) {
         {"customer_email":{"$eq":${search}}},
         {"number_tracking":{"$eq":${search}}}
     ] }`
-    
+    console.log(search)
+    console.log(searchStr)
     if(search){
         searchObj = { ...searchStr }
     }
-
+    console.log(searchObj)
     if (showAdded == 'true') {
         customQuery.time_add_tracking = '{ $ne: null }'
         searchObj = { ...customQuery }
