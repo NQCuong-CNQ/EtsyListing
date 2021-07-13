@@ -16,7 +16,7 @@ module.exports.getAll = async function (req, res) {
 
     clientDB = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
     dbo = clientDB.db("trackingdb")
-    let customQuery = {}, searchObj = {}, data = '', total = 0
+    let customQuery = '', data = '', total = 0
 
     let offset = parseInt(req.query.offset)
     let limit = parseInt(req.query.limit)
@@ -25,25 +25,22 @@ module.exports.getAll = async function (req, res) {
     let search = req.query.search
 
     if (showAccount && showAdded) {
-        customQuery.user = showAccount
+        customQuery += `user: ${showAccount},`
     }
 
-    let searchStr = `{ $or:[ {"id":{"$eq":"${search}"}}, {"name":{"$eq":"${search}"}}, {"customer_name":{"$eq":"${search}"}}, {"customer_email":{"$eq":"${search}"}}, {"number_tracking":{"$eq":"${search}"}}] }`
+    if(search){
+        customQuery += `{ $or:[ {"id":{"$eq":"${search}"}}, {"name":{"$eq":"${search}"}}, {"customer_name":{"$eq":"${search}"}}, {"customer_email":{"$eq":"${search}"}}, {"number_tracking":{"$eq":"${search}"}}] },`
+    }
 
     if (showAdded == 'true') {
-        customQuery.time_add_tracking = '{ $ne: null }'
-        if(search){
-            searchObj = { ...customQuery, searchStr }
-        }
-        
+        customQuery += 'time_add_tracking: { $ne: null }'
         console.log(searchObj)
-        data = await dbo.collection("tracking_etsy_history").find({ ...searchObj }).sort({ time_add_tracking: -1 }).skip(offset).limit(limit).toArray()
+        data = await dbo.collection("tracking_etsy_history").find({ customQuery }).sort({ time_add_tracking: -1 }).skip(offset).limit(limit).toArray()
     } else {
-        searchObj = { ...customQuery }
-        data = await dbo.collection("tracking_etsy_history").find({ ...searchObj }).sort({ $natural: -1 }).skip(offset).limit(limit).toArray()
+        data = await dbo.collection("tracking_etsy_history").find({ customQuery }).sort({ $natural: -1 }).skip(offset).limit(limit).toArray()
     }
 
-    total = await dbo.collection("tracking_etsy_history").find({ ...searchObj }).count()
+    total = await dbo.collection("tracking_etsy_history").find({ customQuery }).count()
 
     res.send({
         total: total,
