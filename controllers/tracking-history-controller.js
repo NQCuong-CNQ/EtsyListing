@@ -26,19 +26,20 @@ module.exports.getAll = async function (req, res) {
 
     if (showAccount && showAdded) {
         customQuery.user = showAccount
+        console.log('vô')
     }
 
     if (search) {
         customQuery.id = search
     }
-
+    console.log(showAdded)
     if (showAdded) {
         searchObj = { ...customQuery, time_add_tracking: { $ne: null } }
         console.log(searchObj)
         data = await dbo.collection("tracking_etsy_history").find({ ...searchObj }).sort({ time_add_tracking: -1 }).skip(offset).limit(limit).toArray()
     } else {
         searchObj = { ...customQuery }
-        console.log(searchObj)
+        console.log(searchObj + 'dd')
         data = await dbo.collection("tracking_etsy_history").find({ ...searchObj }).sort({ $natural: -1 }).skip(offset).limit(limit).toArray()
     }
 
