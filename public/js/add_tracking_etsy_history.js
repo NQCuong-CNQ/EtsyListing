@@ -78,7 +78,7 @@ if (isTrangCheckedStorage == 1) {
 }
 
 filterData = async () => {
-    let offset = num_per_pag * (pag_num - 1), limit = num_per_pag, showAdded = true, showAccount = null, search = null
+    let offset = num_per_pag * (pag_num - 1), limit = num_per_pag, showAccount = null, search = null
     $('#loading').css('display', 'block')
 
     if (isMyAccount && isTrangAccount) {
@@ -91,14 +91,12 @@ filterData = async () => {
         showAccount = ' '
     }
 
-    showAdded = isAddedChecked
-
-    await getData(offset, limit, showAdded, showAccount, search)
+    await getData(offset, limit, showAccount, search)
 }
 
 getData()
 
-async function getData(offset = 0, limit = 25, showAdded = true, showAccount = null, search = null) {
+async function getData(offset = 0, limit = num_per_pag, showAccount = null, search = null) {
     $.ajax({
         url: '/add_tracking_history/getAll',
         type: "get",
@@ -107,7 +105,7 @@ async function getData(offset = 0, limit = 25, showAdded = true, showAccount = n
         data: {
             offset: offset,
             limit: limit,
-            showAdded: showAdded,
+            showAdded: isAddedChecked,
             showAccount: showAccount,
             search: search,
         },
