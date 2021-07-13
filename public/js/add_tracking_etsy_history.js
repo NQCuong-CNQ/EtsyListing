@@ -92,7 +92,6 @@ filterData = async () => {
     }
 
     showAdded = isAddedChecked
-    console.log(showAdded)
 
     await getData(offset, limit, showAdded, showAccount, search)
 }
@@ -228,7 +227,7 @@ updateData = (data) => {
         </tr>`)
     }
     $('#loading').css('display', 'none')
-    
+
     let start_pos = num_per_pag * (pag_num - 1) + 1
     let end_pos = num_per_pag * pag_num > total ? total : num_per_pag * pag_num
     $('#total-table').text(`Showing ${start_pos} - ${end_pos} of ${total} rows`)
@@ -237,7 +236,16 @@ updateData = (data) => {
 updatePag = () => {
     $('#num-pag').text(`${pag_num}`)
     if (pag_num == 1) {
-        //disable
+        $('#first-pag').addClass('pag_disabled')
+        $('#prev-pag').addClass('pag_disabled')
+    } else if (pag_num == ~~(total / num_per_pag) + 1){
+        $('#last-pag').addClass('pag_disabled')
+        $('#next-pag').addClass('pag_disabled')
+    } else {
+        $('#first-pag').removeClass('pag_disabled')
+        $('#prev-pag').removeClass('pag_disabled')
+        $('#last-pag').removeClass('pag_disabled')
+        $('#next-pag').removeClass('pag_disabled')
     }
 }
 
