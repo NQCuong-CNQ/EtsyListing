@@ -58,10 +58,22 @@ module.exports.fix = async function (req, res) {
     try {
         clientDB = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
         dbo = clientDB.db("trackingdb")
-        let data = req.query.data
+        let id = req.query.id
+        let actual_input = req.query.actual_input
+        let carrier_name = req.query.carrier_name
+        let customQuery = {}, queryObj = {}
 
-        console.log(data)
-        // await dbo.collection("tracking_etsy_history").updateOne({ id: data.id }, { $set: data }, { upsert: true })
+        if(actual_input){
+            customQuery.actual_input = actual_input
+        }
+
+        if(carrier_name){
+            customQuery.carrier_name = carrier_name
+        }
+
+        queryObj = { ...customQuery }
+        console.log(queryObj)
+        // await dbo.collection("tracking_etsy_history").updateOne({ id: id }, { $set: data }, { upsert: true })
 
         res.send({
             status: 1,

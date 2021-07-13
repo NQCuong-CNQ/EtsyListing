@@ -278,24 +278,24 @@ $('#fix-tracking-history-btn').on('click', () => {
 })
 
 $('#submit-fix-btn').on('click', () => {
-    let fixData = new Object
+    let id, actual_input, carrier_name
 
-    fixData['id'] = $('#id-fix-tracking-history').val().trim()
-    if (fixData['id'] == '') {
+    id = $('#id-fix-tracking-history').val().trim()
+    if (id == '') {
         toastr.clear()
         toastr.warning('Vui lòng nhập ID !')
         return
     }
 
     if ($('#input-code-tracking-history').val() != '') {
-        fixData['actual_input'] = $('#input-code-tracking-history').val().trim()
+        actual_input = $('#input-code-tracking-history').val().trim()
     }
 
     if ($('#input-carrier-tracking-history').val() != '') {
-        fixData['carrier_name'] = $('#input-carrier-tracking-history').val().trim()
+        carrier_name = $('#input-carrier-tracking-history').val().trim()
     }
 
-    if (fixData['actual_input'] === undefined && fixData['carrier_name'] === undefined) {
+    if (actual_input === undefined && carrier_name === undefined) {
         toastr.clear()
         toastr.warning('Vui lòng nhập Code hoặc Carrier !')
         return
@@ -310,10 +310,13 @@ $('#submit-fix-btn').on('click', () => {
         contentType: "application/json",
         dataType: "json",
         data: {
-            data: fixData,
+            id: id,
+            actual_input: actual_input,
+            carrier_name: carrier_name,
         },
         success: function (data) {
-
+            toastr.clear()
+            toastr.success('Done!')
         },
         error: (jqXHR, textStatus, errorThrown) => {
             console.log(jqXHR, textStatus, errorThrown)
