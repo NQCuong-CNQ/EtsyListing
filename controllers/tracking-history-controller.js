@@ -28,12 +28,19 @@ module.exports.getAll = async function (req, res) {
         customQuery.user = showAccount
     }
 
-    if (search) {
-        customQuery.id = search
-    }
+    let searchStr = `{ $or:[
+        {"id":{"$eq":${search}}},
+        {"name":{"$eq":${search}}},
+        {"customer_name":{"$eq":${search}}},
+        {"customer_email":{"$eq":${search}}},
+        {"number_tracking":{"$eq":${search}}}
+    ] }`
+    searchObj = { ...searchStr }
 
     if (showAdded == 'true') {
-        searchObj = { ...customQuery, time_add_tracking: { $ne: null } }
+        customQuery.time_add_tracking = '{ $ne: null }'
+        searchObj = { ...customQuery }
+        console.log(searchObj)
         data = await dbo.collection("tracking_etsy_history").find({ ...searchObj }).sort({ time_add_tracking: -1 }).skip(offset).limit(limit).toArray()
     } else {
         searchObj = { ...customQuery }

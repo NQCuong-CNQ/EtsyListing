@@ -6,7 +6,7 @@ var socket = io.connect("https://giftsvk.com", {
 
 var isAddedChecked = true, isMyAccount = true,
     isTrangAccount = false, isShowAll = false,
-    num_per_pag = 25, pag_num = 1, total = 0
+    num_per_pag = 25, pag_num = 1, total = 0, search = null
 
 $('#loading').css('display', 'block')
 
@@ -78,7 +78,7 @@ if (isTrangCheckedStorage == 1) {
 }
 
 filterData = () => {
-    let offset = num_per_pag * (pag_num - 1), limit = num_per_pag, showAccount = null, search = null
+    let offset = num_per_pag * (pag_num - 1), limit = num_per_pag, showAccount = null
     $('#loading').css('display', 'block')
 
     if (isMyAccount && isTrangAccount) {
@@ -91,10 +91,10 @@ filterData = () => {
         showAccount = ' '
     }
 
-    getData(offset, limit, showAccount, search)
+    getData(offset, limit, showAccount)
 }
 
-getData = (offset, limit, showAccount, search) => {
+getData = (offset, limit, showAccount) => {
     $.ajax({
         url: '/add_tracking_history/getAll',
         type: "get",
@@ -247,7 +247,8 @@ updatePag = () => {
 }
 
 $('#search').on('change', () => {
-    console.log($('#search').val().trim())
+    search = $('#search').val().trim()
+    filterData()
 })
 
 $('#first-pag').on('click', () => {

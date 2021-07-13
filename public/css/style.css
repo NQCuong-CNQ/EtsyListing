@@ -753,3 +753,8 @@ html {
   opacity: 0.3;
   pointer-events: none;
 }
+
+.checkbox-container div{
+  display: flex;
+  align-items: center;
+}
