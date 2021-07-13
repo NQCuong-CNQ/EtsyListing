@@ -35,9 +35,11 @@ module.exports.getAll = async function (req, res) {
     if (showAdded) {
         searchObj = { ...customQuery, time_add_tracking: { $ne: null } }
         data = await dbo.collection("tracking_etsy_history").find({ ...searchObj }).sort({ time_add_tracking: -1 }).skip(offset).limit(limit).toArray()
+        console.log(showAdded)
     } else {
         searchObj = { ...customQuery }
         data = await dbo.collection("tracking_etsy_history").find({ ...searchObj }).sort({ $natural: -1 }).skip(offset).limit(limit).toArray()
+        console.log(showAdded)
     }
 
     total = await dbo.collection("tracking_etsy_history").find({ ...searchObj }).count()

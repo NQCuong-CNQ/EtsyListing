@@ -4,30 +4,11 @@ var socket = io.connect("https://giftsvk.com", {
     transports: ['websocket']
 })
 
-var historyData = [], isAddedChecked = true, isMyAccount = true,
+var isAddedChecked = true, isMyAccount = true,
     isTrangAccount = false, isShowAll = false,
     num_per_pag = 25, pag_num = 1, total = 0
 
 $('#loading').css('display', 'block')
-// socket.emit("tracking-history-join")
-
-// compareAction = (bandA, bandB) => {
-//     bandA = parseFloat(bandA)
-//     bandB = parseFloat(bandB)
-//     let comparison = 0;
-//     if (bandA > bandB) {
-//         comparison = 1;
-//     } else if (bandA < bandB) {
-//         comparison = -1;
-//     }
-//     return comparison * -1;
-// }
-
-// compareDay = (a, b) => {
-//     const bandA = a.time_add_tracking
-//     const bandB = b.time_add_tracking
-//     return compareAction(bandA, bandB)
-// }
 
 convertMonthInString = month => {
     switch (month) {
@@ -96,13 +77,25 @@ if (isTrangCheckedStorage == 1) {
     isTrangAccount = false
 }
 
-// $('#table_id-tracking-history').DataTable({
-//     serverSide: true,
-//     ajax: '/add_tracking_history/getAll',
-//     scrollX: 0,
-//     // length: 25,
-//     ordering: false
-// })
+filterData = async () => {
+    let offset = num_per_pag * (pag_num - 1), limit = num_per_pag, showAdded = true, showAccount = null, search = null
+    $('#loading').css('display', 'block')
+
+    if (isMyAccount && isTrangAccount) {
+        showAccount = null
+    } else if (isMyAccount) {
+        showAccount = 'My'
+    } else if (isTrangAccount) {
+        showAccount = 'Trang'
+    } else {
+        showAccount = ' '
+    }
+
+    showAdded = isAddedChecked
+    console.log(showAdded)
+
+    await getData(offset, limit, showAdded, showAccount, search)
+}
 
 getData()
 
@@ -120,78 +113,13 @@ async function getData(offset = 0, limit = 25, showAdded = true, showAccount = n
             search: search,
         },
         success: function (data) {
-            // historyData = data.data
-            // console.log(historyData)
-            // filterData()
             total = data.total
             updateData(data.data)
         },
         error: (jqXHR, textStatus, errorThrown) => {
             console.log(jqXHR, textStatus, errorThrown)
-            // reject(new Error(`!Error: statusCode - ${jqXHR.status} - ${errorThrown} While Getting Mockup.`))
         }
     })
-}
-
-// socket.on("tracking-history-return-data", data => {
-//     historyData = data
-//     filterData()
-// })
-
-// filterTrangAccount = data => {
-//     let dataFilter = []
-//     for (let item of data) {
-//         if (item.user == 'Trang') {
-//             dataFilter.push(item)
-//         }
-//     }
-//     return dataFilter
-// }
-
-// filterMyAccount = data => {
-//     let dataFilter = []
-//     for (let item of data) {
-//         if (item.user == 'My') {
-//             dataFilter.push(item)
-//         }
-//     }
-//     return dataFilter
-// }
-
-// filterAdded = data => {
-//     let dataFilter = []
-//     for (let item of data) {
-//         if (item.time_add_tracking !== undefined) {
-//             dataFilter.push(item)
-//         }
-//     }
-//     return dataFilter
-// }
-
-filterData = async () => {
-    let offset = num_per_pag * (pag_num - 1), limit = num_per_pag, showAdded = true, showAccount = null, search = null
-    $('#loading').css('display', 'block')
-    // let filterData = historyData
-
-    if (isMyAccount && isTrangAccount) {
-        showAccount = null
-    } else if (isMyAccount) {
-        showAccount = 'My'
-    } else if (isTrangAccount) {
-        showAccount = 'Trang'
-    } else {
-        showAccount = ' '
-    }
-
-    showAdded = isAddedChecked
-
-    await getData(offset, limit, showAdded, showAccount, search)
-    // if (isAddedChecked) {
-    // filterData = filterAdded(filterData)
-    // }
-
-    // filterData.sort(compareDay)
-    // updateData(filterData)
 }
 
 $('#show-added-tracking').on('change', () => {
@@ -232,17 +160,6 @@ $('#show-trang-account-tracking').on('change', () => {
         window.localStorage.setItem('is-trang-account-checked', 0)
     }
 })
-
-// $('#show-all-tracking').on('change', () => {
-//     if ($('#show-all-tracking').prop("checked")) {
-//         $('#loading').css('display', 'block')
-//         socket.emit("tracking-history-get-all")
-//     }
-//     else {
-//         historyData.splice(0, historyData.length - 100)
-//         filterData()
-//     }
-// })
 
 formatCustomerName = name => {
     if (name === undefined) {
@@ -294,8 +211,7 @@ getCarrierCode = code => {
     } return code
 }
 
-updateData = (data = historyData) => {
-    // $('#table_id-tracking-history').DataTable().clear().destroy()
+updateData = (data) => {
     $('#table_id-tracking-history-body').empty()
     for (let item of data) {
         $('#table_id-tracking-history-body').append(`<tr>
@@ -311,14 +227,11 @@ updateData = (data = historyData) => {
             <td>${getEpochTime(item.time_add_tracking)}</td>
         </tr>`)
     }
-
-    // $('#table_id-tracking-history').DataTable({
-    //     pageLength: 25,
-    //     scrollX: 0,
-    //     ordering: false
-    // })
     $('#loading').css('display', 'none')
-    $('#total-table').text(`Showing ${num_per_pag * (pag_num - 1)} - ${num_per_pag * pag_num} of ${total} rows`)
+    
+    let start_pos = num_per_pag * (pag_num - 1) + 1
+    let end_pos = num_per_pag * pag_num > total ? total : num_per_pag * pag_num
+    $('#total-table').text(`Showing ${start_pos} - ${end_pos} of ${total} rows`)
 }
 
 updatePag = () => {
@@ -392,8 +305,3 @@ $('#submit-fix-btn').on('click', () => {
     toastr.success('Processing...')
     socket.emit("fix-tracking-history", fixData)
 })
-
-// $('#refresh-btn').on('click', () => {
-//     $('#loading').css('display', 'block')
-//     socket.emit("tracking-history-join")
-// })
