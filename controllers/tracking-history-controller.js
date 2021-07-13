@@ -65,8 +65,6 @@ module.exports.fix = async function (req, res) {
 
         res.send({
             status: 1,
-            total: total,
-            data: data
         })
     } catch (err) {
         console.log(err)
