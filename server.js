@@ -734,10 +734,10 @@ io.on("connection", async function (client) {
     client.emit("tracking-history-return-data", dbdata)
   })
 
-  client.on("fix-tracking-history", async function (data) {
-    await dbo.collection("tracking_etsy_history").updateOne({ id: data.id }, { $set: data }, { upsert: true })
-    client.emit("return-fix-tracking-history")
-  })
+  // client.on("fix-tracking-history", async function (data) {
+  //   await dbo.collection("tracking_etsy_history").updateOne({ id: data.id }, { $set: data }, { upsert: true })
+  //   client.emit("return-fix-tracking-history")
+  // })
 
   client.on("run-add-tracking", async function (user) {
     client.emit("add-tracking-status-server-to-client", { name: 'server', status: 1 })

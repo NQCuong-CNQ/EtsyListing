@@ -24,6 +24,8 @@ router.get("/tracking-product/getAll", authMiddleware.requireAuth, productContro
 
 router.get("/add_tracking_history/getAll", authMiddleware.requireAuth, trackingHistoryController.getAll)
 
+router.post("/add_tracking_history/fix", authMiddleware.requireAuth, trackingHistoryController.fix)
+
 router.get("/tracking-product", authMiddleware.requireAuth, function (req, res) {
     res.render("tracking_product", {title: 'Tracking Products', active: 'tracking-product'})
 })

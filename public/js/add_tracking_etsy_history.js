@@ -1,12 +1,6 @@
-var socket = io.connect("https://giftsvk.com", {
-    port: 443,
-    reconnect: true,
-    transports: ['websocket']
-})
-
 var isAddedChecked = true, isMyAccount = true,
     isTrangAccount = false, isShowAll = false,
-    num_per_pag = 25, pag_num = 1, total = 0, search = null, search_by = 'id'
+    num_per_pag = 25, pag_num = 1, total = 0, search = null, search_by = 1
 
 $('#loading').css('display', 'block')
 
@@ -241,7 +235,8 @@ updatePag = () => {
     if (pag_num == 1) {
         $('#first-pag').addClass('pag_disabled')
         $('#prev-pag').addClass('pag_disabled')
-    } else if (pag_num == ~~(total / num_per_pag) + 1) {
+    }
+    if (pag_num == ~~(total / num_per_pag) + 1) {
         $('#last-pag').addClass('pag_disabled')
         $('#next-pag').addClass('pag_disabled')
     }
@@ -308,7 +303,22 @@ $('#submit-fix-btn').on('click', () => {
 
     toastr.clear()
     toastr.success('Processing...')
-    socket.emit("fix-tracking-history", fixData)
+
+    $.ajax({
+        url: '/add_tracking_history/fix',
+        type: "post",
+        contentType: "application/json",
+        dataType: "json",
+        data: {
+            data: fixData,
+        },
+        success: function (data) {
+
+        },
+        error: (jqXHR, textStatus, errorThrown) => {
+            console.log(jqXHR, textStatus, errorThrown)
+        }
+    })
 })
 
 
