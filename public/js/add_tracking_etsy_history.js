@@ -246,16 +246,18 @@ updatePag = () => {
     }
 }
 
+$('#search').on('change', () => {
+    console.log($('#search').val().trim())
+})
+
 $('#first-pag').on('click', () => {
     pag_num = 1
     filterData()
 })
 
 $('#prev-pag').on('click', () => {
-    if (pag_num > 1) {
-        pag_num--
-        filterData()
-    }
+    pag_num--
+    filterData()
 })
 
 $('#next-pag').on('click', () => {
