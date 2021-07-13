@@ -77,7 +77,7 @@ if (isTrangCheckedStorage == 1) {
     isTrangAccount = false
 }
 
-filterData = async () => {
+filterData = () => {
     let offset = num_per_pag * (pag_num - 1), limit = num_per_pag, showAccount = null, search = null
     $('#loading').css('display', 'block')
 
@@ -91,12 +91,10 @@ filterData = async () => {
         showAccount = ' '
     }
 
-    await getData(offset, limit, showAccount, search)
+    getData(offset, limit, showAccount, search)
 }
 
-getData()
-
-async function getData(offset = 0, limit = num_per_pag, showAccount = null, search = null) {
+getData = (offset, limit, showAccount, search) => {
     $.ajax({
         url: '/add_tracking_history/getAll',
         type: "get",
@@ -234,17 +232,17 @@ updateData = (data) => {
 
 updatePag = () => {
     $('#num-pag').text(`${pag_num}`)
+    $('#first-pag').removeClass('pag_disabled')
+    $('#prev-pag').removeClass('pag_disabled')
+    $('#last-pag').removeClass('pag_disabled')
+    $('#next-pag').removeClass('pag_disabled')
+
     if (pag_num == 1) {
         $('#first-pag').addClass('pag_disabled')
         $('#prev-pag').addClass('pag_disabled')
     } else if (pag_num == ~~(total / num_per_pag) + 1){
         $('#last-pag').addClass('pag_disabled')
         $('#next-pag').addClass('pag_disabled')
-    } else {
-        $('#first-pag').removeClass('pag_disabled')
-        $('#prev-pag').removeClass('pag_disabled')
-        $('#last-pag').removeClass('pag_disabled')
-        $('#next-pag').removeClass('pag_disabled')
     }
 }
 
@@ -308,3 +306,5 @@ $('#submit-fix-btn').on('click', () => {
     toastr.success('Processing...')
     socket.emit("fix-tracking-history", fixData)
 })
+
+filterData()
