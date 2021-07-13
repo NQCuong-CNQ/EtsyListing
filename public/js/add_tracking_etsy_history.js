@@ -231,6 +231,7 @@ updateData = (data) => {
     let start_pos = num_per_pag * (pag_num - 1) + 1
     let end_pos = num_per_pag * pag_num > total ? total : num_per_pag * pag_num
     $('#total-table').text(`Showing ${start_pos} - ${end_pos} of ${total} rows`)
+    updatePag()
 }
 
 updatePag = () => {
@@ -252,27 +253,23 @@ updatePag = () => {
 $('#first-pag').on('click', () => {
     pag_num = 1
     filterData()
-    updatePag()
 })
 
 $('#prev-pag').on('click', () => {
     if (pag_num > 1) {
         pag_num--
         filterData()
-        updatePag()
     }
 })
 
 $('#next-pag').on('click', () => {
     pag_num++
     filterData()
-    updatePag()
 })
 
 $('#last-pag').on('click', () => {
     pag_num = ~~(total / num_per_pag) + 1
     filterData()
-    updatePag()
 })
 
 $('#fix-tracking-history-btn').on('click', () => {
