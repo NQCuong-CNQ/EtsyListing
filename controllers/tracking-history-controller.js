@@ -25,15 +25,15 @@ module.exports.getAll = async function (req, res) {
     let search = req.query.search
 
     if (showAccount && showAdded) {
-        customQuery += `{user: ${showAccount}},`
+        customQuery += `user: ${showAccount},`
     }
 
     if(search){
-        customQuery += `{ $or:[ {"id":{"$eq":"${search}"}}, {"name":{"$eq":"${search}"}}, {"customer_name":{"$eq":"${search}"}}, {"customer_email":{"$eq":"${search}"}}, {"number_tracking":{"$eq":"${search}"}}] },`
+        customQuery += `$or:[ {"id":{"$eq":"${search}"}}, {"name":{"$eq":"${search}"}}, {"customer_name":{"$eq":"${search}"}}, {"customer_email":{"$eq":"${search}"}}, {"number_tracking":{"$eq":"${search}"}}],`
     }
 
     if (showAdded == 'true') {
-        customQuery += '{time_add_tracking: { $ne: null }}'
+        customQuery += 'time_add_tracking: { $ne: null }'
         console.log(customQuery)
         data = await dbo.collection("tracking_etsy_history").find({ customQuery }).sort({ time_add_tracking: -1 }).skip(offset).limit(limit).toArray()
     } else {
