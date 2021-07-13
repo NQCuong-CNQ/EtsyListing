@@ -38,7 +38,7 @@ module.exports.getAll = async function (req, res) {
     console.log(search)
     console.log(searchStr)
     if(search){
-        searchObj = { ...searchStr }
+        searchObj = { searchStr }
     }
     console.log(searchObj)
     if (showAdded == 'true') {
