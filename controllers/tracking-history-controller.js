@@ -22,7 +22,7 @@ module.exports.getAll = async function (req, res) {
 
     if (search) {
         if (searchBy == 1) {
-            customQuery.id = search
+            customQuery.id = "" + search
         } else if (searchBy == 2) {
             customQuery.name = search
         } else {
