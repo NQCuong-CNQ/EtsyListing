@@ -306,7 +306,7 @@ $('#submit-fix-btn').on('click', () => {
 
     $.ajax({
         url: '/add_tracking_history/fix',
-        type: "post",
+        type: "get",
         contentType: "application/json",
         dataType: "json",
         data: {
