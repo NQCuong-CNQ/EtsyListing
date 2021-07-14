@@ -754,7 +754,7 @@ io.on("connection", async function (client) {
   })
 
   client.on("run-ping-vps", function () {
-    io.sockets.in(clientID).emit('message', 'what is going on, party people?')
+    socket.in(clientID).emit('message', 'what is going on, party people?')
     client.broadcast.emit("ping-vps")
   })
 
