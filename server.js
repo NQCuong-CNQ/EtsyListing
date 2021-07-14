@@ -61,6 +61,7 @@ const MongoClient = require('mongodb').MongoClient
 const url = "mongodb://localhost:27017/trackingdb"
 var clientDB
 var dbo
+let clientID
 
 main()
 async function main() {
@@ -419,10 +420,9 @@ async function completeUpdate() {
 io.on("connection", async function (client) {
 
   if (socket.handshake.query.type == 2) {
-    let clientID = socket.handshake.query._id
+    clientID = socket.handshake.query._id
     console.log('client:', clientID)
     socket.join(clientID)
-    io.sockets.in(clientID).emit('message', 'what is going on, party people?')
   }
 
   client.on("shop-tracking-join", async function () {
@@ -754,6 +754,7 @@ io.on("connection", async function (client) {
   })
 
   client.on("run-ping-vps", function () {
+    io.sockets.in(clientID).emit('message', 'what is going on, party people?')
     client.broadcast.emit("ping-vps")
   })
 
