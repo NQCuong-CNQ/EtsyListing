@@ -674,7 +674,7 @@ io.on("connection", async function (client) {
       client.broadcast.emit("reload-etsy")
       await sleep(100)
       client.broadcast.emit("add-tracking-status-server-to-client", { name: 'server', status: 3 })
-      await sleep(40000)
+      await sleep(60000)
       console.log('send data to etsy' + trackData.length)
       client.broadcast.emit("add-tracking-status-server-to-client", { name: 'server', status: 4 })
       await sleep(100)
@@ -722,22 +722,6 @@ io.on("connection", async function (client) {
     data['time_add_tracking'] = Math.floor(new Date().getTime() / 1000)
     await dbo.collection("tracking_etsy_history").updateOne({ id: data.id }, { $set: data }, { upsert: true })
   })
-
-  client.on("tracking-history-join", async function () {
-    let dbdata = await dbo.collection("tracking_etsy_history").find().toArray()
-    dbdata.splice(0, dbdata.length - 100)
-    client.emit("tracking-history-return-data", dbdata)
-  })
-
-  client.on("tracking-history-get-all", async function () {
-    let dbdata = await dbo.collection("tracking_etsy_history").find().toArray()
-    client.emit("tracking-history-return-data", dbdata)
-  })
-
-  // client.on("fix-tracking-history", async function (data) {
-  //   await dbo.collection("tracking_etsy_history").updateOne({ id: data.id }, { $set: data }, { upsert: true })
-  //   client.emit("return-fix-tracking-history")
-  // })
 
   client.on("run-add-tracking", async function (user) {
     client.emit("add-tracking-status-server-to-client", { name: 'server', status: 1 })

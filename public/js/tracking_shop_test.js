@@ -407,16 +407,6 @@
 //   toastr.warning('Data Server is updating, comeback later for updated shops!')
 // })
 
-test()
-
-async function test() {
-  $('#table-shop').DataTable({
-    "processing": true,
-    "serverSide": true,
-    "ajax": "/tracking-shop/data"
-  })
-}
-
 // socket.on("return-shop-data", data => {
 //   shopData = data
 //   gettingData = 0

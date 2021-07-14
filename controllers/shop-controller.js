@@ -13,13 +13,28 @@ var dbo
 // }
 
 module.exports.getAll = async function (req, res) {
-    let offset = parseInt(req.query.offset)
-    let limit = parseInt(req.query.limit)
-    clientDB = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
-    dbo = clientDB.db("trackingdb")
-    let dbData = await dbo.collection("shop").find().skip(offset).limit(limit).toArray()
+    try {
+        let offset = parseInt(req.query.offset)
+        let limit = parseInt(req.query.limit)
 
-    res.send({
-        data: dbData
-    })
+        clientDB = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
+        dbo = clientDB.db("trackingdb")
+
+        let shopCategory = await dbo.collection("shopCategory").find().toArray()
+        let dbData = await dbo.collection("shop").find().skip(offset).limit(limit).toArray()
+        let lastUpdated = await dbo.collection("log").find().sort({ $natural: -1 }).limit(1).toArray()
+
+        res.send({
+            category: shopCategory,
+            shopData: dbData,
+            lastUpdated: lastUpdated,
+            status: 1,
+        })
+    } catch (err) {
+        console.log(err)
+        res.send({
+            status: 0,
+            message: err,
+        })
+    }
 }
