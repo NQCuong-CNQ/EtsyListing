@@ -57,11 +57,6 @@ socket.on("track-order-step4", async function (name) {
         let numCarrier = $('#shipping-carrier-select').val()
         let nameCarrier = $(`#shipping-carrier-select option[value="${numCarrier}"]`).text()
 
-        // if (numCarrier === undefined || numCarrier == '') {
-        //     numCarrier = $('[for="Select delivery carrier..."]').val()
-        //     nameCarrier = $(`[for="Select delivery carrier..."] option[value="${numCarrier}"]`).text()
-        // }
-
         if (nameCarrier === 'Other' || nameCarrier == '') {
             nameCarrier = $('input[placeholder="Shipping carrier"]').val()
             if (nameCarrier === undefined || nameCarrier == '') {

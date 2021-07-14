@@ -4,12 +4,8 @@ var socket = io.connect("https://giftsvk.com", {
     transports: ['websocket'],
     query: {
         type: 2,
-        _id: Math.floor(Math.random() * 100) + 100,
+        _id: nanoid(10),
     }
-})
-
-socket.on('message', data => {
-    console.log(data)
 })
 
 $('#submit-btn').on('click', () => {
