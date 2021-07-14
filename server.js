@@ -423,6 +423,7 @@ io.on("connection", async function (client) {
     clientID = client.handshake.query._id
     console.log('client:', clientID)
     client.join(clientID)
+    io.sockets.in(clientID).emit('message', 'what is going on, party people?')
   }
 
   client.on("shop-tracking-join", async function () {
@@ -754,7 +755,6 @@ io.on("connection", async function (client) {
   })
 
   client.on("run-ping-vps", function () {
-    io.sockets.in(clientID).emit('message', 'what is going on, party people?')
     client.broadcast.emit("ping-vps")
   })
 
