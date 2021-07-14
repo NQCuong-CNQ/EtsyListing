@@ -419,10 +419,10 @@ async function completeUpdate() {
 
 io.on("connection", async function (client) {
 
-  if (socket.handshake.query.type == 2) {
-    clientID = socket.handshake.query._id
+  if (client.handshake.query.type == 2) {
+    clientID = client.handshake.query._id
     console.log('client:', clientID)
-    socket.join(clientID)
+    client.join(clientID)
   }
 
   client.on("shop-tracking-join", async function () {
@@ -754,7 +754,7 @@ io.on("connection", async function (client) {
   })
 
   client.on("run-ping-vps", function () {
-    socket.in(clientID).emit('message', 'what is going on, party people?')
+    io.sockets.in(clientID).emit('message', 'what is going on, party people?')
     client.broadcast.emit("ping-vps")
   })
 
