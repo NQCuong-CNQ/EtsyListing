@@ -4,29 +4,57 @@
 <head>
     <%- include('partials/header.ejs') %>
 
-    <link rel="stylesheet" type="text/css" href="css/app.css"/>
-    <link rel="stylesheet" type="text/css" href="css/style.css"/>
+        <link rel="stylesheet" type="text/css" href="css/app.css" />
+        <link rel="stylesheet" type="text/css" href="css/style.css" />
 </head>
 
 <body>
     <div class="wrapper">
         <%- include('partials/sidebar.ejs', {active: active}) %>
 
-        <div class="main">
-            <%- include('partials/navbar.ejs') %>
+            <div class="main">
+                <%- include('partials/navbar.ejs') %>
 
-            <main class="content">
-                <div class="container-fluid">
-                    <h1>Etsy Listing</h1>
-                    <h2 style="color: red;">Tính năng đang được phát triển :V</h2>
-                </div>
-            </main>
-        </div>
+                    <main class="content">
+                        <div class="container-fluid">
+                            <h1>Etsy Listing</h1>
+                            <p>Product Type</p>
+                            <select class="" id="dropdown-product-type">
+                                <option value="canvas">Canvas</option>
+                            </select>
+
+                            <p>Custom Images</p>
+                            <input type="text" id="custom-images">
+
+                            <p>Main Images</p>
+                            <input type="text" id="main-images">
+
+                            <p>Title</p>
+                            <input type="text" id="title">
+
+                            <p>Tags</p>
+                            <input type="text" id="tags">
+
+                            <p>Shop Name</p>
+                            <input type="text" id="shop-name">
+
+                            <p>Product Description</p>
+                            <input type="text" id="description">
+
+                            Personalization
+                            <input type="checkbox" id="personalization">
+
+                            <button id="submit-btn">Submit</button>
+
+                        </div>
+                    </main>
+            </div>
     </div>
 </body>
 
-<!-- <script src="js/extension/jquery.js"></script> -->
-<!-- <script src="/js/socket.io.js"></script> -->
+<script type="text/javascript" src="js/extension/jquery.js"></script>
+<script type="text/javascript" src="js/extension/socket.io.js"></script>
+<script type="text/javascript" src="js/etsy_listing.js"></script>
 <script type="text/javascript" src="js/extension/app.js"></script>
 
 </html>

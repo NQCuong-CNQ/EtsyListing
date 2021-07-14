@@ -54,4 +54,8 @@ router.get("/login", authController.login)
 router.get("/logout", authController.logout)
 router.post('/login', authController.postLogin)
 
+router.get("/listing", authMiddleware.requireAuth, function (req, res) {
+    res.render("etsy_listing", {title: 'Listing', active: ''})
+})
+
 module.exports = router

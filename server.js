@@ -417,6 +417,14 @@ async function completeUpdate() {
 }
 
 io.on("connection", async function (client) {
+
+  if (socket.handshake.query.type == 2) {
+    let clientID = socket.handshake.query._id
+    console.log('client:', clientID)
+    socket.join(clientID)
+    io.sockets.in(clientID).emit('message', 'what is going on, party people?')
+  }
+
   client.on("shop-tracking-join", async function () {
     if (isUpdate) {
       client.emit("updating")
