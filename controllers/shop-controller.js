@@ -21,12 +21,12 @@ module.exports.getAll = async function (req, res) {
         let data = ''
 
         let shopCategory = await dbo.collection("shopCategory").find().toArray()
-        data = await dbo.collection("shop").find().skip(offset).limit(limit).toArray()
-        let lastUpdated = await dbo.collection("log").find().sort({ $natural: -1 }).limit(1)
+        let dbData = await dbo.collection("shop").find().skip(offset).limit(limit).toArray()
+        let lastUpdated = await dbo.collection("log").find().sort({ $natural: -1 }).limit(1).toArray()
 
-        // data = searchOrFilterData(shopCategory, dbData, type, category, month, sales)
+        data = searchOrFilterData(shopCategory, dbData, type, category, month, sales)
         res.send({
-            shopData: lastUpdated,
+            shopData: data,
             lastUpdated: lastUpdated,
         })
     } catch (err) {
