@@ -310,7 +310,34 @@ updateData = (data = shopData) => {
     })
 }
 
-
+getData = (offset, limit, type, category, month, sales, search, sort_by) => {
+    $.ajax({
+        url: '/tracking-shop/getAll',
+        type: "get",
+        contentType: "application/json",
+        dataType: "json",
+        data: {
+            offset: offset,
+            limit: limit,
+            type: type,
+            category: category,
+            month: month,
+            sales: sales,
+            search: search,
+            sort_by: sort_by,
+        },
+        success: function (data) {
+            shopCategory = data.category
+            shopData = data.shopData
+            $('#last-updated').text("Last updated: " + getUpdateHistoryEpoch(data.lastUpdated))
+            $('#loading').css('display', 'none')
+            updateData(shopData)
+        },
+        error: (jqXHR, textStatus, errorThrown) => {
+            console.log(jqXHR, textStatus, errorThrown)
+        }
+    })
+}
 
 searchOrFilterData = () => {
     // let dataFilter = shopData
@@ -413,34 +440,7 @@ socket.on("updating", () => {
     toastr.warning('Data Server is updating, comeback later for updated shops!')
 })
 
-getData = (offset, limit, type, category, month, sales, search, sort_by) => {
-    $.ajax({
-        url: '/tracking-shop/getAll',
-        type: "get",
-        contentType: "application/json",
-        dataType: "json",
-        data: {
-            offset: offset,
-            limit: limit,
-            type: type,
-            category: category,
-            month: month,
-            sales: sales,
-            search: search,
-            sort_by: sort_by,
-        },
-        success: function (data) {
-            shopCategory = data.category
-            shopData = data.shopData
-            $('#last-updated').text("Last updated: " + getUpdateHistoryEpoch(data.lastUpdated))
-            $('#loading').css('display', 'none')
-            updateData(shopData)
-        },
-        error: (jqXHR, textStatus, errorThrown) => {
-            console.log(jqXHR, textStatus, errorThrown)
-        }
-    })
-}
+
 
 socket.on("return-shop-data", data => {
     shopData = data
