@@ -12,11 +12,11 @@ module.exports.getAll = async function (req, res) {
         let offset = parseInt(req.query.offset)
         let limit = parseInt(req.query.limit)
         let type = parseInt(req.query.type)
-        let category = parseInt(req.query.category)
+        let category = req.query.category
         let month = parseInt(req.query.month)
         let sales = parseInt(req.query.sales)
-        let search = parseInt(req.query.search)
-        let sort_by = parseInt(req.query.sort_by)
+        let search = req.query.search
+        let sort_by = req.query.sort_by
 
         let data = ''
 
@@ -26,7 +26,8 @@ module.exports.getAll = async function (req, res) {
 
         queryObj = { ...customQuery }
         let shopCategory = await dbo.collection("shopCategory").find().toArray()
-        let dbData = await dbo.collection("shop").find({ ...queryObj }).skip(offset).limit(limit).toArray()
+        console.log(queryObj)
+        let dbData = await dbo.collection("shop").find({ total_sales:{ $gte: 2000 } }).skip(offset).limit(limit).toArray()
         let lastUpdated = await dbo.collection("log").find().sort({ $natural: -1 }).limit(1).toArray()
 
         // data = searchOrFilterData(shopCategory, dbData, type, category, month, sales)
