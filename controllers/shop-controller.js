@@ -25,10 +25,8 @@ module.exports.getAll = async function (req, res) {
         let lastUpdated = await dbo.collection("log").find().sort({ $natural: -1 }).limit(1)
 
         data = searchOrFilterData(shopCategory, dbData, type, category, month, sales)
-        console.log(data)
-        console.log(data.length)
         res.send({
-            shopData: data,
+            shopData: JSON.stringify(data),
             lastUpdated: lastUpdated,
             status: 1,
         })
