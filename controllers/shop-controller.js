@@ -28,12 +28,10 @@ module.exports.getAll = async function (req, res) {
         res.send({
             shopData: dbData,
             lastUpdated: lastUpdated,
-            status: 1,
         })
     } catch (err) {
         console.log(err)
         res.send({
-            status: 0,
             message: err,
         })
     }
