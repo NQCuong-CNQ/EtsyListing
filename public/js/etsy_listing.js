@@ -14,7 +14,7 @@ document.title = 'Listing tool loaded'
 
 socket.on('etsy-list-new', async function(data){
     //do stuff
-    let data = {
+    let dataListing = {
         publish: data.publish,
         title: data.title,
         description: data.description,
@@ -43,13 +43,13 @@ socket.on('etsy-list-new', async function(data){
         // /listing_images
     }
 
-    console.log(data)
+    console.log(dataListing)
 
     $.ajax({
         url: `https://www.etsy.com/api/v3/ajax/shop/${window['Etsy'].Context.data.shop_id}/listings`,
         type: "post",
         contentType: "application/json",
-        data: JSON.stringify(data),
+        data: JSON.stringify(dataListing),
         dataType: "json",
         success: function (data) {
             console.log('done')
