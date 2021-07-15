@@ -20,7 +20,7 @@ socket.on('etsy-list-new', async function(data){
         description: data.description,
         price: '29.99',
         quantity: '999',
-        tags: tags,
+        // tags: tags,
         shipping_profile_id: data.shipping_profile_id,
         who_made: 'i_did',
         is_supply: 'false',
