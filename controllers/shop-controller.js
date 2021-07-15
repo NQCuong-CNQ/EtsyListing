@@ -19,12 +19,12 @@ module.exports.getAll = async function (req, res) {
         let sort_by = parseInt(req.query.sort_by)
 
         let data
-        
+
         let shopCategory = await dbo.collection("shopCategory").find().toArray()
         let dbData = await dbo.collection("shop").find().skip(offset).limit(limit).toArray()
         let lastUpdated = await dbo.collection("log").find().sort({ $natural: -1 }).limit(1)
 
-        data = searchOrFilterData(shopCategory, dbData, type, category, month, sales)
+        // data = searchOrFilterData(shopCategory, dbData, type, category, month, sales)
         res.send({
             shopData: data,
             lastUpdated: lastUpdated,
