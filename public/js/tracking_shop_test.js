@@ -20,7 +20,7 @@ $('#listing-back-btn').on('click', () => {
     $('#list-shop-section').css("display", "block")
     $('#listing-shop-section').css("display", "none")
     $('#user-shop-section').css("display", "none")
-    $('#table_id-list').DataTable().clear().destroy()
+    // $('#table_id-list').DataTable().clear().destroy()
 })
 
 $('#user-back-btn').on('click', () => {
@@ -641,7 +641,7 @@ socket.on("return-user-data", data => {
 
 socket.on("return-listing-data", data => {
     $('#loading').css('display', 'none')
-    $('#table_id-list').DataTable().clear().destroy()
+    // $('#table_id-list').DataTable().clear().destroy()
     for (let i = 0; i < data.length; i++) {
         let taxonomy = data[i].taxonomy_path
         taxonomy = taxonomy[taxonomy.length - 1]
@@ -662,10 +662,10 @@ socket.on("return-listing-data", data => {
         </tr>`)
     }
 
-    $('#table_id-list').DataTable({
-        scrollX: 400,
-        pageLength: 25
-    })
+    // $('#table_id-list').DataTable({
+    //     scrollX: 400,
+    //     pageLength: 25
+    // })
 })
 
 $('#find-shop-by-name').on('keypress', e => {
