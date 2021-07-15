@@ -10,7 +10,7 @@ var socket = io.connect("https://giftsvk.com", {
     }
 })
 
-document.title = 'Listing loaded!'
+document.title = 'Listing tool loaded'
 
 socket.on('etsy-list-new', async function(data){
     //do stuff

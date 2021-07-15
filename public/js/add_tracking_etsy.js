@@ -13,7 +13,7 @@ main()
 async function main() {
     await sleep(2000)
     shopName = $('[data-tour-anchor="etsy-channel"] [data-test-id="unsanitize"]').text().trim()
-    document.title = 'Tool loaded'
+    document.title = 'Tracking tool loaded'
     console.log(shopName)
 }
 

@@ -428,11 +428,11 @@ io.on("connection", async function (client) {
   }
 
   client.on("client-list-new", function (data) {
-    socket.to(data.shop).emit('etsy-list-new', data)
+    client.to(data.shop).emit('etsy-list-new', data)
   })
 
   client.on("etsy-list-done", function (data) {
-    socket.to(data.client_id).emit('response-list-to-client', data)
+    client.to(data.client_id).emit('response-list-to-client', data)
   })
 
   client.on("shop-tracking-join", async function () {
