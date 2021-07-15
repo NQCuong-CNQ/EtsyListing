@@ -61,7 +61,6 @@ const MongoClient = require('mongodb').MongoClient
 const url = "mongodb://localhost:27017/trackingdb"
 var clientDB
 var dbo
-let clientID
 
 main()
 async function main() {
@@ -419,10 +418,22 @@ async function completeUpdate() {
 
 io.on("connection", async function (client) {
   if (client.handshake.query.type == 2) {
-    clientID = client.handshake.query._id
+    let clientID = client.handshake.query.client_id
     console.log('client:', clientID)
     client.join(clientID)
+  } else if (client.handshake.query.type == 1) {
+    let etsyID = client.handshake.query.etsy_id
+    console.log('etsyID:', etsyID)
+    client.join(etsyID)
   }
+
+  client.on("client-list-new", function (data) {
+    socket.to(data.shop).emit('etsy-list-new', data)
+  })
+
+  client.on("etsy-list-done", function (data) {
+    socket.to(data.client_id).emit('response-list-to-client', data)
+  })
 
   client.on("shop-tracking-join", async function () {
     if (isUpdate) {

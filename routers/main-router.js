@@ -34,16 +34,12 @@ router.get("/tools", authMiddleware.requireAuth, function (req, res) {
     res.render("tools", {title: 'Tools Braumstar', active: 'tools'})
 })
 
-// router.get("/listing", function (req, res) {
-//     res.render("/etsy_listing", {title: 'Etsy tools'})
-// })
-
 router.get("/add_tracking_history", authMiddleware.requireAuth, function (req, res) {
     res.render("add_tracking_etsy_history", {title: 'Add Tracking History', active: 'add_tracking_history'})
 })
 
 router.get("/undefined", function (req, res) {
-    res.send('null')
+    res.send(null)
 })
 
 router.get("/mockup", authMiddleware.requireAuth, function (req, res) {
@@ -55,7 +51,7 @@ router.get("/logout", authController.logout)
 router.post('/login', authController.postLogin)
 
 router.get("/listing", authMiddleware.requireAuth, function (req, res) {
-    res.render("etsy_listing", {title: 'Listing', active: ''})
+    res.render("listing", {title: 'Listing', active: 'listing'})
 })
 
 module.exports = router
