@@ -33,7 +33,7 @@ module.exports.getAll = async function (req, res) {
 
         // data = searchOrFilterData(shopCategory, dbData, type, category, month, sales)
         res.send({
-            shopData: data,
+            shopData: dbData,
             lastUpdated: lastUpdated,
         })
     } catch (err) {
