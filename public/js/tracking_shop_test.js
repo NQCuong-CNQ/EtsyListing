@@ -375,7 +375,7 @@ searchOrFilterData = () => {
     //     dataFilter = timeCreatedShopFilterCustom(dataFilter)
     // }
 
-    let offset = 0, limit = 10, month = null, search = null, sort_by = null, category = null, type = filterType
+    let offset = 0, limit = 10, month = null, search = null, sort_by = null, category = null, type = filterType, sales = null
 
     getData(offset, limit, type, category, month, sales, search, sort_by)
 }
