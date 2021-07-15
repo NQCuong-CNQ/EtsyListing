@@ -328,7 +328,8 @@ getData = (offset, limit, type, category, month, sales, search, sort_by) => {
         },
         success: function (data) {
             shopData = data.shopData
-
+            console.log(data[0].lastUpdated)
+            console.log(data.lastUpdated)
             $('#last-updated').text("Last updated: " + getUpdateHistoryEpoch(data[0].lastUpdated))
             $('#loading').css('display', 'none')
             updateData(shopData)

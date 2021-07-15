@@ -8,7 +8,7 @@ module.exports.getAll = async function (req, res) {
         clientDB = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
         dbo = clientDB.db("trackingdb")
 
-        // let customQuery = {}, queryObj = {}
+        let customQuery = {}, queryObj = {}
         let offset = parseInt(req.query.offset)
         let limit = parseInt(req.query.limit)
         let type = parseInt(req.query.type)
@@ -20,11 +20,18 @@ module.exports.getAll = async function (req, res) {
 
         let data = ''
 
-        let shopCategory = await dbo.collection("shopCategory").find().toArray()
+        if(type){
+            customQuery.digital_listing_count = `{ $gt: 0 }`
+        } else {
+            customQuery.digital_listing_count = `{ $eq: 0 }`
+        }
+
+        queryObj = { ...customQuery }
+        let shopCategory = await dbo.collection("shopCategory").find({ ...queryObj }).toArray()
         let dbData = await dbo.collection("shop").find().skip(offset).limit(limit).toArray()
         let lastUpdated = await dbo.collection("log").find().sort({ $natural: -1 }).limit(1).toArray()
 
-        data = searchOrFilterData(shopCategory, dbData, type, category, month, sales)
+        // data = searchOrFilterData(shopCategory, dbData, type, category, month, sales)
         res.send({
             shopData: data,
             lastUpdated: lastUpdated,
