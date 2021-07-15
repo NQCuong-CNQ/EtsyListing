@@ -35,6 +35,11 @@ $('#submit-btn').on('click', () => {
         main_images: $('#main-images').val().trim(),
         title: $('#title').val().trim(),
         tags: $('#tags').val().trim(),
+        is_personalizable: true,
+        personalization_is_required: true,
+        personalization_instructions: 'personalization_instructions',
+        shipping_profile_id: 111158145514,
+        publish: false,
     }
     socket.emit('client-list-new', data)
 
