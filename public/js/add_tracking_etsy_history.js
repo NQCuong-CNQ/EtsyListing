@@ -89,28 +89,33 @@ filterData = () => {
 }
 
 getData = (offset, limit, showAccount) => {
-    $.ajax({
-        url: '/add_tracking_history/getAll',
-        type: "get",
-        contentType: "application/json",
-        dataType: "json",
-        data: {
-            offset: offset,
-            limit: limit,
-            showAdded: isAddedChecked,
-            showAccount: showAccount,
-            search: search,
-            searchBy: search_by,
-        },
-        success: function (data) {
-            total = data.total
-            updateData(data.data)
-        },
-        error: (jqXHR, textStatus, errorThrown) => {
-            console.log(jqXHR, textStatus, errorThrown)
-        }
-    })
+    try {
+        $.ajax({
+            url: '/add_tracking_history/getAll',
+            type: "get",
+            contentType: "application/json",
+            dataType: "json",
+            data: {
+                offset: offset,
+                limit: limit,
+                showAdded: isAddedChecked,
+                showAccount: showAccount,
+                search: search,
+                searchBy: search_by,
+            },
+            success: function (data) {
+                total = data.total
+                updateData(data.data)
+            },
+            error: (jqXHR, textStatus, errorThrown) => {
+                console.log(jqXHR, textStatus, errorThrown)
+            }
+        })
+    } catch (err) {
+        console.log(err)
+    }
 }
+filterData()
 
 $('#show-added-tracking').on('change', () => {
     if ($('#show-added-tracking').prop("checked")) {
@@ -304,24 +309,28 @@ $('#submit-fix-btn').on('click', () => {
     toastr.clear()
     toastr.success('Processing...')
 
-    $.ajax({
-        url: '/add_tracking_history/fix',
-        type: "get",
-        contentType: "application/json",
-        dataType: "json",
-        data: {
-            id: id,
-            actual_input: actual_input,
-            carrier_name: carrier_name,
-        },
-        success: function (data) {
-            toastr.clear()
-            toastr.success('Done!')
-        },
-        error: (jqXHR, textStatus, errorThrown) => {
-            console.log(jqXHR, textStatus, errorThrown)
-        }
-    })
+    try {
+        $.ajax({
+            url: '/add_tracking_history/fix',
+            type: "get",
+            contentType: "application/json",
+            dataType: "json",
+            data: {
+                id: id,
+                actual_input: actual_input,
+                carrier_name: carrier_name,
+            },
+            success: function (data) {
+                toastr.clear()
+                toastr.success('Done!')
+            },
+            error: (jqXHR, textStatus, errorThrown) => {
+                console.log(jqXHR, textStatus, errorThrown)
+            }
+        })
+    } catch (err) {
+        console.log(err)
+    }
 })
 
 
@@ -340,4 +349,3 @@ $('#search-by-customer').on('click', () => {
     filterData()
 })
 
-filterData()

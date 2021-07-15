@@ -305,31 +305,35 @@ updateData = (data = shopData) => {
 }
 
 getData = (offset, limit, type, category, month, sales, search, sort_by) => {
-    $.ajax({
-        url: '/tracking-shop/getAll',
-        type: "get",
-        contentType: "application/json",
-        dataType: "json",
-        data: {
-            offset: offset,
-            limit: limit,
-            type: type,
-            category: category,
-            month: month,
-            sales: sales,
-            search: search,
-            sort_by: sort_by,
-        },
-        success: function (data) {
-            shopData = data.shopData
-            $('#last-updated').text("Last updated: " + getUpdateHistoryEpoch(data[0].updateHistory))
-            $('#loading').css('display', 'none')
-            updateData(shopData)
-        },
-        error: (jqXHR, textStatus, errorThrown) => {
-            console.log(jqXHR, textStatus, errorThrown)
-        }
-    })
+    try {
+        $.ajax({
+            url: '/tracking-shop/getAll',
+            type: "get",
+            contentType: "application/json",
+            dataType: "json",
+            data: {
+                offset: offset,
+                limit: limit,
+                type: type,
+                category: category,
+                month: month,
+                sales: sales,
+                search: search,
+                sort_by: sort_by,
+            },
+            success: function (data) {
+                shopData = data.shopData
+                $('#last-updated').text("Last updated: " + getUpdateHistoryEpoch(data.lastUpdated))
+                $('#loading').css('display', 'none')
+                updateData(shopData)
+            },
+            error: (jqXHR, textStatus, errorThrown) => {
+                console.log(jqXHR, textStatus, errorThrown)
+            }
+        })
+    } catch (err) {
+        console.log(err)
+    }
 }
 
 searchOrFilterData = () => {
