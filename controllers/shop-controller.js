@@ -21,7 +21,7 @@ module.exports.getAll = async function (req, res) {
         let data
 
         let shopCategory = await dbo.collection("shopCategory").find().toArray()
-        let dbData = await dbo.collection("shop").find({ ...queryObj }).skip(offset).limit(limit).toArray()
+        let dbData = await dbo.collection("shop").find().skip(offset).limit(limit).toArray()
         let lastUpdated = await dbo.collection("log").find().sort({ $natural: -1 }).limit(1)
 
         data = searchOrFilterData(shopCategory, dbData, type, category, month, sales)
