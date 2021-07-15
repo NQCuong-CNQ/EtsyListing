@@ -310,7 +310,7 @@ updateData = (data = shopData) => {
     })
 }
 
-searchOrFilterData()
+
 
 searchOrFilterData = () => {
     // let dataFilter = shopData
@@ -352,6 +352,8 @@ searchOrFilterData = () => {
 
     getData(offset, limit, type, category, month, sales, search, sort_by)
 }
+
+searchOrFilterData()
 
 getListingOption = id => {
     socket.emit("get_listing_shop_id", shopData.find(({ id }) => id == id).shop_id)
