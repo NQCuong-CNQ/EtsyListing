@@ -4,8 +4,8 @@ var socket = io.connect("https://giftsvk.com", {
     transports: ['websocket']
 })
 
-var shopData, shopCategory, chart, selected_shop, category = 'All',
-    timeCreatedShopFilter, salesLargerThan, monthFilterShop, filterType = 0, gettingData = 1
+var shopData, shopCategory, chart, selected_shop, category = null,
+    timeCreatedShopFilter, salesLargerThan = null, monthFilterShop, filterType = 0, gettingData = 1
 
 IsJsonString = str => {
     try {
@@ -267,7 +267,7 @@ getShopDetail = id => {
 }
 
 updateData = (data = shopData) => {
-    $('#table-shop').DataTable().clear().destroy()
+    $('#table-shop-body').empty()
     for (let item of data) {
         if (item.imgs_listing === undefined || item.imgs_listing == null) {
             console.log(item.shop_name + "doesn't have img, removed!")
@@ -302,12 +302,6 @@ updateData = (data = shopData) => {
         <td>${item.shop_id}</td>
     </tr>`)
     }
-
-    $('#table-shop').DataTable({
-        pageLength: 10,
-        order: [[2, "desc"]],
-        searching: false,
-    })
 }
 
 getData = (offset, limit, type, category, month, sales, search, sort_by) => {
@@ -328,9 +322,7 @@ getData = (offset, limit, type, category, month, sales, search, sort_by) => {
         },
         success: function (data) {
             shopData = data.shopData
-            console.log(data[0].lastUpdated)
-            console.log(data.lastUpdated)
-            $('#last-updated').text("Last updated: " + getUpdateHistoryEpoch(data[0].lastUpdated))
+            $('#last-updated').text("Last updated: " + getUpdateHistoryEpoch(data[0].updateHistory))
             $('#loading').css('display', 'none')
             updateData(shopData)
         },
@@ -376,7 +368,7 @@ searchOrFilterData = () => {
     //     dataFilter = timeCreatedShopFilterCustom(dataFilter)
     // }
 
-    let offset = 0, limit = 10, month = null, search = null, sort_by = null, category = null, type = filterType, sales = null
+    let offset = 0, limit = 10, month = null, search = null, sort_by = null, category = null, type = filterType, sales = salesLargerThan
 
     getData(offset, limit, type, category, month, sales, search, sort_by)
 }
