@@ -59,7 +59,7 @@ module.exports.getAll = async function (req, res) {
         querySort = { ...customSort }
         console.log(querySort)
         dbData = await dbo.collection("shop").find({ ...queryObj }).sort({ ...querySort }).toArray()
-
+        console.log(dbData.slice(0, 10))
         dbData = await searchOrFilterData(dbData, category, month, sort_by)
 
         res.send({
