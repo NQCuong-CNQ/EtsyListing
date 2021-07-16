@@ -162,15 +162,9 @@ async function searchOrFilterData(shop, category, month) {
 
 module.exports.getShopTracking = async function (req, res) {
     try {
-        // clientDB = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
-        // dbo = clientDB.db("trackingdb")
+        let id = parseInt(req.query.shop_id)
+        let dbData = await dbo.collection("shopTracking").find({ shop_id: id }).toArray()
 
-        let id = '' + req.query.shopId
-        console.log(id)
-        let dbData = await dbo.collection("shopTracking").find().toArray()
-        console.log(dbData.length)
-        dbData = await dbo.collection("shopTracking").find({ shop_id: { "$eq": id }}).toArray()
-        console.log(dbData)
         res.send({
             data: dbData,
         })
@@ -183,39 +177,36 @@ module.exports.getShopTracking = async function (req, res) {
 }
 
 module.exports.getShopListing = async function (req, res) {
-    try {
-        clientDB = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
-        dbo = clientDB.db("trackingdb")
-
-        let shop_id = req.query.shop_id
-        let dbData = await dbo.collection("shopTracking").find({ shop_id: { "$eq": shop_id } }).toArray()
-        console.log(shop_id)
-        res.send({
-            data: dbData,
-        })
-    } catch (err) {
-        console.log(err)
-        res.send({
-            message: err,
-        })
-    }
+    // try {
+    //     let shop_id = req.query.shop_id
+    //     let dbData = await dbo.collection("shopTracking").find({ shop_id: { "$eq": shop_id } }).toArray()
+    //     console.log(shop_id)
+    //     res.send({
+    //         data: dbData,
+    //     })
+    // } catch (err) {
+    //     console.log(err)
+    //     res.send({
+    //         message: err,
+    //     })
+    // }
 }
 
 module.exports.getShopUser = async function (req, res) {
-    try {
-        clientDB = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
-        dbo = clientDB.db("trackingdb")
+    // try {
+    //     clientDB = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
+    //     dbo = clientDB.db("trackingdb")
 
-        let shop_id = req.query.shop_id
-        let dbData = await dbo.collection("shopTracking").find({ shop_id: { "$eq": shop_id } }).toArray()
-        console.log(shop_id)
-        res.send({
-            data: dbData,
-        })
-    } catch (err) {
-        console.log(err)
-        res.send({
-            message: err,
-        })
-    }
+    //     let shop_id = req.query.shop_id
+    //     let dbData = await dbo.collection("shopTracking").find({ shop_id: { "$eq": shop_id } }).toArray()
+    //     console.log(shop_id)
+    //     res.send({
+    //         data: dbData,
+    //     })
+    // } catch (err) {
+    //     console.log(err)
+    //     res.send({
+    //         message: err,
+    //     })
+    // }
 }

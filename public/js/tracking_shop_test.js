@@ -318,7 +318,7 @@ getShopDetail = id => {
             contentType: "application/json",
             dataType: "json",
             data: {
-                shopId: id,
+                shop_id: id,
             },
             success: function (data) {
                 showShopChart(data.data)
