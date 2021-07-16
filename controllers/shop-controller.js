@@ -32,7 +32,6 @@ module.exports.getAll = async function (req, res) {
 
         queryObj = { ...customQuery }
         let shopCategory = await dbo.collection("shopCategory").find().toArray()
-        console.log(queryObj)
         let dbData = await dbo.collection("shop").find({ ...queryObj }).toArray()
         let lastUpdated = await dbo.collection("log").find().sort({ $natural: -1 }).limit(1).toArray()
 
@@ -53,7 +52,7 @@ getCategoryProduct = async (dataFilter, category) => {
     
     let filterData = []
     let listShopName = await dbo.collection("shopCategory").find({ 'category': { $regex: category } }).toArray()
-
+    console.log(listShopName.length)
     // for (let item of listShopName) {
     //     for (let itemFilter of dataFilter) {
     //         if (item.shop_name == itemFilter.shop_name) {
@@ -66,12 +65,12 @@ getCategoryProduct = async (dataFilter, category) => {
     let result
     for(let item of listShopName){
         result = dataFilter.find( ({ shop_name }) => shop_name === item.shop_name )
-        console.log(result)
+        
         // if(result){
             filterData.push(result)
         // }
     }
-    
+    console.log(filterData.length)
 
     return filterData
 }
