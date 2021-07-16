@@ -36,9 +36,11 @@ module.exports.getAll = async function (req, res) {
         let dbData = await dbo.collection("shop").find({ ...queryObj }).toArray()
         let lastUpdated = await dbo.collection("log").find().sort({ $natural: -1 }).limit(1).toArray()
 
+        dbData = dbData.slice(10)
+        console.log(dbData.length)
         // data = searchOrFilterData(shopCategory, dbData, category, month, sales)
         res.send({
-            shopData: dbData.slice(10),
+            shopData: dbData,
             lastUpdated: lastUpdated[0].updateHistory,
         })
     } catch (err) {
