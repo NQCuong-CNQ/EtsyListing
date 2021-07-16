@@ -734,7 +734,7 @@ table td, table th {
   padding: 8px;
 }
 
-#table-list th {
+#table-shop th {
   border: none;
   padding: 8px;
 }
@@ -747,8 +747,8 @@ table tr:hover {
   background-color: #ddd;
 }
 
-#table-list tr:hover {
-  background-color: #ddd;
+#table-shop tr:hover {
+  background-color: #f2f2f2c5;
 }
 
 table th {
