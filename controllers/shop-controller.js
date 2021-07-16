@@ -165,8 +165,8 @@ module.exports.getShopTracking = async function (req, res) {
         clientDB = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
         dbo = clientDB.db("trackingdb")
 
-        let shop_id = '' + req.query.shop_id
-        let dbData = await dbo.collection("shopTracking").find({ shop_id: { "$eq": shop_id } }).toArray()
+        let id = req.query.shop_id
+        let dbData = await dbo.collection("shopTracking").find({ shop_id: id }).toArray()
         console.log(dbData)
         res.send({
             data: dbData,
