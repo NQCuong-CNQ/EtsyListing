@@ -5,7 +5,8 @@ var socket = io.connect("https://giftsvk.com", {
 })
 
 var shopData, shopCategory, chart, selected_shop, category = 'Canvas',
-    timeCreatedShopFilter, salesLargerThan = null, monthFilterShop = null, filterType = 0, searchShop = null
+    timeCreatedShopFilter, salesLargerThan = null, monthFilterShop = null, filterType = 0, searchShop = null,
+    pag_num = 1, total = 0, num_per_pag = 10
 
 IsJsonString = str => {
     try {
@@ -132,16 +133,6 @@ timeCreatedShopFilterAction = dataFilter => {
     return shopTimeDataFilter
 }
 
-getSalesLargerThan = data => {
-    let filterData = []
-    for (let item of data) {
-        if (item.total_sales >= salesLargerThan) {
-            filterData.push(item)
-        }
-    }
-    return filterData
-}
-
 getMonthTime = input => {
     var date = new Date(0)
     date.setUTCSeconds(input)
@@ -151,52 +142,21 @@ getMonthTime = input => {
     return parseInt(time)
 }
 
-getMonthFilter = data => {
-    let filterData = []
-    for (let item of data) {
-        if (getMonthTime(item.creation_tsz) == parseInt(monthFilterShop)) {
-            filterData.push(item)
-        }
-    }
+// timeCreatedShopFilterCustom = data => {
+//     let filterData = []
+//     let dateRange = $('#dropdown-filter-shop-time-created').text().split(' to ')
 
-    return filterData
-}
+//     let dateFrom = new Date(dateRange[0]).getTime()
+//     let dateTo = new Date(dateRange[1]).getTime()
 
-timeCreatedShopFilterCustom = data => {
-    let filterData = []
-    let dateRange = $('#dropdown-filter-shop-time-created').text().split(' to ')
+//     for (let item of data) {
+//         if (item.creation_tsz >= ~~(dateFrom / 1000) && item.creation_tsz <= ~~(dateTo / 1000)) {
+//             filterData.push(item)
+//         }
+//     }
 
-    let dateFrom = new Date(dateRange[0]).getTime()
-    let dateTo = new Date(dateRange[1]).getTime()
-
-    for (let item of data) {
-        if (item.creation_tsz >= ~~(dateFrom / 1000) && item.creation_tsz <= ~~(dateTo / 1000)) {
-            filterData.push(item)
-        }
-    }
-
-    return filterData
-}
-
-isDigitShop = data => {
-    if (data.digital_listing_count > (data.listing_active_count / 10)) {
-        return true
-    } return false
-}
-
-
-
-getTypeProduct = (dataFilter, isDigit = false) => {
-    let filterData = []
-
-    for (let item of dataFilter) {
-        if (isDigitShop(item) == isDigit) {
-            filterData.push(item)
-        }
-    }
-
-    return filterData
-}
+//     return filterData
+// }
 
 getShopNameByID = id => {
 
@@ -309,7 +269,6 @@ showShopChart = data => {
 getShopDetail = id => {
     selected_shop = id
     $('#loading').css('display', 'block')
-    console.log(id)
 
     try {
         $.ajax({
@@ -330,7 +289,7 @@ getShopDetail = id => {
     } catch (err) {
         console.log(err)
     }
-    
+
     $('#shop-name-chart').text(getShopNameByID(id) + ` Analytics`)
 }
 
@@ -412,34 +371,6 @@ getData = (offset, limit, type, category, month, sales, sort_by) => {
 
 searchOrFilterData = () => {
     $('#loading').css('display', 'block')
-    // let dataFilter = shopData
-
-    // if (filterType == 0) {
-    //     dataFilter = getTypeProduct(dataFilter)
-    // } else if (filterType == 1) {
-    //     dataFilter = getTypeProduct(dataFilter, true)
-    // }
-
-    // if (category == 'All') {
-    // } else if (category == 'Canvas') {
-    //     dataFilter = getCategoryProduct(dataFilter)
-    // } else if (category == 'Mug') {
-    //     dataFilter = getCategoryProduct(dataFilter)
-    // } else if (category == 'Shirt') {
-    //     dataFilter = getCategoryProduct(dataFilter)
-    // } else if (category == 'Blanket') {
-    //     dataFilter = getCategoryProduct(dataFilter)
-    // } else if (category == 'Tumbler') {
-    //     dataFilter = getCategoryProduct(dataFilter)
-    // }
-
-    // if (salesLargerThan > 10) {
-    //     dataFilter = getSalesLargerThan(dataFilter)
-    // }
-
-    // if (monthFilterShop >= 1 && monthFilterShop <= 12) {
-    //     dataFilter = getMonthFilter(dataFilter)
-    // }
 
     // if (timeCreatedShopFilter > 0) {
     //     dataFilter = timeCreatedShopFilterAction(dataFilter)
@@ -447,9 +378,9 @@ searchOrFilterData = () => {
     //     dataFilter = timeCreatedShopFilterCustom(dataFilter)
     // }
 
-    let offset = 0, limit = 10, month = null, sort_by = null, type = filterType, sales = salesLargerThan
+    let offset = (pag_num - 1) * num_per_pag, sort_by = null
 
-    getData(offset, limit, type, category, monthFilterShop, sales, sort_by)
+    getData(offset, num_per_pag, filterType, category, monthFilterShop, salesLargerThan, sort_by)
 }
 
 searchOrFilterData()
@@ -774,4 +705,42 @@ $('#month-filter-shop').on('change', () => {
             $('#month-filter-shop').val('')
         }
     }
+})
+
+
+updatePag = () => {
+    $('#num-pag').text(`${pag_num}`)
+    $('#first-pag').removeClass('pag_disabled')
+    $('#prev-pag').removeClass('pag_disabled')
+    $('#last-pag').removeClass('pag_disabled')
+    $('#next-pag').removeClass('pag_disabled')
+
+    if (pag_num == 1) {
+        $('#first-pag').addClass('pag_disabled')
+        $('#prev-pag').addClass('pag_disabled')
+    }
+    if (pag_num == ~~(total / num_per_pag) + 1) {
+        $('#last-pag').addClass('pag_disabled')
+        $('#next-pag').addClass('pag_disabled')
+    }
+}
+
+$('#first-pag').on('click', () => {
+    pag_num = 1
+    searchOrFilterData()
+})
+
+$('#prev-pag').on('click', () => {
+    pag_num--
+    searchOrFilterData()
+})
+
+$('#next-pag').on('click', () => {
+    pag_num++
+    searchOrFilterData()
+})
+
+$('#last-pag').on('click', () => {
+    pag_num = ~~(total / num_per_pag) + 1
+    searchOrFilterData()
 })
