@@ -162,8 +162,8 @@ async function searchOrFilterData(shop, category, month) {
 
 module.exports.getShopTracking = async function (req, res) {
     try {
-        clientDB = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
-        dbo = clientDB.db("trackingdb")
+        // clientDB = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
+        // dbo = clientDB.db("trackingdb")
 
         let id = '' + req.query.shopId
         console.log(id)
