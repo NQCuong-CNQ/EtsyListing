@@ -36,7 +36,7 @@ module.exports.getAll = async function (req, res) {
         let dbData = await dbo.collection("shop").find({ ...queryObj }).toArray()
         let lastUpdated = await dbo.collection("log").find().sort({ $natural: -1 }).limit(1).toArray()
 
-        data = searchOrFilterData(shopCategory, dbData, category, month, sales)
+        data = await searchOrFilterData(shopCategory, dbData, category, month, sales)
         res.send({
             shopData: dbData.slice(offset, offset + limit),
             lastUpdated: lastUpdated[0].updateHistory,
@@ -49,7 +49,7 @@ module.exports.getAll = async function (req, res) {
     }
 }
 
-getCategoryProduct = (dataFilter, category) => {
+getCategoryProduct = async (dataFilter, category) => {
     $('#dropdown-filter-shop').text(category)
     let filterData = []
     let listShopName = await dbo.collection("shopCategory").find({ 'category': { $regex: category } }).toArray()
@@ -75,11 +75,11 @@ getCategoryProduct = (dataFilter, category) => {
     return filterData
 }
 
-function searchOrFilterData(shopCategory, shop, category, month, sales) {
+async function searchOrFilterData(shopCategory, shop, category, month, sales) {
     let dataFilter = shop
 
     if (category) {
-        dataFilter = getCategoryProduct(dataFilter, category)
+        dataFilter = await getCategoryProduct(dataFilter, category)
     }
 
     // if (category == 'Canvas') {
