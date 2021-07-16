@@ -9,6 +9,7 @@ module.exports.getAll = async function (req, res) {
         dbo = clientDB.db("trackingdb")
 
         let customQuery = {}, queryObj = {}, dbData, shopCategory, lastUpdated
+        let customSort = {}, querySort = {}
         let offset = parseInt(req.query.offset)
         let limit = parseInt(req.query.limit)
         let type = parseInt(req.query.type)
@@ -43,9 +44,22 @@ module.exports.getAll = async function (req, res) {
 
         queryObj = { ...customQuery }
         shopCategory = await dbo.collection("shopCategory").find().toArray()
-        dbData = await dbo.collection("shop").find({ ...queryObj }).toArray()
 
-        dbData = await searchOrFilterData(dbData, category, month)
+        if(sort_by == 1){
+        } else if (sort_by == 2){
+            customSort.total_sales = -1
+        } else if (sort_by == 3){
+            customSort.creation_tsz = -1
+        } else if (sort_by == 4){
+            customSort.num_favorers = -1
+        } else if (sort_by == 5){
+            customSort.listing_active_count = -1
+        }
+        querySort = { ...customSort }
+
+        dbData = await dbo.collection("shop").find({ ...queryObj }).sort({ ...querySort }).toArray()
+
+        dbData = await searchOrFilterData(dbData, category, month, sort_by)
 
         res.send({
             total: dbData.length,
@@ -149,7 +163,9 @@ async function searchOrFilterData(shop, category, month) {
         dataFilter = getMonthFilter(dataFilter, month)
     }
 
-    dataFilter.sort(compareSaleDay)
+    if(sort_by == 1){
+        dataFilter.sort(compareSaleDay)
+    }
 
     // if (timeCreatedShopFilter > 0) {
     //     dataFilter = timeCreatedShopFilterAction(dataFilter)

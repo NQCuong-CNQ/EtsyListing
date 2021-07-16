@@ -6,7 +6,7 @@ var socket = io.connect("https://giftsvk.com", {
 
 var shopData, shopCategory, chart, selected_shop, category = 'Canvas',
     timeCreatedShopFilter, salesLargerThan = null, monthFilterShop = null, filterType = 0, searchShop = null,
-    pag_num = 1, total = 0, num_per_pag = 10
+    pag_num = 1, total = 0, num_per_pag = 10, sort_by = 1
 
 IsJsonString = str => {
     try {
@@ -21,7 +21,6 @@ $('#listing-back-btn').on('click', () => {
     $('#list-shop-section').css("display", "block")
     $('#listing-shop-section').css("display", "none")
     $('#user-shop-section').css("display", "none")
-    // $('#table_id-list').DataTable().clear().destroy()
 })
 
 $('#user-back-btn').on('click', () => {
@@ -294,45 +293,46 @@ getShopDetail = id => {
 }
 
 updateData = (data = shopData) => {
-    $('#table-shop-body').empty()
-    for (let item of data) {
-        if (item.imgs_listing === undefined || item.imgs_listing == null) {
-            console.log(item.shop_name + "doesn't have img, removed!")
-            continue
+    try {
+        $('#table-shop-body').empty()
+        for (let item of data) {
+            $('#table-shop-body').append(`<tr>
+            <td onclick="getShopDetail(${item.shop_id})"><i class="fas fa-info-circle pointer"></i></td>
+            <td>
+            <a href="${item.url}" target="_blank">${item.shop_name}
+                <div> 
+                <img src="${item.imgs_listing[0]}" loading="lazy" alt="Empty" width="70px" height="70px">
+                <img src="${item.imgs_listing[1]}" loading="lazy" alt="Empty" width="70px" height="70px">
+                <img src="${item.imgs_listing[2]}" loading="lazy" alt="Empty" width="70px" height="70px">
+                <img src="${item.imgs_listing[3]}" loading="lazy" alt="Empty" width="70px" height="70px">
+                </div>
+                <div class="mt-1">
+                <img src="${item.imgs_listing[4]}" loading="lazy" alt="Empty" width="70px" height="70px">
+                <img src="${item.imgs_listing[5]}" loading="lazy" alt="Empty" width="70px" height="70px">
+                <img src="${item.imgs_listing[6]}" loading="lazy" alt="Empty" width="70px" height="70px">
+                <img src="${item.imgs_listing[7]}" loading="lazy" alt="Empty" width="70px" height="70px">
+                </div>
+            </a>
+            </td>
+            <td>${getAvgSales(item.total_sales, item.creation_tsz)}</td>
+            <td>${item.total_sales.toLocaleString()}</td>
+            <td>${item.num_favorers.toLocaleString()}</td>
+            <td>${getEpochTime(item.creation_tsz)}</td>
+            <td>${item.listing_active_count.toLocaleString()}</td>
+            <td>${item.digital_listing_count.toLocaleString()}</td>
+            <td>${item.currency_code}</td>
+            <td>${item.languages}</td>
+            <td>${item.shop_id}</td>
+        </tr>`)
         }
-        $('#table-shop-body').append(`<tr>
-        <td onclick="getShopDetail(${item.shop_id})"><i class="fas fa-info-circle pointer"></i></td>
-        <td>
-          <a href="${item.url}" target="_blank">${item.shop_name}
-            <div> 
-              <img src="${item.imgs_listing[0]}" loading="lazy" alt="Empty" width="70px" height="70px">
-              <img src="${item.imgs_listing[1]}" loading="lazy" alt="Empty" width="70px" height="70px">
-              <img src="${item.imgs_listing[2]}" loading="lazy" alt="Empty" width="70px" height="70px">
-              <img src="${item.imgs_listing[3]}" loading="lazy" alt="Empty" width="70px" height="70px">
-            </div>
-            <div class="mt-1">
-              <img src="${item.imgs_listing[4]}" loading="lazy" alt="Empty" width="70px" height="70px">
-              <img src="${item.imgs_listing[5]}" loading="lazy" alt="Empty" width="70px" height="70px">
-              <img src="${item.imgs_listing[6]}" loading="lazy" alt="Empty" width="70px" height="70px">
-              <img src="${item.imgs_listing[7]}" loading="lazy" alt="Empty" width="70px" height="70px">
-            </div>
-          </a>
-        </td>
-        <td>${getAvgSales(item.total_sales, item.creation_tsz)}</td>
-        <td>${item.total_sales.toLocaleString()}</td>
-        <td>${item.num_favorers.toLocaleString()}</td>
-        <td>${getEpochTime(item.creation_tsz)}</td>
-        <td>${item.listing_active_count.toLocaleString()}</td>
-        <td>${item.digital_listing_count.toLocaleString()}</td>
-        <td>${item.currency_code}</td>
-        <td>${item.languages}</td>
-        <td>${item.shop_id}</td>
-    </tr>`)
-    }
 
-    let start_pos = num_per_pag * (pag_num - 1) + 1
-    let end_pos = num_per_pag * pag_num > total ? total : num_per_pag * pag_num
-    $('#total-table').text(`Showing ${start_pos} - ${end_pos} of ${total} rows`)
+        let start_pos = num_per_pag * (pag_num - 1) + 1
+        let end_pos = num_per_pag * pag_num > total ? total : num_per_pag * pag_num
+        $('#total-table').text(`Showing ${start_pos} - ${end_pos} of ${total} rows`)
+        updatePag()
+    } catch (err) {
+        console.log(err)
+    }
 }
 
 getData = (offset, limit, type, category, month, sales, sort_by) => {
@@ -382,7 +382,7 @@ searchOrFilterData = () => {
     //     dataFilter = timeCreatedShopFilterCustom(dataFilter)
     // }
 
-    let offset = (pag_num - 1) * num_per_pag, sort_by = null
+    let offset = (pag_num - 1) * num_per_pag
 
     getData(offset, num_per_pag, filterType, category, monthFilterShop, salesLargerThan, sort_by)
 }
@@ -711,7 +711,6 @@ $('#month-filter-shop').on('change', () => {
     }
 })
 
-
 updatePag = () => {
     $('#num-pag').text(`${pag_num}`)
     $('#first-pag').removeClass('pag_disabled')
@@ -746,5 +745,35 @@ $('#next-pag').on('click', () => {
 
 $('#last-pag').on('click', () => {
     pag_num = ~~(total / num_per_pag) + 1
+    searchOrFilterData()
+})
+
+$('#sort-by-sales-day').on('click', () => {
+    sort_by = 1
+    $('#dropdown-filter-sort-by').text('Sales/Day')
+    searchOrFilterData()
+})
+
+$('#sort-by-total-sales').on('click', () => {
+    sort_by = 2
+    $('#dropdown-filter-sort-by').text('Total Sales')
+    searchOrFilterData()
+})
+
+$('#sort-by-creation-time').on('click', () => {
+    sort_by = 3
+    $('#dropdown-filter-sort-by').text('Creation Time')
+    searchOrFilterData()
+})
+
+$('#sort-by-num-favorers').on('click', () => {
+    sort_by = 4
+    $('#dropdown-filter-sort-by').text('Num Favorers')
+    searchOrFilterData()
+})
+
+$('#sort-by-listing-count').on('click', () => {
+    sort_by = 5
+    $('#dropdown-filter-sort-by').text('Listing Count')
     searchOrFilterData()
 })
