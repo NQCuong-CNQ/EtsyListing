@@ -454,7 +454,9 @@ searchOrFilterData = () => {
 searchOrFilterData()
 
 getListingOption = id => {
-    socket.emit("get_listing_shop_id", shopData.find(({ id }) => id == id).shop_id)
+    socket.emit("get_listing_shop_id", id)
+    // socket.emit("get_listing_shop_id", shopData.find(({ id }) => id == id).shop_id)
+
     $('#loading').css('display', 'block')
     $('#title-page').text('Listing Detail')
     $('#list-shop-section').css("display", "none")
