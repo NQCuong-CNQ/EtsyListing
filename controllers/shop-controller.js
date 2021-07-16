@@ -21,13 +21,20 @@ module.exports.getAll = async function (req, res) {
         let data = ''
 
         if(sales){
-            customQuery.total_sales = `{ $gte: ${sales} }`
+            customQuery.total_sales = { $gte: sales }
         }
+
+        if(type == 1){
+            customQuery.$where = "this.digital_listing_count >= (this.listing_active_count / 10)"
+        } else {
+            customQuery.$where = "this.digital_listing_count < (this.listing_active_count / 10)"
+        }
+        
 
         queryObj = { ...customQuery }
         let shopCategory = await dbo.collection("shopCategory").find().toArray()
         console.log(queryObj)
-        let dbData = await dbo.collection("shop").find({ total_sales:{ $gte: 2000 } }).skip(offset).limit(limit).toArray()
+        let dbData = await dbo.collection("shop").find({ ...queryObj }).skip(offset).limit(limit).toArray()
         let lastUpdated = await dbo.collection("log").find().sort({ $natural: -1 }).limit(1).toArray()
 
         // data = searchOrFilterData(shopCategory, dbData, type, category, month, sales)
