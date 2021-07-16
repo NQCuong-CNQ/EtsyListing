@@ -329,6 +329,10 @@ updateData = (data = shopData) => {
         <td>${item.shop_id}</td>
     </tr>`)
     }
+
+    let start_pos = num_per_pag * (pag_num - 1) + 1
+    let end_pos = num_per_pag * pag_num > total ? total : num_per_pag * pag_num
+    $('#total-table').text(`Showing ${start_pos} - ${end_pos} of ${total} rows`)
 }
 
 getData = (offset, limit, type, category, month, sales, sort_by) => {
@@ -351,7 +355,7 @@ getData = (offset, limit, type, category, month, sales, sort_by) => {
             success: function (data) {
                 $('#loading').css('display', 'none')
                 $('#last-updated').text("Last updated: " + getUpdateHistoryEpoch(data.lastUpdated))
-                $('#total-table').text(`Showing 0 - 0 of ${data.total} rows`)
+                total = data.total
 
                 if (data.isSearch == 1 && data.total == 0) {
 
