@@ -317,6 +317,7 @@ getData = (offset, limit, type, category, month, sales, search, sort_by) => {
 }
 
 searchOrFilterData = () => {
+    $('#dropdown-filter-shop').text(category)
     // let dataFilter = shopData
 
     // if (filterType == 0) {

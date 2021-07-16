@@ -50,7 +50,7 @@ module.exports.getAll = async function (req, res) {
 }
 
 getCategoryProduct = async (dataFilter, category) => {
-    $('#dropdown-filter-shop').text(category)
+    
     let filterData = []
     let listShopName = await dbo.collection("shopCategory").find({ 'category': { $regex: category } }).toArray()
 
