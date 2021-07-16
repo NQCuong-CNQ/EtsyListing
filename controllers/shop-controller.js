@@ -18,8 +18,6 @@ module.exports.getAll = async function (req, res) {
         let search = req.query.search
         let sort_by = req.query.sort_by
 
-        let data = ''
-
         if (sales) {
             customQuery.total_sales = { $gte: sales }
         }
@@ -35,7 +33,8 @@ module.exports.getAll = async function (req, res) {
         let dbData = await dbo.collection("shop").find({ ...queryObj }).toArray()
         let lastUpdated = await dbo.collection("log").find().sort({ $natural: -1 }).limit(1).toArray()
 
-        data = await searchOrFilterData(shopCategory, dbData, category, month, sales)
+        dbData = await searchOrFilterData(shopCategory, dbData, category, month, sales)
+        
         res.send({
             shopData: dbData.slice(offset, offset + limit),
             lastUpdated: lastUpdated[0].updateHistory,
@@ -49,28 +48,13 @@ module.exports.getAll = async function (req, res) {
 }
 
 getCategoryProduct = async (dataFilter, category) => {
-    
-    let filterData = []
+    let filterData = [], find
     let listShopName = await dbo.collection("shopCategory").find({ 'category': { $regex: category } }).toArray()
-    console.log(listShopName.length)
-    // for (let item of listShopName) {
-    //     for (let itemFilter of dataFilter) {
-    //         if (item.shop_name == itemFilter.shop_name) {
-    //             filterData.push(itemFilter)
-    //         }
-    //     }
-    // }
 
-     
-    let result
     for(let item of listShopName){
-        result = dataFilter.find( ({ shop_name }) => shop_name === item.shop_name )
-        
-        // if(result){
-            filterData.push(result)
-        // }
+        find = dataFilter.find( ({ shop_name }) => shop_name === item.shop_name )
+        filterData.push(find)
     }
-    console.log(filterData.length)
 
     return filterData
 }
