@@ -20,25 +20,25 @@ module.exports.getAll = async function (req, res) {
 
         let data = ''
 
-        if(sales){
+        if (sales) {
             customQuery.total_sales = { $gte: sales }
         }
 
-        if(type == 1){
+        if (type == 1) {
             customQuery.$where = "this.digital_listing_count >= (this.listing_active_count / 5)"
-        } else if(type == 2){
+        } else if (type == 2) {
             customQuery.$where = "this.digital_listing_count < (this.listing_active_count / 3)"
         }
-        
+
         queryObj = { ...customQuery }
         let shopCategory = await dbo.collection("shopCategory").find().toArray()
         console.log(queryObj)
         let dbData = await dbo.collection("shop").find({ ...queryObj }).toArray()
         let lastUpdated = await dbo.collection("log").find().sort({ $natural: -1 }).limit(1).toArray()
 
-        // data = searchOrFilterData(shopCategory, dbData, category, month, sales)
+        data = searchOrFilterData(shopCategory, dbData, category, month, sales)
         res.send({
-            shopData: dbData.slice(0, 10),
+            shopData: dbData.slice(offset, offset + limit),
             lastUpdated: lastUpdated[0].updateHistory,
         })
     } catch (err) {
@@ -49,33 +49,40 @@ module.exports.getAll = async function (req, res) {
     }
 }
 
-getCategoryProduct = dataFilter => {
+getCategoryProduct = (dataFilter, category) => {
     $('#dropdown-filter-shop').text(category)
+    let filterData = []
+    let listShopName = await dbo.collection("shopCategory").find({ 'category': { $regex: category } }).toArray()
 
-    let filterData = [], listShopName = []
-    for (let item of shopCategory) {
-        if (item.category.includes(category)) {
-            listShopName.push(item.shop_name)
-        }
-    }
+    // for (let item of listShopName) {
+    //     for (let itemFilter of dataFilter) {
+    //         if (item.shop_name == itemFilter.shop_name) {
+    //             filterData.push(itemFilter)
+    //         }
+    //     }
+    // }
 
-    for (let item of listShopName) {
-        for (let itemFilter of dataFilter) {
-            if (item == itemFilter.shop_name) {
-                filterData.push(itemFilter)
-            }
-        }
+     console.log(listShopName)
+    let result
+    for(let item of listShopName){
+        result = dataFilter.find( ({ shop_name }) => shop_name === item.shop_name )
+        // if(result){
+            filterData.push(result)
+        // }
     }
+    
 
     return filterData
 }
 
-function searchOrFilterData(category, shop, category, month, sales){
+function searchOrFilterData(shopCategory, shop, category, month, sales) {
     let dataFilter = shop
 
+    if (category) {
+        dataFilter = getCategoryProduct(dataFilter, category)
+    }
 
-    // if (category == 'All') {
-    // } else if (category == 'Canvas') {
+    // if (category == 'Canvas') {
     //     dataFilter = getCategoryProduct(dataFilter)
     // } else if (category == 'Mug') {
     //     dataFilter = getCategoryProduct(dataFilter)
