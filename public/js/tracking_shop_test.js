@@ -200,26 +200,7 @@ isDigitShop = data => {
     } return false
 }
 
-getCategoryProduct = dataFilter => {
-    $('#dropdown-filter-shop').text(category)
 
-    let filterData = [], listShopName = []
-    for (let item of shopCategory) {
-        if (item.category.includes(category)) {
-            listShopName.push(item.shop_name)
-        }
-    }
-
-    for (let item of listShopName) {
-        for (let itemFilter of dataFilter) {
-            if (item == itemFilter.shop_name) {
-                filterData.push(itemFilter)
-            }
-        }
-    }
-
-    return filterData
-}
 
 getTypeProduct = (dataFilter, isDigit = false) => {
     let filterData = []

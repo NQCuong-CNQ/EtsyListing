@@ -25,19 +25,18 @@ module.exports.getAll = async function (req, res) {
         }
 
         if(type == 1){
-            customQuery.$where = "this.digital_listing_count >= (this.listing_active_count / 10)"
-        } else {
-            customQuery.$where = "this.digital_listing_count < (this.listing_active_count / 10)"
+            customQuery.$where = "this.digital_listing_count >= (this.listing_active_count / 5)"
+        } else if(type == 2){
+            customQuery.$where = "this.digital_listing_count < (this.listing_active_count / 3)"
         }
         
-
         queryObj = { ...customQuery }
         let shopCategory = await dbo.collection("shopCategory").find().toArray()
         console.log(queryObj)
-        let dbData = await dbo.collection("shop").find({ ...queryObj }).skip(offset).limit(limit).toArray()
+        let dbData = await dbo.collection("shop").find({ ...queryObj }).toArray()
         let lastUpdated = await dbo.collection("log").find().sort({ $natural: -1 }).limit(1).toArray()
 
-        // data = searchOrFilterData(shopCategory, dbData, type, category, month, sales)
+        // data = searchOrFilterData(shopCategory, dbData, category, month, sales)
         res.send({
             shopData: dbData,
             lastUpdated: lastUpdated[0].updateHistory,
@@ -50,32 +49,30 @@ module.exports.getAll = async function (req, res) {
     }
 }
 
-isDigitShop = data => {
-    if (data.digital_listing_count > (data.listing_active_count / 10)) {
-        return true
-    } return false
-}
+getCategoryProduct = dataFilter => {
+    $('#dropdown-filter-shop').text(category)
 
-getTypeProduct = (dataFilter, isDigit = false) => {
-    let filterData = []
+    let filterData = [], listShopName = []
+    for (let item of shopCategory) {
+        if (item.category.includes(category)) {
+            listShopName.push(item.shop_name)
+        }
+    }
 
-    for (let item of dataFilter) {
-        if (isDigitShop(item) == isDigit) {
-            filterData.push(item)
+    for (let item of listShopName) {
+        for (let itemFilter of dataFilter) {
+            if (item == itemFilter.shop_name) {
+                filterData.push(itemFilter)
+            }
         }
     }
 
     return filterData
 }
 
-function searchOrFilterData(category, shop, type, category, month, sales){
+function searchOrFilterData(category, shop, category, month, sales){
     let dataFilter = shop
 
-    if (type == 0) {
-        dataFilter = getTypeProduct(dataFilter)
-    } else if (type == 1) {
-        dataFilter = getTypeProduct(dataFilter, true)
-    }
 
     // if (category == 'All') {
     // } else if (category == 'Canvas') {
