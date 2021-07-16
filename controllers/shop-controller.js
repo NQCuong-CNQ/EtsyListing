@@ -62,10 +62,11 @@ getCategoryProduct = async (dataFilter, category) => {
     //     }
     // }
 
-     console.log(listShopName)
+     
     let result
     for(let item of listShopName){
         result = dataFilter.find( ({ shop_name }) => shop_name === item.shop_name )
+        console.log(result)
         // if(result){
             filterData.push(result)
         // }
