@@ -167,9 +167,9 @@ module.exports.getShopTracking = async function (req, res) {
 
         let id = '' + req.query.shopId
         console.log(id)
-        let dbData = await dbo.collection("shopTracking").find({ shop_id: '28467079' }).toArray()
-        console.log(dbData)
-         dbData = await dbo.collection("shopTracking").find({ shop_id: { "$eq": id }}).toArray()
+        let dbData = await dbo.collection("shopTracking").find().toArray()
+        console.log(dbData.length)
+        dbData = await dbo.collection("shopTracking").find({ shop_id: { "$eq": id }}).toArray()
         console.log(dbData)
         res.send({
             data: dbData,
