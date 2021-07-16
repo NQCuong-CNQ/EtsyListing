@@ -303,8 +303,10 @@ getData = (offset, limit, type, category, month, sales, search, sort_by) => {
                 sort_by: sort_by,
             },
             success: function (data) {
-                $('#last-updated').text("Last updated: " + getUpdateHistoryEpoch(data.lastUpdated))
                 $('#loading').css('display', 'none')
+                $('#last-updated').text("Last updated: " + getUpdateHistoryEpoch(data.lastUpdated))
+                $('#total-table').text(`Showing 0 - 0 of ${data.total} rows`)
+
                 updateData(data.shopData)
             },
             error: (jqXHR, textStatus, errorThrown) => {
@@ -317,7 +319,8 @@ getData = (offset, limit, type, category, month, sales, search, sort_by) => {
 }
 
 searchOrFilterData = () => {
-    $('#dropdown-filter-shop').text(category)
+    
+    $('#loading').css('display', 'block')
     // let dataFilter = shopData
 
     // if (filterType == 0) {
@@ -667,26 +670,31 @@ $('#all-shop-filter').on('click', () => {
 
 $('#canvas-shop-filter').on('click', () => {
     category = 'Canvas'
+    $('#dropdown-filter-shop').text(category)
     searchOrFilterData()
 })
 
 $('#shirt-shop-filter').on('click', () => {
     category = 'Shirt'
+    $('#dropdown-filter-shop').text(category)
     searchOrFilterData()
 })
 
 $('#mug-shop-filter').on('click', () => {
     category = 'Mug'
+    $('#dropdown-filter-shop').text(category)
     searchOrFilterData()
 })
 
 $('#blanket-shop-filter').on('click', () => {
     category = 'Blanket'
+    $('#dropdown-filter-shop').text(category)
     searchOrFilterData()
 })
 
 $('#tumbler-shop-filter').on('click', () => {
     category = 'Tumbler'
+    $('#dropdown-filter-shop').text(category)
     searchOrFilterData()
 })
 
