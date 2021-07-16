@@ -30,9 +30,8 @@ module.exports.getAll = async function (req, res) {
 
         lastUpdated = await dbo.collection("log").find().sort({ $natural: -1 }).limit(1).toArray()
         if (search) {
-            dbData = await dbo.collection("shop").find({ shop_name: { $regex: search, $options: 'i'} }).toArray()
+            dbData = await dbo.collection("shop").find({ shop_name: { $regex: search, $options: 'i' } }).toArray()
 
-            console.log(dbData)
             res.send({
                 isSearch: 1,
                 total: dbData.length,
@@ -110,6 +109,35 @@ getMonthFilter = (data, month) => {
     return filterData
 }
 
+getDayTimeLife = creation_time => {
+    let timeNow = new Date().getTime()
+    let life_time = ~~(timeNow / 1000) - creation_time
+    return ~~(life_time / 86400)
+}
+
+getAvgSales = (total_sales, creation_time) => {
+    let avgSales = total_sales / getDayTimeLife(creation_time)
+    return avgSales.toFixed(2)
+}
+
+compareSaleDay = (a, b) => {
+    const bandA = getAvgSales(a.total_sales, a.creation_tsz)
+    const bandB = getAvgSales(b.total_sales, b.creation_tsz)
+    return compareAction(bandA, bandB)
+}
+
+compareAction = (bandA, bandB) => {
+    bandA = parseFloat(bandA)
+    bandB = parseFloat(bandB)
+    let comparison = 0;
+    if (bandA > bandB) {
+        comparison = 1;
+    } else if (bandA < bandB) {
+        comparison = -1;
+    }
+    return comparison * -1;
+}
+
 async function searchOrFilterData(shop, category, month) {
     let dataFilter = shop
 
@@ -117,10 +145,12 @@ async function searchOrFilterData(shop, category, month) {
         dataFilter = await getCategoryProduct(dataFilter, category)
     }
 
-    if(month){
+    if (month) {
         dataFilter = getMonthFilter(dataFilter, month)
     }
-    
+
+    dataFilter.sort(compareSaleDay)
+
     // if (timeCreatedShopFilter > 0) {
     //     dataFilter = timeCreatedShopFilterAction(dataFilter)
     // } else if (timeCreatedShopFilter == 'custom') {

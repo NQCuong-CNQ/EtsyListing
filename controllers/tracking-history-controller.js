@@ -24,9 +24,9 @@ module.exports.getAll = async function (req, res) {
             if (searchBy == 1) {
                 customQuery.id = "" + search
             } else if (searchBy == 2) {
-                customQuery.name = search
+                customQuery.name = { $regex: search, $options: 'i'}
             } else {
-                customQuery.customer_name = search
+                customQuery.customer_name = { $regex: search, $options: 'i'}
             }
         }
 

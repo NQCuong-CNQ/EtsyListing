@@ -4,7 +4,7 @@ var socket = io.connect("https://giftsvk.com", {
     transports: ['websocket']
 })
 
-var shopData, shopCategory, chart, selected_shop, category = null,
+var shopData, shopCategory, chart, selected_shop, category = 'Canvas',
     timeCreatedShopFilter, salesLargerThan = null, monthFilterShop = null, filterType = 0, gettingData = 1, searchShop = null
 
 IsJsonString = str => {
