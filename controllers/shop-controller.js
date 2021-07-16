@@ -152,7 +152,7 @@ compareAction = (bandA, bandB) => {
     return comparison * -1;
 }
 
-async function searchOrFilterData(shop, category, month) {
+async function searchOrFilterData(shop, category, month, sort_by) {
     let dataFilter = shop
 
     if (category) {
