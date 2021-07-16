@@ -8,7 +8,7 @@ module.exports.getAll = async function (req, res) {
         clientDB = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
         dbo = clientDB.db("trackingdb")
 
-        let customQuery = {}, queryObj = {}, dbData, shopCategory, lastUpdated
+        let customQuery = {}, queryObj = {}, dbData, lastUpdated
         let customSort = {}, querySort = {}
         let offset = parseInt(req.query.offset)
         let limit = parseInt(req.query.limit)
@@ -43,10 +43,9 @@ module.exports.getAll = async function (req, res) {
         }
 
         queryObj = { ...customQuery }
-        shopCategory = await dbo.collection("shopCategory").find().toArray()
+        // shopCategory = await dbo.collection("shopCategory").find().toArray()
 
-        if(sort_by == 1){
-        } else if (sort_by == 2){
+        if (sort_by == 2){
             customSort.total_sales = -1
         } else if (sort_by == 3){
             customSort.creation_tsz = -1
@@ -55,11 +54,9 @@ module.exports.getAll = async function (req, res) {
         } else if (sort_by == 5){
             customSort.listing_active_count = -1
         }
-        console.log(sort_by)
         querySort = { ...customSort }
-        console.log(querySort)
+
         dbData = await dbo.collection("shop").find({ ...queryObj }).sort({ ...querySort }).toArray()
-        console.log(dbData.slice(0, 10))
         dbData = await searchOrFilterData(dbData, category, month, sort_by)
 
         res.send({
@@ -158,6 +155,7 @@ async function searchOrFilterData(shop, category, month, sort_by) {
 
     if (category) {
         dataFilter = await getCategoryProduct(dataFilter, category)
+        console.log(dataFilter.slice(0,10))
     }
 
     if (month) {
