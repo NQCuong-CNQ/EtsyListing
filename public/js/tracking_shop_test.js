@@ -5,7 +5,7 @@ var socket = io.connect("https://giftsvk.com", {
 })
 
 var shopData, shopCategory, chart, selected_shop, category = 'Canvas',
-    timeCreatedShopFilter, salesLargerThan = null, monthFilterShop = null, filterType = 0, gettingData = 1, searchShop = null
+    timeCreatedShopFilter, salesLargerThan = null, monthFilterShop = null, filterType = 0, searchShop = null
 
 IsJsonString = str => {
     try {
@@ -219,16 +219,118 @@ getShopUserByID = id => {
     return null
 }
 
+showShopChart = data => {
+    $('#loading').css('display', 'none')
+    $('.popup-analytic-container').css('display', 'block')
+    $('.popup-analytic-background').css('display', 'block')
+
+    var ctx = document.getElementById("chart-total-sales").getContext("2d")
+    var gradientblue = ctx.createLinearGradient(0, 0, 0, 225)
+    gradientblue.addColorStop(0, "rgba(6,91,249,0.3)")
+    gradientblue.addColorStop(1, "rgba(6,91,249, 0)")
+    var gradientred = ctx.createLinearGradient(0, 0, 0, 225)
+    gradientred.addColorStop(0, "rgba(255,0,40,0.3)")
+    gradientred.addColorStop(1, "rgba(255,0,40, 0)")
+    var gradientgreen = ctx.createLinearGradient(0, 0, 0, 225)
+    gradientgreen.addColorStop(0, "rgba(47,208,87,0.3)")
+    gradientgreen.addColorStop(1, "rgba(47,208,87, 0)")
+
+    let label = [], total_sales = [], num_favorers = [], listing_active_count = []
+
+    for (let item of data) {
+        label.push(getEpochTimeChart(item.time_update))
+        total_sales.push(item.total_sales)
+        num_favorers.push(item.num_favorers)
+        listing_active_count.push(item.listing_active_count)
+    }
+
+    chart = new Chart(document.getElementById("chart-total-sales"), {
+        type: "line",
+        data: {
+            labels: label,
+            datasets: [{
+                label: "Total Sales",
+                fill: true,
+                backgroundColor: gradientblue,
+                borderColor: window.theme.primary,
+                data: total_sales,
+            }, {
+                label: "Num Favorers",
+                fill: true,
+                backgroundColor: gradientred,
+                borderColor: 'red',
+                data: num_favorers,
+            }, {
+                label: "Listing Active Count",
+                fill: true,
+                backgroundColor: gradientgreen,
+                borderColor: 'green',
+                data: listing_active_count,
+            }]
+        },
+        options: {
+            maintainAspectRatio: false,
+            legend: {
+                display: false
+            },
+            tooltips: {
+                intersect: false
+            },
+            hover: {
+                intersect: true
+            },
+            plugins: {
+                filler: {
+                    propagate: false
+                }
+            },
+            scales: {
+                xAxes: [{
+                    reverse: true,
+                    gridLines: {
+                        color: "rgba(0,0,0,0.0)"
+                    }
+                }],
+                yAxes: [{
+                    ticks: {
+                        stepSize: 1000
+                    },
+                    display: true,
+                    borderDash: [3, 3],
+                    gridLines: {
+                        color: "rgba(0,0,0,0.0)"
+                    }
+                }]
+            }
+        }
+    })
+}
+
 getShopDetail = id => {
     selected_shop = id
-    if (gettingData) {
-        toastr.clear()
-        toastr.warning('Please wait until data is updated!')
-    } else {
-        socket.emit("shop-tracking", id)
-        $('#loading').css('display', 'block')
-        $('#shop-name-chart').text(getShopNameByID(id) + ` Analytics`)
+    $('#loading').css('display', 'block')
+
+    try {
+        $.ajax({
+            url: '/tracking-shop/get-shop-tracking',
+            type: "get",
+            contentType: "application/json",
+            dataType: "json",
+            data: {
+                shop_id: id,
+            },
+            success: function (data) {
+                showShopChart(data.data)
+            },
+            error: (jqXHR, textStatus, errorThrown) => {
+                console.log(jqXHR, textStatus, errorThrown)
+            }
+        })
+    } catch (err) {
+        console.log(err)
     }
+    
+    $('#shop-name-chart').text(getShopNameByID(id) + ` Analytics`)
 }
 
 updateData = (data = shopData) => {
@@ -291,7 +393,7 @@ getData = (offset, limit, type, category, month, sales, sort_by) => {
                 $('#last-updated').text("Last updated: " + getUpdateHistoryEpoch(data.lastUpdated))
                 $('#total-table').text(`Showing 0 - 0 of ${data.total} rows`)
 
-                if(data.isSearch == 1 && data.total == 0){
+                if (data.isSearch == 1 && data.total == 0) {
 
                     return
                 }
@@ -413,7 +515,6 @@ socket.on("updating", () => {
 
 socket.on("return-shop-data", data => {
     shopData = data
-    gettingData = 0
     $('#loading').css('display', 'none')
     searchOrFilterData()
 
@@ -486,93 +587,6 @@ socket.on("total-shop", data => {
 
 socket.on("last-updated", data => {
     $('#last-updated').text("Last updated: " + getUpdateHistoryEpoch(data[0].updateHistory))
-})
-
-socket.on("shop-tracking-data", data => {
-    $('#loading').css('display', 'none')
-    $('.popup-analytic-container').css('display', 'block')
-    $('.popup-analytic-background').css('display', 'block')
-
-    var ctx = document.getElementById("chart-total-sales").getContext("2d")
-    var gradientblue = ctx.createLinearGradient(0, 0, 0, 225)
-    gradientblue.addColorStop(0, "rgba(6,91,249,0.3)")
-    gradientblue.addColorStop(1, "rgba(6,91,249, 0)")
-    var gradientred = ctx.createLinearGradient(0, 0, 0, 225)
-    gradientred.addColorStop(0, "rgba(255,0,40,0.3)")
-    gradientred.addColorStop(1, "rgba(255,0,40, 0)")
-    var gradientgreen = ctx.createLinearGradient(0, 0, 0, 225)
-    gradientgreen.addColorStop(0, "rgba(47,208,87,0.3)")
-    gradientgreen.addColorStop(1, "rgba(47,208,87, 0)")
-
-    let label = [], total_sales = [], num_favorers = [], listing_active_count = []
-
-    for (let item of data) {
-        label.push(getEpochTimeChart(item.time_update))
-        total_sales.push(item.total_sales)
-        num_favorers.push(item.num_favorers)
-        listing_active_count.push(item.listing_active_count)
-    }
-
-    chart = new Chart(document.getElementById("chart-total-sales"), {
-        type: "line",
-        data: {
-            labels: label,
-            datasets: [{
-                label: "Total Sales",
-                fill: true,
-                backgroundColor: gradientblue,
-                borderColor: window.theme.primary,
-                data: total_sales,
-            }, {
-                label: "Num Favorers",
-                fill: true,
-                backgroundColor: gradientred,
-                borderColor: 'red',
-                data: num_favorers,
-            }, {
-                label: "Listing Active Count",
-                fill: true,
-                backgroundColor: gradientgreen,
-                borderColor: 'green',
-                data: listing_active_count,
-            }]
-        },
-        options: {
-            maintainAspectRatio: false,
-            legend: {
-                display: false
-            },
-            tooltips: {
-                intersect: false
-            },
-            hover: {
-                intersect: true
-            },
-            plugins: {
-                filler: {
-                    propagate: false
-                }
-            },
-            scales: {
-                xAxes: [{
-                    reverse: true,
-                    gridLines: {
-                        color: "rgba(0,0,0,0.0)"
-                    }
-                }],
-                yAxes: [{
-                    ticks: {
-                        stepSize: 1000
-                    },
-                    display: true,
-                    borderDash: [3, 3],
-                    gridLines: {
-                        color: "rgba(0,0,0,0.0)"
-                    }
-                }]
-            }
-        }
-    })
 })
 
 $('#btn-close-chart').on('click', () => {

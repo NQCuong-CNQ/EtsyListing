@@ -160,3 +160,21 @@ async function searchOrFilterData(shop, category, month) {
     return dataFilter
 }
 
+module.exports.getAll = async function (req, res) {
+    try {
+        clientDB = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
+        dbo = clientDB.db("trackingdb")
+
+        let shop_id = req.query.shop_id
+        let dbData = await dbo.collection("shopTracking").find({ shop_id: { "$eq": shop_id } }).toArray()
+
+        res.send({
+            data: dbData,
+        })
+    } catch (err) {
+        console.log(err)
+        res.send({
+            message: err,
+        })
+    }
+}

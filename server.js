@@ -474,10 +474,10 @@ io.on("connection", async function (client) {
     }
   })
 
-  client.on("shop-tracking", async function (shop_id) {
-    let dbData = await dbo.collection("shopTracking").find({ shop_id: { "$eq": shop_id } }).toArray()
-    client.emit("shop-tracking-data", dbData)
-  })
+  // client.on("shop-tracking", async function (shop_id) {
+  //   let dbData = await dbo.collection("shopTracking").find({ shop_id: { "$eq": shop_id } }).toArray()
+  //   client.emit("shop-tracking-data", dbData)
+  // })
 
   client.on("find-shop-by-name", async function (shopName) {
     try {
