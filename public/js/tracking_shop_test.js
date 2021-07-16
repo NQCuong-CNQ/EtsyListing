@@ -309,6 +309,7 @@ showShopChart = data => {
 getShopDetail = id => {
     selected_shop = id
     $('#loading').css('display', 'block')
+    console.log(id)
 
     try {
         $.ajax({
@@ -317,7 +318,7 @@ getShopDetail = id => {
             contentType: "application/json",
             dataType: "json",
             data: {
-                shop_id: id,
+                shopId: id,
             },
             success: function (data) {
                 showShopChart(data.data)
