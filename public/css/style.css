@@ -729,8 +729,13 @@ table {
   width: 100%;
 }
 
-table td, #table_id-tracking-history th {
+table td, table th {
   border: 1px solid #ddd;
+  padding: 8px;
+}
+
+#table-list th {
+  border: none;
   padding: 8px;
 }
 
@@ -739,6 +744,10 @@ table tr:nth-child(even) {
 }
 
 table tr:hover {
+  background-color: #ddd;
+}
+
+#table-list tr:hover {
   background-color: #ddd;
 }
 

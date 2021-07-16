@@ -8,7 +8,7 @@ module.exports.getAll = async function (req, res) {
         clientDB = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
         dbo = clientDB.db("trackingdb")
 
-        let customQuery = {}, queryObj = {}
+        let customQuery = {}, queryObj = {}, dbData, shopCategory, lastUpdated
         let offset = parseInt(req.query.offset)
         let limit = parseInt(req.query.limit)
         let type = parseInt(req.query.type)
@@ -18,7 +18,7 @@ module.exports.getAll = async function (req, res) {
         let search = req.query.search
         let sort_by = req.query.sort_by
 
-        if (sales) {
+        if (sales > 10) {
             customQuery.total_sales = { $gte: sales }
         }
 
@@ -28,12 +28,24 @@ module.exports.getAll = async function (req, res) {
             customQuery.$where = "this.digital_listing_count < (this.listing_active_count / 3)"
         }
 
-        queryObj = { ...customQuery }
-        let shopCategory = await dbo.collection("shopCategory").find().toArray()
-        let dbData = await dbo.collection("shop").find({ ...queryObj }).toArray()
-        let lastUpdated = await dbo.collection("log").find().sort({ $natural: -1 }).limit(1).toArray()
+        lastUpdated = await dbo.collection("log").find().sort({ $natural: -1 }).limit(1).toArray()
+        if (search) {
+            dbData = await dbo.collection("shop").find({ shop_name: { $regex: search } }).toArray()
 
-        dbData = await searchOrFilterData(shopCategory, dbData, category, month, sales)
+            res.send({
+                isSearch: 1,
+                total: dbData.length,
+                shopData: dbData.slice(offset, offset + limit),
+                lastUpdated: lastUpdated[0].updateHistory,
+            })
+            return
+        }
+
+        queryObj = { ...customQuery }
+        shopCategory = await dbo.collection("shopCategory").find().toArray()
+        dbData = await dbo.collection("shop").find({ ...queryObj }).toArray()
+
+        dbData = await searchOrFilterData(dbData, category, month)
 
         res.send({
             total: dbData.length,
@@ -52,41 +64,62 @@ getCategoryProduct = async (dataFilter, category) => {
     let filterData = [], find
     let listShopName = await dbo.collection("shopCategory").find({ 'category': { $regex: category } }).toArray()
 
-    for(let item of listShopName){
-        find = dataFilter.find( ({ shop_name }) => shop_name === item.shop_name )
+    for (let item of listShopName) {
+        find = dataFilter.find(({ shop_name }) => shop_name === item.shop_name)
         filterData.push(find)
     }
 
     return filterData
 }
 
-async function searchOrFilterData(shopCategory, shop, category, month, sales) {
+convertMonthInString = month => {
+    switch (month) {
+        case 'Jan': return 1
+        case 'Feb': return 2
+        case 'Mar': return 3
+        case 'Apr': return 4
+        case 'May': return 5
+        case 'Jun': return 6
+        case 'Jul': return 7
+        case 'Aug': return 8
+        case 'Sep': return 9
+        case 'Oct': return 10
+        case 'Nov': return 11
+        case 'Dec': return 12
+    }
+}
+
+getMonthTime = input => {
+    var date = new Date(0)
+    date.setUTCSeconds(input)
+    time = String(date)
+    time = time.split(' ')
+    time = convertMonthInString(time[1])
+    return time
+}
+
+getMonthFilter = (data, month) => {
+    let filterData = []
+    for (let item of data) {
+        if (getMonthTime(item.creation_tsz) == parseInt(month)) {
+            filterData.push(item)
+        }
+    }
+
+    return filterData
+}
+
+async function searchOrFilterData(shop, category, month) {
     let dataFilter = shop
 
     if (category) {
         dataFilter = await getCategoryProduct(dataFilter, category)
     }
 
-    // if (category == 'Canvas') {
-    //     dataFilter = getCategoryProduct(dataFilter)
-    // } else if (category == 'Mug') {
-    //     dataFilter = getCategoryProduct(dataFilter)
-    // } else if (category == 'Shirt') {
-    //     dataFilter = getCategoryProduct(dataFilter)
-    // } else if (category == 'Blanket') {
-    //     dataFilter = getCategoryProduct(dataFilter)
-    // } else if (category == 'Tumbler') {
-    //     dataFilter = getCategoryProduct(dataFilter)
-    // }
-
-    // if (salesLargerThan > 10) {
-    //     dataFilter = getSalesLargerThan(dataFilter)
-    // }
-
-    // if (monthFilterShop >= 1 && monthFilterShop <= 12) {
-    //     dataFilter = getMonthFilter(dataFilter)
-    // }
-
+    if(month){
+        dataFilter = getMonthFilter(dataFilter, month)
+    }
+    
     // if (timeCreatedShopFilter > 0) {
     //     dataFilter = timeCreatedShopFilterAction(dataFilter)
     // } else if (timeCreatedShopFilter == 'custom') {

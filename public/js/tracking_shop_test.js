@@ -5,7 +5,7 @@ var socket = io.connect("https://giftsvk.com", {
 })
 
 var shopData, shopCategory, chart, selected_shop, category = null,
-    timeCreatedShopFilter, salesLargerThan = null, monthFilterShop, filterType = 0, gettingData = 1
+    timeCreatedShopFilter, salesLargerThan = null, monthFilterShop = null, filterType = 0, gettingData = 1, searchShop = null
 
 IsJsonString = str => {
     try {
@@ -52,25 +52,9 @@ searchLocalShop = shopName => {
     return shop
 }
 
-$('#find-shop-by-name-button').on('click', () => {
-    let shopName = $('#find-shop-by-name').val().trim()
-    if (shopName == '') {
-        searchOrFilterData()
-        return
-    }
-
-    let shop = searchLocalShop(shopName.toLowerCase().trim())
-    if (shop == 0) {
-        if (gettingData) {
-            toastr.clear()
-            toastr.warning('Please wait until data is updated!', { timeOut: 0 })
-        } else {
-            $('#loading').css('display', 'block')
-            socket.emit("find-shop-by-name", shopName)
-        }
-    } else {
-        updateData(shop)
-    }
+$('#find-shop-by-name').on('change', () => {
+    searchShop = $('#find-shop-by-name').val().trim()
+    searchOrFilterData()
 })
 
 getDayTimeLife = creation_time => {
@@ -285,7 +269,7 @@ updateData = (data = shopData) => {
     }
 }
 
-getData = (offset, limit, type, category, month, sales, search, sort_by) => {
+getData = (offset, limit, type, category, month, sales, sort_by) => {
     try {
         $.ajax({
             url: '/tracking-shop/getAll',
@@ -299,13 +283,18 @@ getData = (offset, limit, type, category, month, sales, search, sort_by) => {
                 category: category,
                 month: month,
                 sales: sales,
-                search: search,
+                search: searchShop,
                 sort_by: sort_by,
             },
             success: function (data) {
                 $('#loading').css('display', 'none')
                 $('#last-updated').text("Last updated: " + getUpdateHistoryEpoch(data.lastUpdated))
                 $('#total-table').text(`Showing 0 - 0 of ${data.total} rows`)
+
+                if(data.isSearch == 1 && data.total == 0){
+
+                    return
+                }
 
                 updateData(data.shopData)
             },
@@ -319,7 +308,6 @@ getData = (offset, limit, type, category, month, sales, search, sort_by) => {
 }
 
 searchOrFilterData = () => {
-    
     $('#loading').css('display', 'block')
     // let dataFilter = shopData
 
@@ -356,9 +344,9 @@ searchOrFilterData = () => {
     //     dataFilter = timeCreatedShopFilterCustom(dataFilter)
     // }
 
-    let offset = 0, limit = 10, month = null, search = null, sort_by = null, type = filterType, sales = salesLargerThan
+    let offset = 0, limit = 10, month = null, sort_by = null, type = filterType, sales = salesLargerThan
 
-    getData(offset, limit, type, category, month, sales, search, sort_by)
+    getData(offset, limit, type, category, monthFilterShop, sales, sort_by)
 }
 
 searchOrFilterData()
@@ -656,7 +644,7 @@ socket.on("return-listing-data", data => {
     // })
 })
 
-$('#find-shop-by-name').on('keypress', e => {
+$('#find-shop-by-name').on('change', e => {
     if (e.key == 'Enter') {
         $('#find-shop-by-name-button').trigger('click')
     }
