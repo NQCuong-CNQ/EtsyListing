@@ -4,7 +4,7 @@ var socket = io.connect("https://giftsvk.com", {
     transports: ['websocket']
 })
 
-var shopData, shopCategory, chart, selected_shop, category = 'Canvas',
+var shopData, chart, selected_shop, category = 'Canvas',
     timeCreatedShopFilter, salesLargerThan = null, monthFilterShop = null, filterType = 0, searchShop = null,
     pag_num = 1, total = 0, num_per_pag = 10, sort_by = 1
 
@@ -41,16 +41,16 @@ $('#digital-type-product-filter').on('click', () => {
     searchOrFilterData()
 })
 
-searchLocalShop = shopName => {
-    let shop = []
-    for (let item of shopData) {
-        if (item.shop_name.toLowerCase().includes(shopName)) {
-            shop.push(item)
-        }
-    }
+// searchLocalShop = shopName => {
+//     let shop = []
+//     for (let item of shopData) {
+//         if (item.shop_name.toLowerCase().includes(shopName)) {
+//             shop.push(item)
+//         }
+//     }
 
-    return shop
-}
+//     return shop
+// }
 
 $('#find-shop-by-name').on('change', () => {
     searchShop = $('#find-shop-by-name').val().trim()
@@ -112,25 +112,25 @@ getEpochTimeChart = input => {
     return time
 }
 
-timeCreatedShopFilterAction = dataFilter => {
-    let shopTimeDataFilter = [], daysInTime = 0
+// timeCreatedShopFilterAction = dataFilter => {
+//     let shopTimeDataFilter = [], daysInTime = 0
 
-    if (timeCreatedShopFilter == 1) {
-        daysInTime = 30
-    } else if (timeCreatedShopFilter == 2) {
-        daysInTime = 91
-    } else if (timeCreatedShopFilter == 3) {
-        daysInTime = 182
-    }
+//     if (timeCreatedShopFilter == 1) {
+//         daysInTime = 30
+//     } else if (timeCreatedShopFilter == 2) {
+//         daysInTime = 91
+//     } else if (timeCreatedShopFilter == 3) {
+//         daysInTime = 182
+//     }
 
-    for (let item of dataFilter) {
-        if (getDayTimeLife(item.creation_tsz) <= daysInTime) {
-            shopTimeDataFilter.push(item)
-        }
-    }
+//     for (let item of dataFilter) {
+//         if (getDayTimeLife(item.creation_tsz) <= daysInTime) {
+//             shopTimeDataFilter.push(item)
+//         }
+//     }
 
-    return shopTimeDataFilter
-}
+//     return shopTimeDataFilter
+// }
 
 getMonthTime = input => {
     var date = new Date(0)
@@ -158,7 +158,6 @@ getMonthTime = input => {
 // }
 
 getShopNameByID = id => {
-
     for (let item of shopData) {
         if (item.shop_id == id) {
             return item.shop_name
@@ -322,7 +321,6 @@ updateData = (data = shopData) => {
             <td>${item.digital_listing_count.toLocaleString()}</td>
             <td>${item.currency_code}</td>
             <td>${item.languages}</td>
-            <td>${item.shop_id}</td>
         </tr>`)
         }
 
@@ -335,7 +333,7 @@ updateData = (data = shopData) => {
     }
 }
 
-getData = (offset, limit, type, category, month, sales, sort_by) => {
+getData = (offset) => {
     try {
         $.ajax({
             url: '/tracking-shop/getAll',
@@ -344,11 +342,11 @@ getData = (offset, limit, type, category, month, sales, sort_by) => {
             dataType: "json",
             data: {
                 offset: offset,
-                limit: limit,
-                type: type,
+                limit: num_per_pag,
+                type: filterType,
                 category: category,
-                month: month,
-                sales: sales,
+                month: monthFilterShop,
+                sales: salesLargerThan,
                 search: searchShop,
                 sort_by: sort_by,
             },
@@ -361,7 +359,6 @@ getData = (offset, limit, type, category, month, sales, sort_by) => {
 
                     return
                 }
-
                 updateData(data.shopData)
             },
             error: (jqXHR, textStatus, errorThrown) => {
@@ -376,7 +373,7 @@ getData = (offset, limit, type, category, month, sales, sort_by) => {
 searchOrFilterData = () => {
     $('#loading').css('display', 'block')
     let offset = (pag_num - 1) * num_per_pag
-    getData(offset, num_per_pag, filterType, category, monthFilterShop, salesLargerThan, sort_by)
+    getData(offset)
 }
 
 searchOrFilterData()
@@ -414,32 +411,6 @@ $('#user-option-button').on('click', () => {
 })
 
 let shopLocalData = window.localStorage.getItem('listing-shop')
-let categoryLocalData = window.localStorage.getItem('listing-shop-category')
-
-if (categoryLocalData != null && IsJsonString(categoryLocalData)) {
-    shopCategory = JSON.parse(categoryLocalData)
-
-    if (shopLocalData != null && IsJsonString(shopLocalData)) {
-        shopData = JSON.parse(shopLocalData)
-
-        searchOrFilterData()
-        toastr.clear()
-        toastr.info('Updating data...')
-    } else {
-        $('#loading').css('display', 'block')
-    }
-} else {
-    $('#loading').css('display', 'block')
-}
-
-// socket.emit("shop-tracking-join")
-
-socket.on("updating", () => {
-    toastr.clear()
-    toastr.warning('Data Server is updating, comeback later for updated shops!')
-})
-
-
 
 socket.on("return-shop-data", data => {
     shopData = data
@@ -513,9 +484,9 @@ socket.on("total-shop", data => {
     $('#fun-fact').text(`Bạn có biết? Tổng số shop được tạo ra trên Etsy lên đến ${data.toLocaleString()} shop`)
 })
 
-socket.on("last-updated", data => {
-    $('#last-updated').text("Last updated: " + getUpdateHistoryEpoch(data[0].updateHistory))
-})
+// socket.on("last-updated", data => {
+//     $('#last-updated').text("Last updated: " + getUpdateHistoryEpoch(data[0].updateHistory))
+// })
 
 $('#btn-close-chart').on('click', () => {
     $('.popup-analytic-container').css('display', 'none')
@@ -527,15 +498,6 @@ $('.popup-analytic-background').on('click', () => {
     $('.popup-analytic-container').css('display', 'none')
     $('.popup-analytic-background').css('display', 'none')
     chart.destroy()
-})
-
-socket.on("return-shop-category-data", data => {
-    shopCategory = data
-    try {
-        window.localStorage.setItem('listing-shop-category', JSON.stringify(shopCategory))
-    } catch (error) {
-        console.log(error)
-    }
 })
 
 socket.on("return-user-data", data => {
@@ -579,11 +541,6 @@ socket.on("return-listing-data", data => {
           <td>${data[i].listing_id}</td>
         </tr>`)
     }
-
-    // $('#table_id-list').DataTable({
-    //     scrollX: 400,
-    //     pageLength: 25
-    // })
 })
 
 $('#find-shop-by-name').on('change', e => {
@@ -628,41 +585,41 @@ $('#tumbler-shop-filter').on('click', () => {
     searchOrFilterData()
 })
 
-$('#all-time-created-shop-filter').on('click', () => {
-    timeCreatedShopFilter = 0
-    $('#dropdown-filter-shop-time-created').text('All')
-    searchOrFilterData()
-})
+// $('#all-time-created-shop-filter').on('click', () => {
+//     timeCreatedShopFilter = 0
+//     $('#dropdown-filter-shop-time-created').text('All')
+//     searchOrFilterData()
+// })
 
-$('#1m-time-created-shop-filter').on('click', () => {
-    timeCreatedShopFilter = 1
-    $('#dropdown-filter-shop-time-created').text('In 1 months')
-    searchOrFilterData()
-})
+// $('#1m-time-created-shop-filter').on('click', () => {
+//     timeCreatedShopFilter = 1
+//     $('#dropdown-filter-shop-time-created').text('In 1 months')
+//     searchOrFilterData()
+// })
 
-$('#3m-time-created-shop-filter').on('click', () => {
-    timeCreatedShopFilter = 2
-    $('#dropdown-filter-shop-time-created').text('In 3 months')
-    searchOrFilterData()
-})
+// $('#3m-time-created-shop-filter').on('click', () => {
+//     timeCreatedShopFilter = 2
+//     $('#dropdown-filter-shop-time-created').text('In 3 months')
+//     searchOrFilterData()
+// })
 
-$('#6m-time-created-shop-filter').on('click', () => {
-    timeCreatedShopFilter = 3
-    $('#dropdown-filter-shop-time-created').text('In 6 months')
-    searchOrFilterData()
-})
+// $('#6m-time-created-shop-filter').on('click', () => {
+//     timeCreatedShopFilter = 3
+//     $('#dropdown-filter-shop-time-created').text('In 6 months')
+//     searchOrFilterData()
+// })
 
-$('#custom-time-created-shop-filter').daterangepicker({
-    "showDropdowns": true,
-    "minYear": 2010,
-    "maxYear": parseInt(moment().format('YYYY'), 10),
-    "startDate": moment().format('MM-DD-YYYY'),
-    "opens": "center"
-}, function (start, end, label) {
-    timeCreatedShopFilter = 'custom'
-    $('#dropdown-filter-shop-time-created').text(start.format('MM-DD-YYYY') + ' to ' + end.format('MM-DD-YYYY'))
-    searchOrFilterData()
-})
+// $('#custom-time-created-shop-filter').daterangepicker({
+//     "showDropdowns": true,
+//     "minYear": 2010,
+//     "maxYear": parseInt(moment().format('YYYY'), 10),
+//     "startDate": moment().format('MM-DD-YYYY'),
+//     "opens": "center"
+// }, function (start, end, label) {
+//     timeCreatedShopFilter = 'custom'
+//     $('#dropdown-filter-shop-time-created').text(start.format('MM-DD-YYYY') + ' to ' + end.format('MM-DD-YYYY'))
+//     searchOrFilterData()
+// })
 
 $('#sales-larger-than').on('change', () => {
     salesLargerThan = $('#sales-larger-than').val().trim()
