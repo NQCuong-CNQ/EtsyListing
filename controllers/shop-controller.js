@@ -160,7 +160,7 @@ async function searchOrFilterData(shop, category, month) {
     return dataFilter
 }
 
-module.exports.getAll = async function (req, res) {
+module.exports.getShopTracking = async function (req, res) {
     try {
         clientDB = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
         dbo = clientDB.db("trackingdb")

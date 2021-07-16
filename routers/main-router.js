@@ -20,6 +20,8 @@ router.get("/tracking-shop-test", authMiddleware.requireAuth, function (req, res
 
 router.get("/tracking-shop/getAll", authMiddleware.requireAuth, shopController.getAll)
 
+router.get("/tracking-shop/get-shop-tracking", authMiddleware.requireAuth, shopController.getShopTracking)
+
 router.get("/tracking-product/getAll", authMiddleware.requireAuth, productController.getAll)
 
 router.get("/add_tracking_history/getAll", authMiddleware.requireAuth, trackingHistoryController.getAll)
