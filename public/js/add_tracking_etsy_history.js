@@ -335,16 +335,19 @@ $('#submit-fix-btn').on('click', () => {
 
 
 $('#search-by-id').on('click', () => {
+    $('#search-by').text('Order ID')
     search_by = 1
     filterData()
 })
 
 $('#search-by-shop').on('click', () => {
+    $('#search-by').text('Shop Name')
     search_by = 2
     filterData()
 })
 
 $('#search-by-customer').on('click', () => {
+    $('#search-by').text('Customer Name')
     search_by = 3
     filterData()
 })

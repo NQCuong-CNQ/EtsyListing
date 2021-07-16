@@ -32,6 +32,7 @@ module.exports.getAll = async function (req, res) {
         if (search) {
             dbData = await dbo.collection("shop").find({ shop_name: { $regex: search, $options: 'i'} }).toArray()
 
+            console.log(dbData)
             res.send({
                 isSearch: 1,
                 total: dbData.length,
