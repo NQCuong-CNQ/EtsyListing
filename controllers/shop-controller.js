@@ -9,7 +9,6 @@ module.exports.getAll = async function (req, res) {
         dbo = clientDB.db("trackingdb")
 
         let customQuery = {}, queryObj = {}, dbData, lastUpdated
-        let customSort = {}, querySort = {}
         let offset = parseInt(req.query.offset)
         let limit = parseInt(req.query.limit)
         let type = parseInt(req.query.type)
@@ -17,15 +16,15 @@ module.exports.getAll = async function (req, res) {
         let month = parseInt(req.query.month)
         let sales = parseInt(req.query.sales)
         let search = req.query.search
-        let sort_by = req.query.sort_by
+        let sort_by = parseInt(req.query.sort_by)
 
         if (sales > 10) {
             customQuery.total_sales = { $gte: sales }
         }
 
-        if (type == 1) {
+        if (type == 0) {
             customQuery.$where = "this.digital_listing_count >= (this.listing_active_count / 5)"
-        } else if (type == 2) {
+        } else if (type == 1) {
             customQuery.$where = "this.digital_listing_count < (this.listing_active_count / 3)"
         }
 
@@ -43,20 +42,8 @@ module.exports.getAll = async function (req, res) {
         }
 
         queryObj = { ...customQuery }
-        // shopCategory = await dbo.collection("shopCategory").find().toArray()
 
-        if (sort_by == 2){
-            customSort.total_sales = -1
-        } else if (sort_by == 3){
-            customSort.creation_tsz = -1
-        } else if (sort_by == 4){
-            customSort.num_favorers = -1
-        } else if (sort_by == 5){
-            customSort.listing_active_count = -1
-        }
-        querySort = { ...customSort }
-
-        dbData = await dbo.collection("shop").find({ ...queryObj }).sort({ ...querySort }).toArray()
+        dbData = await dbo.collection("shop").find({ ...queryObj }).toArray()
         dbData = await searchOrFilterData(dbData, category, month, sort_by)
 
         res.send({
@@ -138,6 +125,30 @@ compareSaleDay = (a, b) => {
     return compareAction(bandA, bandB)
 }
 
+compareSales = (a, b) => {
+    const bandA = a.total_sales
+    const bandB = b.total_sales
+    return compareAction(bandA, bandB)
+}
+
+compareCreationTime = (a, b) => {
+    const bandA = a.creation_tsz
+    const bandB = b.creation_tsz
+    return compareAction(bandA, bandB)
+}
+
+compareNumFavorer = (a, b) => {
+    const bandA = a.num_favorers
+    const bandB = b.num_favorers
+    return compareAction(bandA, bandB)
+}
+
+compareListingCount = (a, b) => {
+    const bandA = a.listing_active_count
+    const bandB = b.listing_active_count
+    return compareAction(bandA, bandB)
+}
+
 compareAction = (bandA, bandB) => {
     bandA = parseFloat(bandA)
     bandB = parseFloat(bandB)
@@ -155,15 +166,23 @@ async function searchOrFilterData(shop, category, month, sort_by) {
 
     if (category) {
         dataFilter = await getCategoryProduct(dataFilter, category)
-        console.log(dataFilter.slice(0,10))
+        console.log(dataFilter.slice(0, 10))
     }
 
     if (month) {
         dataFilter = getMonthFilter(dataFilter, month)
     }
 
-    if(sort_by == 1){
+    if (sort_by == 1) {
         dataFilter.sort(compareSaleDay)
+    } else if (sort_by == 2) {
+        dataFilter.sort(compareSales)
+    } else if (sort_by == 3) {
+        dataFilter.sort(compareCreationTime)
+    } else if (sort_by == 4) {
+        dataFilter.sort(compareNumFavorer)
+    } else if (sort_by == 5) {
+        dataFilter.sort(compareListingCount)
     }
 
     // if (timeCreatedShopFilter > 0) {
