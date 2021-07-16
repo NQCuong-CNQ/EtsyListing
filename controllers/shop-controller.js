@@ -30,7 +30,7 @@ module.exports.getAll = async function (req, res) {
 
         lastUpdated = await dbo.collection("log").find().sort({ $natural: -1 }).limit(1).toArray()
         if (search) {
-            dbData = await dbo.collection("shop").find({ $text: { $search: search } }).toArray()
+            dbData = await dbo.collection("shop").find({ shop_name: { $regex: search, $options: 'i'} }).toArray()
 
             res.send({
                 isSearch: 1,
