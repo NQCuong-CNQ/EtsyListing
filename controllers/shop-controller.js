@@ -55,8 +55,9 @@ module.exports.getAll = async function (req, res) {
         } else if (sort_by == 5){
             customSort.listing_active_count = -1
         }
+        console.log(sort_by)
         querySort = { ...customSort }
-
+        console.log(querySort)
         dbData = await dbo.collection("shop").find({ ...queryObj }).sort({ ...querySort }).toArray()
 
         dbData = await searchOrFilterData(dbData, category, month, sort_by)
