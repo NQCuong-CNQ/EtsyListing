@@ -435,25 +435,6 @@ io.on("connection", async function (client) {
     client.to(data.client_id).emit('response-list-to-client', data)
   })
 
-  client.on("shop-tracking-join", async function () {
-    if (isUpdate) {
-      client.emit("updating")
-    }
-    let shopCategory = await dbo.collection("shopCategory").find().toArray()
-    client.emit("return-shop-category-data", shopCategory)
-
-    let dbData = await dbo.collection("shop").find().toArray()
-    client.emit("return-shop-data", dbData)
-
-    let lastUpdated = await dbo.collection("log").find().toArray()
-    client.emit("last-updated", lastUpdated.slice(-1))
-  })
-
-  // client.on("get-total-shop", async function () {
-  //   let total_shop = await getTotalShop()
-  //   client.emit("total-shop", total_shop)
-  // })
-
   client.on("get_listing_shop_id", async function (shop_id) {
     let result = await makeRequest("GET", `https://openapi.etsy.com/v2/shops/${shop_id}/listings/active?api_key=${api_key_2}`)
     if (IsJsonString(result)) {
@@ -534,14 +515,6 @@ io.on("connection", async function (client) {
     } catch (error) {
       console.log(error)
     }
-  })
-
-  client.on("product-tracking-join", async function () {
-    if (isUpdate) {
-      client.emit("updating")
-    }
-    let dbData = await dbo.collection("listing").find().toArray()
-    client.emit("return-product-tracking-join", dbData)
   })
 
   client.on("get-list-shop-braumstar", async function (dataUser) {

@@ -1,9 +1,3 @@
-var socket = io.connect("https://giftsvk.com", {
-  port: 443,
-  reconnect: true,
-  transports: ['websocket']
-})
-
 var listingData = dataFilter = dataOriginal = [], filterByDateOption = 14,
   isSearch = false, sortOption = 5, pagLenght = 30, pagStart = 0,
   isGridView = isGettingData = true, pagEnd = pagLenght, chart
@@ -527,23 +521,16 @@ updateData = (dataFilter = listingData) => {
   scrollToTop()
 }
 
-// let listingLocalData = window.localStorage.getItem('listing-data')
-// if (listingLocalData != null && IsJsonString(listingLocalData)) {
-//   listingData = JSON.parse(listingLocalData)
+let listingLocalData = window.localStorage.getItem('listing-data')
+if (listingLocalData != null && IsJsonString(listingLocalData)) {
+  listingData = JSON.parse(listingLocalData)
 
-//   searchOrFilterData()
-//   toastr.clear()
-//   toastr.info('Updating data...')
-// } else {
+  searchOrFilterData()
+  toastr.clear()
+  toastr.info('Updating data...')
+} else {
   $('#loading').css('display', 'block')
-// }
-
-// socket.emit("product-tracking-join")
-
-// socket.on("updating", () => {
-//   toastr.clear()
-//   toastr.warning('Data Server is updating, comeback later for updated products!')
-// })
+}
 
 handleDuplicates = () => {
   let dataDupPos = new Object
@@ -656,15 +643,6 @@ $.ajax({
     console.log(jqXHR, textStatus, errorThrown)
   }
 })
-
-// socket.on("return-product-tracking-join", data => {
-//   listingData = dataOriginal = data
-//   handleDuplicates()
-//   searchOrFilterData()
-//   toastr.clear()
-//   toastr.success('Data Updated')
-//   isGettingData = false
-// })
 
 showAnalytic = id => {
   if (isGettingData) {
