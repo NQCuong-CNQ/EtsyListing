@@ -297,7 +297,7 @@ updateData = (data = shopData) => {
         $('#table-shop-body').empty()
         for (let item of data) {
             $('#table-shop-body').append(`<tr>
-            <td onclick="getShopDetail(${item.shop_id}, ${item.shop_name})"><i class="fas fa-info-circle pointer"></i></td>
+            <td onclick="getShopDetail(${item.shop_id}, '${item.shop_name}')"><i class="fas fa-info-circle pointer"></i></td>
             <td>
             <a href="${item.url}" target="_blank">${item.shop_name}
                 <div> 
