@@ -22,7 +22,6 @@ module.exports.getAll = async function (req, res) {
             customQuery.total_sales = { $gte: sales }
         }
 
-        console.log(type)
         if (type == 1) {
             customQuery.$where = "this.digital_listing_count >= (this.listing_active_count / 5)"
         } else if (type == 2) {
