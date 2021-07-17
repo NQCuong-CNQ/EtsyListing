@@ -59,6 +59,6 @@ router.get("/listing", authMiddleware.requireAuth, function (req, res) {
     res.render("listing", {title: 'Listing', active: 'listing'})
 })
 
-router.get('/private', authMiddleware.verify)
+// router.get('/private', authMiddleware.verify)
 
 module.exports = router

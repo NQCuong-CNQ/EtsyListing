@@ -3,7 +3,7 @@ const url = "mongodb://localhost:27017/trackingdb"
 var clientDB
 var dbo
 const md5 = require('md5')
-const jwt = require('jsonwebtoken')
+// const jwt = require('jsonwebtoken')
 
 module.exports.login = function (req, res) {
     res.render("login", { title: 'Login' })
@@ -27,11 +27,11 @@ module.exports.postLogin = async function (req, res) {
         return
     }
 
-    res.send({
-        token: jwt.sign({
-            _id: user._id
-        }, 'pass')
-    })
+    // res.send({
+    //     token: jwt.sign({
+    //         _id: user._id
+    //     }, 'pass')
+    // })
     // res.cookie('user_name', uName)
     // res.redirect('/')
 }
