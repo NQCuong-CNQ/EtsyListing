@@ -7,7 +7,7 @@ var dashboardController = require('../controllers/dashboard-controller')
 var trackingHistoryController = require('../controllers/tracking-history-controller')
 var authMiddleware = require('../middleware/auth-middleware')
 
-router.get("/", authMiddleware.requireAuth, function (req, res) {
+router.get("/", authMiddleware.verify, function (req, res) {
     res.render("index", {title: 'Etsy tools', active: 'index'})
 })
 
@@ -58,5 +58,7 @@ router.post('/login', authController.postLogin)
 router.get("/listing", authMiddleware.requireAuth, function (req, res) {
     res.render("listing", {title: 'Listing', active: 'listing'})
 })
+
+router.get('/private', authMiddleware.verify)
 
 module.exports = router

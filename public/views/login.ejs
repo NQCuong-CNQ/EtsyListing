@@ -18,26 +18,24 @@
 		<div class="container-login">
 			<div class="wrap-login">
 				<div class="login-pic js-tilt" data-tilt>
-					<img src="img/img-01.png" alt="IMG">
+					<img src="img/img-01.png" alt="IMG" loading="lazy">
 				</div>
 
-				<form class="login-form validate-form" method="POST">
+				<form class="login-form validate-form">
 					<span class="login-form-title">
-						<img src="img/icons/logo.png" alt="" width="100px" height="100px">
+						<img src="img/icons/logo.png" alt="" width="100px" height="100px" loading="lazy">
 						<h3 class="mt-2">Log in to Giftsvk.com</h3>
 					</span>
 
-					<div class="wrap-input validate-input" data-validate="Username is required">
-						<input class="input" type="text" name="user_name" placeholder="Username">
-						<span class="focus-input"></span>
+					<div class="wrap-input validate-input">
+						<input class="input" type="text" name="user_name" id="user_name" placeholder="Username">
 						<span class="symbol-input">
 							<i class="fa fa-envelope" aria-hidden="true"></i>
 						</span>
 					</div>
 
-					<div class="wrap-input validate-input" data-validate="Password is required">
-						<input class="input" type="password" name="pass" placeholder="Password">
-						<span class="focus-input"></span>
+					<div class="wrap-input validate-input">
+						<input class="input" type="password" name="pass" id="password" placeholder="Password">
 						<span class="symbol-input">
 							<i class="fa fa-lock" aria-hidden="true"></i>
 						</span>
