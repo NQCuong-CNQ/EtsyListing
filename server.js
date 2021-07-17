@@ -14,7 +14,7 @@ const md5 = require('md5')
 var mainRoute = require('./routers/main-router')
 
 //ssl from Certbot
-var server = http2.createSecureServer({
+var server = https.createServer({
   cert: fs.readFileSync("./ssl/fullchain.pem"),
   key: fs.readFileSync("./ssl/privkey.pem"),
 }, app)
