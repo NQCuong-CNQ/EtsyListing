@@ -42,17 +42,6 @@ $('#digital-type-product-filter').on('click', () => {
     searchOrFilterData()
 })
 
-// searchLocalShop = shopName => {
-//     let shop = []
-//     for (let item of shopData) {
-//         if (item.shop_name.toLowerCase().includes(shopName)) {
-//             shop.push(item)
-//         }
-//     }
-
-//     return shop
-// }
-
 $('#find-shop-by-name').on('change', () => {
     searchShop = $('#find-shop-by-name').val().trim()
     searchOrFilterData()
@@ -92,15 +81,6 @@ getEpochTime = input => {
     time = String(date)
     time = time.split(' ')
     time = `${time[2]}-${convertMonthInString(time[1])}-${time[3]}`
-    return time
-}
-
-getUpdateHistoryEpoch = input => {
-    var date = new Date(0)
-    date.setUTCSeconds(input)
-    time = String(date)
-    time = time.split(' ')
-    time = time[2] + '/' + convertMonthInString(time[1]) + ' ' + time[4]
     return time
 }
 
@@ -157,26 +137,6 @@ getMonthTime = input => {
 
 //     return filterData
 // }
-
-// getShopNameByID = id => {
-//     for (let item of shopData) {
-//         if (item.shop_id == id) {
-//             return item.shop_name
-//         }
-//     }
-
-//     return 'Shop'
-// }
-
-getShopUserByID = id => {
-    for (let item of shopData) {
-        if (item.shop_id == id) {
-            return item.user_id
-        }
-    }
-
-    return null
-}
 
 showShopChart = data => {
     $('#loading').css('display', 'none')
@@ -354,13 +314,13 @@ getData = (offset) => {
                 sort_by: sort_by,
             },
             success: function (data) {
-                $('#loading').css('display', 'none')
-                total = data.total
-
                 if (data.isSearch == 1 && data.total == 0) {
-
+                    client.emit("find-shop-by-name", searchShop)
                     return
                 }
+                
+                $('#loading').css('display', 'none')
+                total = data.total
                 updateData(data.shopData)
             },
             error: (jqXHR, textStatus, errorThrown) => {
@@ -411,48 +371,6 @@ $('#user-option-button').on('click', () => {
     $('.popup-analytic-background').css('display', 'none')
     chart.destroy()
 })
-
-// let shopLocalData = window.localStorage.getItem('listing-shop')
-
-// socket.on("return-shop-data", data => {
-//     shopData = data
-//     $('#loading').css('display', 'none')
-//     searchOrFilterData()
-
-//     let temp
-//     let tempData = []
-
-//     for (let i = 0; i < data.length; i++) {
-//         if (i > 1500) {
-//             break
-//         }
-
-//         temp = new Object()
-//         temp['shop_name'] = data[i].shop_name
-//         temp['url'] = data[i].url
-//         temp['imgs_listing'] = data[i].imgs_listing
-//         temp['total_sales'] = data[i].total_sales
-//         temp['num_favorers'] = data[i].num_favorers
-//         temp['creation_tsz'] = data[i].creation_tsz
-//         temp['digital_listing_count'] = data[i].digital_listing_count
-//         temp['listing_active_count'] = data[i].listing_active_count
-//         temp['currency_code'] = data[i].currency_code
-//         temp['shop_id'] = data[i].shop_id
-//         temp['languages'] = data[i].languages
-//         tempData[i] = temp
-//     }
-
-//     toastr.clear()
-//     toastr.success('Data Updated')
-
-//     try {
-//         window.localStorage.setItem('listing-shop', JSON.stringify(tempData))
-//     } catch (error) {
-//         console.log(error)
-//     }
-
-//     socket.emit("get-total-shop")
-// })
 
 socket.on("return-find-shop-by-name", data => {
     $('#loading').css('display', 'none')
@@ -532,12 +450,6 @@ socket.on("return-listing-data", data => {
     }
 })
 
-$('#find-shop-by-name').on('change', e => {
-    if (e.key == 'Enter') {
-        $('#find-shop-by-name-button').trigger('click')
-    }
-})
-
 $('#all-shop-filter').on('click', () => {
     category = null
     $('#dropdown-filter-shop').text('All')
@@ -612,30 +524,21 @@ $('#tumbler-shop-filter').on('click', () => {
 
 $('#sales-larger-than').on('change', () => {
     salesLargerThan = $('#sales-larger-than').val().trim()
-    if (salesLargerThan == '') {
-        salesLargerThan = 0
-        searchOrFilterData()
-    } else {
+    if (salesLargerThan != '') {
         salesLargerThan = parseInt(salesLargerThan)
         if (Number.isInteger(salesLargerThan) == false) {
             toastr.clear()
             toastr.warning('Please input a number !')
             $('#sales-larger-than').val('')
-        } else if (salesLargerThan < 10) {
-            salesLargerThan = 0
-            searchOrFilterData()
-        } else {
-            searchOrFilterData()
+            return
         }
     }
+    searchOrFilterData()
 })
 
 $('#month-filter-shop').on('change', () => {
     monthFilterShop = $('#month-filter-shop').val().trim()
-    if (monthFilterShop == '') {
-        monthFilterShop = 0
-        searchOrFilterData()
-    } else {
+    if (monthFilterShop != '') {
         monthFilterShop = parseInt(monthFilterShop)
         if (Number.isInteger(monthFilterShop) && monthFilterShop >= 1 && monthFilterShop <= 12) {
             searchOrFilterData()
@@ -643,8 +546,10 @@ $('#month-filter-shop').on('change', () => {
             toastr.clear()
             toastr.warning('Please input a valid number!')
             $('#month-filter-shop').val('')
+            return
         }
     }
+    searchOrFilterData()
 })
 
 updatePag = () => {
