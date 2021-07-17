@@ -118,7 +118,7 @@ filterData = () => {
 
 $(function () {
     filterData()
-}
+})
 
 $('#show-added-tracking').on('change', () => {
     if ($('#show-added-tracking').prop("checked")) {
