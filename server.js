@@ -1,20 +1,27 @@
 "use strict";
 const fs = require('fs')
-var express = require("express")
-var app = express()
-var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest
+const express = require("express")
+const app = express()
 const https = require("https")
-const http2 = require('http2')
+const rateLimit = require("express-rate-limit")
 const axios = require("axios")
 const cheerio = require('cheerio')
 const { exec } = require("child_process")
-var cookieParser = require('cookie-parser')
+const cookieParser = require('cookie-parser')
+const spdy = require('spdy')
 const md5 = require('md5')
 
 var mainRoute = require('./routers/main-router')
+var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+  message: "TOO MANY REQUESTS",
+})
 
 //ssl from Certbot
-var server = https.createServer({
+var server = spdy.createServer({
   cert: fs.readFileSync("./ssl/fullchain.pem"),
   key: fs.readFileSync("./ssl/privkey.pem"),
 }, app)
@@ -28,6 +35,8 @@ var io = require("socket.io")(server, {
 
 app.set('view engine', 'ejs')
 app.set('views', __dirname + '/public/views/')
+
+app.use(limiter)
 app.use(cookieParser())
 app.use(express.json())
 app.use(express.urlencoded({
