@@ -167,7 +167,6 @@ async function searchOrFilterData(shop, category, month, sort_by) {
 
     if (category) {
         dataFilter = await getCategoryProduct(dataFilter, category)
-        console.log(dataFilter.slice(0, 10))
     }
 
     if (month) {
@@ -209,39 +208,4 @@ module.exports.getShopTracking = async function (req, res) {
             message: err,
         })
     }
-}
-
-module.exports.getShopListing = async function (req, res) {
-    // try {
-    //     let shop_id = req.query.shop_id
-    //     let dbData = await dbo.collection("shopTracking").find({ shop_id: { "$eq": shop_id } }).toArray()
-    //     console.log(shop_id)
-    //     res.send({
-    //         data: dbData,
-    //     })
-    // } catch (err) {
-    //     console.log(err)
-    //     res.send({
-    //         message: err,
-    //     })
-    // }
-}
-
-module.exports.getShopUser = async function (req, res) {
-    // try {
-    //     clientDB = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
-    //     dbo = clientDB.db("trackingdb")
-
-    //     let shop_id = req.query.shop_id
-    //     let dbData = await dbo.collection("shopTracking").find({ shop_id: { "$eq": shop_id } }).toArray()
-    //     console.log(shop_id)
-    //     res.send({
-    //         data: dbData,
-    //     })
-    // } catch (err) {
-    //     console.log(err)
-    //     res.send({
-    //         message: err,
-    //     })
-    // }
 }

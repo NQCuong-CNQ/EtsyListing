@@ -42,25 +42,6 @@ $('#submit-btn').on('click', () => {
         publish: false,
     }
     socket.emit('client-list-new', data)
-
-    // $.ajax({
-    //     url: '/listing',
-    //     type: "get",
-    //     contentType: "application/json",
-    //     dataType: "json",
-    //     data: {
-    //         id: id,
-    //         actual_input: actual_input,
-    //         carrier_name: carrier_name,
-    //     },
-    //     success: function (data) {
-    //         toastr.clear()
-    //         toastr.success('Done!')
-    //     },
-    //     error: (jqXHR, textStatus, errorThrown) => {
-    //         console.log(jqXHR, textStatus, errorThrown)
-    //     }
-    // })
 })
 
 if ($('#dropdown-product-type').val() == 'canvas') {

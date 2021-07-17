@@ -412,45 +412,45 @@ $('#user-option-button').on('click', () => {
 
 let shopLocalData = window.localStorage.getItem('listing-shop')
 
-socket.on("return-shop-data", data => {
-    shopData = data
-    $('#loading').css('display', 'none')
-    searchOrFilterData()
+// socket.on("return-shop-data", data => {
+//     shopData = data
+//     $('#loading').css('display', 'none')
+//     searchOrFilterData()
 
-    let temp
-    let tempData = []
+//     let temp
+//     let tempData = []
 
-    for (let i = 0; i < data.length; i++) {
-        if (i > 1500) {
-            break
-        }
+//     for (let i = 0; i < data.length; i++) {
+//         if (i > 1500) {
+//             break
+//         }
 
-        temp = new Object()
-        temp['shop_name'] = data[i].shop_name
-        temp['url'] = data[i].url
-        temp['imgs_listing'] = data[i].imgs_listing
-        temp['total_sales'] = data[i].total_sales
-        temp['num_favorers'] = data[i].num_favorers
-        temp['creation_tsz'] = data[i].creation_tsz
-        temp['digital_listing_count'] = data[i].digital_listing_count
-        temp['listing_active_count'] = data[i].listing_active_count
-        temp['currency_code'] = data[i].currency_code
-        temp['shop_id'] = data[i].shop_id
-        temp['languages'] = data[i].languages
-        tempData[i] = temp
-    }
+//         temp = new Object()
+//         temp['shop_name'] = data[i].shop_name
+//         temp['url'] = data[i].url
+//         temp['imgs_listing'] = data[i].imgs_listing
+//         temp['total_sales'] = data[i].total_sales
+//         temp['num_favorers'] = data[i].num_favorers
+//         temp['creation_tsz'] = data[i].creation_tsz
+//         temp['digital_listing_count'] = data[i].digital_listing_count
+//         temp['listing_active_count'] = data[i].listing_active_count
+//         temp['currency_code'] = data[i].currency_code
+//         temp['shop_id'] = data[i].shop_id
+//         temp['languages'] = data[i].languages
+//         tempData[i] = temp
+//     }
 
-    toastr.clear()
-    toastr.success('Data Updated')
+//     toastr.clear()
+//     toastr.success('Data Updated')
 
-    try {
-        window.localStorage.setItem('listing-shop', JSON.stringify(tempData))
-    } catch (error) {
-        console.log(error)
-    }
+//     try {
+//         window.localStorage.setItem('listing-shop', JSON.stringify(tempData))
+//     } catch (error) {
+//         console.log(error)
+//     }
 
-    socket.emit("get-total-shop")
-})
+//     socket.emit("get-total-shop")
+// })
 
 socket.on("return-find-shop-by-name", data => {
     $('#loading').css('display', 'none')
@@ -480,9 +480,9 @@ socket.on("return-find-shop-by-name", data => {
     }
 })
 
-socket.on("total-shop", data => {
-    $('#fun-fact').text(`Bạn có biết? Tổng số shop được tạo ra trên Etsy lên đến ${data.toLocaleString()} shop`)
-})
+// socket.on("total-shop", data => {
+//     $('#fun-fact').text(`Bạn có biết? Tổng số shop được tạo ra trên Etsy lên đến ${data.toLocaleString()} shop`)
+// })
 
 // socket.on("last-updated", data => {
 //     $('#last-updated').text("Last updated: " + getUpdateHistoryEpoch(data[0].updateHistory))

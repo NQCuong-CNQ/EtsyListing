@@ -22,11 +22,6 @@ router.get("/tracking-shop/getAll", authMiddleware.requireAuth, shopController.g
 
 router.get("/tracking-shop/get-shop-tracking", authMiddleware.requireAuth, shopController.getShopTracking)
 
-router.get("/tracking-shop/get-shop-listing", authMiddleware.requireAuth, shopController.getShopListing)
-
-router.get("/tracking-shop/get-shop-user", authMiddleware.requireAuth, shopController.getShopUser)
-
-
 router.get("/tracking-product/getAll", authMiddleware.requireAuth, productController.getAll)
 
 router.get("/add_tracking_history/getAll", authMiddleware.requireAuth, trackingHistoryController.getAll)

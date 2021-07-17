@@ -449,10 +449,10 @@ io.on("connection", async function (client) {
     client.emit("last-updated", lastUpdated.slice(-1))
   })
 
-  client.on("get-total-shop", async function () {
-    let total_shop = await getTotalShop()
-    client.emit("total-shop", total_shop)
-  })
+  // client.on("get-total-shop", async function () {
+  //   let total_shop = await getTotalShop()
+  //   client.emit("total-shop", total_shop)
+  // })
 
   client.on("get_listing_shop_id", async function (shop_id) {
     let result = await makeRequest("GET", `https://openapi.etsy.com/v2/shops/${shop_id}/listings/active?api_key=${api_key_2}`)

@@ -639,7 +639,6 @@ handleDuplicates = () => {
   }
 }
 
-
 // $.ajax({
 //   url: '/tracking-product/getAll',
 //   type: "get",
