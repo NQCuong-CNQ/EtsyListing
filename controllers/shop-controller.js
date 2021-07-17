@@ -36,7 +36,6 @@ module.exports.getAll = async function (req, res) {
                 isSearch: 1,
                 total: dbData.length,
                 shopData: dbData.slice(offset, offset + limit),
-                lastUpdated: lastUpdated[0].updateHistory,
             })
             return
         }
