@@ -5,7 +5,7 @@
     <%- include('partials/header.ejs') %>
 
         <link rel="stylesheet" type="text/css" href="css/app.css" />
-        <link rel="stylesheet" type="text/css" href="css/style.css" />
+        <link rel="stylesheet" type="text/css" href="css/style.css" media="print" onload="this.media='all'"/>
 </head>
 
 <body>
@@ -69,8 +69,8 @@
 </body>
 
 <script type="text/javascript" src="js/extension/jquery.js"></script>
-<script type="text/javascript" src="js/extension/socket.io.js"></script>
+<script defer type="text/javascript" src="js/extension/socket.io.js"></script>
 <script type="text/javascript" src="js/client_listing.js"></script>
-<script type="text/javascript" src="js/extension/app.js"></script>
+<script defer type="text/javascript" src="js/extension/app.js"></script>
 
 </html>

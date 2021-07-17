@@ -5,8 +5,8 @@
     <%- include('partials/header.ejs') %>
 
         <link rel="stylesheet" type="text/css" href="css/app.css" />
-        <link rel="stylesheet" type="text/css" href="css/style.css" />
-        <link rel="stylesheet" type="text/css" href="css/toastr.min.css" />
+        <link rel="stylesheet" type="text/css" href="css/style.css" media="print" onload="this.media='all'"/>
+        <link rel="stylesheet" type="text/css" href="css/toastr.min.css" media="print" onload="this.media='all'"/>
 
 </head>
 
@@ -133,6 +133,6 @@
 <script type="text/javascript" src="js/extension/jquery.js"></script>
 <script type="text/javascript" src="js/extension/toastr.min.js"></script>
 <script type="text/javascript" src="js/add_tracking_etsy_history.js?v=1.0"></script>
-<script type="text/javascript" src="js/extension/app.js"></script>
+<script defer type="text/javascript" src="js/extension/app.js"></script>
 
 </html>
