@@ -30,7 +30,6 @@ module.exports.postLogin = async function(req, res){
         res.render("login", {title: 'Login'})
         return
     }
-    console.log(user._id)
     res.cookie('user_name', uName)
     res.redirect('/')
 }

@@ -4,6 +4,7 @@ var express = require("express")
 var app = express()
 var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest
 const https = require("https")
+const http2 = require('http2')
 const axios = require("axios")
 const cheerio = require('cheerio')
 const { exec } = require("child_process")
@@ -13,7 +14,7 @@ const md5 = require('md5')
 var mainRoute = require('./routers/main-router')
 
 //ssl from Certbot
-var server = https.createServer({
+var server = http2.createSecureServer({
   cert: fs.readFileSync("./ssl/fullchain.pem"),
   key: fs.readFileSync("./ssl/privkey.pem"),
 }, app)
