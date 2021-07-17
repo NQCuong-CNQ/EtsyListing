@@ -4,7 +4,7 @@ var socket = io.connect("https://giftsvk.com", {
     transports: ['websocket']
 })
 
-var shopData, chart, selected_shop, category = 'Canvas',
+var shopData, chart, selected_shop = {}, category = 'Canvas',
     timeCreatedShopFilter, salesLargerThan = null, monthFilterShop = null, filterType = 0, searchShop = null,
     pag_num = 1, total = 0, num_per_pag = 10, sort_by = 1
 
@@ -18,10 +18,10 @@ IsJsonString = str => {
 }
 
 $('#listing-back-btn').on('click', () => {
+    $('#table-list').empty()
     $('#list-shop-section').css("display", "block")
     $('#listing-shop-section').css("display", "none")
     $('#user-shop-section').css("display", "none")
-    $('#table-list').empty()
 })
 
 $('#user-back-btn').on('click', () => {
@@ -265,8 +265,10 @@ showShopChart = data => {
     })
 }
 
-getShopDetail = (id, shopName) => {
-    selected_shop = id
+getShopDetail = (id, shopName, user) => {
+    selected_shop.id = id
+    selected_shop.shopName = shopName
+    selected_shop.user = user
     $('#loading').css('display', 'block')
 
     try {
@@ -297,7 +299,7 @@ updateData = (data = shopData) => {
         $('#table-shop-body').empty()
         for (let item of data) {
             $('#table-shop-body').append(`<tr>
-            <td onclick="getShopDetail(${item.shop_id}, '${item.shop_name}')"><i class="fas fa-info-circle pointer"></i></td>
+            <td onclick="getShopDetail(${item.shop_id}, '${item.shop_name}', ${item.user_id})"><i class="fas fa-info-circle pointer"></i></td>
             <td>
             <a href="${item.url}" target="_blank">${item.shop_name}
                 <div> 
@@ -387,8 +389,8 @@ getListingOption = id => {
     $('#user-shop-section').css("display", "none")
 }
 
-getUserOption = id => {
-    socket.emit("get_user_by_user_id", shopData.find(({ shop_id }) => shop_id == id).user_id)
+getUserOption = user => {
+    socket.emit("get_user_by_user_id", user)
     $('#loading').css('display', 'block')
     $('#title-page').text('User Detail')
     $('#list-shop-section').css("display", "none")
@@ -397,14 +399,14 @@ getUserOption = id => {
 }
 
 $('#listing-option-button').on('click', () => {
-    getListingOption(selected_shop)
+    getListingOption(selected_shop.id)
     $('.popup-analytic-container').css('display', 'none')
     $('.popup-analytic-background').css('display', 'none')
     chart.destroy()
 })
 
 $('#user-option-button').on('click', () => {
-    getUserOption(selected_shop)
+    getUserOption(selected_shop.user)
     $('.popup-analytic-container').css('display', 'none')
     $('.popup-analytic-background').css('display', 'none')
     chart.destroy()
