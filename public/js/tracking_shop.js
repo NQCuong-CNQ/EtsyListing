@@ -21,6 +21,7 @@ $('#listing-back-btn').on('click', () => {
     $('#list-shop-section').css("display", "block")
     $('#listing-shop-section').css("display", "none")
     $('#user-shop-section').css("display", "none")
+    $('#table-list').empty()
 })
 
 $('#user-back-btn').on('click', () => {
@@ -157,15 +158,15 @@ getMonthTime = input => {
 //     return filterData
 // }
 
-getShopNameByID = id => {
-    for (let item of shopData) {
-        if (item.shop_id == id) {
-            return item.shop_name
-        }
-    }
+// getShopNameByID = id => {
+//     for (let item of shopData) {
+//         if (item.shop_id == id) {
+//             return item.shop_name
+//         }
+//     }
 
-    return 'Shop'
-}
+//     return 'Shop'
+// }
 
 getShopUserByID = id => {
     for (let item of shopData) {
@@ -264,7 +265,7 @@ showShopChart = data => {
     })
 }
 
-getShopDetail = id => {
+getShopDetail = (id, shopName) => {
     selected_shop = id
     $('#loading').css('display', 'block')
 
@@ -288,7 +289,7 @@ getShopDetail = id => {
         console.log(err)
     }
 
-    $('#shop-name-chart').text(getShopNameByID(id) + ` Analytics`)
+    $('#shop-name-chart').text(`${shopName} Analytics`)
 }
 
 updateData = (data = shopData) => {
@@ -296,7 +297,7 @@ updateData = (data = shopData) => {
         $('#table-shop-body').empty()
         for (let item of data) {
             $('#table-shop-body').append(`<tr>
-            <td onclick="getShopDetail(${item.shop_id})"><i class="fas fa-info-circle pointer"></i></td>
+            <td onclick="getShopDetail(${item.shop_id}, ${item.shop_name})"><i class="fas fa-info-circle pointer"></i></td>
             <td>
             <a href="${item.url}" target="_blank">${item.shop_name}
                 <div> 
@@ -352,7 +353,6 @@ getData = (offset) => {
             },
             success: function (data) {
                 $('#loading').css('display', 'none')
-                $('#last-updated').text("Last updated: " + getUpdateHistoryEpoch(data.lastUpdated))
                 total = data.total
 
                 if (data.isSearch == 1 && data.total == 0) {
@@ -410,7 +410,7 @@ $('#user-option-button').on('click', () => {
     chart.destroy()
 })
 
-let shopLocalData = window.localStorage.getItem('listing-shop')
+// let shopLocalData = window.localStorage.getItem('listing-shop')
 
 // socket.on("return-shop-data", data => {
 //     shopData = data
@@ -480,14 +480,6 @@ socket.on("return-find-shop-by-name", data => {
     }
 })
 
-// socket.on("total-shop", data => {
-//     $('#fun-fact').text(`Bạn có biết? Tổng số shop được tạo ra trên Etsy lên đến ${data.toLocaleString()} shop`)
-// })
-
-// socket.on("last-updated", data => {
-//     $('#last-updated').text("Last updated: " + getUpdateHistoryEpoch(data[0].updateHistory))
-// })
-
 $('#btn-close-chart').on('click', () => {
     $('.popup-analytic-container').css('display', 'none')
     $('.popup-analytic-background').css('display', 'none')
@@ -521,7 +513,6 @@ socket.on("return-user-data", data => {
 
 socket.on("return-listing-data", data => {
     $('#loading').css('display', 'none')
-    // $('#table_id-list').DataTable().clear().destroy()
     for (let i = 0; i < data.length; i++) {
         let taxonomy = data[i].taxonomy_path
         taxonomy = taxonomy[taxonomy.length - 1]
@@ -534,10 +525,6 @@ socket.on("return-listing-data", data => {
           <td>${data[i].views.toLocaleString()}</td>
           <td>${data[i].num_favorers.toLocaleString()}</td>
           <td>${data[i].quantity.toLocaleString()}</td>
-          <td>${data[i].is_customizable}</td>
-          <td>${data[i].is_digital}</td>
-          <td>${data[i].has_variations}</td>
-          <td>${data[i].state}</td>
           <td>${data[i].listing_id}</td>
         </tr>`)
     }

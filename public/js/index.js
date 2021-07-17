@@ -13,6 +13,23 @@ sleep = async ms => {
     )
 }
 
+try {
+    $.ajax({
+        url: '/last-updated',
+        type: "get",
+        contentType: "application/json",
+        dataType: "json",
+        success: function (data) {
+            $('#last-updated').text("Last updated: " + getUpdateHistoryEpoch(data.lastUpdated))
+        },
+        error: (jqXHR, textStatus, errorThrown) => {
+            console.log(jqXHR, textStatus, errorThrown)
+        }
+    })
+} catch (err) {
+    console.log(err)
+}
+
 $('#ping-vps').on('click', () => {
     $('#etsy-img').css('mix-blend-mode', 'luminosity')
     $('#etsy-status').empty()

@@ -3,12 +3,15 @@ var router = express.Router()
 var authController = require('../controllers/auth-controller')
 var shopController = require('../controllers/shop-controller')
 var productController = require('../controllers/product-controller')
+var dashboardController = require('../controllers/dashboard-controller')
 var trackingHistoryController = require('../controllers/tracking-history-controller')
 var authMiddleware = require('../middleware/auth-middleware')
 
 router.get("/", authMiddleware.requireAuth, function (req, res) {
     res.render("index", {title: 'Etsy tools', active: 'index'})
 })
+
+router.get("/last-updated", authMiddleware.requireAuth, dashboardController.getLastUpdated)
 
 router.get("/tracking-shop", authMiddleware.requireAuth, function (req, res) {
     res.render("tracking_shop", {title: 'Tracking Shops', active: 'tracking-shop'})

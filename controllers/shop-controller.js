@@ -8,7 +8,7 @@ module.exports.getAll = async function (req, res) {
         clientDB = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
         dbo = clientDB.db("trackingdb")
 
-        let customQuery = {}, queryObj = {}, dbData, lastUpdated
+        let customQuery = {}, queryObj = {}, dbData
         let offset = parseInt(req.query.offset)
         let limit = parseInt(req.query.limit)
         let type = parseInt(req.query.type)
@@ -29,7 +29,6 @@ module.exports.getAll = async function (req, res) {
             customQuery.$where = "this.digital_listing_count < (this.listing_active_count / 3)"
         }
 
-        lastUpdated = await dbo.collection("log").find().sort({ $natural: -1 }).limit(1).toArray()
         if (search) {
             dbData = await dbo.collection("shop").find({ shop_name: { $regex: search, $options: 'i' } }).toArray()
 
@@ -50,7 +49,6 @@ module.exports.getAll = async function (req, res) {
         res.send({
             total: dbData.length,
             shopData: dbData.slice(offset, offset + limit),
-            lastUpdated: lastUpdated[0].updateHistory,
         })
     } catch (err) {
         console.log(err)
