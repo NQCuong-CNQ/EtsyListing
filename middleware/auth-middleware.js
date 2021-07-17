@@ -2,7 +2,6 @@ const MongoClient = require('mongodb').MongoClient
 const url = "mongodb://localhost:27017/trackingdb"
 var clientDB
 var dbo
-// const jwt = require('jsonwebtoken')
 
 module.exports.requireAuth = async function(req, res, next){
     clientDB = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -21,15 +20,3 @@ module.exports.requireAuth = async function(req, res, next){
 
     next()
 }
-
-// module.exports.verify = function (req, res) {
-//     try {
-//         let token = req.cookies.token
-//         let result = jwt.verify(token, 'pass')
-//         if (result) {
-//             res.redirect('/')
-//         }
-//     } catch (err) {
-//         res.redirect('/login')
-//     }
-// }
