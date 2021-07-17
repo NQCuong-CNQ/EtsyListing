@@ -48,7 +48,7 @@ let isAddedCheckedStorage = window.localStorage.getItem('is-tracking-history-che
 if (isAddedCheckedStorage == 1) {
     $('#show-added-tracking').prop("checked", true)
     isAddedChecked = true
-} else {
+} else if (isAddedCheckedStorage == 0) {
     $('#show-added-tracking').prop("checked", false)
     isAddedChecked = false
 }
@@ -57,7 +57,7 @@ let isMyCheckedStorage = window.localStorage.getItem('is-my-account-checked')
 if (isMyCheckedStorage == 1) {
     $('#show-my-account-tracking').prop("checked", true)
     isMyAccount = true
-} else {
+} else if (isMyCheckedStorage == 0) {
     $('#show-my-account-tracking').prop("checked", false)
     isMyAccount = false
 }
@@ -66,26 +66,9 @@ let isTrangCheckedStorage = window.localStorage.getItem('is-trang-account-checke
 if (isTrangCheckedStorage == 1) {
     $('#show-trang-account-tracking').prop("checked", true)
     isTrangAccount = true
-} else {
+} else if (isTrangCheckedStorage == 0) {
     $('#show-trang-account-tracking').prop("checked", false)
     isTrangAccount = false
-}
-
-filterData = () => {
-    let offset = num_per_pag * (pag_num - 1), limit = num_per_pag, showAccount = null
-    $('#loading').css('display', 'block')
-
-    if (isMyAccount && isTrangAccount) {
-        showAccount = null
-    } else if (isMyAccount) {
-        showAccount = 'My'
-    } else if (isTrangAccount) {
-        showAccount = 'Trang'
-    } else {
-        showAccount = ' '
-    }
-
-    getData(offset, limit, showAccount)
 }
 
 getData = (offset, limit, showAccount) => {
@@ -115,7 +98,27 @@ getData = (offset, limit, showAccount) => {
         console.log(err)
     }
 }
-filterData()
+
+filterData = () => {
+    let offset = num_per_pag * (pag_num - 1), limit = num_per_pag, showAccount = null
+    $('#loading').css('display', 'block')
+
+    if (isMyAccount && isTrangAccount) {
+        showAccount = null
+    } else if (isMyAccount) {
+        showAccount = 'My'
+    } else if (isTrangAccount) {
+        showAccount = 'Trang'
+    } else {
+        showAccount = ' '
+    }
+
+    getData(offset, limit, showAccount)
+}
+
+$(function () {
+    filterData()
+}
 
 $('#show-added-tracking').on('change', () => {
     if ($('#show-added-tracking').prop("checked")) {
@@ -157,59 +160,59 @@ $('#show-trang-account-tracking').on('change', () => {
 })
 
 formatCustomerName = name => {
-    if (name === undefined) {
-        return '---'
-    } return name
-}
+        if (name === undefined) {
+            return '---'
+        } return name
+    }
 
 formatOrderStatus = status => {
-    if (status === undefined) {
-        return '---'
-    } return status
-}
+        if (status === undefined) {
+            return '---'
+        } return status
+    }
 
 formatCustomerEmail = email => {
-    if (email === undefined) {
-        return '---'
-    } return email
-}
+        if (email === undefined) {
+            return '---'
+        } return email
+    }
 
 formatShopName = shopName => {
-    if (shopName === undefined) {
-        return '---'
-    } return shopName
-}
+        if (shopName === undefined) {
+            return '---'
+        } return shopName
+    }
 
 formatOrderDate = date => {
-    if (date === undefined) {
-        return '---'
+        if (date === undefined) {
+            return '---'
+        }
+        return date.substring(5).split('.')[0].replace('-', '/')
     }
-    return date.substring(5).split('.')[0].replace('-', '/')
-}
 
 getActualCarrierCode = (code, actualCode) => {
-    if (actualCode === undefined || actualCode == '') {
-        return '---'
-    } else if (code == actualCode) {
-        return `<p class="p-input-true">same</p>`
+        if (actualCode === undefined || actualCode == '') {
+            return '---'
+        } else if (code == actualCode) {
+            return `<p class="p-input-true">same</p>`
+        }
+        return `<p class="p-input-wrong">${actualCode}</p>`
     }
-    return `<p class="p-input-wrong">${actualCode}</p>`
-}
 
 getCarrierCode = code => {
-    if (code === undefined || code == '') {
-        return '---'
-    } else if (code.startsWith('9')) {
-        return `<a href='https://tools.usps.com/go/TrackConfirmAction?tRef=fullpage&tLc=2&text28777=&tLabels=${code}' target='_blank'>${code}</a>`
-    } else if (code.startsWith('1Z') || code.startsWith('8')) {
-        return `<a href='https://www.ups.com/track?loc=null&tracknum=${code}&requester=WT/trackdetails' target='_blank'>${code}</a>`
-    } return code
-}
+        if (code === undefined || code == '') {
+            return '---'
+        } else if (code.startsWith('9')) {
+            return `<a href='https://tools.usps.com/go/TrackConfirmAction?tRef=fullpage&tLc=2&text28777=&tLabels=${code}' target='_blank'>${code}</a>`
+        } else if (code.startsWith('1Z') || code.startsWith('8')) {
+            return `<a href='https://www.ups.com/track?loc=null&tracknum=${code}&requester=WT/trackdetails' target='_blank'>${code}</a>`
+        } return code
+    }
 
 updateData = (data) => {
-    $('#table_id-tracking-history-body').empty()
-    for (let item of data) {
-        $('#table_id-tracking-history-body').append(`<tr>
+        $('#table_id-tracking-history-body').empty()
+        for (let item of data) {
+            $('#table_id-tracking-history-body').append(`<tr>
             <td>${item.id}</td>
             <td>${formatShopName(item.name)}</td>
             <td>${formatCustomerName(item.customer_name)}</td>
@@ -221,134 +224,134 @@ updateData = (data) => {
             <td>${formatOrderStatus(item.order_status)}</td>
             <td>${getEpochTime(item.time_add_tracking)}</td>
         </tr>`)
-    }
-    $('#loading').css('display', 'none')
+        }
+        $('#loading').css('display', 'none')
 
-    let start_pos = num_per_pag * (pag_num - 1) + 1
-    let end_pos = num_per_pag * pag_num > total ? total : num_per_pag * pag_num
-    $('#total-table').text(`Showing ${start_pos} - ${end_pos} of ${total} rows`)
-    updatePag()
-}
+        let start_pos = num_per_pag * (pag_num - 1) + 1
+        let end_pos = num_per_pag * pag_num > total ? total : num_per_pag * pag_num
+        $('#total-table').text(`Showing ${start_pos} - ${end_pos} of ${total} rows`)
+        updatePag()
+    }
 
 updatePag = () => {
-    $('#num-pag').text(`${pag_num}`)
-    $('#first-pag').removeClass('pag_disabled')
-    $('#prev-pag').removeClass('pag_disabled')
-    $('#last-pag').removeClass('pag_disabled')
-    $('#next-pag').removeClass('pag_disabled')
+        $('#num-pag').text(`${pag_num}`)
+        $('#first-pag').removeClass('pag_disabled')
+        $('#prev-pag').removeClass('pag_disabled')
+        $('#last-pag').removeClass('pag_disabled')
+        $('#next-pag').removeClass('pag_disabled')
 
-    if (pag_num == 1) {
-        $('#first-pag').addClass('pag_disabled')
-        $('#prev-pag').addClass('pag_disabled')
+        if (pag_num == 1) {
+            $('#first-pag').addClass('pag_disabled')
+            $('#prev-pag').addClass('pag_disabled')
+        }
+        if (pag_num == ~~(total / num_per_pag) + 1) {
+            $('#last-pag').addClass('pag_disabled')
+            $('#next-pag').addClass('pag_disabled')
+        }
     }
-    if (pag_num == ~~(total / num_per_pag) + 1) {
-        $('#last-pag').addClass('pag_disabled')
-        $('#next-pag').addClass('pag_disabled')
-    }
-}
 
 $('#search').on('change', () => {
-    search = $('#search').val().trim()
-    filterData()
-})
+        search = $('#search').val().trim()
+        filterData()
+    })
 
 $('#first-pag').on('click', () => {
-    pag_num = 1
-    filterData()
-})
+        pag_num = 1
+        filterData()
+    })
 
 $('#prev-pag').on('click', () => {
-    pag_num--
-    filterData()
-})
+        pag_num--
+        filterData()
+    })
 
 $('#next-pag').on('click', () => {
-    pag_num++
-    filterData()
-})
+        pag_num++
+        filterData()
+    })
 
 $('#last-pag').on('click', () => {
-    pag_num = ~~(total / num_per_pag) + 1
-    filterData()
-})
+        pag_num = ~~(total / num_per_pag) + 1
+        filterData()
+    })
 
 $('#fix-tracking-history-btn').on('click', () => {
-    $('#fix-tracking-history-btn').toggleClass("active-fix-tracking")
-    let content = $('#fix-tracking-history-btn').next()
-    if (content.css("display") === "block") {
-        content.css("display", "none")
-    } else {
-        content.css("display", "block")
-    }
-})
+        $('#fix-tracking-history-btn').toggleClass("active-fix-tracking")
+        let content = $('#fix-tracking-history-btn').next()
+        if (content.css("display") === "block") {
+            content.css("display", "none")
+        } else {
+            content.css("display", "block")
+        }
+    })
 
 $('#submit-fix-btn').on('click', () => {
-    let id, actual_input, carrier_name
+        let id, actual_input, carrier_name
 
-    id = $('#id-fix-tracking-history').val().trim()
-    if (id == '') {
+        id = $('#id-fix-tracking-history').val().trim()
+        if (id == '') {
+            toastr.clear()
+            toastr.warning('Vui lòng nhập ID !')
+            return
+        }
+
+        if ($('#input-code-tracking-history').val() != '') {
+            actual_input = $('#input-code-tracking-history').val().trim()
+        }
+
+        if ($('#input-carrier-tracking-history').val() != '') {
+            carrier_name = $('#input-carrier-tracking-history').val().trim()
+        }
+
+        if (actual_input === undefined && carrier_name === undefined) {
+            toastr.clear()
+            toastr.warning('Vui lòng nhập Code hoặc Carrier !')
+            return
+        }
+
         toastr.clear()
-        toastr.warning('Vui lòng nhập ID !')
-        return
-    }
+        toastr.success('Processing...')
 
-    if ($('#input-code-tracking-history').val() != '') {
-        actual_input = $('#input-code-tracking-history').val().trim()
-    }
-
-    if ($('#input-carrier-tracking-history').val() != '') {
-        carrier_name = $('#input-carrier-tracking-history').val().trim()
-    }
-
-    if (actual_input === undefined && carrier_name === undefined) {
-        toastr.clear()
-        toastr.warning('Vui lòng nhập Code hoặc Carrier !')
-        return
-    }
-
-    toastr.clear()
-    toastr.success('Processing...')
-
-    try {
-        $.ajax({
-            url: '/add_tracking_history/fix',
-            type: "get",
-            contentType: "application/json",
-            dataType: "json",
-            data: {
-                id: id,
-                actual_input: actual_input,
-                carrier_name: carrier_name,
-            },
-            success: function (data) {
-                toastr.clear()
-                toastr.success('Done!')
-            },
-            error: (jqXHR, textStatus, errorThrown) => {
-                console.log(jqXHR, textStatus, errorThrown)
-            }
-        })
-    } catch (err) {
-        console.log(err)
-    }
-})
+        try {
+            $.ajax({
+                url: '/add_tracking_history/fix',
+                type: "get",
+                contentType: "application/json",
+                dataType: "json",
+                data: {
+                    id: id,
+                    actual_input: actual_input,
+                    carrier_name: carrier_name,
+                },
+                success: function (data) {
+                    toastr.clear()
+                    toastr.success('Done!')
+                },
+                error: (jqXHR, textStatus, errorThrown) => {
+                    console.log(jqXHR, textStatus, errorThrown)
+                }
+            })
+        } catch (err) {
+            console.log(err)
+        }
+    })
 
 
 $('#search-by-id').on('click', () => {
-    $('#search-by').text('Order ID')
-    search_by = 1
-    filterData()
-})
+        $('#search-by').text('Order ID')
+        search_by = 1
+        filterData()
+    })
 
 $('#search-by-shop').on('click', () => {
-    $('#search-by').text('Shop Name')
-    search_by = 2
-    filterData()
-})
+        $('#search-by').text('Shop Name')
+        search_by = 2
+        filterData()
+    })
 
 $('#search-by-customer').on('click', () => {
-    $('#search-by').text('Customer Name')
-    search_by = 3
-    filterData()
-})
+        $('#search-by').text('Customer Name')
+        search_by = 3
+        filterData()
+    })
 

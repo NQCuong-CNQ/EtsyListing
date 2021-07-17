@@ -338,7 +338,9 @@ searchOrFilterData = () => {
     getData(offset)
 }
 
-searchOrFilterData()
+$(function () {
+    searchOrFilterData()
+})
 
 getListingOption = id => {
     socket.emit("get_listing_shop_id", id)

@@ -626,22 +626,24 @@ handleDuplicates = () => {
   }
 }
 
-$.ajax({
-  url: '/tracking-product/getAll',
-  type: "get",
-  contentType: "application/json",
-  dataType: "json",
-  success: function (data) {
-    listingData = dataOriginal = data.data
-    handleDuplicates()
-    searchOrFilterData()
-    toastr.clear()
-    toastr.success('Data Updated')
-    isGettingData = false
-  },
-  error: (jqXHR, textStatus, errorThrown) => {
-    console.log(jqXHR, textStatus, errorThrown)
-  }
+$(function () {
+  $.ajax({
+    url: '/tracking-product/getAll',
+    type: "get",
+    contentType: "application/json",
+    dataType: "json",
+    success: function (data) {
+      listingData = dataOriginal = data.data
+      handleDuplicates()
+      searchOrFilterData()
+      toastr.clear()
+      toastr.success('Data Updated')
+      isGettingData = false
+    },
+    error: (jqXHR, textStatus, errorThrown) => {
+      console.log(jqXHR, textStatus, errorThrown)
+    }
+  })
 })
 
 showAnalytic = id => {
