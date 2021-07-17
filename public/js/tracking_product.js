@@ -527,16 +527,16 @@ updateData = (dataFilter = listingData) => {
   scrollToTop()
 }
 
-let listingLocalData = window.localStorage.getItem('listing-data')
-if (listingLocalData != null && IsJsonString(listingLocalData)) {
-  listingData = JSON.parse(listingLocalData)
+// let listingLocalData = window.localStorage.getItem('listing-data')
+// if (listingLocalData != null && IsJsonString(listingLocalData)) {
+//   listingData = JSON.parse(listingLocalData)
 
-  searchOrFilterData()
-  toastr.clear()
-  toastr.info('Updating data...')
-} else {
+//   searchOrFilterData()
+//   toastr.clear()
+//   toastr.info('Updating data...')
+// } else {
   $('#loading').css('display', 'block')
-}
+// }
 
 // socket.emit("product-tracking-join")
 
