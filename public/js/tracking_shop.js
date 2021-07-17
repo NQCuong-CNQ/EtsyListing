@@ -315,10 +315,10 @@ getData = (offset) => {
             },
             success: function (data) {
                 if (data.isSearch == 1 && data.total == 0) {
-                    client.emit("find-shop-by-name", searchShop)
+                    socket.emit("find-shop-by-name", searchShop)
                     return
                 }
-                
+
                 $('#loading').css('display', 'none')
                 total = data.total
                 updateData(data.shopData)
