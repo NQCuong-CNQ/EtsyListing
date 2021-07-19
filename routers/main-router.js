@@ -17,10 +17,6 @@ router.get("/tracking-shop", authMiddleware.requireAuth, function (req, res) {
     res.render("tracking_shop", {title: 'Tracking Shops', active: 'tracking-shop'})
 })
 
-router.get("/tracking-shop-test", authMiddleware.requireAuth, function (req, res) {
-    res.render("tracking_shop_test", {title: 'Tracking Shops test', active: 'tracking-shop'})
-})
-
 router.get("/tracking-shop/getAll", authMiddleware.requireAuth, shopController.getAll)
 
 router.get("/tracking-shop/get-shop-tracking", authMiddleware.requireAuth, shopController.getShopTracking)
@@ -43,9 +39,9 @@ router.get("/add_tracking_history", authMiddleware.requireAuth, function (req, r
     res.render("add_tracking_etsy_history", {title: 'Add Tracking History', active: 'add_tracking_history'})
 })
 
-router.get("/undefined", function (req, res) {
-    res.send(null)
-})
+// router.get("/undefined", function (req, res) {
+//     res.send(null)
+// })
 
 router.get("/mockup", authMiddleware.requireAuth, function (req, res) {
     res.render("mockup", {title: 'Create Mockup', active: 'mockup'})
