@@ -21,7 +21,7 @@ function create_UUID() {
 }
 
 socket.on('response-list-to-client', data => {
-    console.log(data)
+    alert(data)
 })
 
 $('#submit-btn').on('click', () => {
