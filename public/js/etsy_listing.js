@@ -60,7 +60,8 @@ async function listNewProduct(data, imageIds) {
                 should_advertise: true,
                 listing_images: [{
                     image_id: imageIds,
-                }]
+                }],
+                image_ids: [imageIds],
             }
 
             console.log(dataListing)
