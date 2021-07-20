@@ -2,9 +2,9 @@ const axios = require("axios")
 const cheerio = require('cheerio')
 
 module.exports.getWebsite = async function (req, res) {
-    console.log(req)
-    let siteUrl = `https://www.etsy.com/search/shops?search_type=shop&search_query=`
-    res.send('test - cuong')
+    let shopName = req.query.shop
+    let siteUrl = `https://www.etsy.com/search/shops?search_type=shop&search_query=${shopName}`
+    res.send(getShopAvailable(siteUrl))
 }
 
 async function getShopAvailable(siteUrl) {
@@ -13,12 +13,7 @@ async function getShopAvailable(siteUrl) {
         return 0
     }
 
-    let shopName = $('ul.tab-reorder-container').text()
-    shopName = shopName.split('shop ')
-    shopName.splice(0, 1);
-    for (let index = 0; index < shopName.length; index++) {
-        shopName[index] = shopName[index].split(' ')[0].trim()
-    }
+    let shopName = $('#content').text()
 
     return shopName
 }
