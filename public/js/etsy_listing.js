@@ -14,7 +14,7 @@ document.title = 'Listing tool loaded'
 
 socket.on('etsy-list-new', async function (data) {
 
-    uploadImgs(data)
+    await uploadImgs(data)
     //do stuff
     // let dataListing = {
     //     publish: data.publish,
