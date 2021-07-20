@@ -20,7 +20,8 @@ socket.on('etsy-list-new', async function (data) {
     console.log('img: ', imgID)
 
     if (imgID) {
-        listResponse = listNewProduct(data, imgID)
+        await sleep(500)
+        listResponse = await listNewProduct(data, imgID)
     }
 
     console.log('listResponse: ', listResponse)
@@ -105,8 +106,6 @@ async function getImgs(main_images) {
 async function uploadFile(img) {
     return new Promise(async (resolve, reject) => {
         try {
-            console.log(img)
-
             $.ajax({
                 url: `https://www.etsy.com//your/files/upload`,
                 type: "post",
@@ -122,10 +121,8 @@ async function uploadFile(img) {
                 },
                 success: function (data) {
                     if (data.success == true) {
-                        console.log(data)
                         resolve(data.file_id)
                     } else {
-                        console.log(data)
                         reject('')
                     }
                 },
@@ -150,3 +147,9 @@ function create_img_name() {
     })
     return uuid
 }
+
+async function sleep(ms) {
+    return new Promise(
+      resolve => setTimeout(resolve, ms)
+    )
+  }
