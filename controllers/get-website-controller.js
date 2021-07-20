@@ -3,7 +3,7 @@ const cheerio = require('cheerio')
 
 module.exports.getWebsite = async function (req, res) {
     let shopName = req.query.shop
-    console.log('check 'shopName)
+    console.log('check ' + shopName)
     let siteUrl = `https://www.etsy.com/search/shops?search_type=shop&search_query=${shopName}`
     let result = await getShopAvailable(siteUrl)
     console.log(result)
