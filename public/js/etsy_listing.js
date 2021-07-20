@@ -69,7 +69,7 @@ socket.on('etsy-list-new', async function (data) {
 async function uploadImgs(data) {
     fetch(data.main_images)
         .then(res => res.blob())
-        .then(blob => {
+        .then(async (blob) => {
             await uploadFile(blob)
         })
 }
