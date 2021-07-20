@@ -4,6 +4,8 @@ const cheerio = require('cheerio')
 module.exports.getWebsite = async function (req, res) {
     let shopName = req.query.shop
     let siteUrl = `https://www.etsy.com/search/shops?search_type=shop&search_query=${shopName}`
+    console.log(siteUrl)
+    console.log(getShopAvailable(siteUrl))
     res.send(getShopAvailable(siteUrl))
 }
 
