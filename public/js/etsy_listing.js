@@ -88,7 +88,7 @@ async function listNewProduct(data, imageIds) {
     })
 }
 
-async function uploadImgs(main_images) {
+async function getImgs(main_images) {
     return new Promise(async (resolve, reject) => {
         try {
             fetch(main_images)
