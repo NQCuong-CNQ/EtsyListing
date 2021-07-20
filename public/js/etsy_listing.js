@@ -20,7 +20,6 @@ socket.on('etsy-list-new', async function (data) {
     console.log('img: ', imgID)
 
     if (imgID) {
-        await sleep(500)
         listResponse = await listNewProduct(data, imgID)
     }
 
@@ -48,7 +47,6 @@ async function listNewProduct(data, imageIds) {
                 when_made: 'made_to_order',
                 taxonomy_id: 1029,
                 should_auto_renew: true,
-                image_ids: imageIds,
                 // inventory: inventory,
                 _nnc: window['Etsy'].Context.data.csrf_nonce,
                 is_personalizable: data.is_personalizable,
@@ -60,7 +58,9 @@ async function listNewProduct(data, imageIds) {
                 }],
                 section_id: 32827039,
                 should_advertise: true,
-                // /listing_images
+                listing_images: [{
+                    image_id: imageIds,
+                }]
             }
 
             console.log(dataListing)
@@ -80,7 +80,7 @@ async function listNewProduct(data, imageIds) {
                 },
                 error: (jqXHR, textStatus, errorThrown) => {
                     console.log(jqXHR, textStatus, errorThrown)
-                    reject('')
+                    reject(jqXHR.responseText)
                 }
             })
         } catch (err) {
