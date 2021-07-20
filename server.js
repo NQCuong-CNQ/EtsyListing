@@ -924,15 +924,6 @@ async function makeRequest(method, url) {
   })
 }
 
-async function getTotalShop() {
-  let result = await makeRequest("GET", `https://openapi.etsy.com/v2/shops?api_key=${api_key_2}&limit=1&offset=1`)
-  if (IsJsonString(result)) {
-    result = JSON.parse(result).results
-    return result[0].shop_id
-  }
-  return 0
-}
-
 function IsJsonString(str) {
   try {
     JSON.parse(str)
