@@ -70,7 +70,8 @@ async function uploadImgs(data) {
     fetch(data.main_images)
         .then(res => res.blob())
         .then(async (blob) => {
-            await uploadFile(blob)
+            let imgID =  await uploadFile(blob)
+            console.log('img: ', imgID)
         })
 }
 
@@ -78,35 +79,42 @@ async function uploadFile(img) {
     try {
         console.log(img)
 
-        // $.ajax({
-        //     url: `https://www.etsy.com//your/files/upload`,
-        //     type: "post",
-        //     contentType: "application/octet-stream",
-        //     dataType: "json",
-        //     "data": img,
-        //     processData: false,
-        //     headers: {
-        //         'X-File-Name': file.name,
-        //         'X-File-Size': img.size,
-        //         'X-File-Type': img.type,
-        //         "X-CSRF-TOKEN": window['Etsy'].Context.data.csrf_nonce,
-        //     },
-        //     success: function (data) {
-        //         if (data.success == true) {
-        //             console.log('file', data.file_id)
-        //             resolve(data.file_id)
-        //         } else {
-        //             console.log(data)
-        //             reject('')
-        //         }
-        //     },
-        //     error: (jqXHR, textStatus, errorThrown) => {
-        //         console.log(jqXHR, textStatus, errorThrown)
-        //         // reject(new Error(`!Error: statusCode - ${jqXHR.status} - ${errorThrown}`))
-        //         reject('')
-        //     }
-        // })
+        $.ajax({
+            url: `https://www.etsy.com//your/files/upload`,
+            type: "post",
+            contentType: "application/octet-stream",
+            dataType: "json",
+            "data": img,
+            processData: false,
+            headers: {
+                'X-File-Name': create_img_name(),
+                'X-File-Size': img.size,
+                'X-File-Type': img.type,
+                "X-CSRF-TOKEN": window['Etsy'].Context.data.csrf_nonce,
+            },
+            success: function (data) {
+                if (data.success == true) {
+                    console.log(data)
+                    return data.file_id
+                } else {
+                    console.log(data)
+                }
+            },
+            error: (jqXHR, textStatus, errorThrown) => {
+                console.log(jqXHR, textStatus, errorThrown)
+            }
+        })
     } catch (err) {
         console.log(err)
     }
+}
+
+function create_img_name() {
+    let dt = new Date().getTime()
+    let uuid = 'xxxxxxxxxx'.replace(/[xy]/g, function (c) {
+        let r = (dt + Math.random() * 16) % 16 | 0
+        dt = Math.floor(dt / 16)
+        return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16)
+    })
+    return uuid
 }
