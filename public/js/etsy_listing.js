@@ -24,7 +24,7 @@ socket.on('etsy-list-new', async function (data) {
     }
 
     console.log('listResponse: ', listResponse)
-    if(listResponse){
+    if (listResponse) {
         socket.emit('etsy-list-done', listResponse)
     }
 })
@@ -108,12 +108,12 @@ async function uploadFile(img) {
     return new Promise(async (resolve, reject) => {
         try {
             $.ajax({
-                url: `https://www.etsy.com//your/files/upload`,
+                url: `https://www.etsy.com/your/image/upload/listings`,
                 type: "post",
-                contentType: "application/octet-stream",
-                dataType: "json",
-                "data": img,
-                processData: false,
+                contentType: "text/plain;charset=UTF-8",
+                // dataType: "json",
+                data: img,
+                // processData: false,
                 headers: {
                     'X-File-Name': create_img_name(),
                     'X-File-Size': img.size,
@@ -147,11 +147,11 @@ function create_img_name() {
         dt = Math.floor(dt / 16)
         return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16)
     })
-    return uuid
+    return uuid + '.jpg'
 }
 
 async function sleep(ms) {
     return new Promise(
-      resolve => setTimeout(resolve, ms)
+        resolve => setTimeout(resolve, ms)
     )
-  }
+}
