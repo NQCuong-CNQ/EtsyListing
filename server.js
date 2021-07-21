@@ -3,7 +3,7 @@ const fs = require('fs')
 const express = require("express")
 const app = express()
 const https = require("https")
-const rateLimit = require("express-rate-limit")
+// const rateLimit = require("express-rate-limit")
 const axios = require("axios")
 const cheerio = require('cheerio')
 const { exec } = require("child_process")
@@ -14,11 +14,11 @@ const md5 = require('md5')
 var mainRoute = require('./routers/main-router')
 var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest
 
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 100,
-  message: "TOO MANY REQUESTS",
-})
+// const limiter = rateLimit({
+//   windowMs: 15 * 60 * 1000,
+//   max: 100,
+//   message: "TOO MANY REQUESTS",
+// })
 
 //ssl from Certbot
 var server = spdy.createServer({
@@ -76,13 +76,13 @@ main()
 async function main() {
   clientDB = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
   dbo = clientDB.db("trackingdb")
-  isUpdate = true
+  // isUpdate = true
   // await updateCate()
   // await getShopName()
   // await updateShopInfo()
   // await completeUpdate()
   // await updateData()
-  isUpdate = false
+  // isUpdate = false
   // await dbo.collection("user").deleteMany()
   // await dbo.collection("user").updateOne({ user_name: 'admin' }, { $set: { user_name: 'admin', pass: md5('Vhy!65@ljHgd8863') } }, { upsert: true })
 }
