@@ -12,6 +12,10 @@ module.exports.getWebsite = async function (req, res) {
             console.log('re-run')
             siteUrl = `https://www.etsy.com/shop/${shopName}`
             result = await getShopActuallyDie(siteUrl)
+            if (parseInt(result) > 0) {
+                siteUrl = `https://www.etsy.com/search?q=${shopName}`
+                result = await getShopActuallyDie(siteUrl)
+            }
         }
         console.log(result)
         res.send(result + '')
