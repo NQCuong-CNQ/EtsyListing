@@ -111,9 +111,9 @@ async function uploadFile(img) {
                 url: `https://www.etsy.com/your/image/upload/listings`,
                 type: "post",
                 contentType: "text/plain;charset=UTF-8",
-                // dataType: "json",
+                dataType: "json",
                 data: img,
-                // processData: false,
+                processData: false,
                 headers: {
                     'X-File-Name': create_img_name(),
                     'X-File-Size': img.size,
