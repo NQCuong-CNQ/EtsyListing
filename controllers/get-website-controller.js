@@ -17,8 +17,8 @@ async function getShopAvailable(siteUrl) {
     }
 
     let shopName = $('#content').text()
-
-
+    shopName = shopName.split('for shop names containing')
+    shopName = shopName[0].slice(15)
 
     return shopName
 }
