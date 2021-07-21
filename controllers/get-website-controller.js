@@ -5,17 +5,21 @@ module.exports.getWebsite = async function (req, res) {
     try {
         let shopName = req.query.shop
         console.log('check ' + shopName)
-        let siteUrl = `https://www.etsy.com/shop/${shopName}`
+        let siteUrl = `https://www.etsy.com/search/shops?search_type=shop&search_query=${shopName}`
         let result = await getShopAvailable(siteUrl)
-        console.log(result)
-        if (parseInt(result) == 1) {
-            siteUrl = `https://www.etsy.com/search?q=${shopName}`
-            result = await getShopActuallyDie(siteUrl)
-            if (parseInt(result) == 0) {
-                result = -1
+        result = result.replace('ressult', '').trim()
+        if (parseInt(result) > 0) {
+            siteUrl = `https://www.etsy.com/shop/${shopName}`
+            result = await getShopAvailable2(siteUrl)
+            if (parseInt(result) == 1) {
+                siteUrl = `https://www.etsy.com/search?q=${shopName}`
+                result = await getShopActuallyDie(siteUrl, shopName)
+                if (parseInt(result) == 0) {
+                    result = -1
+                }
             }
         }
-
+        
         console.log(result)
         res.send(result + '')
     } catch (error) {
@@ -24,6 +28,19 @@ module.exports.getWebsite = async function (req, res) {
 }
 
 async function getShopAvailable(siteUrl) {
+    const $ = await fetchData(siteUrl)
+    if ($ == 0) {
+        return 0
+    }
+
+    let shopName = $('#content').text()
+    shopName = shopName.split('for shop names containing')
+    shopName = shopName[0].slice(15)
+
+    return shopName
+}
+
+async function getShopAvailable2(siteUrl) {
     const $ = await fetchData(siteUrl)
     if ($ == 0) {
         return 0
