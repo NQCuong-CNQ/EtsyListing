@@ -2,13 +2,17 @@ const axios = require("axios")
 const cheerio = require('cheerio')
 
 module.exports.getWebsite = async function (req, res) {
-    let shopName = req.query.shop
-    console.log('check ' + shopName)
-    let siteUrl = `https://www.etsy.com/search/shops?search_type=shop&search_query=${shopName}`
-    let result = await getShopAvailable(siteUrl)
-    console.log(result)
-    result = result.replace('ressult', '').trim()
-    res.send(result)
+    try {
+        let shopName = req.query.shop
+        console.log('check ' + shopName)
+        let siteUrl = `https://www.etsy.com/search/shops?search_type=shop&search_query=${shopName}`
+        let result = await getShopAvailable(siteUrl)
+        result = result.replace('ressult', '').trim()
+        console.log(result)
+        res.send(result)
+    } catch (error) {
+        console.log(error)
+    }
 }
 
 async function getShopAvailable(siteUrl) {
