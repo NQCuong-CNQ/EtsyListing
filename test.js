@@ -3,15 +3,14 @@ const cheerio = require('cheerio')
 ttt()
 async function ttt() {
     try {
-        let siteUrl = `https://www.etsy.com/search/shops?search_type=shop&search_query=NiketaBansal`
-        let result = await getShopAvailable(siteUrl)
-        result = result.replace('ressult', '').trim()
-        if (parseInt(result) > 0) {
-            siteUrl = `https://www.etsy.com/shop/NiketaBansal`
+        let siteUrl = `https://www.etsy.com/shop/AndreaSelley`
+        let result = await getShopActuallyDie(siteUrl)
+        console.log(result)
+        if (parseInt(result) == 1) {
+            siteUrl = `https://www.etsy.com/search?q=AndreaSelley`
             result = await getShopActuallyDie(siteUrl)
-            if (parseInt(result) > 0) {
-                siteUrl = `https://www.etsy.com/search?q=NiketaBansal`
-                result = await getShopActuallyDie(siteUrl)
+            if (parseInt(result) == 1) {
+                result = -1
             }
         }
         console.log(result)
@@ -20,17 +19,10 @@ async function ttt() {
     }
 }
 
-async function getShopAvailable(siteUrl) {
-    const $ = await fetchData(siteUrl)
-    if ($ == 0) {
-        return 0
-    }
-
-    let shopName = $('#content').text()
-    shopName = shopName.split('for shop names containing')
-    shopName = shopName[0].slice(15)
-
-    return shopName
+async function sleep(ms) {
+    return new Promise(
+        resolve => setTimeout(resolve, ms)
+    )
 }
 
 async function getShopActuallyDie(siteUrl) {
