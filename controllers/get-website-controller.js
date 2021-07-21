@@ -12,14 +12,8 @@ module.exports.getWebsite = async function (req, res) {
         if (result > 0) {
             siteUrl = `https://www.etsy.com/search/shop/${shopName}`
             result = await getShopActuallyDie(siteUrl)
-            if(result == 1){
-                res.send('0')
-            } else {
-                res.send('1')
-            }
-        } else {
-            res.send('0')
         }
+        res.send(result)
     } catch (error) {
         console.log(error)
     }
@@ -46,9 +40,10 @@ async function getShopActuallyDie(siteUrl) {
 
     let shopName = $('#content').text()
     if(shopName.includes('is currently not selling on Etsy')){
-        return 1
+        console.log('is currently not selling on Etsy')
+        return 0
     }
-    return 0
+    return 1
 }
 
 async function fetchData(siteUrl) {
