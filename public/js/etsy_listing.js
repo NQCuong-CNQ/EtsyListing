@@ -20,7 +20,7 @@ socket.on('etsy-list-new', async function (data) {
     console.log('img: ', imgID)
 
     if (imgID) {
-        // listResponse = await listNewProduct(data, imgID)
+        listResponse = await listNewProduct(data, imgID)
     }
 
     console.log('listResponse: ', listResponse)
@@ -122,8 +122,7 @@ async function uploadFile(img) {
                 },
                 success: function (data) {
                     if (data.success == true) {
-                        console.log(data)
-                        resolve(data.file_id)
+                        resolve(data.image_id)
                     } else {
                         reject('')
                     }
