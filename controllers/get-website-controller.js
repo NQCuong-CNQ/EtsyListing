@@ -9,7 +9,17 @@ module.exports.getWebsite = async function (req, res) {
         let result = await getShopAvailable(siteUrl)
         result = result.replace('ressult', '').trim()
         console.log(result)
-        res.send(result)
+        if (result > 0) {
+            siteUrl = `https://www.etsy.com/search/shop/${shopName}`
+            result = await getShopActuallyDie(siteUrl)
+            if(result == 1){
+                res.send(0)
+            } else {
+                res.send(1)
+            }
+        } else {
+            res.send(0)
+        }
     } catch (error) {
         console.log(error)
     }
@@ -26,6 +36,19 @@ async function getShopAvailable(siteUrl) {
     shopName = shopName[0].slice(15)
 
     return shopName
+}
+
+async function getShopActuallyDie(siteUrl) {
+    const $ = await fetchData(siteUrl)
+    if ($ == 0) {
+        return 0
+    }
+
+    let shopName = $('#content').text()
+    if(shopName.includes('is currently not selling on Etsy')){
+        return 1
+    }
+    return 0
 }
 
 async function fetchData(siteUrl) {
