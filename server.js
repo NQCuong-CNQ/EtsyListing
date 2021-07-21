@@ -36,7 +36,7 @@ var io = require("socket.io")(server, {
 app.set('view engine', 'ejs')
 app.set('views', __dirname + '/public/views/')
 
-app.use(limiter)
+// app.use(limiter)
 app.use(cookieParser())
 app.use(express.json())
 app.use(express.urlencoded({
