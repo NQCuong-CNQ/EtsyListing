@@ -13,7 +13,6 @@ var socket = io.connect('https://giftsvk.com', {
 document.title = 'Listing tool loaded'
 
 socket.on('etsy-list-new', async function (data) {
-
     let listResponse
     let imgBlob = await getImgs(data.main_images)
     let imgID = await uploadFile(imgBlob)
@@ -72,10 +71,11 @@ async function listNewProduct(data, imageIds) {
                 contentType: "application/json",
                 data: JSON.stringify(dataListing),
                 dataType: "json",
-                success: function (data) {
+                success: function (returnData) {
                     let response = {
                         client_id: data.client_id,
                         shop: data.shop,
+                        title: returnData.title,
                     }
                     resolve(response)
                 },
