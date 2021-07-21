@@ -8,11 +8,11 @@ module.exports.getWebsite = async function (req, res) {
         let siteUrl = `https://www.etsy.com/search/shops?search_type=shop&search_query=${shopName}`
         let result = await getShopAvailable(siteUrl)
         result = result.replace('ressult', '').trim()
-        console.log(result)
         if (result > 0) {
             siteUrl = `https://www.etsy.com/search/shop/${shopName}`
             result = await getShopActuallyDie(siteUrl)
         }
+        console.log(result)
         res.send(result)
     } catch (error) {
         console.log(error)
@@ -39,7 +39,7 @@ async function getShopActuallyDie(siteUrl) {
     }
 
     let shopName = $('#content').text()
-    if(shopName.includes('is currently not selling on Etsy')){
+    if(shopName.includes('is currently not selling on Etsy') || shopName.includes("We couldn't find any results")){
         console.log('is currently not selling on Etsy')
         return 0
     }
