@@ -2,6 +2,7 @@ const axios = require("axios")
 const cheerio = require('cheerio')
 
 module.exports.getWebsite = async function (req, res) {
+    console.log(req)
     let shopName = req.query.shop
     console.log('check ' + shopName)
     let siteUrl = `https://www.etsy.com/search/shops?search_type=shop&search_query=${shopName}`
@@ -18,7 +19,7 @@ async function getShopAvailable(siteUrl) {
 
     let shopName = $('#content').text()
     shopName = shopName.split('for shop names containing')
-    shopName = shopName[0].slice(15)
+    shopName = shopName[0].slice(15).trim()
 
     return shopName
 }
