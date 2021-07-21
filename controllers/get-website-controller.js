@@ -6,12 +6,12 @@ module.exports.getWebsite = async function (req, res) {
         let shopName = req.query.shop
         console.log('check ' + shopName)
         let siteUrl = `https://www.etsy.com/shop/${shopName}`
-        let result = await getShopActuallyDie(siteUrl)
+        let result = await getShopAvailable(siteUrl)
         console.log(result)
         if (parseInt(result) == 1) {
             siteUrl = `https://www.etsy.com/search?q=${shopName}`
             result = await getShopActuallyDie(siteUrl)
-            if (parseInt(result) == 1) {
+            if (parseInt(result) == 0) {
                 result = -1
             }
         }
@@ -23,18 +23,31 @@ module.exports.getWebsite = async function (req, res) {
     }
 }
 
-async function getShopActuallyDie(siteUrl) {
+async function getShopAvailable(siteUrl) {
     const $ = await fetchData(siteUrl)
     if ($ == 0) {
         return 0
     }
 
     let shopName = $('#content').text()
-    if (shopName.includes('is currently not selling on Etsy') || shopName.includes("find any results")) {
+    if (shopName.includes('is currently not selling on Etsy') || shopName.includes("We couldn't find any results")) {
         console.log('is currently not selling on Etsy')
         return 0
     }
     return 1
+}
+
+async function getShopActuallyDie(siteUrl, name) {
+    const $ = await fetchData(siteUrl)
+    if ($ == 0) {
+        return 0
+    }
+
+    let shopName = $('#content').text()
+    if (shopName.includes(name)) {
+        return 1
+    }
+    return 0
 }
 
 async function fetchData(siteUrl) {
