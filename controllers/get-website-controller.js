@@ -9,6 +9,7 @@ module.exports.getWebsite = async function (req, res) {
         let result = await getShopAvailable(siteUrl)
         result = result.replace('ressult', '').trim()
         if (result > 0) {
+            console.log('re-run')
             siteUrl = `https://www.etsy.com/search/shop/${shopName}`
             result = await getShopActuallyDie(siteUrl)
         }
@@ -39,7 +40,7 @@ async function getShopActuallyDie(siteUrl) {
     }
 
     let shopName = $('#content').text()
-    if(shopName.includes('is currently not selling on Etsy') || shopName.includes("We couldn't find any results")){
+    if(shopName.includes('is currently not selling on Etsy') || shopName.includes("find any results")){
         console.log('is currently not selling on Etsy')
         return 0
     }
