@@ -78,7 +78,7 @@ async function main() {
   dbo = clientDB.db("trackingdb")
   isUpdate = true
   // await updateCate()
-  await getShopName()
+  // await getShopName()
   await updateShopInfo()
   await completeUpdate()
   // await updateData()
