@@ -8,7 +8,7 @@ module.exports.getWebsite = async function (req, res) {
         let siteUrl = `https://www.etsy.com/search/shops?search_type=shop&search_query=${shopName}`
         let result = await getShopAvailable(siteUrl)
         result = result.replace('ressult', '').trim()
-        if (result > 0) {
+        if (parseInt(result) > 0) {
             console.log('re-run')
             siteUrl = `https://www.etsy.com/search/shop/${shopName}`
             result = await getShopActuallyDie(siteUrl)
