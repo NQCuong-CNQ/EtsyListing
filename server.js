@@ -80,7 +80,7 @@ async function main() {
   // await updateCate()
   // await getShopName()
   // await updateShopInfo()
-  await completeUpdate()
+  // await completeUpdate()
   // await updateData()
   // isUpdate = false
   // await dbo.collection("user").deleteMany()
