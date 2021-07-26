@@ -761,7 +761,7 @@ io.on("connection", async function (client) {
     await dbo.collection("add_complete").updateOne({ item: data }, { $set: { item: data } }, { upsert: true })
 
     let complete = await dbo.collection("add_complete").find().toArray()
-    if (complete.length == 9) {
+    if (complete.length == 3) {
       console.log(`closed all RDC`)
       client.broadcast.emit("add-tracking-status-server-to-client", { name: 'server', status: 5 })
       exec("taskkill /im mstsc.exe /t")
@@ -805,8 +805,7 @@ async function refreshRPC() {
   exec("taskkill /im mstsc.exe /t /f")
   await sleep(1000)
 
-  let arrVPS = ['64.190.87.132', '192.227.121.235:64738', '64.52.175.86:48384', '64.52.168.149:31072',
-    '74.81.39.30:42535', '155.138.146.185', '149.248.60.29', '64.190.86.250:40661', '199.34.28.113:44176']
+  let arrVPS = ['64.190.87.132', '155.138.146.185', '149.248.60.29']
 
   for (let item of arrVPS) {
     console.log(`connect to ${item}`)
