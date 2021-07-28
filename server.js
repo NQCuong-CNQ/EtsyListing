@@ -81,7 +81,7 @@ async function main() {
   // await getListing()
   // await getShopName()
   // await updateShopInfo()
-  await completeUpdate()
+  // await completeUpdate()
   // await updateData()
   // isUpdate = false
   // await dbo.collection("user").deleteMany()
@@ -93,7 +93,7 @@ async function scheduleUpdate() {
   var date = new Date().getTime()
   date = Math.floor(date / 3600000)
   if (date % 26 == 0) {
-    // await updateData()
+    await updateData()
   }
 }
 
@@ -122,9 +122,9 @@ async function getListing() {
   let idListings = []
   let date = new Date().getTime()
   date = Math.floor(date / 1000)
-  let listKeyWord = ["mug", "blanket", "tshirt", "canvas", "art print poster", "father's day canvas", "father's day tshirt", "father's day art print", "father's day mug", "father's day blanket",
-    "pride month tshirt", "pride month canvas", "pride month art print", "pride month mug", "pride month blanket",
-    "independence day tshirt", "independence day canvas", "independence day art print", "independence day mug", "independence day blanket",
+  let listKeyWord = ["mug", "blanket", "tshirt", "canvas", "art print poster",
+    "halloween canvas", "halloween tshirt", "halloween art print", "halloween mug", "halloween blanket",
+    "fall season tshirt", "fall season canvas", "fall season art print", "fall season mug", "fall season blanket",
   ]
 
   for (let i = 1; i <= 2; i++) {
