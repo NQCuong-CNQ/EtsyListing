@@ -195,7 +195,7 @@ $('#select-all-cb').on('change', () => {
 })
 
 $('#files').on('change', handleFileSelect)
-$('#render-now-btn').on('click', () => {
+$('#render-now-btn').on('click', async () => {
   toastr.clear()
   toastr.info('Rendering Mockup...')
   await createCanvas(files)
