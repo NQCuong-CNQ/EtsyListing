@@ -184,7 +184,16 @@ handleFileSelect = async evt => {
       <img src=${img.src} id='testimg'>
     `)
 
-    $('#testimg').croppie()
+    let basic = $('#testimg').croppie({
+      viewport: {
+        width: 150,
+        height: 200
+      }
+    })
+
+    basic.croppie('bind', {
+      points: [77, 469, 280, 739]
+    })
 
     if (img.naturalWidth > img.naturalHeight) {
       valuemax += srcBackgroundHor.length
