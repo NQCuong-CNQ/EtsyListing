@@ -196,11 +196,11 @@ handleFileSelect = async evt => {
 
     $('.preview-container').append(`
       <div class='preview-block'>
-        <img class="mr-2" src='${img.src}' height="200px" onclick='onCheckDirect(${i})'>
+        <img for="img-direction-${i}" class="mr-2" src='${img.src}' height="200px">
         <input class="" type="checkbox" id="img-direction-${i}">
       </div>
     `)
-
+    // onclick='onCheckDirect(${i})'
     // if (img.naturalWidth > img.naturalHeight) {
     //   valuemax += srcBackgroundHor.length
     // } else if (img.naturalWidth < img.naturalHeight) {

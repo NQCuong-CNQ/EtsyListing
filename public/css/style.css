@@ -780,3 +780,7 @@ table th {
 #is-this-hor{
   display: none;
 }
+
+.preview-block img{
+  cursor: pointer;
+}
