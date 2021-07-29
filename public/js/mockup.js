@@ -169,11 +169,14 @@ createCanvas = async (files, listDirect) => {
   }
   toastr.clear()
   toastr.success('Complete!')
+  count = 0
+  idNum = 0
+  progressRange = 0
+  progressVal = 0
 }
 
 handleFileSelect = async evt => {
-  let files = evt.target.files
-  let img, valuemax = 0
+  let img, files = evt.target.files
   count = 0
   idNum = 0
   progressRange = 0
@@ -196,16 +199,10 @@ handleFileSelect = async evt => {
 
     $('.preview-container').append(`
       <div class='preview-block'>
-        <img for="img-direction-${i}" class="mr-2" src='${img.src}' height="200px">
+        <img class="mr-2" src='${img.src}' height="200px" onclick='onCheckDirect(${i})'>
         <input class="" type="checkbox" id="img-direction-${i}">
       </div>
     `)
-    // onclick='onCheckDirect(${i})'
-    // if (img.naturalWidth > img.naturalHeight) {
-    //   valuemax += srcBackgroundHor.length
-    // } else if (img.naturalWidth < img.naturalHeight) {
-    //   valuemax += srcBackgroundVer.length
-    // }
   }
 
   $('.preview-container').after(`
