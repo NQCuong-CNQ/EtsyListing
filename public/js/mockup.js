@@ -243,6 +243,8 @@ handleFileSelect = async evt => {
   })
 
   progressRange = (100 / (numImg * 3 - countHorizontal()))
+  console.log(countHorizontal())
+  console.log(progressRange)
 }
 
 $('#select-all-cb').on('change', () => {
