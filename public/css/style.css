@@ -775,12 +775,18 @@ table th {
 .preview-block{
   display: grid;
   justify-items: center;
+  padding: 0.8rem 0.3rem;
 }
 
 #is-this-hor{
   display: none;
+  margin: 0;
 }
 
 .preview-block img{
   cursor: pointer;
+}
+
+.preview-container{
+  overflow: scroll;
 }
