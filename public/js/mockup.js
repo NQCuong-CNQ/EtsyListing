@@ -178,9 +178,10 @@ handleFileSelect = async evt => {
     })
 
     let croppedImg = cropper.getCroppedCanvas()
+    console.log(croppedImg)
 
     $('.preview-container').append(`
-      <img src=${croppedImg}>
+      <img src=${img.src}>
     `)
 
     if (img.naturalWidth > img.naturalHeight) {
