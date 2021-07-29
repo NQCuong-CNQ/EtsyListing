@@ -42,7 +42,6 @@ $("input").on('dragenter', e => {
 
 checkSelectedAction = list => {
   let count = 0
-  console.log(list)
   for (let item of list) {
     if (item) {
       count++
@@ -112,16 +111,12 @@ drawCanvas = async (srcBackground, putLocation, img) => {
     // context.shadowOffsetY = 10
     // context.shadowBlur = 10
     // context.shadowColor = 'rgba(25, 24, 23, 1)'
-    await context.drawImage(img, 91, 11, 820 - 91, 1104 - 11, startX, startY, width, height)
+    await context.drawImage(img, 92, 12, 819 - 92, 1103 - 12, startX, startY, width, height)
     idNum++
     progressVal += progressRange
     $('.progress-bar').css('width', `${progressVal}%`)
     $('.progress-bar').text(`${Math.floor(progressVal)}%`)
   }
-}
-
-onRotateImg = idNum => {
-
 }
 
 minimizeUpload = () => {
@@ -169,6 +164,10 @@ handleFileSelect = async evt => {
     img = new Image
     img.src = URL.createObjectURL(item)
     await img.decode()
+
+    $('.preview-container').append(`
+      <img src='${img.src}' height="300px">
+    `)
 
     if (img.naturalWidth > img.naturalHeight) {
       valuemax += srcBackgroundHor.length
