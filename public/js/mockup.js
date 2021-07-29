@@ -88,6 +88,14 @@ onCheckCB = id => {
   }
 }
 
+onCheckDirect = id => {
+  if ($(`#img-direction-${id}`).prop("checked")) {
+    $(`#img-direction-${id}`).prop("checked", false)
+  } else {
+    $(`#img-direction-${id}`).prop("checked", true)
+  }
+}
+
 drawCanvas = async (srcBackground, putLocation, img, crop) => {
   let imgBackground, canvas, context,
     startX = 0, startY = 0, width = 0, height = 0
@@ -125,6 +133,9 @@ drawCanvas = async (srcBackground, putLocation, img, crop) => {
     await context.drawImage(img, crop[0], crop[1], crop[2], crop[3], startX, startY, width, height)
     idNum++
     progressVal += progressRange
+    if (progressVal > 98) {
+      progressVal = 100
+    }
     $('.progress-bar').css('width', `${progressVal}%`)
     $('.progress-bar').text(`${Math.floor(progressVal)}%`)
   }
@@ -167,7 +178,11 @@ handleFileSelect = async evt => {
   idNum = 0
   progressRange = 0
   progressVal = 0
-  $('.progress').css('display', 'block')
+
+  $('#is-this-hor').css('display', 'none')
+  $('.progress').css('display', 'none')
+  $('.select-all-container').css('display', 'none')
+  $('#download-all').css('display', 'none')
   $('.progress-bar').css('width', `0%`)
   $('#canvas-container').empty()
   $('.preview-container').empty()
@@ -181,7 +196,7 @@ handleFileSelect = async evt => {
 
     $('.preview-container').append(`
       <div class='preview-block'>
-        <img src='${img.src}' height="200px">
+        <img class="mr-2" src='${img.src}' height="200px" onclick='onCheckDirect(${i})'>
         <input class="" type="checkbox" id="img-direction-${i}">
       </div>
     `)
@@ -200,10 +215,14 @@ handleFileSelect = async evt => {
   $('#render-now-btn').on('click', async () => {
     toastr.clear()
     toastr.info('Rendering Mockup...')
+    $('.progress-bar').css('width', `0%`)
+    $('#canvas-container').empty()
 
     let listDirect = listHorizontal(numImg)
     await createCanvas(files, listDirect)
 
+    $('#is-this-hor').css('display', 'block')
+    $('.progress').css('display', 'block')
     $('.select-all-container').css('display', 'flex')
     $('#download-all').css('display', 'block')
     $(`#select-all-cb`).prop("checked", false)
