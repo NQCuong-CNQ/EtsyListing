@@ -1,4 +1,4 @@
-var count = 0, idNum = 0, progressVal = 0, progressRange = 0
+var count = 0, idNum = 0, progressVal = 0, progressRange = 0, numImg = 0
 
 var srcBackgroundHor = [
   '/img/mockup/mk1.jpg',
@@ -21,6 +21,9 @@ var putLocationVer = {
   mk2: [206, 34, 637, 666],
   mk3: [233, 26, 607, 577],
 }
+
+var cropHor = [17, 275, 890 - 17, 857 - 275]
+var cropVer = [92, 12, 819 - 92, 1103 - 12]
 
 $("input").on('dragenter', e => {
   $(".drop").css({
@@ -55,6 +58,14 @@ checkSelectedAction = list => {
   } return -1
 }
 
+listHorizontal = () => {
+  let list = []
+  for (let i = 0; i < numImg; i++) {
+    list.push($(`#img-direction-${i}`).prop("checked"))
+  }
+  return list
+}
+
 listSelected = () => {
   let list = []
   for (let i = 0; i < idNum; i++) {
@@ -77,7 +88,7 @@ onCheckCB = id => {
   }
 }
 
-drawCanvas = async (srcBackground, putLocation, img) => {
+drawCanvas = async (srcBackground, putLocation, img, crop) => {
   let imgBackground, canvas, context,
     startX = 0, startY = 0, width = 0, height = 0
 
@@ -111,7 +122,7 @@ drawCanvas = async (srcBackground, putLocation, img) => {
     // context.shadowOffsetY = 10
     // context.shadowBlur = 10
     // context.shadowColor = 'rgba(25, 24, 23, 1)'
-    await context.drawImage(img, 92, 12, 819 - 92, 1103 - 12, startX, startY, width, height)
+    await context.drawImage(img, crop[0], crop[1], crop[2], crop[3], startX, startY, width, height)
     idNum++
     progressVal += progressRange
     $('.progress-bar').css('width', `${progressVal}%`)
@@ -127,18 +138,26 @@ minimizeUpload = () => {
   $('.drop .cont').css('height', '50px')
 }
 
-createCanvas = async files => {
-  let img = new Image
-  img.src = URL.createObjectURL(files[count])
-  await img.decode()
+createCanvas = async (files, listDirect) => {
+  // let img = new Image
+  // img.src = URL.createObjectURL(files[count])
+  // await img.decode()
 
   minimizeUpload()
 
-  if (img.naturalWidth >= img.naturalHeight) {
-    await drawCanvas(srcBackgroundHor, putLocationHor, img)
-  } else if (img.naturalWidth < img.naturalHeight) {
-    await drawCanvas(srcBackgroundVer, putLocationVer, img)
+  for (let item of listDirect) {
+    if (item == 0) {
+      await drawCanvas(srcBackgroundVer, putLocationVer, img, cropVer)
+    } else if (item == 1) {
+      await drawCanvas(srcBackgroundHor, putLocationHor, img, cropHor)
+    }
   }
+
+  // if (img.naturalWidth >= img.naturalHeight) {
+  //   await drawCanvas(srcBackgroundHor, putLocationHor, img)
+  // } else if (img.naturalWidth < img.naturalHeight) {
+  //   await drawCanvas(srcBackgroundVer, putLocationVer, img)
+  // }
 
   if (count < files.length - 1) {
     count++
@@ -162,6 +181,7 @@ handleFileSelect = async evt => {
   $('.preview-container').empty()
   $('#render-now-btn').remove()
 
+  numImg = files.length
   for (let i = 0; i < files.length; i++) {
     img = new Image
     img.src = URL.createObjectURL(files[i])
@@ -188,6 +208,9 @@ handleFileSelect = async evt => {
   $('#render-now-btn').on('click', async () => {
     toastr.clear()
     toastr.info('Rendering Mockup...')
+
+    // listHorizontal(numImg)
+
     await createCanvas(files)
 
     $('.select-all-container').css('display', 'flex')
