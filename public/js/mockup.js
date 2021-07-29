@@ -170,7 +170,6 @@ createCanvas = async (files, listDirect) => {
   toastr.clear()
   toastr.success('Complete!')
   count = 0
-  idNum = 0
   progressRange = 0
   progressVal = 0
 }
@@ -217,6 +216,7 @@ handleFileSelect = async evt => {
     $('.select-all-container').css('display', 'none')
     $('#download-all').css('display', 'none')
     $('#canvas-container').empty()
+    idNum = 0
 
     let listDirect = listHorizontal()
     let temp = listDirect
