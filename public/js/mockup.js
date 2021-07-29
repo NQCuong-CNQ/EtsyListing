@@ -66,6 +66,17 @@ listHorizontal = () => {
   return list
 }
 
+countHorizontal = () => {
+  let count = 0
+  for (let i = 0; i < numImg; i++) {
+    if($(`#img-direction-${i}`).prop("checked") == true){
+      count++
+    }
+  }
+  return count
+}
+
+
 listSelected = () => {
   let list = []
   for (let i = 0; i < idNum; i++) {
@@ -201,11 +212,11 @@ handleFileSelect = async evt => {
       </div>
     `)
 
-    if (img.naturalWidth > img.naturalHeight) {
-      valuemax += srcBackgroundHor.length
-    } else if (img.naturalWidth < img.naturalHeight) {
-      valuemax += srcBackgroundVer.length
-    }
+    // if (img.naturalWidth > img.naturalHeight) {
+    //   valuemax += srcBackgroundHor.length
+    // } else if (img.naturalWidth < img.naturalHeight) {
+    //   valuemax += srcBackgroundVer.length
+    // }
   }
 
   $('.preview-container').after(`
@@ -221,15 +232,17 @@ handleFileSelect = async evt => {
     $('#download-all').css('display', 'none')
     $('#canvas-container').empty()
 
-    let listDirect = listHorizontal(numImg)
+    let listDirect = listHorizontal()
+
+    progressVal = 0
     await createCanvas(files, listDirect)
-    
+
     $('.select-all-container').css('display', 'flex')
     $('#download-all').css('display', 'block')
     $(`#select-all-cb`).prop("checked", false)
   })
 
-  progressRange = (100 / valuemax)
+  progressRange = (100 / (numImg * 3 - countHorizontal()))
 }
 
 $('#select-all-cb').on('change', () => {
