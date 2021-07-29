@@ -232,6 +232,7 @@ handleFileSelect = async evt => {
   })
 
   let temp = listHorizontal()
+  console.log(temp)
   temp = temp.filter(x => x == true)
   console.log(temp)
   progressRange = (100 / (numImg * 3 - temp.length))
