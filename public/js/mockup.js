@@ -120,6 +120,10 @@ drawCanvas = async (srcBackground, putLocation, img) => {
   }
 }
 
+onRotateImg = idNum => {
+
+}
+
 minimizeUpload = () => {
   $('.tit').css('display', 'none')
   $('button.browse').css('display', 'none')
@@ -165,6 +169,13 @@ handleFileSelect = async evt => {
     img = new Image
     img.src = URL.createObjectURL(item)
     await img.decode()
+
+    console.log(img)
+
+    $('.preview-container').append(`
+      <img src=${img.src}>
+    `)
+
     if (img.naturalWidth > img.naturalHeight) {
       valuemax += srcBackgroundHor.length
     } else if (img.naturalWidth < img.naturalHeight) {
