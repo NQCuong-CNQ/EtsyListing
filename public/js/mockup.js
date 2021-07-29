@@ -146,18 +146,12 @@ createCanvas = async (files, listDirect) => {
   minimizeUpload()
 
   for (let item of listDirect) {
-    if (item == 0) {
+    if (item == false) {
       await drawCanvas(srcBackgroundVer, putLocationVer, img, cropVer)
-    } else if (item == 1) {
+    } else if (item == true) {
       await drawCanvas(srcBackgroundHor, putLocationHor, img, cropHor)
     }
   }
-
-  // if (img.naturalWidth >= img.naturalHeight) {
-  //   await drawCanvas(srcBackgroundHor, putLocationHor, img)
-  // } else if (img.naturalWidth < img.naturalHeight) {
-  //   await drawCanvas(srcBackgroundVer, putLocationVer, img)
-  // }
 
   if (count < files.length - 1) {
     count++
