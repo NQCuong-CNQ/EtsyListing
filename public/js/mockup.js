@@ -160,7 +160,7 @@ handleFileSelect = async evt => {
   $('.progress-bar').css('width', `0%`)
   $('#canvas-container').empty()
 
-  for (let [index, item] of files) {
+  for (let [index, item] of files.entries()) {
     img = new Image
     img.src = URL.createObjectURL(item)
     await img.decode()

@@ -769,4 +769,5 @@ table th {
 
 #render-now-btn{
   width: -webkit-fill-available;
+  border-radius: 20px !important;
 }
