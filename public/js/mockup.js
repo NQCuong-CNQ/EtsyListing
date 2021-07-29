@@ -161,7 +161,7 @@ createCanvas = async (files, listDirect) => {
 
   if (count < files.length - 1) {
     count++
-    await createCanvas(files)
+    await createCanvas(files, listDirect)
     return
   }
   toastr.clear()
@@ -209,9 +209,8 @@ handleFileSelect = async evt => {
     toastr.clear()
     toastr.info('Rendering Mockup...')
 
-    // listHorizontal(numImg)
-
-    await createCanvas(files)
+    let listDirect = listHorizontal(numImg)
+    await createCanvas(files, listDirect)
 
     $('.select-all-container').css('display', 'flex')
     $('#download-all').css('display', 'block')
