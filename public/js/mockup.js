@@ -160,7 +160,7 @@ handleFileSelect = async evt => {
   $('.progress-bar').css('width', `0%`)
   $('#canvas-container').empty()
 
-  for (let [index, item] of files.entries()) {
+  for (let i = 0; i < files.length; i++) {
     img = new Image
     img.src = URL.createObjectURL(item)
     await img.decode()
@@ -168,7 +168,7 @@ handleFileSelect = async evt => {
     $('.preview-container').append(`
       <div class=''>
         <img src='${img.src}' height="200px">
-        <input class="" type="checkbox" id="img-direction-${index}">
+        <input class="" type="checkbox" id="img-direction-${i}">
       </div>
     `)
 
@@ -178,7 +178,6 @@ handleFileSelect = async evt => {
       valuemax += srcBackgroundVer.length
     }
   }
-
   progressRange = (100 / valuemax)
 }
 
