@@ -204,7 +204,8 @@ handleFileSelect = async evt => {
     toastr.info('Rendering Mockup...')
 
     let listDirect = listHorizontal(numImg)
-    await createCanvas(files, listDirect)
+    console.log(listDirect)
+    // await createCanvas(files, listDirect)
 
     $('.select-all-container').css('display', 'flex')
     $('#download-all').css('display', 'block')
