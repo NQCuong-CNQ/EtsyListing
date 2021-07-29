@@ -771,3 +771,8 @@ table th {
   width: -webkit-fill-available;
   border-radius: 20px !important;
 }
+
+.preview-block{
+  display: grid;
+  justify-items: center;
+}

@@ -159,6 +159,8 @@ handleFileSelect = async evt => {
   $('.progress').css('display', 'block')
   $('.progress-bar').css('width', `0%`)
   $('#canvas-container').empty()
+  $('.preview-container').empty()
+  $('#render-now-btn').remove()
 
   for (let i = 0; i < files.length; i++) {
     img = new Image
@@ -166,7 +168,7 @@ handleFileSelect = async evt => {
     await img.decode()
 
     $('.preview-container').append(`
-      <div class=''>
+      <div class='preview-block'>
         <img src='${img.src}' height="200px">
         <input class="" type="checkbox" id="img-direction-${i}">
       </div>
@@ -178,6 +180,21 @@ handleFileSelect = async evt => {
       valuemax += srcBackgroundVer.length
     }
   }
+
+  $('.preview-container').after(`
+      <button class="button-primary mb-3" id="render-now-btn">Render Now</button>
+    `)
+
+  $('#render-now-btn').on('click', async () => {
+    toastr.clear()
+    toastr.info('Rendering Mockup...')
+    await createCanvas(files)
+
+    $('.select-all-container').css('display', 'flex')
+    $('#download-all').css('display', 'block')
+    $(`#select-all-cb`).prop("checked", false)
+  })
+
   progressRange = (100 / valuemax)
 }
 
@@ -194,15 +211,6 @@ $('#select-all-cb').on('change', () => {
 })
 
 $('#files').on('change', handleFileSelect)
-$('#render-now-btn').on('click', async () => {
-  toastr.clear()
-  toastr.info('Rendering Mockup...')
-  await createCanvas(files)
-
-  $('.select-all-container').css('display', 'flex')
-  $('#download-all').css('display', 'block')
-  $(`#select-all-cb`).prop("checked", false)
-})
 
 downloadCanvas = (canvasId, filename) => {
   let aLink = document.createElement('a')
