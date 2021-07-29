@@ -170,10 +170,17 @@ handleFileSelect = async evt => {
     img.src = URL.createObjectURL(item)
     await img.decode()
 
-    console.log(img)
+    let cropper = new Cropper(img, {
+      ready() {
+        this.cropper.move(91,11)
+        this.cropper.crop()
+      }
+    })
+
+    let croppedImg = cropper.getCroppedCanvas()
 
     $('.preview-container').append(`
-      <img src=${img.src}>
+      <img src=${croppedImg}>
     `)
 
     if (img.naturalWidth > img.naturalHeight) {
