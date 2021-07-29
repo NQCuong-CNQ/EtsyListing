@@ -222,6 +222,9 @@ handleFileSelect = async evt => {
     $('#canvas-container').empty()
 
     let listDirect = listHorizontal()
+    let temp = listDirect
+    temp = temp.filter(x => x == true)
+    progressRange = (100 / (numImg * 3 - temp.length))
 
     progressVal = 0
     await createCanvas(files, listDirect)
@@ -230,12 +233,6 @@ handleFileSelect = async evt => {
     $('#download-all').css('display', 'block')
     $(`#select-all-cb`).prop("checked", false)
   })
-
-  let temp = listHorizontal()
-  console.log(temp)
-  temp = temp.filter(x => x == true)
-  console.log(temp)
-  progressRange = (100 / (numImg * 3 - temp.length))
 }
 
 $('#select-all-cb').on('change', () => {
