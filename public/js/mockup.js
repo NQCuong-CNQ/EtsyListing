@@ -179,7 +179,7 @@ handleFileSelect = async evt => {
   progressRange = 0
   progressVal = 0
 
-  $('#is-this-hor').css('display', 'none')
+  $('#is-this-hor').css('display', 'block')
   $('.progress').css('display', 'none')
   $('.select-all-container').css('display', 'none')
   $('#download-all').css('display', 'none')
@@ -216,13 +216,14 @@ handleFileSelect = async evt => {
     toastr.clear()
     toastr.info('Rendering Mockup...')
     $('.progress-bar').css('width', `0%`)
+    $('.progress').css('display', 'block')
+    $('.select-all-container').css('display', 'none')
+    $('#download-all').css('display', 'none')
     $('#canvas-container').empty()
 
     let listDirect = listHorizontal(numImg)
     await createCanvas(files, listDirect)
-
-    $('#is-this-hor').css('display', 'block')
-    $('.progress').css('display', 'block')
+    
     $('.select-all-container').css('display', 'flex')
     $('#download-all').css('display', 'block')
     $(`#select-all-cb`).prop("checked", false)

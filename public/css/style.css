@@ -776,3 +776,7 @@ table th {
   display: grid;
   justify-items: center;
 }
+
+#is-this-hor{
+  display: none;
+}
