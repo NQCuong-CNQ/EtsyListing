@@ -66,17 +66,6 @@ listHorizontal = () => {
   return list
 }
 
-countHorizontal = () => {
-  let count = 0
-  for (let i = 0; i < numImg; i++) {
-    if($(`#img-direction-${i}`).prop("checked") == true){
-      count++
-    }
-  }
-  return count
-}
-
-
 listSelected = () => {
   let list = []
   for (let i = 0; i < idNum; i++) {
@@ -242,9 +231,10 @@ handleFileSelect = async evt => {
     $(`#select-all-cb`).prop("checked", false)
   })
 
-  progressRange = (100 / (numImg * 3 - countHorizontal()))
-  console.log(countHorizontal())
-  console.log(progressRange)
+  let temp = listHorizontal()
+  temp = temp.filter(x => x == true)
+  console.log(temp)
+  progressRange = (100 / (numImg * 3 - temp.length))
 }
 
 $('#select-all-cb').on('change', () => {
