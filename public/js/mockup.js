@@ -112,7 +112,7 @@ drawCanvas = async (srcBackground, putLocation, img) => {
     // context.shadowOffsetY = 10
     // context.shadowBlur = 10
     // context.shadowColor = 'rgba(25, 24, 23, 1)'
-    await context.drawImage(img, startX, startY, width, height)
+    await context.drawImage(img, 91, 11, 820 - 91, 1104 - 11, startX, startY, width, height)
     idNum++
     progressVal += progressRange
     $('.progress-bar').css('width', `${progressVal}%`)
@@ -169,31 +169,6 @@ handleFileSelect = async evt => {
     img = new Image
     img.src = URL.createObjectURL(item)
     await img.decode()
-
-    // let cropper = new Cropper(img, {
-    //   ready() {
-    //     this.cropper.move(91,11)
-    //     this.cropper.crop()
-    //   }
-    // })
-
-    // let croppedImg = cropper.getCroppedCanvas()
-    // console.log(croppedImg)
-
-    $('.preview-container').append(`
-      <img src=${img.src} id='testimg'>
-    `)
-
-    let basic = $('#testimg').croppie({
-      viewport: {
-        width: 150,
-        height: 200
-      }
-    })
-
-    basic.croppie('bind', {
-      points: [77, 469, 280, 739]
-    })
 
     if (img.naturalWidth > img.naturalHeight) {
       valuemax += srcBackgroundHor.length

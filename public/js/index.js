@@ -72,7 +72,7 @@ $('#update-server').on('click', async () => {
     toastr.clear()
     toastr.info('Reloading server!')
     socket.emit("run-update-server")
-    await sleep(5000)
+    await sleep(8000)
     location.reload()
 })
 
