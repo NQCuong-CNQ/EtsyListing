@@ -145,12 +145,10 @@ createCanvas = async (files, listDirect) => {
 
   minimizeUpload()
 
-  for (let item of listDirect) {
-    if (item == false) {
-      await drawCanvas(srcBackgroundVer, putLocationVer, img, cropVer)
-    } else if (item == true) {
-      await drawCanvas(srcBackgroundHor, putLocationHor, img, cropHor)
-    }
+  if (listDirect[count] == false) {
+    await drawCanvas(srcBackgroundVer, putLocationVer, img, cropVer)
+  } else if (listDirect[count] == true) {
+    await drawCanvas(srcBackgroundHor, putLocationHor, img, cropHor)
   }
 
   if (count < files.length - 1) {
@@ -204,8 +202,7 @@ handleFileSelect = async evt => {
     toastr.info('Rendering Mockup...')
 
     let listDirect = listHorizontal(numImg)
-    console.log(listDirect)
-    // await createCanvas(files, listDirect)
+    await createCanvas(files, listDirect)
 
     $('.select-all-container').css('display', 'flex')
     $('#download-all').css('display', 'block')
