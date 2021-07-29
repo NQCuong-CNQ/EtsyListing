@@ -170,19 +170,21 @@ handleFileSelect = async evt => {
     img.src = URL.createObjectURL(item)
     await img.decode()
 
-    let cropper = new Cropper(img, {
-      ready() {
-        this.cropper.move(91,11)
-        this.cropper.crop()
-      }
-    })
+    // let cropper = new Cropper(img, {
+    //   ready() {
+    //     this.cropper.move(91,11)
+    //     this.cropper.crop()
+    //   }
+    // })
 
-    let croppedImg = cropper.getCroppedCanvas()
-    console.log(croppedImg)
+    // let croppedImg = cropper.getCroppedCanvas()
+    // console.log(croppedImg)
 
     $('.preview-container').append(`
-      <img src=${img.src}>
+      <img src=${img.src} id='testimg'>
     `)
+
+    $('#testimg').croppie()
 
     if (img.naturalWidth > img.naturalHeight) {
       valuemax += srcBackgroundHor.length
