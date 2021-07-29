@@ -139,9 +139,9 @@ minimizeUpload = () => {
 }
 
 createCanvas = async (files, listDirect) => {
-  // let img = new Image
-  // img.src = URL.createObjectURL(files[count])
-  // await img.decode()
+  let img = new Image
+  img.src = URL.createObjectURL(files[count])
+  await img.decode()
 
   minimizeUpload()
 
