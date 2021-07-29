@@ -162,7 +162,7 @@ handleFileSelect = async evt => {
 
   for (let i = 0; i < files.length; i++) {
     img = new Image
-    img.src = URL.createObjectURL(item)
+    img.src = URL.createObjectURL(files[i])
     await img.decode()
 
     $('.preview-container').append(`
