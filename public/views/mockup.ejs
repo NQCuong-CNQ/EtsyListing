@@ -4,9 +4,9 @@
 <head>
     <%- include('partials/header.ejs') %>
 
-    <link rel="stylesheet" type="text/css" href="css/app.css" />
-    <link rel="stylesheet" type="text/css" href="css/style.css" media="print" onload="this.media='all'"/>
-    <link rel="stylesheet" type="text/css" href="css/toastr.min.css" media="print" onload="this.media='all'"/>
+        <link rel="stylesheet" type="text/css" href="css/app.css" />
+        <link rel="stylesheet" type="text/css" href="css/style.css" media="print" onload="this.media='all'" />
+        <link rel="stylesheet" type="text/css" href="css/toastr.min.css" media="print" onload="this.media='all'" />
 
 </head>
 
@@ -14,44 +14,44 @@
     <div class="wrapper">
         <%- include('partials/sidebar.ejs', {active: active}) %>
 
-        <div class="main">
-            <%- include('partials/navbar.ejs') %>
+            <div class="main">
+                <%- include('partials/navbar.ejs') %>
 
-            <main class="content">
-                <div class="container-fluid">
-                    <div class="upload-container">
-                        <div class="drop">
-                            <div class="cont">
-                                <i class="fas fa-cloud-upload-alt"></i>
-                                <div class="tit">
-                                    Drag & Drop
+                    <main class="content">
+                        <div class="container-fluid">
+                            <div class="upload-container">
+                                <div class="drop">
+                                    <div class="cont">
+                                        <i class="fas fa-cloud-upload-alt"></i>
+                                        <div class="tit">
+                                            Drag & Drop
+                                        </div>
+                                        <button class="browse button-primary">
+                                            or click here to browse
+                                        </button>
+                                    </div>
+                                    <input id="files" multiple="true" name="files[]" type="file" />
                                 </div>
-                                <button class="browse button-primary">
-                                    or click here to browse
-                                </button>
                             </div>
-                            <input id="files" multiple="true" name="files[]" type="file" />
+
+                            <h3 id="is-this-hor">Is this Horizontal?</h3>
+                            <div class="preview-container mb-3 d-flex">
+                            </div>
+
+                            <div class="progress">
+                                <div class="progress-bar" role="progressbar" style="width:0%">0%</div>
+                            </div>
+
+                            <div class="select-all-container mt-3">
+                                <input type="checkbox" id="select-all-cb">
+                                <label class="ml-2" for="select-all-cb">Select All</label>
+                            </div>
+
+                            <div id="canvas-container"></div>
+                            <button class="button-primary" id="download-all">Download selected item</button>
                         </div>
-                    </div>
-
-                    <h3 id="is-this-hor">Is this Horizontal?</h3>
-                    <div class="preview-container mb-3 d-flex">
-                    </div>
-
-                    <div class="progress">
-                        <div class="progress-bar" role="progressbar" style="width:0%">0%</div>
-                    </div>
-
-                    <div class="select-all-container mt-3">
-                        <input type="checkbox" id="select-all-cb">
-                        <label class="ml-2" for="select-all-cb">Select All</label>
-                    </div>
-
-                    <div id="canvas-container"></div>
-                    <button class="button-primary" id="download-all">Download selected item</button>
-                </div>
-            </main>
-        </div>
+                    </main>
+            </div>
     </div>
 </body>
 

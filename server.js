@@ -107,9 +107,9 @@ async function main() {
 // }
 
 // async function updateData() {
-  // isUpdate = true
+// isUpdate = true
 
-  // await updateCate()
+// await updateCate()
 //   await getListing()
 //   await getShopName()
 //   await updateShopInfo()
