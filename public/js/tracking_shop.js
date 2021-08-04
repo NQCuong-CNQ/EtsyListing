@@ -4,7 +4,7 @@ var socket = io.connect("https://giftsvk.com", {
     transports: ['websocket']
 })
 
-var shopData, chart, selected_shop = {}, category = 'Canvas',
+var shopData, chart, selected_shop = {}, category = null,
     timeCreatedShopFilter, salesLargerThan = null, monthFilterShop = null, filterType = 0, searchShop = null,
     pag_num = 1, total = 0, num_per_pag = 10, sort_by = 1
 

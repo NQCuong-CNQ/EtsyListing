@@ -98,10 +98,12 @@ getMonthFilter = (data, month) => {
     let filterData = []
     for (let item of data) {
         if (getMonthTime(item.creation_tsz) == parseInt(month)) {
+            console.log(getMonthTime(item.creation_tsz))
             filterData.push(item)
         }
     }
 
+    console.log(filterData.length)
     return filterData
 }
 
