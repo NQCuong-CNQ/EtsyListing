@@ -304,6 +304,8 @@ async function updateShopInfo() {
                 if (response[0]['creation_tsz'] < dateCount || (dbData[index].total_sales > maxTotalSales && dbData[index].total_sales < minTotalSales)) {
                     await deleteShop(response[0]['shop_name'])
                     console.log('removed ' + response[0]['shop_name'] + " - " + response[0]['creation_tsz'] + '<' + dateCount)
+                } else if (response[0]['creation_tsz'] === null) {
+
                 } else {
                     console.log('updateShopInfo: ' + response[0].shop_id)
                     response[0]['total_sales'] = dbData[index].total_sales
