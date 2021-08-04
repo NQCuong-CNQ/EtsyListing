@@ -98,12 +98,10 @@ getMonthFilter = (data, month) => {
     let filterData = []
     for (let item of data) {
         if (getMonthTime(item.creation_tsz) == parseInt(month)) {
-            console.log(getMonthTime(item.creation_tsz))
             filterData.push(item)
         }
     }
 
-    console.log(filterData.length)
     return filterData
 }
 
@@ -165,6 +163,8 @@ async function searchOrFilterData(shop, category, month, sort_by) {
 
     if (category) {
         dataFilter = await getCategoryProduct(dataFilter, category)
+        console.log(category)
+        console.log(dataFilter.length)
     }
 
     if (month) {
