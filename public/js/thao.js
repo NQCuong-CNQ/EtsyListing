@@ -20,7 +20,7 @@ $('#you-wish-btn').on('mousedown', function(){
 
 $('#send-to').on('click', function(){
     let data = new Object
-    let time = new Date()
+    let time = new Date().toLocaleString()
     let text = $('#input').val().trim()
     
     if(text == ''){
@@ -32,5 +32,7 @@ $('#send-to').on('click', function(){
     
         socket.emit("thao-save", data)
         $('#exampleModal').modal('hide')
+
+        $('#modal-done').modal('show')
     }
 })
