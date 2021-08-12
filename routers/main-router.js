@@ -62,4 +62,8 @@ router.get("/thao-gui-tang-cau", function (req, res) {
     res.render("thao", {title: 'Thảo gửi tặng cậu <3'})
 })
 
+router.get("/thao-logs", function (req, res) {
+    res.render("thao-log", {title: 'Logs'})
+})
+
 module.exports = router

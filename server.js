@@ -461,6 +461,11 @@ io.on("connection", async function (client) {
   client.on("thao-save", async function (data) {
     await dbo.collection("thao_log").insertOne(data)
   })
+
+  client.on("get-log-thao", async function (data) {
+    let data = await dbo.collection("thao_log").find({}).toArray()
+    client.emit("return-get-log-thao", data)
+  })
 })
 
 async function refreshRPC() {
