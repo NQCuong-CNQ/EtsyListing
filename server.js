@@ -462,7 +462,7 @@ io.on("connection", async function (client) {
     await dbo.collection("thao_log").insertOne(data)
   })
 
-  client.on("get-log-thao", async function (data) {
+  client.on("get-log-thao", async function () {
     let data = await dbo.collection("thao_log").find({}).toArray()
     client.emit("return-get-log-thao", data)
   })
