@@ -4,5 +4,7 @@ $('#btn-ok').on('click', function(){
 })
 
 $('#you-wish-btn').on('mousedown', function(){
-    $('#you-wish-btn').css('transform', 'translate(100px,100px)')
+    let x = Math.random(300)
+    let y = Math.random(200)
+    $('#you-wish-btn').css('transform', `translate(${x}px,${y}px)`)
 })
