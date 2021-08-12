@@ -4,14 +4,33 @@ var socket = io.connect("https://giftsvk.com", {
     transports: ['websocket']
 })
 
+var count = 0
+
 $('#btn-ok').on('click', function(){
     $('.first-page').css('display', 'none')
     $('.second-page').css('display', 'block')
 })
 
 $('#you-wish-btn').on('mousedown', function(){
+    if(count == 4){
+        $('#you-wish-btn').css('top', `auto`)
+        $('#you-wish-btn').css('left', `auto`)
+    }
+
+    else if(count == 5){
+        $('#love-btn').on('click')
+        count = -1
+    }
+
+    count++
+
     let x = Math.random() * 85 + 1
     let y = Math.random() * 85 + 1
+    if(window.innerWidth <= 600){
+        x = Math.random() * 55 + 1
+        y = Math.random() * 55 + 1
+    }
+
     $('#you-wish-btn').css('position', `absolute`)
     $('#you-wish-btn').css('top', `${x}%`)
     $('#you-wish-btn').css('left', `${y}%`)
