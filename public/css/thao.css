@@ -1,17 +1,18 @@
 .first-page{
     width: 100%;
     height: 100%;
-    position: relative;
 }
 
 #first-page-background{
     filter: opacity(0.4);
+    height: 100vh;
+    width: 100%;
 }
 
 .hello-container{
     position: absolute;
-    width: 500px;
-    height: 700px;
+    width: 600px;
+    height: 800px;
     background-color: rgba(0, 89, 255, 0.815);
     border-radius: 30px;
     left: 50%;
