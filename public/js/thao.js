@@ -19,7 +19,7 @@ $('#you-wish-btn').on('mousedown', function(){
 })  
 
 $('#send-to').on('click', function(){
-    let data = []
+    let data = new Object
     let time = new Date().getTime()
     let text = $('#input').val().trim()
     
