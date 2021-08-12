@@ -16,12 +16,11 @@ $('#you-wish-btn').on('mousedown', function(){
         $('#you-wish-btn').css('top', `auto`)
         $('#you-wish-btn').css('left', `auto`)
     }
-
     else if(count == 5){
         $('#love-btn').on('click')
         count = -1
     }
-
+    console.log(count)
     count++
 
     let x = Math.random() * 85 + 1
