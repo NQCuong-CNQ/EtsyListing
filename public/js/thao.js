@@ -12,17 +12,18 @@ $('#btn-ok').on('click', function(){
 })
 
 $('#you-wish-btn').on('mousedown', function(){
-    if(count == 4){
+    console.log(count)
+    if(count == 3){
         $('#you-wish-btn').css('top', `auto`)
         $('#you-wish-btn').css('left', `auto`)
         count++
         return
     }
-    else if(count == 5){
-        $('#love-btn').on('click')
+    else if(count == 4){
+        $('#love-btn').click()
         count = -1
     }
-    console.log(count)
+    
     count++
 
     let x = Math.random() * 85 + 1
