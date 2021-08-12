@@ -36,3 +36,7 @@ $('#send-to').on('click', function(){
         $('#modal-done').modal('show')
     }
 })
+
+$('#btn-done').on('click', function(){
+    $('#modal-done').modal('hide')
+})
