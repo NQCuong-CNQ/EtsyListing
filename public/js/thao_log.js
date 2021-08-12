@@ -11,8 +11,6 @@ getEpochTime = input => {
     date.setUTCSeconds(input)
     time = String(date)
     console.log(time)
-    time = time.split(' ')
-    time = `${time[2]}-${convertMonthInString(time[1])}-${time[3]}`
     return time
 }
 
