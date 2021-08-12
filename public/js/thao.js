@@ -15,6 +15,8 @@ $('#you-wish-btn').on('mousedown', function(){
     if(count == 4){
         $('#you-wish-btn').css('top', `auto`)
         $('#you-wish-btn').css('left', `auto`)
+        count++
+        return
     }
     else if(count == 5){
         $('#love-btn').on('click')
