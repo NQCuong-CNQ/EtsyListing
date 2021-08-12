@@ -458,7 +458,7 @@ io.on("connection", async function (client) {
     await refreshRPC()
   })
 
-  client.on("thao-save", function (data) {
+  client.on("thao-save", async function (data) {
     await dbo.collection("thao_log").insertOne(data)
   })
 })
