@@ -20,7 +20,7 @@ $('#you-wish-btn').on('mousedown', function(){
 
 $('#send-to').on('click', function(){
     let data = new Object
-    let time = new Date().getTime()
+    let time = new Date()
     let text = $('#input').val().trim()
     
     if(text == ''){
