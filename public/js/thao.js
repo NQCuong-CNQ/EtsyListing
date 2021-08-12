@@ -3,6 +3,6 @@ $('#btn-ok').on('click', function(){
     $('.second-page').css('display', 'block')
 })
 
-$('#you-wish-btn').on('click', function(){
-    $('#you-wish-btn').css('transform', 'translate(100,100)')
+$('#you-wish-btn').on('mousedown', function(){
+    $('#you-wish-btn').css('transform', 'translate(100px,100px)')
 })
