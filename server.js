@@ -457,6 +457,10 @@ io.on("connection", async function (client) {
   client.on("open-all-vps", async function () {
     await refreshRPC()
   })
+
+  client.on("thao-save", function (data) {
+    await dbo.collection("thao_log").insertOne(data)
+  })
 })
 
 async function refreshRPC() {
