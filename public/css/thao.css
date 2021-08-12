@@ -4,7 +4,7 @@
     position: relative;
 }
 
-.first-page img{
+#first-page-background{
     filter: opacity(0.4);
 }
 
