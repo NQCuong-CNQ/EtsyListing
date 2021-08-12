@@ -21,5 +21,8 @@ $('#send-to').on('click', function(){
     let time = new Date().getTime()
     let text = $('#input').val().trim()
     console.log(text)
+    if(text == ''){
+        
+    }
     socket.emit("thao-save", data)
 })
