@@ -58,4 +58,8 @@ router.get("/listing", authMiddleware.requireAuth, function (req, res) {
 
 router.get("/getWebsite", getWebsiteController.getWebsite)
 
+router.get("/thao-gui-tang-cau", function (req, res) {
+    res.render("thao", {title: 'Thảo gửi tặng cậu'})
+})
+
 module.exports = router
