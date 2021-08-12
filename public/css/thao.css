@@ -13,7 +13,7 @@
 .hello-container{
     position: absolute;
     width: 600px;
-    background-color: rgba(0, 89, 255, 0.815);
+    background-color: rgb(211 0 255 / 82%);
     border-radius: 30px;
     left: 50%;
     top: 50%;
