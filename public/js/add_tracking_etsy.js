@@ -75,7 +75,7 @@ socket.on("track-order-step4", async function (name) {
             return
         }
 
-        let actualInput = $('input[placeholder="Enter tracking number (recommended)"]').val()
+        let actualInput = $('input[placeholder="Enter tracking number"]').val()
 
         if (actualInput.length <= 16) {
             console.log('actualInput.length <= 16')
