@@ -303,7 +303,7 @@ io.on("connection", async function (client) {
         try {
           trackObj = new Object
           trackObj['pro_ID'] = temp[i].split(',')[0].replace(/[^0-9]/g, '')
-          trackObj['track_number'] = temp[i].split(',')[19].replace(/[^0-9a-zA-Z]/g, '')
+          trackObj['track_number'] = temp[i].split(',')[28].replace(/[^0-9a-zA-Z]/g, '')
           trackObj['order_status'] = temp[i].split(',')[3].replace(/[^0-9a-zA-Z]/g, '')
 
           if (trackObj['track_number'] != '' && trackObj['order_status'] == 'Shipped') {
@@ -315,7 +315,7 @@ io.on("connection", async function (client) {
           trackDataForSave['number_tracking'] = trackObj['track_number']
           trackDataForSave['order_date'] = temp[i].split(',')[2].replace(/"/g, '')
           trackDataForSave['order_status'] = trackObj['order_status']
-          trackDataForSave['customer_name'] = temp[i].split(',')[12].replace(/[^0-9a-zA-Z]/g, '')
+          trackDataForSave['customer_name'] = temp[i].split(',')[20].replace(/[^0-9a-zA-Z]/g, '')
           trackDataForSave['user'] = data['name']
           await dbo.collection("tracking_etsy_history").updateOne({ id: trackDataForSave['id'] }, { $set: trackDataForSave }, { upsert: true })
         } catch (error) {
