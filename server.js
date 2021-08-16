@@ -331,7 +331,7 @@ io.on("connection", async function (client) {
       client.broadcast.emit("reload-etsy")
       await sleep(100)
       client.broadcast.emit("add-tracking-status-server-to-client", { name: 'server', status: 3 })
-      await sleep(60000)
+      await sleep(20000)
       console.log('send data to etsy' + trackData.length)
       client.broadcast.emit("add-tracking-status-server-to-client", { name: 'server', status: 4 })
       await sleep(100)
