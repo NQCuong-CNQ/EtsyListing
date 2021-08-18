@@ -125,10 +125,14 @@ async function addTrackingAction(id, number) {
 
     await sleep(2000)
 
+    let hasNotAvailable = $('button:contains("This order doesn’t have tracking")')
+    
+
     trackData = new Object
     trackData['name'] = shopName
     trackData['id'] = id
     trackData['number_tracking'] = number
+    trackData['hasNotAvailable'] = hasNotAvailable.length
 
     socket.emit("track-order-step1", trackData)
     socket.emit("add-tracking-status-vps-to-server", {name: shopName, status: id})
