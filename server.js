@@ -305,6 +305,13 @@ io.on("connection", async function (client) {
       let order_status_num = findSTT.indexOf('order status')
       let order_date_num = findSTT.indexOf('order date')
       let customer_name_num = findSTT.indexOf('customer name')
+      console.log(findSTT)
+      console.log(pro_ID_num)
+      console.log(track_number_num)
+      console.log(order_status_num)
+      console.log(order_date_num)
+      console.log(customer_name_num)
+      return
 
       for (let i = 1; i < temp.length - 1; i++) {
         try {
