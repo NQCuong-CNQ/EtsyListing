@@ -299,7 +299,7 @@ io.on("connection", async function (client) {
       let trackObj
       let trackDataForSave
 
-      let findSTT = temp[0].split(',')[0]
+      let findSTT = temp[0].split(',')
       let pro_ID_num = findSTT.indexOf('order id')
       let track_number_num = findSTT.indexOf('tracking')
       let order_status_num = findSTT.indexOf('order status')
