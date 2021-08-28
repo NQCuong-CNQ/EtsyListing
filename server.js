@@ -299,12 +299,19 @@ io.on("connection", async function (client) {
       let trackObj
       let trackDataForSave
 
+      let findSTT = temp[0].split(',')[0]
+      let pro_ID_num = findSTT.indexOf('order id')
+      let track_number_num = findSTT.indexOf('tracking')
+      let order_status_num = findSTT.indexOf('order status')
+      let order_date_num = findSTT.indexOf('order date')
+      let customer_name_num = findSTT.indexOf('customer name')
+
       for (let i = 1; i < temp.length - 1; i++) {
         try {
           trackObj = new Object
-          trackObj['pro_ID'] = temp[i].split(',')[0].replace(/[^0-9]/g, '')
-          trackObj['track_number'] = temp[i].split(',')[28].replace(/[^0-9a-zA-Z]/g, '')
-          trackObj['order_status'] = temp[i].split(',')[3].replace(/[^0-9a-zA-Z]/g, '')
+          trackObj['pro_ID'] = temp[i].split(',')[pro_ID_num].replace(/[^0-9]/g, '')
+          trackObj['track_number'] = temp[i].split(',')[track_number_num].replace(/[^0-9a-zA-Z]/g, '')
+          trackObj['order_status'] = temp[i].split(',')[order_status_num].replace(/[^0-9a-zA-Z]/g, '')
 
           if (trackObj['track_number'] != '' && trackObj['order_status'] == 'Shipped') {
             trackData.push(trackObj)
@@ -313,9 +320,9 @@ io.on("connection", async function (client) {
           trackDataForSave = new Object
           trackDataForSave['id'] = trackObj['pro_ID']
           trackDataForSave['number_tracking'] = trackObj['track_number']
-          trackDataForSave['order_date'] = temp[i].split(',')[2].replace(/"/g, '')
+          trackDataForSave['order_date'] = temp[i].split(',')[order_date_num].replace(/"/g, '')
           trackDataForSave['order_status'] = trackObj['order_status']
-          trackDataForSave['customer_name'] = temp[i].split(',')[20].replace(/[^0-9a-zA-Z]/g, '')
+          trackDataForSave['customer_name'] = temp[i].split(',')[customer_name_num].replace(/[^0-9a-zA-Z]/g, '')
           trackDataForSave['user'] = data['name']
           await dbo.collection("tracking_etsy_history").updateOne({ id: trackDataForSave['id'] }, { $set: trackDataForSave }, { upsert: true })
         } catch (error) {
