@@ -300,11 +300,11 @@ io.on("connection", async function (client) {
       let trackDataForSave
 
       let findSTT = temp[0].split(',')
-      let pro_ID_num = findSTT.indexOf('order id')
-      let track_number_num = findSTT.indexOf('tracking')
-      let order_status_num = findSTT.indexOf('order status')
-      let order_date_num = findSTT.indexOf('order date')
-      let customer_name_num = findSTT.indexOf('customer name')
+      let pro_ID_num = findSTT.indexOf('"order id"')
+      let track_number_num = findSTT.indexOf(`"tracking"\r`)
+      let order_status_num = findSTT.indexOf('"order status"')
+      let order_date_num = findSTT.indexOf('"order date"')
+      let customer_name_num = findSTT.indexOf('"customer name"')
       console.log(findSTT)
       console.log(pro_ID_num)
       console.log(track_number_num)
