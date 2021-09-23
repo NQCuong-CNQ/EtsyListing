@@ -68,14 +68,16 @@ var maxTotalSales = 5000
 var maxDateShop = 547
 
 const MongoClient = require('mongodb').MongoClient
-const url = "mongodb://localhost:27017/trackingdb"
+const url = "mongodb://localhost:27017/"
 var clientDB
 var dbo
-
+const md5 = require('md5')
 main()
 async function main() {
   clientDB = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
   dbo = clientDB.db("trackingdb")
+
+  await dbo.collection("user").insertOne({ user_name: 'admin', pass: md5('Vhy!65@ljHgd8863') })
 }
 
 async function sleep(ms) {
