@@ -9,7 +9,7 @@ const axios = require("axios")
 const cheerio = require('cheerio')
 const { exec } = require("child_process")
 const cookieParser = require('cookie-parser')
-// const spdy = require('spdy')
+const spdy = require('spdy')
 
 var mainRoute = require('./routers/main-router')
 var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest
@@ -21,12 +21,11 @@ var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest
 // })
 
 //ssl from Certbot
+var server = http.createServer(app)
 // var server = spdy.createServer({
 //   cert: fs.readFileSync("./ssl/fullchain.pem"),
 //   key: fs.readFileSync("./ssl/privkey.pem"),
 // }, app)
-
-var server = http.createServer(app)
 
 var io = require("socket.io")(server, {
   cors: {

@@ -11,7 +11,7 @@ module.exports.getAll = async function (req, res) {
         let customQuery = {}, queryObj = {}, dbData
         let offset = parseInt(req.query.offset)
         let limit = parseInt(req.query.limit)
-        let type = parseInt(req.query.type)
+        let type = parseInt(req.query.type) 
         let category = req.query.category
         let month = parseInt(req.query.month)
         let sales = parseInt(req.query.sales)
