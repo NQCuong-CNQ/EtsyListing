@@ -2,8 +2,8 @@
 const fs = require('fs')
 const express = require("express")
 const app = express()
-// const https = require("https")
-const http = require("http")
+const https = require("https")
+// const http = require("http")
 // const rateLimit = require("express-rate-limit")
 const axios = require("axios")
 const cheerio = require('cheerio')
@@ -20,12 +20,13 @@ var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest
 //   message: "TOO MANY REQUESTS",
 // })
 
+// var server = http.createServer(app)
+
 //ssl from Certbot
-var server = http.createServer(app)
-// var server = spdy.createServer({
-//   cert: fs.readFileSync("./ssl/fullchain.pem"),
-//   key: fs.readFileSync("./ssl/privkey.pem"),
-// }, app)
+var server = spdy.createServer({
+  cert: fs.readFileSync("./ssl/fullchain.pem"),
+  key: fs.readFileSync("./ssl/privkey.pem"),
+}, app)
 
 var io = require("socket.io")(server, {
   cors: {
@@ -576,4 +577,4 @@ function IsJsonString(str) {
   return true
 }
 
-server.listen(80)
+server.listen(443)
