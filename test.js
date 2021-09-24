@@ -22,8 +22,8 @@ async function getSearchProductFromWeb() {
   if (searchProduct == '') {
       return 0
   }
-  console.log(searchProduct)
   searchProduct = searchProduct.split('href="https://www.etsy.com/listing/')
+  console.log(searchProduct.length)
   for (let i = 0; i < searchProduct.length; i++) {
       searchProduct[i] = searchProduct[i].substring(0, 12).split('/')[0]
   }

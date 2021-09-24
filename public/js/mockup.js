@@ -108,7 +108,7 @@ drawCanvas = async (srcBackground, putLocation, img, crop) => {
     $('#canvas-container').append(`
       <div class='canvas-select-container'>
         <input class="mt-2 ml-2 canvas-select-checkbox" type="checkbox" id="select-${idNum}">
-        <canvas onclick='onCheckCB(${idNum})' id="canvas-${idNum}"></canvas>
+        <canvas onclick='onCheckCB(${idNum})' id="canvas-${idNum}" width="2000" height="2000"></canvas>
       </div>
     `)
 
