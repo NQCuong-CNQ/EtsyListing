@@ -14,6 +14,7 @@ async function main(){
 
 async function getSearchProductFromWeb() {
   const $ = await fetchData(siteUrl)
+  
   if ($ == 0) {
       return 0
   }
@@ -21,7 +22,7 @@ async function getSearchProductFromWeb() {
   if (searchProduct == '') {
       return 0
   }
-
+  console.log(searchProduct)
   searchProduct = searchProduct.split('href="https://www.etsy.com/listing/')
   for (let i = 0; i < searchProduct.length; i++) {
       searchProduct[i] = searchProduct[i].substring(0, 12).split('/')[0]
