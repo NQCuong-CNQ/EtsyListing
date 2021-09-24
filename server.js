@@ -76,8 +76,7 @@ main()
 async function main() {
   clientDB = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
   dbo = clientDB.db("trackingdb")
-
-  await dbo.collection("user").insertOne({ user_name: 'admin', pass: md5('Vhy!65@ljHgd8863') })
+  // await dbo.collection("user").insertOne({ user_name: 'admin', pass: md5('Vhy!65@ljHgd8863') })
 }
 
 async function sleep(ms) {
@@ -468,15 +467,6 @@ io.on("connection", async function (client) {
 
   client.on("open-all-vps", async function () {
     await refreshRPC()
-  })
-
-  client.on("thao-save", async function (data) {
-    await dbo.collection("thao_log").insertOne(data)
-  })
-
-  client.on("get-log-thao", async function () {
-    let data = await dbo.collection("thao_log").find({}).toArray()
-    client.emit("return-get-log-thao", data)
   })
 })
 

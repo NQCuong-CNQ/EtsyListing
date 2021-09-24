@@ -27,8 +27,8 @@ async function main() {
     // await dbo.collection("user").deleteMany()
     // await dbo.collection("user").updateOne({ user_name: 'admin' }, { $set: { user_name: 'admin', pass: md5('Vhy!65@ljHgd8863') } }, { upsert: true })
 }
-
-setInterval(scheduleUpdate, 3600000) // 1h
+updateData()
+// setInterval(scheduleUpdate, 3600000) // 1h
 async function scheduleUpdate() {
     var date = new Date().getTime()
     date = Math.floor(date / 3600000)
