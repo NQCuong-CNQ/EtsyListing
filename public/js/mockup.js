@@ -108,7 +108,7 @@ drawCanvas = async (srcBackground, putLocation, img, crop) => {
     $('#canvas-container').append(`
       <div class='canvas-select-container'>
         <input class="mt-2 ml-2 canvas-select-checkbox" type="checkbox" id="select-${idNum}">
-        <canvas onclick='onCheckCB(${idNum})' id="canvas-${idNum}" width="2000" height="2000"></canvas>
+        <canvas onclick='onCheckCB(${idNum})' id="canvas-${idNum}"></canvas>
       </div>
     `)
 
@@ -130,7 +130,7 @@ drawCanvas = async (srcBackground, putLocation, img, crop) => {
     // context.shadowOffsetY = 10
     // context.shadowBlur = 10
     // context.shadowColor = 'rgba(25, 24, 23, 1)'
-    await context.drawImage(img, 34, 25, 163, 23, 52, 234, 135, 313)
+    await context.drawImage(img, crop[0], crop[1], crop[2], crop[3], startX, startY, width, height)
     idNum++
     progressVal += progressRange
     if (progressVal > 98) {
