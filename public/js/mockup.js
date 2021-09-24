@@ -130,7 +130,8 @@ drawCanvas = async (srcBackground, putLocation, img, crop) => {
     // context.shadowOffsetY = 10
     // context.shadowBlur = 10
     // context.shadowColor = 'rgba(25, 24, 23, 1)'
-    await context.drawImage(img, crop[0], crop[1], crop[2], crop[3], startX, startY, width, height)
+    await context.drawImage(img, startX, startY, width, height)
+    // await context.drawImage(img, crop[0], crop[1], crop[2], crop[3], startX, startY, width, height)
     idNum++
     progressVal += progressRange
     if (progressVal > 98) {
