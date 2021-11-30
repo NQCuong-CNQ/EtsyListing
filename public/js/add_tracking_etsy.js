@@ -27,7 +27,8 @@ socket.on("get-email-customer-order", async function () {
 })
 
 socket.on("reload-etsy", function () {
-    location.href = 'https://www.etsy.com/your/orders/sold'
+    
+    location.href = 'https://www.etsy.com/your/orders/sold/' + window.Etsy.Context.data.order_states[0].order_state_id
 })
 
 socket.on("ping-vps", function () {
@@ -116,12 +117,12 @@ async function addTrackingAction(id, number) {
         await addTracking()
         return
     }
-    let element = document.querySelector(`[href="/your/orders/sold?order_id=${id}"]`).closest('.flag')
-    if (shopName == 'DennisGawlick') {
-        $(element).find(".wt-tooltip.wt-tooltip--bottom button")[0].click()
-    } else {
-        $(element).find(".wt-tooltip.wt-tooltip--bottom button")[1].click()
-    }
+    // let element = document.querySelector(`[href="/your/orders/sold?order_id=${id}"]`).closest('.flag')
+    // if (shopName == 'DennisGawlick') {
+    //     $(element).find(".wt-tooltip.wt-tooltip--bottom button")[0].click()
+    // } else {
+    //     $(element).find(".wt-tooltip.wt-tooltip--bottom button")[1].click()
+    // }
 
     await sleep(2000)
 

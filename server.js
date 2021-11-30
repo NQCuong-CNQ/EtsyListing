@@ -336,7 +336,7 @@ io.on("connection", async function (client) {
 
       client.broadcast.emit("get-email-customer-order")
       await dbo.collection("add_complete").deleteMany()
-      await refreshRPC()
+      // await refreshRPC()
 
       console.log('reload etsy')
       client.broadcast.emit("reload-etsy")
